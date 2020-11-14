@@ -1,1 +1,6 @@
-QORMLite.pro.user
+*.pro.user
+*.stash
+*debug/
+*release/
+Makefile*
+target_wrapper.bat

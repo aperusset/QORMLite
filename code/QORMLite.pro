@@ -5,15 +5,15 @@ QMAKE_CXXFLAGS += -std=c++0x -std=gnu++11 -Wall
 CONFIG += c++11
 
 QT -= gui
-QT += core sql testlib
-CONFIG(release)
-{
-  QT.testlib.CONFIG -= console
-}
+QT += core sql
 
 DEFINES += QT_DEPRECATED_WARNINGS
 
-SOURCES +=
+SOURCES += \
+  qormutils.cpp
 
-HEADERS +=
+HEADERS += \
+  qormentity.h \
+  qormobserver.h \
+  qormutils.h
 
