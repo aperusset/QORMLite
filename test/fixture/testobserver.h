@@ -3,7 +3,7 @@
 
 #include "qormobserver.h"
 
-class QORMTestObserver : public QORMObserver<int>  {
+class TestObserver : public QORMObserver<int>  {
 
     static const int INVALID_KEY = -1;
 
@@ -13,7 +13,7 @@ class QORMTestObserver : public QORMObserver<int>  {
     int deletedKey;
 
 public:
-    QORMTestObserver();
+    TestObserver();
 
     void onChange(const int &key) override;
     void onDelete(const int &key) override;

@@ -4,3 +4,4 @@
 *release/
 Makefile*
 target_wrapper.bat
+object_script.*

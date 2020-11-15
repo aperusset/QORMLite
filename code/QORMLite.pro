@@ -13,6 +13,7 @@ SOURCES += \
   qormutils.cpp
 
 HEADERS += \
+  qormcache.h \
   qormentity.h \
   qormobserver.h \
   qormutils.h

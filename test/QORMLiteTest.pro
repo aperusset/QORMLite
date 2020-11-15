@@ -7,16 +7,18 @@ CONFIG -= app_bundle
 TEMPLATE = app
 
 SOURCES +=  \
-  fixture/qormtestentity.cpp \
-  fixture/qormtestobserver.cpp \
+  fixture/testentity.cpp \
+  fixture/testobserver.cpp \
   main.cpp \
+  qormcachetest.cpp \
   qormentitytest.cpp \
   qormobservertest.cpp \
   qormutilstest.cpp
 
 HEADERS += \
-  fixture/qormtestentity.h \
-  fixture/qormtestobserver.h \
+  fixture/testentity.h \
+  fixture/testobserver.h \
+  qormcachetest.h \
   qormentitytest.h \
   qormobservertest.h \
   qormutilstest.h

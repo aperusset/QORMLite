@@ -1,13 +1,13 @@
 #include "qormentitytest.h"
 
-#include "fixture/qormtestentity.h"
-#include "fixture/qormtestobserver.h"
+#include "fixture/testentity.h"
+#include "fixture/testobserver.h"
 
 void QORMEntityTest::getKey() {
 
     // Given
     auto const expectedKey = 42;
-    QORMTestEntity entity(expectedKey);
+    TestEntity entity(expectedKey);
 
     // When
     auto const key = entity.getKey();
@@ -20,7 +20,7 @@ void QORMEntityTest::setKey() {
 
     // Given
     auto const expectedKey = 42;
-    QORMTestEntity entity(0);
+    TestEntity entity(0);
 
     // When
     entity.setKey(expectedKey);
@@ -32,8 +32,8 @@ void QORMEntityTest::setKey() {
 void QORMEntityTest::attached() {
 
     // Given
-    QORMTestEntity entity(42);
-    QORMTestObserver observer;
+    TestEntity entity(42);
+    TestObserver observer;
 
     // When
     entity.attach(observer);
@@ -45,8 +45,8 @@ void QORMEntityTest::attached() {
 void QORMEntityTest::notAttached() {
 
     // Given
-    QORMTestEntity entity(42);
-    QORMTestObserver observer;
+    TestEntity entity(42);
+    TestObserver observer;
 
     // Then
     QVERIFY(!entity.isAttached(observer));
@@ -55,8 +55,8 @@ void QORMEntityTest::notAttached() {
 void QORMEntityTest::detach() {
 
     // Given
-    QORMTestEntity entity(42);
-    QORMTestObserver observer;
+    TestEntity entity(42);
+    TestObserver observer;
 
     // When
     entity.attach(observer);

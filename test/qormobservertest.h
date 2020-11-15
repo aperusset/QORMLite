@@ -2,15 +2,15 @@
 #define QORMOBSERVERTEST_H
 
 #include <QtTest/QtTest>
-#include "fixture/qormtestentity.h"
-#include "fixture/qormtestobserver.h"
+#include "fixture/testentity.h"
+#include "fixture/testobserver.h"
 
 class QORMObserverTest : public QObject {
 
     Q_OBJECT
 
-    QORMTestEntity entity;
-    QORMTestObserver observer;
+    TestEntity entity;
+    TestObserver observer;
 
 public:
     QORMObserverTest() : entity(42) {

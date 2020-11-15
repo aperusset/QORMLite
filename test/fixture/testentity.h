@@ -4,10 +4,10 @@
 #include "qormentity.h"
 #include <QString>
 
-class QORMTestEntity : public QORMEntity<int> {
+class TestEntity : public QORMEntity<int> {
 
 public:
-    explicit QORMTestEntity(const int key);
+    explicit TestEntity(const int key);
 
     auto exists() const -> bool override;
     auto save() -> bool override;
