@@ -8,7 +8,6 @@ class TypeTest : public QObject {
     Q_OBJECT
 
 private slots:
-
     void getName();
     void generate();
     void integerGetName();
