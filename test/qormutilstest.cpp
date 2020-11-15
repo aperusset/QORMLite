@@ -25,3 +25,15 @@ void QORMUtilsTest::backupFileName() {
     // Then
     QCOMPARE(QString("backup_") + name + "_" + QORMUtils::formatSQLiteDate(now) + ".db", backupFileName);
 }
+
+void QORMUtilsTest::parametrize() {
+
+    // Given
+    auto const fieldName = "FieldName.(really funny at all)";
+
+    // When
+    auto const parametrizedFieldName = QORMUtils::parametrize(fieldName);
+
+    // Then
+    QCOMPARE(":fieldnamereallyfunnyatall", parametrizedFieldName);
+}

@@ -10,6 +10,7 @@ SOURCES +=  \
   fixture/testentity.cpp \
   fixture/testobserver.cpp \
   main.cpp \
+  operations/model/typetest.cpp \
   qormcachetest.cpp \
   qormentitytest.cpp \
   qormobservertest.cpp \
@@ -18,6 +19,7 @@ SOURCES +=  \
 HEADERS += \
   fixture/testentity.h \
   fixture/testobserver.h \
+  operations/model/typetest.h \
   qormcachetest.h \
   qormentitytest.h \
   qormobservertest.h \

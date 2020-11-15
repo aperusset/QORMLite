@@ -10,9 +10,14 @@ QT += core sql
 DEFINES += QT_DEPRECATED_WARNINGS
 
 SOURCES += \
+  operations/model/fielddefinition.cpp \
+  operations/model/type.cpp \
   qormutils.cpp
 
 HEADERS += \
+  operations/model/fielddefinition.h \
+  operations/model/type.h \
+  operations/operation.h \
   qormcache.h \
   qormentity.h \
   qormobserver.h \
