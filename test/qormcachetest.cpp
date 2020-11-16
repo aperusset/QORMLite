@@ -75,8 +75,10 @@ void QORMCacheTest::getOrCreate() {
 void QORMCacheTest::remove() {
 
     // Given
-    auto const entity1 = new TestEntity(42);
-    auto const entity2 = new TestEntity(43);
+    auto const key1 = 42;
+    auto const key2 = 43;
+    auto const entity1 = new TestEntity(key1);
+    auto const entity2 = new TestEntity(key2);
     auto const entity3 = new TestEntity(44);
 
     // When
@@ -86,8 +88,9 @@ void QORMCacheTest::remove() {
     auto const removed3 = cache.remove(entity3->getKey());
 
     // Then
-    QVERIFY(!cache.contains(entity1->getKey()));
-    QVERIFY(cache.contains(entity2->getKey()));
+    QVERIFY(!cache.contains(key1));
+    QVERIFY(cache.contains(key2));
+    QVERIFY(!cache.contains(entity3->getKey()));
     QVERIFY(removed1);
     QVERIFY(!removed3);
 

@@ -10,7 +10,7 @@
 template<typename Key, class Entity>
 class QORMCache {
 
-    static_assert(std::is_base_of<QORMEntity<Key>, Entity>::value, "Entity must extends QORMEntity");
+    static_assert(std::is_base_of<QORMEntity<Key>, Entity>::value, "Entity must extend QORMEntity");
 
     std::map<Key, std::unique_ptr<Entity>> entities;
 

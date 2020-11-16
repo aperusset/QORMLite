@@ -17,7 +17,7 @@ public:
     auto getTableName() const -> QString;
     auto getFields() const -> std::list<Field>;
     auto isAutoIncrement() const -> bool;
-    auto generate() const -> QString;
+    auto generate() const -> QString override;
 };
 
 #endif // PRIMARYKEY_H

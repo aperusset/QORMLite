@@ -6,18 +6,18 @@ const QString AUTO_INCREMENT = " autoincrement ";
 const QString CONSTRAINT = " constraint ";
 const QString COMMA = ", ";
 
-PrimaryKey::PrimaryKey(const Field &fieldDefinition, const bool autoIncrement) :
-    tableName(QString()), fields({fieldDefinition}), autoIncrement(autoIncrement) {}
+PrimaryKey::PrimaryKey(const Field &field, const bool autoIncrement) :
+    tableName(QString()), fields({field}), autoIncrement(autoIncrement) {}
 
 PrimaryKey::PrimaryKey(const QString &tableName, const std::list<Field> &fields) :
     tableName(tableName), fields(fields), autoIncrement(false) {
 
     if (fields.empty()) {
-        throw std::string("Cannot generate a primary key without any field definition.");
+        throw std::string("Cannot generate a primary key without any field.");
     }
 
     if (fields.size() == 1) {
-        throw std::string("Please use single field definition ctor with only one field definition.");
+        throw std::string("Please use single field ctor.");
     }
 }
 

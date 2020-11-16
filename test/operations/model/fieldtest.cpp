@@ -1,5 +1,4 @@
 #include "fieldtest.h"
-
 #include "operations/model/field.h"
 #include "operations/model/type.h"
 

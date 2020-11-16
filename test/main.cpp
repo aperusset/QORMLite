@@ -9,9 +9,9 @@
 /*
  * Thanks to https://alexhuszagh.github.io/2016/using-qttest-effectively/
  */
-int main(int argc, char *argv[]) {
+auto main(int argc, char *argv[]) -> int {
 
-    int status = 0;
+    auto status = 0;
     auto runTest = [&status, argc, argv](QObject &&obj) {
         status |= QTest::qExec(&obj, argc, argv);
     };

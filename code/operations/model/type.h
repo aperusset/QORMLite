@@ -26,7 +26,7 @@ class Decimal : public Type {
     const int decimals;
 
 public:
-    Decimal(int digits = 9, int decimals = 2);
+    Decimal(const int digits = 9, const int decimals = 2);
     auto getDigits() const -> int;
     auto getDecimals() const -> int;
     auto generate() const -> QString override;
@@ -38,7 +38,7 @@ class Varchar : public Type {
     const int size;
 
 public:
-    explicit Varchar(int size = 255);
+    explicit Varchar(const int size = 255);
     auto getSize() const -> int;
     auto generate() const -> QString override;
 };

@@ -18,7 +18,7 @@ auto Type::generate() const -> QString {
 
 Integer::Integer() : Type(INTEGER) {};
 
-Decimal::Decimal(int digits, int decimals) :
+Decimal::Decimal(const int digits, const int decimals) :
     Type(DECIMAL), digits(digits), decimals(decimals) {};
 
 auto Decimal::getDigits() const -> int {
@@ -36,7 +36,7 @@ auto Decimal::generate() const -> QString {
     ")";
 }
 
-Varchar::Varchar(int size) :
+Varchar::Varchar(const int size) :
     Type(VARCHAR), size(size) {};
 
 auto Varchar::getSize() const -> int {
