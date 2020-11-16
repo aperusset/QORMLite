@@ -1,10 +1,5 @@
 #include "type.h"
 
-const QString INTEGER = "integer";
-const QString DECIMAL = "decimal";
-const QString VARCHAR = "varchar";
-const QString DATE = "date";
-
 Type::Type(const QString &name) :
     name(name) {}
 
@@ -16,10 +11,10 @@ auto Type::generate() const -> QString {
     return this->name;
 }
 
-Integer::Integer() : Type(INTEGER) {};
+Integer::Integer() : Type("integer") {};
 
 Decimal::Decimal(const int digits, const int decimals) :
-    Type(DECIMAL), digits(digits), decimals(decimals) {};
+    Type("decimal"), digits(digits), decimals(decimals) {};
 
 auto Decimal::getDigits() const -> int {
     return this->digits;
@@ -37,7 +32,7 @@ auto Decimal::generate() const -> QString {
 }
 
 Varchar::Varchar(const int size) :
-    Type(VARCHAR), size(size) {};
+    Type("varchar"), size(size) {};
 
 auto Varchar::getSize() const -> int {
     return this->size;
@@ -49,4 +44,4 @@ auto Varchar::generate() const -> QString {
     ")";
 }
 
-Date::Date() : Type(DATE) {};
+Date::Date() : Type("date") {};

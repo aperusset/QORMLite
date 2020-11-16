@@ -8,9 +8,9 @@ class QORMUtilsTest : public QObject {
     Q_OBJECT
 
 private slots:
-    void formatSQLiteDate();
-    void backupFileName();
-    void parametrize();
+    static void formatSQLiteDate();
+    static void backupFileName();
+    static void parametrize();
 };
 
 #endif // QORMUTILSTEST_H

@@ -2,14 +2,17 @@
 #define QORMENTITYTEST_H
 
 #include <QtTest/QtTest>
+#include "fixture/testobserver.h"
 
 class QORMEntityTest : public QObject {
 
     Q_OBJECT
 
+    TestObserver observer;
+
 private slots:
-    void getKey();
-    void setKey();
+    static void getKey();
+    static void setKey();
     void attached();
     void notAttached();
     void detach();

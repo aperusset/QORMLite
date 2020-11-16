@@ -3,9 +3,9 @@
 void QORMCacheTest::insert() {
 
     // Given
-    auto const entity1 = new TestEntity(42);
-    auto const entity2 = new TestEntity(43);
-    auto const entity3 = new TestEntity(42);
+    auto *const entity1 = aTestEntity();
+    auto *const entity2 = aTestEntity(43);
+    auto *const entity3 = aTestEntity();
 
     // When
     cache.insert(entity1->getKey(), entity1);
@@ -24,8 +24,8 @@ void QORMCacheTest::insert() {
 void QORMCacheTest::contains() {
 
     // Given
-    auto const entity1 = new TestEntity(42);
-    auto const entity2 = new TestEntity(43);
+    auto *const entity1 = aTestEntity();
+    auto *const entity2 = aTestEntity(43);
 
     // When
     cache.insert(entity1->getKey(), entity1);
@@ -40,7 +40,7 @@ void QORMCacheTest::contains() {
 void QORMCacheTest::getShouldSuccess() {
 
     // Given
-    auto const entity = new TestEntity(42);
+    auto *const entity = aTestEntity();
 
     // When
     cache.insert(entity->getKey(), entity);
@@ -51,14 +51,22 @@ void QORMCacheTest::getShouldSuccess() {
 
 void QORMCacheTest::getShouldFail() {
 
+    // Given
+    auto *const entity = aTestEntity();
+
     // When / Then
-    QVERIFY_EXCEPTION_THROWN(cache.get(42), std::string);
+    QVERIFY_EXCEPTION_THROWN(
+        cache.get(entity->getKey()),
+        std::string
+    );
+
+    delete entity;
 }
 
 void QORMCacheTest::getOrCreate() {
 
     // Given
-    auto const entity = new TestEntity(42);
+    auto *const entity = aTestEntity();
 
     // When
     auto const &retrievedEntity = cache.getOrCreate(
@@ -75,11 +83,10 @@ void QORMCacheTest::getOrCreate() {
 void QORMCacheTest::remove() {
 
     // Given
-    auto const key1 = 42;
     auto const key2 = 43;
-    auto const entity1 = new TestEntity(key1);
-    auto const entity2 = new TestEntity(key2);
-    auto const entity3 = new TestEntity(44);
+    auto *const entity1 = aTestEntity();
+    auto *const entity2 = aTestEntity(key2);
+    auto *const entity3 = aTestEntity(44);
 
     // When
     cache.insert(entity1->getKey(), entity1);
@@ -88,7 +95,7 @@ void QORMCacheTest::remove() {
     auto const removed3 = cache.remove(entity3->getKey());
 
     // Then
-    QVERIFY(!cache.contains(key1));
+    QVERIFY(!cache.contains(DEFAULT_ENTITY_KEY));
     QVERIFY(cache.contains(key2));
     QVERIFY(!cache.contains(entity3->getKey()));
     QVERIFY(removed1);

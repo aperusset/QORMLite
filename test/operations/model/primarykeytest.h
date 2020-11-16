@@ -8,17 +8,17 @@ class PrimaryKeyTest : public QObject {
     Q_OBJECT
 
 private slots:
-    void tableNameShouldBeNull();
-    void getTableName();
-    void getSingleField();
-    void getMultipleFields();
-    void isAutoIncrement();
-    void isNotAutoIncrement();
-    void generateSingleField();
-    void generateSingleFieldAutoIncrement();
-    void generateMultipleFields();
-    void noFieldsShouldFail();
-    void singleFieldShouldFail();
+    static void tableNameShouldBeNull();
+    static void getTableName();
+    static void getSingleField();
+    static void getMultipleFields();
+    static void isAutoIncrement();
+    static void isNotAutoIncrement();
+    static void generateSingleField();
+    static void generateSingleFieldAutoIncrement();
+    static void generateMultipleFields();
+    static void noFieldsShouldFail();
+    static void singleFieldShouldFail();
 };
 
 #endif // PRIMARYKEYTEST_H

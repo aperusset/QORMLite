@@ -1,23 +1,23 @@
 #include "typetest.h"
 #include "operations/model/type.h"
+#include "fixture/operations/model/typefixture.h"
 
 void TypeTest::getName() {
 
     // Given
-    auto const testTypeName = "type";
-    auto const type = Type(testTypeName);
+    auto const type = aType();
 
     // When
     auto const name = type.getName();
 
     // Then
-    QCOMPARE(testTypeName, name);
+    QCOMPARE(DEFAULT_TYPE_NAME, name);
 }
 
 void TypeTest::generate() {
 
     // Given
-    auto const type = Type("type");
+    auto const type = aType();
 
     // When
     auto const generated = type.generate();
@@ -28,11 +28,8 @@ void TypeTest::generate() {
 
 void TypeTest::integerGetName() {
 
-    // Given
-    auto const integer = Integer();
-
     // When
-    auto const name = integer.getName();
+    auto const name = QORMType::integer.getName();
 
     // Then
     QCOMPARE("integer", name);
@@ -40,11 +37,8 @@ void TypeTest::integerGetName() {
 
 void TypeTest::integerGenerate() {
 
-    // Given
-    auto const integer = Integer();
-
     // When
-    auto const generated = integer.generate();
+    auto const generated = QORMType::integer.generate();
 
     // Then
     QCOMPARE("integer", generated);
@@ -52,11 +46,8 @@ void TypeTest::integerGenerate() {
 
 void TypeTest::decimalGetName() {
 
-    // Given
-    auto const decimal = Decimal();
-
     // When
-    auto const name = decimal.getName();
+    auto const name = QORMType::decimal.getName();
 
     // Then
     QCOMPARE("decimal", name);
@@ -65,27 +56,25 @@ void TypeTest::decimalGetName() {
 void TypeTest::decimalGetDigits() {
 
     // Given
-    auto const expectedDigits = 42;
-    auto const decimal = Decimal(expectedDigits);
+    auto const decimal = aDecimal();
 
     // When
     auto const digits = decimal.getDigits();
 
     // Then
-    QCOMPARE(expectedDigits, digits);
+    QCOMPARE(DEFAULT_DIGITS, digits);
 }
 
 void TypeTest::decimalGetDecimals() {
 
     // Given
-    auto const expectedDecimals = 42;
-    auto const decimal = Decimal(0, expectedDecimals);
+    auto const decimal = aDecimal(0);
 
     // When
     auto const decimals = decimal.getDecimals();
 
     // Then
-    QCOMPARE(expectedDecimals, decimals);
+    QCOMPARE(DEFAULT_DECIMALS, decimals);
 }
 
 void TypeTest::decimalGenerate() {
@@ -93,7 +82,7 @@ void TypeTest::decimalGenerate() {
     // Given
     auto const expectedDigits = 42;
     auto const expectedDecimals = 43;
-    auto const decimal = Decimal(expectedDigits, expectedDecimals);
+    auto const decimal = aDecimal(expectedDigits, expectedDecimals);
 
     // When
     auto const generated = decimal.generate();
@@ -104,11 +93,8 @@ void TypeTest::decimalGenerate() {
 
 void TypeTest::varcharGetName() {
 
-    // Given
-    auto const varchar = Varchar();
-
     // When
-    auto const name = varchar.getName();
+    auto const name = QORMType::varchar.getName();
 
     // Then
     QCOMPARE("varchar", name);
@@ -118,7 +104,7 @@ void TypeTest::varcharGetSize() {
 
     // Given
     auto const expectedSize = 42;
-    auto const varchar = Varchar(expectedSize);
+    auto const varchar = aVarchar(expectedSize);
 
     // When
     auto const size = varchar.getSize();
@@ -131,7 +117,7 @@ void TypeTest::varcharGenerate() {
 
     // Given
     auto const expectedSize = 42;
-    auto const varchar = Varchar(expectedSize);
+    auto const varchar = aVarchar(expectedSize);
 
     // When
     auto const generated = varchar.generate();
@@ -142,11 +128,8 @@ void TypeTest::varcharGenerate() {
 
 void TypeTest::dateGetName() {
 
-    // Given
-    auto const date = Date();
-
     // When
-    auto const name = date.getName();
+    auto const name = QORMType::date.getName();
 
     // Then
     QCOMPARE("date", name);
@@ -154,11 +137,8 @@ void TypeTest::dateGetName() {
 
 void TypeTest::dateGenerate() {
 
-    // Given
-    auto const date = Date();
-
     // When
-    auto const generated = date.generate();
+    auto const generated = QORMType::date.generate();
 
     // Then
     QCOMPARE("date", generated);

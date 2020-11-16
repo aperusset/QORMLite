@@ -13,7 +13,7 @@ class QORMObserverTest : public QObject {
     TestObserver observer;
 
 public:
-    QORMObserverTest() : entity(42) {
+    QORMObserverTest() : entity(DEFAULT_ENTITY_KEY) {
         entity.attach(observer);
     }
 

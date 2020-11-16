@@ -13,3 +13,7 @@ auto TestEntity::save() -> bool {
 auto TestEntity::erase() -> bool {
     return true;
 }
+
+auto aTestEntity(const int key) -> TestEntity* {
+    return new TestEntity(key);
+}

@@ -1,107 +1,99 @@
 #include "fieldtest.h"
 #include "operations/model/field.h"
 #include "operations/model/type.h"
+#include "fixture/operations/model/fieldfixture.h"
 
 void FieldTest::getName() {
 
     // Given
-    auto const fieldName = "field_name";
-    auto const fieldDefinition = Field(fieldName, Varchar());
+    auto const fieldDefinition = aField();
 
     // When
     auto const registeredFieldName = fieldDefinition.getName();
 
     // Then
-    QCOMPARE(registeredFieldName, fieldName);
+    QCOMPARE(registeredFieldName, DEFAULT_FIELD_NAME);
 }
 
 void FieldTest::getType() {
 
-    // Given
-    auto const varcharType = Varchar();
-    auto const fieldDefinition = Field("field_name", varcharType);
+    auto const fieldDefinition = aField();
 
     // When
     auto const &registeredType = fieldDefinition.getType();
 
     // Then
-    QCOMPARE(registeredType.generate(), varcharType.generate());
+    QCOMPARE(registeredType.generate(), DEFAULT_TYPE.generate());
 }
 
 void FieldTest::getDefaultValue() {
 
     // Given
-    auto const defaultValue = QString("defaultValue"); // const char * automatic cast to bool
-    auto const fieldDefinition = Field("field_name", Integer(), defaultValue);
+    auto const fieldDefinition = aField();
 
     // When
     auto const registeredDefaultValue = fieldDefinition.getDefaultValue();
 
     // Then
-    QCOMPARE(registeredDefaultValue, defaultValue);
+    QCOMPARE(registeredDefaultValue, DEFAULT_VALUE);
 }
 
 void FieldTest::isNullable() {
 
     // Given
-    auto const nullable = true;
-    auto const fieldDefinition = Field("field_name", Integer(), nullable);
+    auto const fieldDefinition = aField(DEFAULT_FIELD_NAME, DEFAULT_TYPE, true);
 
     // When
     auto const registeredNullable = fieldDefinition.isNullable();
 
     // Then
-    QCOMPARE(registeredNullable, nullable);
+    QVERIFY(registeredNullable);
 }
 
 void FieldTest::generateNullNoDefaultValue() {
 
     // Given
-    auto const type = Type("type");
-    auto const fieldDefinition = Field("field_name", type, true);
+    auto const fieldDefinition = aField(DEFAULT_FIELD_NAME, DEFAULT_TYPE, true, QString());
 
     // When
     auto const generated = fieldDefinition.generate();
 
     // Then
-    QCOMPARE(generated, "field_name type null");
+    QCOMPARE(generated, "field integer null");
 }
 
 void FieldTest::generateNullWithDefaultValue() {
 
     // Given
-    auto const type = Type("type");
-    auto const fieldDefinition = Field("field_name", type, true, "0");
+    auto const fieldDefinition = aField(DEFAULT_FIELD_NAME, DEFAULT_TYPE, true);
 
     // When
     auto const generated = fieldDefinition.generate();
 
     // Then
-    QCOMPARE(generated, "field_name type null default (0)");
+    QCOMPARE(generated, "field integer null default ('defaultValue')");
 }
 
 void FieldTest::generateNotNullNoDefaultValue() {
 
     // Given
-    auto const type = Type("type");
-    auto const fieldDefinition = Field("field_name", type);
+    auto const fieldDefinition = aField(DEFAULT_FIELD_NAME, DEFAULT_TYPE, false, QString());
 
     // When
     auto const generated = fieldDefinition.generate();
 
     // Then
-    QCOMPARE(generated, "field_name type not null");
+    QCOMPARE(generated, "field integer not null");
 }
 
-void FieldTest::generateNotNullNoWithDefaultValue() {
+void FieldTest::generateNotNullWithDefaultValue() {
 
     // Given
-    auto const type = Type("type");
-    auto const fieldDefinition = Field("field_name", type, QString("'test'"));
+    auto const fieldDefinition = aField();
 
     // When
     auto const generated = fieldDefinition.generate();
 
     // Then
-    QCOMPARE(generated, "field_name type not null default ('test')");
+    QCOMPARE(generated, "field integer not null default ('defaultValue')");
 }

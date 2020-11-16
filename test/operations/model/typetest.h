@@ -8,19 +8,19 @@ class TypeTest : public QObject {
     Q_OBJECT
 
 private slots:
-    void getName();
-    void generate();
-    void integerGetName();
-    void integerGenerate();
-    void decimalGetName();
-    void decimalGetDigits();
-    void decimalGetDecimals();
-    void decimalGenerate();
-    void varcharGetName();
-    void varcharGetSize();
-    void varcharGenerate();
-    void dateGetName();
-    void dateGenerate();
+    static void getName();
+    static void generate();
+    static void integerGetName();
+    static void integerGenerate();
+    static void decimalGetName();
+    static void decimalGetDigits();
+    static void decimalGetDecimals();
+    static void decimalGenerate();
+    static void varcharGetName();
+    static void varcharGetSize();
+    static void varcharGenerate();
+    static void dateGetName();
+    static void dateGenerate();
 };
 
 #endif // TYPETEST_H

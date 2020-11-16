@@ -5,6 +5,8 @@
 #include "operations/model/typetest.h"
 #include "operations/model/fieldtest.h"
 #include "operations/model/primarykeytest.h"
+#include "operations/model/referencetest.h"
+#include "operations/model/foreignkeytest.h"
 
 /*
  * Thanks to https://alexhuszagh.github.io/2016/using-qttest-effectively/
@@ -23,5 +25,7 @@ auto main(int argc, char *argv[]) -> int {
     runTest(TypeTest());
     runTest(FieldTest());
     runTest(PrimaryKeyTest());
+    runTest(ReferenceTest());
+    runTest(ForeignKeyTest());
     return status;
 }

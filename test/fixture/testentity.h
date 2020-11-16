@@ -1,8 +1,7 @@
-#ifndef QORMTESTENTITY_H
-#define QORMTESTENTITY_H
+#ifndef TESTENTITY_H
+#define TESTENTITY_H
 
 #include "qormentity.h"
-#include <QString>
 
 class TestEntity : public QORMEntity<int> {
 
@@ -14,4 +13,7 @@ public:
     auto erase() -> bool override;
 };
 
-#endif // QORMTESTENTITY_H
+const int DEFAULT_ENTITY_KEY = 42;
+auto aTestEntity(const int key = DEFAULT_ENTITY_KEY) -> TestEntity*;
+
+#endif // TESTENTITY_H

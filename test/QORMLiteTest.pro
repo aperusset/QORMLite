@@ -7,11 +7,15 @@ CONFIG -= app_bundle
 TEMPLATE = app
 
 SOURCES +=  \
+  fixture/operations/model/fieldfixture.cpp \
+  fixture/operations/model/typefixture.cpp \
   fixture/testentity.cpp \
   fixture/testobserver.cpp \
   main.cpp \
   operations/model/fieldtest.cpp \
+  operations/model/foreignkeytest.cpp \
   operations/model/primarykeytest.cpp \
+  operations/model/referencetest.cpp \
   operations/model/typetest.cpp \
   qormcachetest.cpp \
   qormentitytest.cpp \
@@ -19,10 +23,14 @@ SOURCES +=  \
   qormutilstest.cpp
 
 HEADERS += \
+  fixture/operations/model/fieldfixture.h \
+  fixture/operations/model/typefixture.h \
   fixture/testentity.h \
   fixture/testobserver.h \
   operations/model/fieldtest.h \
+  operations/model/foreignkeytest.h \
   operations/model/primarykeytest.h \
+  operations/model/referencetest.h \
   operations/model/typetest.h \
   qormcachetest.h \
   qormentitytest.h \

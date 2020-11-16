@@ -17,7 +17,7 @@ void PrimaryKeyTest::tableNameShouldBeNull() {
 void PrimaryKeyTest::getTableName() {
 
     // Given
-    auto const expectedTableName = "tableName";
+    const auto *const expectedTableName = "tableName";
     auto const primaryKey = PrimaryKey(expectedTableName, {
         Field("name", Type("test")), Field("name", Type("test"))
     });

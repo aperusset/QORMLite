@@ -1,67 +1,61 @@
 #include "qormentitytest.h"
 
 #include "fixture/testentity.h"
-#include "fixture/testobserver.h"
 
 void QORMEntityTest::getKey() {
 
     // Given
-    auto const expectedKey = 42;
-    TestEntity entity(expectedKey);
+    TestEntity entity(DEFAULT_ENTITY_KEY);
 
     // When
     auto const key = entity.getKey();
 
     // Then
-    QCOMPARE(expectedKey, key);
+    QCOMPARE(DEFAULT_ENTITY_KEY, key);
 }
 
 void QORMEntityTest::setKey() {
 
     // Given
-    auto const expectedKey = 42;
     TestEntity entity(0);
 
     // When
-    entity.setKey(expectedKey);
+    entity.setKey(DEFAULT_ENTITY_KEY);
 
     // Then
-    QCOMPARE(expectedKey, entity.getKey());
+    QCOMPARE(DEFAULT_ENTITY_KEY, entity.getKey());
 }
 
 void QORMEntityTest::attached() {
 
     // Given
-    TestEntity entity(42);
-    TestObserver observer;
+    TestEntity entity(DEFAULT_ENTITY_KEY);
 
     // When
-    entity.attach(observer);
+    entity.attach(this->observer);
 
     // Then
-    QVERIFY(entity.isAttached(observer));
+    QVERIFY(entity.isAttached(this->observer));
 }
 
 void QORMEntityTest::notAttached() {
 
     // Given
-    TestEntity entity(42);
-    TestObserver observer;
+    TestEntity entity(DEFAULT_ENTITY_KEY);
 
     // Then
-    QVERIFY(!entity.isAttached(observer));
+    QVERIFY(!entity.isAttached(this->observer));
 }
 
 void QORMEntityTest::detach() {
 
     // Given
-    TestEntity entity(42);
-    TestObserver observer;
+    TestEntity entity(DEFAULT_ENTITY_KEY);
 
     // When
-    entity.attach(observer);
-    entity.detach(observer);
+    entity.attach(this->observer);
+    entity.detach(this->observer);
 
     // Then
-    QVERIFY(!entity.isAttached(observer));
+    QVERIFY(!entity.isAttached(this->observer));
 }

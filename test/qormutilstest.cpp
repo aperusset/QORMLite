@@ -17,7 +17,7 @@ void QORMUtilsTest::backupFileName() {
 
     // Given
     auto const now = QDate::currentDate();
-    auto const name = "testDatabase";
+    const auto *const name = "testDatabase";
 
     // When
     auto const backupFileName = QORMUtils::backupFileName(name);
@@ -29,7 +29,7 @@ void QORMUtilsTest::backupFileName() {
 void QORMUtilsTest::parametrize() {
 
     // Given
-    auto const fieldName = "FieldName.(really funny at all)";
+    const auto *const fieldName = "FieldName.(really funny at all)";
 
     // When
     auto const parametrizedFieldName = QORMUtils::parametrize(fieldName);
