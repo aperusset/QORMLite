@@ -1,99 +1,83 @@
 #include "fieldtest.h"
 #include "operations/model/field.h"
 #include "operations/model/type.h"
-#include "fixture/operations/model/fieldfixture.h"
 
-void FieldTest::getName() {
+const QString FieldTest::DEFAULT_NAME = "defaultName";
+const Type FieldTest::DEFAULT_TYPE = QORMType::integer;
+const QString FieldTest::DEFAULT_VALUE = "'defaultValue'";
 
-    // Given
-    auto const fieldDefinition = aField();
-
-    // When
-    auto const registeredFieldName = fieldDefinition.getName();
-
-    // Then
-    QCOMPARE(registeredFieldName, DEFAULT_FIELD_NAME);
-}
-
-void FieldTest::getType() {
-
-    auto const fieldDefinition = aField();
-
-    // When
-    auto const &registeredType = fieldDefinition.getType();
-
-    // Then
-    QCOMPARE(registeredType.generate(), DEFAULT_TYPE.generate());
-}
-
-void FieldTest::getDefaultValue() {
+void FieldTest::generateNotNullWithoutDefaultValue() {
 
     // Given
-    auto const fieldDefinition = aField();
+    auto const field = QORMField::notNullWithoutDefaultValue(DEFAULT_NAME, DEFAULT_TYPE);
 
     // When
-    auto const registeredDefaultValue = fieldDefinition.getDefaultValue();
+    auto const generated = field.generate();
 
     // Then
-    QCOMPARE(registeredDefaultValue, DEFAULT_VALUE);
-}
-
-void FieldTest::isNullable() {
-
-    // Given
-    auto const fieldDefinition = aField(DEFAULT_FIELD_NAME, DEFAULT_TYPE, true);
-
-    // When
-    auto const registeredNullable = fieldDefinition.isNullable();
-
-    // Then
-    QVERIFY(registeredNullable);
-}
-
-void FieldTest::generateNullNoDefaultValue() {
-
-    // Given
-    auto const fieldDefinition = aField(DEFAULT_FIELD_NAME, DEFAULT_TYPE, true, QString());
-
-    // When
-    auto const generated = fieldDefinition.generate();
-
-    // Then
-    QCOMPARE(generated, "field integer null");
-}
-
-void FieldTest::generateNullWithDefaultValue() {
-
-    // Given
-    auto const fieldDefinition = aField(DEFAULT_FIELD_NAME, DEFAULT_TYPE, true);
-
-    // When
-    auto const generated = fieldDefinition.generate();
-
-    // Then
-    QCOMPARE(generated, "field integer null default ('defaultValue')");
-}
-
-void FieldTest::generateNotNullNoDefaultValue() {
-
-    // Given
-    auto const fieldDefinition = aField(DEFAULT_FIELD_NAME, DEFAULT_TYPE, false, QString());
-
-    // When
-    auto const generated = fieldDefinition.generate();
-
-    // Then
-    QCOMPARE(generated, "field integer not null");
+    QCOMPARE(field.getName(), DEFAULT_NAME);
+    QCOMPARE(field.getType().generate(), DEFAULT_TYPE.generate());
+    QVERIFY(!field.isNullable());
+    QVERIFY(field.getDefaultValue().isNull());
+    QCOMPARE(
+        generated,
+        DEFAULT_NAME + " integer not null"
+    );
 }
 
 void FieldTest::generateNotNullWithDefaultValue() {
 
     // Given
-    auto const fieldDefinition = aField();
+    auto const field = QORMField::notNullWithDefaultValue(DEFAULT_NAME, DEFAULT_TYPE, DEFAULT_VALUE);
 
     // When
-    auto const generated = fieldDefinition.generate();
+    auto const generated = field.generate();
 
     // Then
-    QCOMPARE(generated, "field integer not null default ('defaultValue')");
+    QCOMPARE(field.getName(), DEFAULT_NAME);
+    QCOMPARE(field.getType().generate(), DEFAULT_TYPE.generate());
+    QVERIFY(!field.isNullable());
+    QCOMPARE(field.getDefaultValue(), DEFAULT_VALUE);
+    QCOMPARE(
+        generated,
+        DEFAULT_NAME + " integer not null default (" + DEFAULT_VALUE + ")"
+    );
+}
+
+void FieldTest::generateNullableWithoutDefaultValue() {
+
+    // Given
+    auto const field = QORMField::nullableWithoutDefaultValue(DEFAULT_NAME, DEFAULT_TYPE);
+
+    // When
+    auto const generated = field.generate();
+
+    // Then
+    QCOMPARE(field.getName(), DEFAULT_NAME);
+    QCOMPARE(field.getType().generate(), DEFAULT_TYPE.generate());
+    QVERIFY(field.isNullable());
+    QVERIFY(field.getDefaultValue().isNull());
+    QCOMPARE(
+        generated,
+        DEFAULT_NAME + " integer null"
+    );
+}
+
+void FieldTest::generateNullableWithDefaultValue() {
+
+    // Given
+    auto const field = QORMField::nullableWithDefaultValue(DEFAULT_NAME, DEFAULT_TYPE, DEFAULT_VALUE);
+
+    // When
+    auto const generated = field.generate();
+
+    // Then
+    QCOMPARE(field.getName(), DEFAULT_NAME);
+    QCOMPARE(field.getType().generate(), DEFAULT_TYPE.generate());
+    QVERIFY(!field.isNullable());
+    QCOMPARE(field.getDefaultValue(), DEFAULT_VALUE);
+    QCOMPARE(
+        generated,
+        DEFAULT_NAME + " integer null default (" + DEFAULT_VALUE + ")"
+    );
 }

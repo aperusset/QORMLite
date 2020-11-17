@@ -1,4 +1,5 @@
 #include "reference.h"
+#include "field.h"
 
 Reference::Reference(const Field &from, const Field &to) :
     from(&from), to(&to) {}

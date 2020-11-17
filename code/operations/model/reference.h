@@ -1,7 +1,7 @@
 #ifndef REFERENCE_H
 #define REFERENCE_H
 
-#include "field.h"
+class Field;
 
 class Reference {
 

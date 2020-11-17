@@ -1,11 +1,12 @@
 #include "primarykeytest.h"
 #include "operations/model/primarykey.h"
 #include "operations/model/field.h"
+#include "operations/model/type.h"
 
 void PrimaryKeyTest::tableNameShouldBeNull() {
 
     // Given
-    auto const primaryKey = PrimaryKey(Field("name", Type("test")));
+    auto const primaryKey = PrimaryKey(Field("name", Type("test"), false, QString()));
 
     // When
     auto const tableName = primaryKey.getTableName();
@@ -19,7 +20,7 @@ void PrimaryKeyTest::getTableName() {
     // Given
     const auto *const expectedTableName = "tableName";
     auto const primaryKey = PrimaryKey(expectedTableName, {
-        Field("name", Type("test")), Field("name", Type("test"))
+        Field("name", Type("test"), false, QString()), Field("name", Type("test"), false, QString())
     });
 
     // When
@@ -32,7 +33,7 @@ void PrimaryKeyTest::getTableName() {
 void PrimaryKeyTest::getSingleField() {
 
     // Given
-    auto const field = Field("name", Type("type"));
+    auto const field = Field("name", Type("type"), false, QString());
     auto const primaryKey = PrimaryKey(field);
 
     // When
@@ -45,7 +46,7 @@ void PrimaryKeyTest::getSingleField() {
 void PrimaryKeyTest::getMultipleFields() {
 
     // Given
-    auto const field = Field("name", Type("type"));
+    auto const field = Field("name", Type("type"), false, QString());
     auto const primaryKey = PrimaryKey("tableName", {field, field});
 
     // When
@@ -59,7 +60,7 @@ void PrimaryKeyTest::getMultipleFields() {
 void PrimaryKeyTest::isAutoIncrement() {
 
     // Given
-    auto const primaryKey = PrimaryKey(Field("name", Type("type")));
+    auto const primaryKey = PrimaryKey(Field("name", Type("type"), false, QString()));
 
     // When
     auto const isAutoIncrement = primaryKey.isAutoIncrement();
@@ -71,7 +72,7 @@ void PrimaryKeyTest::isAutoIncrement() {
 void PrimaryKeyTest::isNotAutoIncrement() {
 
     // Given
-    auto const primaryKey = PrimaryKey(Field("name", Type("type")), false);
+    auto const primaryKey = PrimaryKey(Field("name", Type("type"), false, QString()), false);
 
     // When
     auto const isAutoIncrement = primaryKey.isAutoIncrement();
@@ -84,7 +85,7 @@ void PrimaryKeyTest::generateSingleField() {
 
     // Given
     auto const type = Type("type");
-    auto const field = Field("name", type);
+    auto const field = Field("name", type, false, QString());
     auto const generatedField = field.generate();
     auto const primaryKey = PrimaryKey(field, false);
 
@@ -99,7 +100,7 @@ void PrimaryKeyTest::generateSingleFieldAutoIncrement() {
 
     // Given
     auto const type = Type("type");
-    auto const field = Field("name", type);
+    auto const field = Field("name", type, false, QString());
     auto const generatedField = field.generate();
     auto const primaryKey = PrimaryKey(field);
 
@@ -114,7 +115,7 @@ void PrimaryKeyTest::generateMultipleFields() {
 
     // Given
     auto const type = Type("type");
-    auto const field = Field("name", type);
+    auto const field = Field("name", type, false, QString());
     auto const primaryKey = PrimaryKey("tableName", {field, field});
 
     // When
@@ -137,7 +138,7 @@ void PrimaryKeyTest::singleFieldShouldFail() {
 
     // When / Then
     QVERIFY_EXCEPTION_THROWN(
-        PrimaryKey("tableName", {Field("name", Type("type"))}),
+        PrimaryKey("tableName", {Field("name", Type("type"), false, QString())}),
         std::string
     );
 }

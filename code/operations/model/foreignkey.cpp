@@ -1,4 +1,5 @@
 #include "foreignkey.h"
+#include "field.h"
 #include <QStringList>
 
 const QString CONSTRAINT = " constraint ";

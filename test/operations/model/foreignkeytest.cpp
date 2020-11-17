@@ -1,6 +1,8 @@
 #include "foreignkeytest.h"
 #include "operations/model/reference.h"
 #include "operations/model/foreignkey.h"
+#include "operations/model/type.h"
+#include "operations/model/field.h"
 
 void ForeignKeyTest::emptyReferencesListShouldFail() {
 
@@ -14,8 +16,8 @@ void ForeignKeyTest::emptyReferencesListShouldFail() {
 void ForeignKeyTest::generateCascade() {
 
     // Given
-    auto const fieldFrom = Field("field1", QORMType::integer);
-    auto const fieldTo = Field("field2", QORMType::integer);
+    auto const fieldFrom = Field("field1", QORMType::integer, false, QString());
+    auto const fieldTo = Field("field2", QORMType::integer, false, QString());
     auto const reference = Reference(fieldFrom, fieldTo);
     auto const foreignKey = ForeignKey({reference}, "targetTable", OnAction::Cascade);
 
@@ -31,8 +33,8 @@ void ForeignKeyTest::generateCascade() {
 void ForeignKeyTest::generateRestrict() {
 
     // Given
-    auto const fieldFrom = Field("field1", QORMType::integer);
-    auto const fieldTo = Field("field2", QORMType::integer);
+    auto const fieldFrom = Field("field1", QORMType::integer, false, QString());
+    auto const fieldTo = Field("field2", QORMType::integer, false, QString());
     auto const reference = Reference(fieldFrom, fieldTo);
     auto const foreignKey = ForeignKey({reference}, "targetTable", OnAction::Restrict);
 
@@ -48,8 +50,8 @@ void ForeignKeyTest::generateRestrict() {
 void ForeignKeyTest::generateSetNull() {
 
     // Given
-    auto const fieldFrom = Field("field1", QORMType::integer);
-    auto const fieldTo = Field("field2", QORMType::integer);
+    auto const fieldFrom = Field("field1", QORMType::integer, false, QString());
+    auto const fieldTo = Field("field2", QORMType::integer, false, QString());
     auto const reference = Reference(fieldFrom, fieldTo);
     auto const foreignKey = ForeignKey({reference}, "targetTable", OnAction::SetNull);
 
@@ -65,8 +67,8 @@ void ForeignKeyTest::generateSetNull() {
 void ForeignKeyTest::generateSetDefault() {
 
     // Given
-    auto const fieldFrom = Field("field1", QORMType::integer);
-    auto const fieldTo = Field("field2", QORMType::integer);
+    auto const fieldFrom = Field("field1", QORMType::integer, false, QString());
+    auto const fieldTo = Field("field2", QORMType::integer, false, QString());
     auto const reference = Reference(fieldFrom, fieldTo);
     auto const foreignKey = ForeignKey({reference}, "targetTable", OnAction::SetDefault);
 
@@ -82,8 +84,8 @@ void ForeignKeyTest::generateSetDefault() {
 void ForeignKeyTest::generateMultipleFields() {
 
     // Given
-    auto const fieldFrom = Field("field1", QORMType::integer);
-    auto const fieldTo = Field("field2", QORMType::integer);
+    auto const fieldFrom = Field("field1", QORMType::integer, false, QString());
+    auto const fieldTo = Field("field2", QORMType::integer, false, QString());
     auto const reference1 = Reference(fieldFrom, fieldTo);
     auto const reference2 = Reference(fieldTo, fieldFrom);
     auto const foreignKey = ForeignKey({reference1, reference2}, "targetTable", OnAction::Cascade);

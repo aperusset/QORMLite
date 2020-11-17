@@ -1,38 +1,16 @@
 #include "typetest.h"
 #include "operations/model/type.h"
-#include "fixture/operations/model/typefixture.h"
-
-void TypeTest::getName() {
-
-    // Given
-    auto const type = aType();
-
-    // When
-    auto const name = type.getName();
-
-    // Then
-    QCOMPARE(DEFAULT_TYPE_NAME, name);
-}
 
 void TypeTest::generate() {
 
     // Given
-    auto const type = aType();
+    auto const type = Type("typeName");
 
     // When
     auto const generated = type.generate();
 
     // Then
     QCOMPARE(type.getName(), generated);
-}
-
-void TypeTest::integerGetName() {
-
-    // When
-    auto const name = QORMType::integer.getName();
-
-    // Then
-    QCOMPARE("integer", name);
 }
 
 void TypeTest::integerGenerate() {
@@ -44,95 +22,22 @@ void TypeTest::integerGenerate() {
     QCOMPARE("integer", generated);
 }
 
-void TypeTest::decimalGetName() {
-
-    // When
-    auto const name = QORMType::decimal.getName();
-
-    // Then
-    QCOMPARE("decimal", name);
-}
-
-void TypeTest::decimalGetDigits() {
-
-    // Given
-    auto const decimal = aDecimal();
-
-    // When
-    auto const digits = decimal.getDigits();
-
-    // Then
-    QCOMPARE(DEFAULT_DIGITS, digits);
-}
-
-void TypeTest::decimalGetDecimals() {
-
-    // Given
-    auto const decimal = aDecimal(0);
-
-    // When
-    auto const decimals = decimal.getDecimals();
-
-    // Then
-    QCOMPARE(DEFAULT_DECIMALS, decimals);
-}
-
 void TypeTest::decimalGenerate() {
 
-    // Given
-    auto const expectedDigits = 42;
-    auto const expectedDecimals = 43;
-    auto const decimal = aDecimal(expectedDigits, expectedDecimals);
-
     // When
-    auto const generated = decimal.generate();
+    auto const generated = QORMType::decimal.generate();
 
     // Then
-    QCOMPARE("decimal(42,43)", generated);
-}
-
-void TypeTest::varcharGetName() {
-
-    // When
-    auto const name = QORMType::varchar.getName();
-
-    // Then
-    QCOMPARE("varchar", name);
-}
-
-void TypeTest::varcharGetSize() {
-
-    // Given
-    auto const expectedSize = 42;
-    auto const varchar = aVarchar(expectedSize);
-
-    // When
-    auto const size = varchar.getSize();
-
-    // Then
-    QCOMPARE(expectedSize, size);
+    QCOMPARE("decimal(" + QString::number(Decimal::DEFAULT_DIGITS) + "," + QString::number(Decimal::DEFAULT_DECIMALS) + ")", generated);
 }
 
 void TypeTest::varcharGenerate() {
 
-    // Given
-    auto const expectedSize = 42;
-    auto const varchar = aVarchar(expectedSize);
-
     // When
-    auto const generated = varchar.generate();
+    auto const generated = QORMType::varchar.generate();
 
     // Then
-    QCOMPARE("varchar(42)", generated);
-}
-
-void TypeTest::dateGetName() {
-
-    // When
-    auto const name = QORMType::date.getName();
-
-    // Then
-    QCOMPARE("date", name);
+    QCOMPARE("varchar(" + QString::number(Varchar::DEFAULT_SIZE) + ")", generated);
 }
 
 void TypeTest::dateGenerate() {

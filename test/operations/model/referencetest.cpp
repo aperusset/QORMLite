@@ -1,12 +1,14 @@
 #include "referencetest.h"
 #include "operations/model/reference.h"
+#include "operations/model/type.h"
+#include "operations/model/field.h"
 
 void ReferenceTest::getFrom() {
 
     // Given
     auto const type = Type("type");
-    auto const field1 = Field("field1", type);
-    auto const field2 = Field("field2", type);
+    auto const field1 = Field("field1", type, false, QString());
+    auto const field2 = Field("field2", type, false, QString());
     auto const reference = Reference(field1, field2);
 
     // When
@@ -20,8 +22,8 @@ void ReferenceTest::getTo() {
 
     // Given
     auto const type = Type("type");
-    auto const field1 = Field("field1", type);
-    auto const field2 = Field("field2", type);
+    auto const field1 = Field("field1", type, false, QString());
+    auto const field2 = Field("field2", type, false, QString());
     auto const reference = Reference(field1, field2);
 
     // When
