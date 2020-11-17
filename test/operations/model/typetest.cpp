@@ -13,6 +13,18 @@ void TypeTest::generate() {
     QCOMPARE(type.getName(), generated);
 }
 
+void TypeTest::generateQString() {
+
+    // Given
+    auto const type = Type("typeName");
+
+    // When
+    const QString generated = type;
+
+    // Then
+    QCOMPARE(type.getName(), generated);
+}
+
 void TypeTest::integerGenerate() {
 
     // When

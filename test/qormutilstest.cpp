@@ -1,5 +1,6 @@
 #include "qormutilstest.h"
 #include "qormutils.h"
+#include "operations/query/selection.h"
 
 void QORMUtilsTest::formatSQLiteDate() {
 
@@ -36,4 +37,40 @@ void QORMUtilsTest::parametrize() {
 
     // Then
     QCOMPARE(":fieldnamereallyfunnyatall", parametrizedFieldName);
+}
+
+void QORMUtilsTest::dateToDay() {
+
+    // Given
+    auto const selection = QORMUtils::dateToDay("field", "rename");
+
+    // When
+    auto const fieldName = selection.getFieldName();
+
+    // Then
+    QCOMPARE(fieldName.simplified(), "strftime('%d', field)");
+}
+
+void QORMUtilsTest::dateToMonth() {
+
+    // Given
+    auto const selection = QORMUtils::dateToMonth("field", "rename");
+
+    // When
+    auto const fieldName = selection.getFieldName();
+
+    // Then
+    QCOMPARE(fieldName.simplified(), "strftime('%m', field)");
+}
+
+void QORMUtilsTest::dateToYear() {
+
+    // Given
+    auto const selection = QORMUtils::dateToYear("field", "rename");
+
+    // When
+    auto const fieldName = selection.getFieldName();
+
+    // Then
+    QCOMPARE(fieldName.simplified(), "strftime('%Y', field)");
 }

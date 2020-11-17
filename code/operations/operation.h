@@ -6,6 +6,8 @@
 class Operation {
 
 public:
+    Operation& operator=(const Operation&) = delete;
+    operator QString() const { return this->generate(); }
     virtual ~Operation() {};
     virtual auto generate() const -> QString = 0;
 };

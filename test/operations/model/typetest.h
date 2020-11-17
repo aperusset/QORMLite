@@ -9,6 +9,7 @@ class TypeTest : public QObject {
 
 private slots:
     static void generate();
+    static void generateQString();
     static void integerGenerate();
     static void decimalGenerate();
     static void varcharGenerate();

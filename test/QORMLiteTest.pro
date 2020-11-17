@@ -15,6 +15,9 @@ SOURCES +=  \
   operations/model/primarykeytest.cpp \
   operations/model/referencetest.cpp \
   operations/model/typetest.cpp \
+  operations/query/assignementtest.cpp \
+  operations/query/ordertest.cpp \
+  operations/query/selectiontest.cpp \
   qormcachetest.cpp \
   qormentitytest.cpp \
   qormobservertest.cpp \
@@ -28,6 +31,9 @@ HEADERS += \
   operations/model/primarykeytest.h \
   operations/model/referencetest.h \
   operations/model/typetest.h \
+  operations/query/assignementtest.h \
+  operations/query/ordertest.h \
+  operations/query/selectiontest.h \
   qormcachetest.h \
   qormentitytest.h \
   qormobservertest.h \

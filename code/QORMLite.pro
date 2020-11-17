@@ -15,6 +15,9 @@ SOURCES += \
   operations/model/primarykey.cpp \
   operations/model/reference.cpp \
   operations/model/type.cpp \
+  operations/query/assignement.cpp \
+  operations/query/order.cpp \
+  operations/query/selection.cpp \
   qormutils.cpp
 
 HEADERS += \
@@ -24,6 +27,9 @@ HEADERS += \
   operations/model/reference.h \
   operations/model/type.h \
   operations/operation.h \
+  operations/query/assignement.h \
+  operations/query/order.h \
+  operations/query/selection.h \
   qormcache.h \
   qormentity.h \
   qormobserver.h \

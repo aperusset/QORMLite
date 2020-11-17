@@ -3,6 +3,7 @@
 
 #include <QString>
 #include <QDate>
+#include "operations/query/selection.h"
 
 namespace QORMUtils {
 
@@ -27,6 +28,30 @@ namespace QORMUtils {
      * @return the parametrized field
      */
     auto parametrize(const QString &field) -> QString;
+
+    /**
+     * @brief Generate a SQL selection to extract the day from a date field
+     * @param fieldName the field name
+     * @param renameTo the alias name
+     * @return the selection
+     */
+    auto dateToDay(const QString &fieldName, const QString &renameTo) -> Selection;
+
+    /**
+     * @brief Generate a SQL selection to extract the month from a date field
+     * @param fieldName the field name
+     * @param renameTo the alias name
+     * @return the selection
+     */
+    auto dateToMonth(const QString &fieldName, const QString &renameTo) -> Selection;
+
+    /**
+     * @brief Generate a SQL selection to extract the year from a date field
+     * @param fieldName the field name
+     * @param renameTo the alias name
+     * @return the selection
+     */
+    auto dateToYear(const QString &fieldName, const QString &renameTo) -> Selection;
 }
 
 #endif // Q_ORM_UTILS_H
