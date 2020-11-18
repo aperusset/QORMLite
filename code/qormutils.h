@@ -1,5 +1,5 @@
 #ifndef Q_ORM_UTILS_H
-#define Q_ORM_UTILSS_H
+#define Q_ORM_UTILS_H
 
 #include <QString>
 #include <QDate>
