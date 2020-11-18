@@ -16,6 +16,8 @@ SOURCES += \
   operations/model/reference.cpp \
   operations/model/type.cpp \
   operations/query/assignement.cpp \
+  operations/query/condition.cpp \
+  operations/query/join.cpp \
   operations/query/order.cpp \
   operations/query/selection.cpp \
   qormutils.cpp
@@ -28,6 +30,8 @@ HEADERS += \
   operations/model/type.h \
   operations/operation.h \
   operations/query/assignement.h \
+  operations/query/condition.h \
+  operations/query/join.h \
   operations/query/order.h \
   operations/query/selection.h \
   qormcache.h \

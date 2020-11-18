@@ -10,6 +10,8 @@
 #include "operations/query/ordertest.h"
 #include "operations/query/assignementtest.h"
 #include "operations/query/selectiontest.h"
+#include "operations/query/conditiontest.h"
+#include "operations/query/jointest.h"
 
 /*
  * Thanks to https://alexhuszagh.github.io/2016/using-qttest-effectively/
@@ -21,17 +23,24 @@ auto main(int argc, char *argv[]) -> int {
         status |= QTest::qExec(&obj, argc, argv);
     };
 
-    runTest(QORMUtilsTest());
-    runTest(QORMEntityTest());
-    runTest(QORMObserverTest());
-    runTest(QORMCacheTest());
-    runTest(TypeTest());
-    runTest(FieldTest());
-    runTest(PrimaryKeyTest());
-    runTest(ReferenceTest());
-    runTest(ForeignKeyTest());
-    runTest(OrderTest());
-    runTest(AssignementTest());
-    runTest(SelectionTest());
+    try {
+        runTest(QORMUtilsTest());
+        runTest(QORMEntityTest());
+        runTest(QORMObserverTest());
+        runTest(QORMCacheTest());
+        runTest(TypeTest());
+        runTest(FieldTest());
+        runTest(PrimaryKeyTest());
+        runTest(ReferenceTest());
+        runTest(ForeignKeyTest());
+        runTest(OrderTest());
+        runTest(AssignementTest());
+        runTest(SelectionTest());
+        runTest(ConditionTest());
+        runTest(JoinTest());
+    } catch (std::string &exception) {
+        qFatal("Uncaught exception : %s", exception.c_str());
+        return EXIT_FAILURE;
+    }
     return status;
 }

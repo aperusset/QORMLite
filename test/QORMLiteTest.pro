@@ -16,6 +16,8 @@ SOURCES +=  \
   operations/model/referencetest.cpp \
   operations/model/typetest.cpp \
   operations/query/assignementtest.cpp \
+  operations/query/conditiontest.cpp \
+  operations/query/jointest.cpp \
   operations/query/ordertest.cpp \
   operations/query/selectiontest.cpp \
   qormcachetest.cpp \
@@ -32,6 +34,8 @@ HEADERS += \
   operations/model/referencetest.h \
   operations/model/typetest.h \
   operations/query/assignementtest.h \
+  operations/query/conditiontest.h \
+  operations/query/jointest.h \
   operations/query/ordertest.h \
   operations/query/selectiontest.h \
   qormcachetest.h \
