@@ -3,11 +3,12 @@
 
 #include "operations/operation.h"
 #include "operations/query/selection.h"
+#include "bindable.h"
 #include <QString>
 #include <QVariant>
 #include <list>
 
-class Condition : public Operation {
+class Condition : public Operation, public Bindable {
 
     const QString op;
     const std::list<Condition> nestedConditions;
@@ -24,7 +25,8 @@ public:
     auto getOperator() const -> QString;
     auto getLeftField() const -> QString;
     auto getRightField() const -> QString;
-    auto getValue() const -> QVariant;
+    auto getParameter() const -> QString override;
+    auto getValue() const -> QVariant override;
     auto getParametrizedConditions() const -> std::list<Condition>;
     auto generate() const -> QString override;
 };

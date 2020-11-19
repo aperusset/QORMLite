@@ -33,6 +33,14 @@ auto Field::generate() const -> QString {
     ).simplified();
 }
 
+auto Field::operator == (const Field &field) const -> bool {
+    return this->name == field.name;
+}
+
+auto Field::operator != (const Field &field) const -> bool {
+    return !(*this == field);
+}
+
 auto QORMField::notNullWithoutDefaultValue(const QString &name, const Type &type) -> Field {
     return Field(name, type, false, QString());
 }

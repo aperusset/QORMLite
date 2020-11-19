@@ -48,6 +48,10 @@ auto Condition::getRightField() const -> QString {
     return this->rightField;
 }
 
+auto Condition::getParameter() const -> QString {
+    return this->getRightField();
+}
+
 auto Condition::getValue() const -> QVariant {
     return this->value;
 }

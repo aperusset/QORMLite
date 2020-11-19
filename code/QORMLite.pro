@@ -14,7 +14,9 @@ SOURCES += \
   operations/model/foreignkey.cpp \
   operations/model/primarykey.cpp \
   operations/model/reference.cpp \
+  operations/model/table.cpp \
   operations/model/type.cpp \
+  operations/query.cpp \
   operations/query/assignement.cpp \
   operations/query/condition.cpp \
   operations/query/join.cpp \
@@ -27,9 +29,12 @@ HEADERS += \
   operations/model/foreignkey.h \
   operations/model/primarykey.h \
   operations/model/reference.h \
+  operations/model/table.h \
   operations/model/type.h \
   operations/operation.h \
+  operations/query.h \
   operations/query/assignement.h \
+  operations/query/bindable.h \
   operations/query/condition.h \
   operations/query/join.h \
   operations/query/order.h \

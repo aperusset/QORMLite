@@ -17,6 +17,8 @@ private slots:
     static void generateNotNullWithDefaultValue();
     static void generateNullableWithoutDefaultValue();
     static void generateNullableWithDefaultValue();
+    static void equals();
+    static void notEquals();
 };
 
 #endif // FIELDTEST_H

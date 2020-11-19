@@ -13,6 +13,7 @@ class ConditionTest : public QObject {
 private slots:
     static void withoutOperatorShouldFail();
     static void withoutLeftOperandAndNestedConditionShouldFail();
+    static void parameterShouldReturnRightField();
     static void isNull();
     static void isNotNull();
     static void equalsField();

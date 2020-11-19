@@ -77,3 +77,29 @@ void FieldTest::generateNullableWithDefaultValue() {
         DEFAULT_NAME + " integer null default (" + DEFAULT_VALUE + ")"
     );
 }
+
+void FieldTest::equals() {
+
+    // Given
+    auto const field1 = QORMField::notNullWithoutDefaultValue(DEFAULT_NAME, DEFAULT_TYPE);
+    auto const field2 = QORMField::nullableWithDefaultValue(DEFAULT_NAME, DEFAULT_TYPE, DEFAULT_VALUE);
+
+    // When
+    auto const equals = field1 == field2;
+
+    // Then
+    QVERIFY(equals);
+}
+
+void FieldTest::notEquals() {
+
+    // Given
+    auto const field1 = QORMField::notNullWithoutDefaultValue(DEFAULT_NAME, DEFAULT_TYPE);
+    auto const field2 = QORMField::notNullWithoutDefaultValue("otherName", DEFAULT_TYPE);
+
+    // When
+    auto const notEquals = field1 != field2;
+
+    // Then
+    QVERIFY(notEquals);
+}

@@ -23,6 +23,18 @@ void ConditionTest::withoutLeftOperandAndNestedConditionShouldFail() {
     );
 }
 
+void ConditionTest::parameterShouldReturnRightField() {
+
+    // Given
+    auto const condition = Condition("op", {}, "leftField", DEFAULT_FIELD_NAME, QVariant());
+
+    // When
+    auto const parameter = condition.getParameter();
+
+    // Then
+    QCOMPARE(parameter, DEFAULT_FIELD_NAME);
+}
+
 void ConditionTest::isNull() {
 
     // Given

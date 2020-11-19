@@ -18,6 +18,8 @@ public:
     auto getDefaultValue() const -> QString;
     auto isNullable() const -> bool;
     auto generate() const -> QString override;
+    auto operator == (const Field&) const -> bool;
+    auto operator != (const Field&) const -> bool;
 };
 
 namespace QORMField {
