@@ -85,7 +85,7 @@ void ConditionTest::equalsField() {
     );
     QVERIFY(equals.getNestedConditions().empty());
     QCOMPARE(equals.getValue().toInt(), DEFAULT_VALUE.toInt());
-    QCOMPARE(equals.getParametrizedConditions().size(), 1);
+    QCOMPARE(equals.getParametrizedConditions().size(), 1U);
 }
 
 void ConditionTest::equalsFields() {
@@ -120,7 +120,7 @@ void ConditionTest::equalsSelection() {
     );
     QVERIFY(equals.getNestedConditions().empty());
     QCOMPARE(equals.getValue().toInt(), DEFAULT_VALUE.toInt());
-    QCOMPARE(equals.getParametrizedConditions().size(), 1);
+    QCOMPARE(equals.getParametrizedConditions().size(), 1U);
 }
 
 void ConditionTest::equalsSelections() {
@@ -155,7 +155,7 @@ void ConditionTest::notEqualsField() {
     );
     QVERIFY(notEquals.getNestedConditions().empty());
     QCOMPARE(notEquals.getValue().toInt(), DEFAULT_VALUE.toInt());
-    QCOMPARE(notEquals.getParametrizedConditions().size(), 1);
+    QCOMPARE(notEquals.getParametrizedConditions().size(), 1U);
 }
 
 void ConditionTest::notEqualsFields() {
@@ -190,7 +190,7 @@ void ConditionTest::notEqualsSelection() {
     );
     QVERIFY(notEquals.getNestedConditions().empty());
     QCOMPARE(notEquals.getValue().toInt(), DEFAULT_VALUE.toInt());
-    QCOMPARE(notEquals.getParametrizedConditions().size(), 1);
+    QCOMPARE(notEquals.getParametrizedConditions().size(), 1U);
 }
 
 void ConditionTest::notEqualsSelections() {
@@ -222,7 +222,7 @@ void ConditionTest::andSingleCondition() {
 
     // Then
     QCOMPARE(generated, equals.generate());
-    QCOMPARE(andCondition.getNestedConditions().size(), 1);
+    QCOMPARE(andCondition.getNestedConditions().size(), 1U);
     QVERIFY(andCondition.getRightField().isNull());
     QVERIFY(andCondition.getLeftField().isNull());
     QVERIFY(andCondition.getValue().isNull());
@@ -243,7 +243,7 @@ void ConditionTest::andMultipleConditions() {
         "(" + equals.generate() + " and " + equals.generate() +
         " and " + equals.generate() + ")"
     );
-    QCOMPARE(andCondition.getNestedConditions().size(), 3);
+    QCOMPARE(andCondition.getNestedConditions().size(), 3U);
     QVERIFY(andCondition.getRightField().isNull());
     QVERIFY(andCondition.getLeftField().isNull());
     QVERIFY(andCondition.getValue().isNull());
@@ -261,7 +261,7 @@ void ConditionTest::orSingleCondition() {
 
     // Then
     QCOMPARE(generated, equals.generate());
-    QCOMPARE(orCondition.getNestedConditions().size(), 1);
+    QCOMPARE(orCondition.getNestedConditions().size(), 1U);
     QVERIFY(orCondition.getRightField().isNull());
     QVERIFY(orCondition.getLeftField().isNull());
     QVERIFY(orCondition.getValue().isNull());
@@ -282,7 +282,7 @@ void ConditionTest::orMultipleCondition() {
         "(" + equals.generate() + " or " + equals.generate() +
         " or " + equals.generate() + ")"
     );
-    QCOMPARE(orCondition.getNestedConditions().size(), 3);
+    QCOMPARE(orCondition.getNestedConditions().size(), 3U);
     QVERIFY(orCondition.getRightField().isNull());
     QVERIFY(orCondition.getLeftField().isNull());
     QVERIFY(orCondition.getValue().isNull());
@@ -311,11 +311,11 @@ void ConditionTest::recursiveParametrized() {
         " and " + equalsParameter.generate() + " and " +
         equalsParameter.generate() + "))"
     );
-    QCOMPARE(condition.getNestedConditions().size(), 1);
+    QCOMPARE(condition.getNestedConditions().size(), 1U);
     QVERIFY(condition.getRightField().isNull());
     QVERIFY(condition.getLeftField().isNull());
     QVERIFY(condition.getValue().isNull());
-    QCOMPARE(condition.getParametrizedConditions().size(), 2);
+    QCOMPARE(condition.getParametrizedConditions().size(), 2U);
 }
 
 void ConditionTest::recursiveNotParametrized() {
@@ -338,9 +338,9 @@ void ConditionTest::recursiveNotParametrized() {
         "(" + equals.generate() + " or (" + equals.generate() +
         " and " + equals.generate() + "))"
     );
-    QCOMPARE(condition.getNestedConditions().size(), 1);
+    QCOMPARE(condition.getNestedConditions().size(), 1U);
     QVERIFY(condition.getRightField().isNull());
     QVERIFY(condition.getLeftField().isNull());
     QVERIFY(condition.getValue().isNull());
-    QCOMPARE(condition.getParametrizedConditions().size(), 0);
+    QCOMPARE(condition.getParametrizedConditions().size(), 0U);
 }

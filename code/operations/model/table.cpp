@@ -15,6 +15,8 @@ Table::Table(const PrimaryKey &primaryKey, const std::list<Field> &fields, const
     if (primaryKey.getFields().empty() && fields.empty()) {
         throw std::string("Cannot create a table without any field.");
     }
+
+    // TODO remove primary key fields from fields
 }
 
 auto Table::getPrimaryKey() const -> PrimaryKey {
@@ -30,32 +32,27 @@ auto Table::getForeignKeys() const -> std::list<ForeignKey> {
 }
 
 auto Table::generate() const -> QString {
-    // TODO does not work if the primary key is auto increment !!
+    // TODO does not work if primary key auto increment field is in list of fields (duplicated).
 
-    QString creation = CREATE + TABLE + "[" + this->primaryKey.getTableName() + "](";
-    std::list<Field> fieldsToGenerate = this->primaryKey.getFields();
+    auto fieldsToGenerate = this->primaryKey.getFields();
     std::copy_if(this->fields.begin(), this->fields.end(), std::back_inserter(fieldsToGenerate),
         [&fieldsToGenerate](const Field &field) { // deduplicate fields with those of the primary key
             return std::find(fieldsToGenerate.begin(), fieldsToGenerate.end(), field) == fieldsToGenerate.end();
         }
     );
-    QStringList generatedFields;
+    auto generatedFields = this->primaryKey.isAutoIncrement() ? QStringList(this->primaryKey.generate()) : QStringList();
     std::transform(fieldsToGenerate.begin(), fieldsToGenerate.end(),
         std::back_inserter(generatedFields),
         std::bind(&Field::generate, std::placeholders::_1)
     );
-    creation += generatedFields.join(COMMA);
-    if (!this->primaryKey.isAutoIncrement()) {
-        creation += COMMA + primaryKey.generate();
-    }
+    QString creation = CREATE + TABLE + "[" + this->primaryKey.getTableName() + "](" + generatedFields.join(COMMA);
     if (!foreignKeys.empty()) {
-        creation += COMMA;
         QStringList generatedForeignKeys;
         std::transform(this->foreignKeys.begin(), this->foreignKeys.end(),
             std::back_inserter(generatedForeignKeys),
             std::bind(&ForeignKey::generate, std::placeholders::_1)
         );
-        creation += generatedForeignKeys.join(COMMA);
+        creation += COMMA + generatedForeignKeys.join(COMMA);
     }
     return (creation += ")" + SEMI).simplified();
 }
