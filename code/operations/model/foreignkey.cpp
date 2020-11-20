@@ -36,7 +36,7 @@ auto ForeignKey::generate() const -> QString {
     QString foreignKey = CONSTRAINT + "[" + targetTable.toLower() + "_fk]";
     QStringList fromFieldNames;
     QStringList toFieldNames;
-    for (auto const reference : references) {
+    for (auto const &reference : references) {
         fromFieldNames << reference.getFrom().getName();
         toFieldNames << reference.getTo().getName();
     }

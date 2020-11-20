@@ -10,8 +10,8 @@ class Reference {
 
 public:
     Reference(const Field &from, const Field &to);
-    auto getFrom() const -> const Field;
-    auto getTo() const -> const Field;
+    auto getFrom() const -> Field;
+    auto getTo() const -> Field;
 };
 
 enum class OnAction {

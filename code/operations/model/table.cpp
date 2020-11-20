@@ -29,7 +29,7 @@ auto Table::generate() const -> QString {
     auto const primaryKeyFields = this->primaryKey.getFields();
     auto fieldsToGenerate = this->primaryKey.isAutoIncrement() ? std::list<Field>() : primaryKeyFields;
     std::copy_if(this->fields.begin(), this->fields.end(), std::back_inserter(fieldsToGenerate),
-        [&primaryKeyFields, &fieldsToGenerate](const Field &field) {
+        [&primaryKeyFields, &fieldsToGenerate](const Field &field) -> bool {
             return std::find(primaryKeyFields.begin(), primaryKeyFields.end(), field) == primaryKeyFields.end() &&
                    std::find(fieldsToGenerate.begin(), fieldsToGenerate.end(), field) == fieldsToGenerate.end();
         }
