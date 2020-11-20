@@ -4,19 +4,13 @@
 #include <algorithm>
 #include <QStringList>
 
-const QString CREATE = " create ";
-const QString TABLE = " table ";
-const QString COMMA = ", ";
-const QString SEMI = ";";
+Table::Table(const QString &tableName, const PrimaryKey &primaryKey,
+             const std::list<Field> &fields, const std::list<ForeignKey> &foreignKeys) :
+    tableName(tableName), primaryKey(primaryKey),
+    fields(fields), foreignKeys(foreignKeys) {}
 
-Table::Table(const PrimaryKey &primaryKey, const std::list<Field> &fields, const std::list<ForeignKey> &foreignKeys) :
-    primaryKey(primaryKey), fields(fields), foreignKeys(foreignKeys) {
-
-    if (primaryKey.getFields().empty() && fields.empty()) {
-        throw std::string("Cannot create a table without any field.");
-    }
-
-    // TODO remove primary key fields from fields
+auto Table::getTableName() const -> QString {
+    return this->tableName;
 }
 
 auto Table::getPrimaryKey() const -> PrimaryKey {
@@ -32,27 +26,29 @@ auto Table::getForeignKeys() const -> std::list<ForeignKey> {
 }
 
 auto Table::generate() const -> QString {
-    // TODO does not work if primary key auto increment field is in list of fields (duplicated).
-
-    auto fieldsToGenerate = this->primaryKey.getFields();
+    auto const primaryKeyFields = this->primaryKey.getFields();
+    auto fieldsToGenerate = this->primaryKey.isAutoIncrement() ? std::list<Field>() : primaryKeyFields;
     std::copy_if(this->fields.begin(), this->fields.end(), std::back_inserter(fieldsToGenerate),
-        [&fieldsToGenerate](const Field &field) { // deduplicate fields with those of the primary key
-            return std::find(fieldsToGenerate.begin(), fieldsToGenerate.end(), field) == fieldsToGenerate.end();
+        [&primaryKeyFields, &fieldsToGenerate](const Field &field) {
+            return std::find(primaryKeyFields.begin(), primaryKeyFields.end(), field) == primaryKeyFields.end() &&
+                   std::find(fieldsToGenerate.begin(), fieldsToGenerate.end(), field) == fieldsToGenerate.end();
         }
     );
     auto generatedFields = this->primaryKey.isAutoIncrement() ? QStringList(this->primaryKey.generate()) : QStringList();
     std::transform(fieldsToGenerate.begin(), fieldsToGenerate.end(),
-        std::back_inserter(generatedFields),
-        std::bind(&Field::generate, std::placeholders::_1)
+        std::back_inserter(generatedFields), std::bind(&Field::generate, std::placeholders::_1)
     );
-    QString creation = CREATE + TABLE + "[" + this->primaryKey.getTableName() + "](" + generatedFields.join(COMMA);
-    if (!foreignKeys.empty()) {
+    QString creation = "create table " + this->tableName + "(" + generatedFields.join(", ");
+    if (!this->primaryKey.isAutoIncrement()) {
+        creation += ", " + this->primaryKey.generate();
+    }
+    if (!this->foreignKeys.empty()) {
         QStringList generatedForeignKeys;
         std::transform(this->foreignKeys.begin(), this->foreignKeys.end(),
             std::back_inserter(generatedForeignKeys),
             std::bind(&ForeignKey::generate, std::placeholders::_1)
         );
-        creation += COMMA + generatedForeignKeys.join(COMMA);
+        creation += ", " + generatedForeignKeys.join(", ");
     }
-    return (creation += ")" + SEMI).simplified();
+    return (creation += ")").simplified();
 }

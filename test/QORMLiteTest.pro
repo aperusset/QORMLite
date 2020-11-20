@@ -14,6 +14,7 @@ SOURCES +=  \
   operations/model/foreignkeytest.cpp \
   operations/model/primarykeytest.cpp \
   operations/model/referencetest.cpp \
+  operations/model/tabletest.cpp \
   operations/model/typetest.cpp \
   operations/query/assignementtest.cpp \
   operations/query/conditiontest.cpp \
@@ -32,6 +33,7 @@ HEADERS += \
   operations/model/foreignkeytest.h \
   operations/model/primarykeytest.h \
   operations/model/referencetest.h \
+  operations/model/tabletest.h \
   operations/model/typetest.h \
   operations/query/assignementtest.h \
   operations/query/conditiontest.h \

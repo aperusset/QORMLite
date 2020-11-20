@@ -20,6 +20,18 @@ ForeignKey::ForeignKey(const std::list<Reference> &references, const QString &ta
     }
 }
 
+auto ForeignKey::getReferences() const -> std::list<Reference> {
+    return this->references;
+}
+
+auto ForeignKey::getTargetTable() const -> QString {
+    return this->targetTable;
+}
+
+auto ForeignKey::getOnAction() const -> OnAction {
+    return this->onAction;
+}
+
 auto ForeignKey::generate() const -> QString {
     QString foreignKey = CONSTRAINT + "[" + targetTable.toLower() + "_fk]";
     QStringList fromFieldNames;

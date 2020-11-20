@@ -7,14 +7,12 @@
 
 class PrimaryKey : public Operation {
 
-    const QString tableName;
     const std::list<Field> fields;
     const bool autoIncrement;
 
 public:
     explicit PrimaryKey(const Field&, const bool autoIncrement = true);
-    PrimaryKey(const QString &tableName, const std::list<Field>&);
-    auto getTableName() const -> QString;
+    explicit PrimaryKey(const std::list<Field>&);
     auto getFields() const -> std::list<Field>;
     auto isAutoIncrement() const -> bool;
     auto generate() const -> QString override;

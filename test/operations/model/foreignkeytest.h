@@ -7,6 +7,8 @@ class ForeignKeyTest : public QObject {
 
     Q_OBJECT
 
+    static const QString DEFAULT_TARGET_TABLE;
+
 private slots:
 
     static void emptyReferencesListShouldFail();

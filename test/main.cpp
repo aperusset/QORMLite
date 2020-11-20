@@ -12,6 +12,7 @@
 #include "operations/query/selectiontest.h"
 #include "operations/query/conditiontest.h"
 #include "operations/query/jointest.h"
+#include "operations/model/tabletest.h"
 
 /*
  * Thanks to https://alexhuszagh.github.io/2016/using-qttest-effectively/
@@ -38,6 +39,7 @@ auto main(int argc, char *argv[]) -> int {
         runTest(SelectionTest());
         runTest(ConditionTest());
         runTest(JoinTest());
+        runTest(TableTest());
     } catch (std::string &exception) {
         qFatal("Uncaught exception : %s", exception.c_str());
         return EXIT_FAILURE;

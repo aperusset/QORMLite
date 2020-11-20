@@ -13,6 +13,9 @@ class ForeignKey : public Operation {
 
 public:
     ForeignKey(const std::list<Reference>&, const QString &targetTable, const OnAction&);
+    auto getReferences() const -> std::list<Reference>;
+    auto getTargetTable() const -> QString;
+    auto getOnAction() const -> OnAction;
     auto generate() const -> QString override;
 };
 
