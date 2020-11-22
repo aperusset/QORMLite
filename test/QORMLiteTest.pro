@@ -21,6 +21,7 @@ SOURCES +=  \
   operations/query/jointest.cpp \
   operations/query/ordertest.cpp \
   operations/query/selectiontest.cpp \
+  operations/query/selecttest.cpp \
   qormcachetest.cpp \
   qormentitytest.cpp \
   qormobservertest.cpp \
@@ -40,6 +41,7 @@ HEADERS += \
   operations/query/jointest.h \
   operations/query/ordertest.h \
   operations/query/selectiontest.h \
+  operations/query/selecttest.h \
   qormcachetest.h \
   qormentitytest.h \
   qormobservertest.h \

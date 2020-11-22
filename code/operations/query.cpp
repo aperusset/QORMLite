@@ -11,3 +11,13 @@ void Query::bind(QSqlQuery &query) const {
         query.bindValue(bindable.first, bindable.second);
     }
 }
+
+auto Query::willBind(const Bindable &bindable) const -> bool {
+    return this->bindables.count(bindable.getParameter());
+}
+
+TableQuery::TableQuery(const QString &tableName) : tableName(tableName) {};
+
+auto TableQuery::getTableName() const -> QString {
+    return this->tableName;
+}

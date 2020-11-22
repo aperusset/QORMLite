@@ -13,7 +13,7 @@ void TableTest::autoIncrementedPrimaryKeyWithoutFields() {
 
     // Given
     auto const primaryKey = PrimaryKey(DEFAULT_FIELD_1);
-    auto const table = Table(DEFAULT_TABLE_NAME, primaryKey);
+    const Table table(DEFAULT_TABLE_NAME, primaryKey);
 
     // When
     auto const generated = table.generate();
@@ -31,7 +31,7 @@ void TableTest::autoIncrementedPrimaryKeyWithFields() {
 
     // Given
     auto const primaryKey = PrimaryKey(DEFAULT_FIELD_1);
-    auto const table = Table(DEFAULT_TABLE_NAME, primaryKey, {DEFAULT_FIELD_2});
+    const Table table(DEFAULT_TABLE_NAME, primaryKey, {DEFAULT_FIELD_2});
 
     // When
     auto const generated = table.generate();
@@ -50,7 +50,7 @@ void TableTest::autoIncrementedPrimaryKeyWithDuplicatedFields() {
 
     // Given
     auto const primaryKey = PrimaryKey(DEFAULT_FIELD_1);
-    auto const table = Table(DEFAULT_TABLE_NAME, primaryKey, {DEFAULT_FIELD_1, DEFAULT_FIELD_2});
+    const Table table(DEFAULT_TABLE_NAME, primaryKey, {DEFAULT_FIELD_1, DEFAULT_FIELD_2});
 
     // When
     auto const generated = table.generate();
@@ -69,7 +69,7 @@ void TableTest::primaryKeyWithoutAdditionalFields() {
 
     // Given
     auto const primaryKey = PrimaryKey({DEFAULT_FIELD_1, DEFAULT_FIELD_2});
-    auto const table = Table(DEFAULT_TABLE_NAME, primaryKey);
+    const Table table(DEFAULT_TABLE_NAME, primaryKey);
 
     // When
     auto const generated = table.generate();
@@ -89,7 +89,7 @@ void TableTest::primaryKeyWithAdditionalFields() {
 
     // Given
     auto const primaryKey = PrimaryKey(DEFAULT_FIELD_1, false);
-    auto const table = Table(DEFAULT_TABLE_NAME, primaryKey, {DEFAULT_FIELD_2});
+    const Table table(DEFAULT_TABLE_NAME, primaryKey, {DEFAULT_FIELD_2});
 
     // When
     auto const generated = table.generate();
@@ -109,7 +109,7 @@ void TableTest::primaryKeyWithDuplicatedFields() {
 
     // Given
     auto const primaryKey = PrimaryKey(DEFAULT_FIELD_1, false);
-    auto const table = Table(DEFAULT_TABLE_NAME, primaryKey, {DEFAULT_FIELD_1, DEFAULT_FIELD_2});
+    const Table table(DEFAULT_TABLE_NAME, primaryKey, {DEFAULT_FIELD_1, DEFAULT_FIELD_2});
 
     // When
     auto const generated = table.generate();
@@ -130,7 +130,7 @@ void TableTest::singleForeignKey() {
     // Given
     auto const primaryKey = PrimaryKey(DEFAULT_FIELD_1);
     auto const foreignKey = ForeignKey({Reference(DEFAULT_FIELD_1, DEFAULT_FIELD_1)}, DEFAULT_TABLE_NAME, OnAction::Cascade);
-    auto const table = Table(DEFAULT_TABLE_NAME, primaryKey, {}, {foreignKey});
+    const Table table(DEFAULT_TABLE_NAME, primaryKey, {}, {foreignKey});
 
     // When
     auto const generated = table.generate();
@@ -150,7 +150,7 @@ void TableTest::multipleForeignKeys() {
     // Given
     auto const primaryKey = PrimaryKey(DEFAULT_FIELD_1);
     auto const foreignKey = ForeignKey({Reference(DEFAULT_FIELD_1, DEFAULT_FIELD_1)}, DEFAULT_TABLE_NAME, OnAction::Cascade);
-    auto const table = Table(DEFAULT_TABLE_NAME, primaryKey, {}, {foreignKey,foreignKey});
+    const Table table(DEFAULT_TABLE_NAME, primaryKey, {}, {foreignKey,foreignKey});
 
     // When
     auto const generated = table.generate();

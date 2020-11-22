@@ -14,10 +14,24 @@ class Query : public Operation {
     std::map<QString, QVariant> bindables;
 
 protected:
+    Query() = default;
+    Query(const Query&) = default;
     void addBindable(const Bindable&);
 
 public:
-    void bind(QSqlQuery &query) const;
+    void bind(QSqlQuery&) const;
+    auto willBind(const Bindable&) const -> bool;
+};
+
+class TableQuery : public Query {
+
+    const QString tableName;
+
+protected:
+    explicit TableQuery(const QString &tableName);
+
+public:
+    auto getTableName() const -> QString;
 };
 
 #endif // QUERY_H

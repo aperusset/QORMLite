@@ -3,6 +3,7 @@
 
 #include <QString>
 #include <QDate>
+#include <list>
 #include "operations/query/selection.h"
 
 namespace QORMUtils {
