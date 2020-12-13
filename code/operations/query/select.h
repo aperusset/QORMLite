@@ -22,11 +22,11 @@ public:
     auto getJoins() const -> std::list<Join>;
     auto getConditions() const -> std::list<Condition>;
     auto getOrders() const -> std::list<Order>;
+    auto generate() const -> QString override;
 
     auto join(const std::list<Join>&) -> Select&;
     auto where(const std::list<Condition>&) -> Select&;
     auto orderBy(const std::list<Order>&) -> Select&;
-    auto generate() const -> QString override;
 };
 
 #endif // SELECT_H

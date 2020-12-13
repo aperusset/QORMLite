@@ -16,6 +16,7 @@ SOURCES += \
   operations/model/reference.cpp \
   operations/model/table.cpp \
   operations/model/type.cpp \
+  operations/model/view.cpp \
   operations/query.cpp \
   operations/query/assignement.cpp \
   operations/query/condition.cpp \
@@ -32,6 +33,7 @@ HEADERS += \
   operations/model/reference.h \
   operations/model/table.h \
   operations/model/type.h \
+  operations/model/view.h \
   operations/operation.h \
   operations/query.h \
   operations/query/assignement.h \

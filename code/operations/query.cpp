@@ -12,6 +12,10 @@ void Query::bind(QSqlQuery &query) const {
     }
 }
 
+auto Query::hasBindables() const -> bool {
+    return !this->bindables.empty();
+}
+
 auto Query::willBind(const Bindable &bindable) const -> bool {
     return this->bindables.count(bindable.getParameter());
 }

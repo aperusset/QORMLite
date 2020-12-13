@@ -20,6 +20,7 @@ protected:
 
 public:
     void bind(QSqlQuery&) const;
+    auto hasBindables() const -> bool;
     auto willBind(const Bindable&) const -> bool;
 };
 
