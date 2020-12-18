@@ -5,6 +5,7 @@
 #include <QString>
 #include <QVariant>
 #include <map>
+#include <list>
 
 class Bindable;
 class QSqlQuery;

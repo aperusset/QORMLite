@@ -25,6 +25,7 @@ SOURCES += \
   operations/query/order.cpp \
   operations/query/select.cpp \
   operations/query/selection.cpp \
+  operations/query/update.cpp \
   qormutils.cpp
 
 HEADERS += \
@@ -45,6 +46,7 @@ HEADERS += \
   operations/query/order.h \
   operations/query/select.h \
   operations/query/selection.h \
+  operations/query/update.h \
   qormcache.h \
   qormentity.h \
   qormobserver.h \
