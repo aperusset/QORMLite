@@ -20,6 +20,7 @@ SOURCES += \
   operations/query.cpp \
   operations/query/assignement.cpp \
   operations/query/condition.cpp \
+  operations/query/insert.cpp \
   operations/query/join.cpp \
   operations/query/order.cpp \
   operations/query/select.cpp \
@@ -39,6 +40,7 @@ HEADERS += \
   operations/query/assignement.h \
   operations/query/bindable.h \
   operations/query/condition.h \
+  operations/query/insert.h \
   operations/query/join.h \
   operations/query/order.h \
   operations/query/select.h \
