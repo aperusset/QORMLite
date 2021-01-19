@@ -29,4 +29,10 @@ public:
     auto orderBy(const std::list<Order>&) -> Select&;
 };
 
+class LastInsertedId : public Query {
+
+public:
+    auto generate() const -> QString override;
+};
+
 #endif // SELECT_H

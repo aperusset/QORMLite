@@ -17,6 +17,7 @@
 #include "operations/model/viewtest.h"
 #include "operations/query/inserttest.h"
 #include "operations/query/updatetest.h"
+#include "operations/query/deletetest.h"
 
 /*
  * Thanks to https://alexhuszagh.github.io/2016/using-qttest-effectively/
@@ -48,6 +49,7 @@ auto main(int argc, char *argv[]) -> int {
         runTest(ViewTest());
         runTest(InsertTest());
         runTest(UpdateTest());
+        runTest(DeleteTest());
     } catch (std::string &exception) {
         qFatal("Uncaught exception : %s", exception.c_str());
         return EXIT_FAILURE;

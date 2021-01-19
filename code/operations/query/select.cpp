@@ -75,3 +75,7 @@ auto Select::generate() const -> QString {
     }
     return (select += generatedOrders.isEmpty() ? "" : " order by " + generatedOrders.join(", ")).simplified();
 }
+
+auto LastInsertedId::generate() const -> QString {
+    return "select last_insert_rowid()";
+}

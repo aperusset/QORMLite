@@ -174,3 +174,16 @@ void SelectTest::selectFieldWithOrdersNotSelected() {
             order2.generate()
     );
 }
+
+void SelectTest::lastInsertedId() {
+
+    // Given
+    auto const last = LastInsertedId();
+
+    // When
+    auto const generated = last.generate();
+
+    // Then
+    QVERIFY(!last.hasBindables());
+    QCOMPARE(generated, "select last_insert_rowid()");
+}
