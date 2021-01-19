@@ -34,3 +34,7 @@ auto QORMUtils::dateToMonth(const QString &fieldName, const QString &renameTo) -
 auto QORMUtils::dateToYear(const QString &fieldName, const QString &renameTo) -> Selection {
     return formatSQLDate("%Y", fieldName, renameTo);
 }
+
+auto QORMUtils::null(QVariant::Type type) -> QVariant {
+    return QVariant(type);
+}

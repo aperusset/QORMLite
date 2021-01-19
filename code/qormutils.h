@@ -2,6 +2,7 @@
 #define Q_ORM_UTILS_H
 
 #include <QString>
+#include <QVariant>
 #include <QDate>
 #include <list>
 #include "operations/query/selection.h"
@@ -53,6 +54,13 @@ namespace QORMUtils {
      * @return the selection
      */
     auto dateToYear(const QString &fieldName, const QString &renameTo) -> Selection;
+
+    /**
+     * @brief Generate a null SQL value for specified type
+     * @param type the type of the null value
+     * @return the null value
+     */
+    auto null(QVariant::Type type) -> QVariant;
 }
 
 #endif // Q_ORM_UTILS_H

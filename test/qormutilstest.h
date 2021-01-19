@@ -14,6 +14,8 @@ private slots:
     static void dateToDay();
     static void dateToMonth();
     static void dateToYear();
+    static void nullInt();
+    static void nullString();
 };
 
 #endif // QORMUTILSTEST_H

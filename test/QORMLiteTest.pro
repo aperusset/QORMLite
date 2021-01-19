@@ -1,4 +1,4 @@
-QT += testlib
+QT += testlib sql
 QT -= gui
 
 CONFIG += qt console warn_on depend_includepath testcase
@@ -27,6 +27,7 @@ SOURCES +=  \
   operations/query/selecttest.cpp \
   operations/query/updatetest.cpp \
   qormcachetest.cpp \
+  qormdatabasetest.cpp \
   qormentitytest.cpp \
   qormobservertest.cpp \
   qormutilstest.cpp
@@ -51,6 +52,7 @@ HEADERS += \
   operations/query/selecttest.h \
   operations/query/updatetest.h \
   qormcachetest.h \
+  qormdatabasetest.h \
   qormentitytest.h \
   qormobservertest.h \
   qormutilstest.h

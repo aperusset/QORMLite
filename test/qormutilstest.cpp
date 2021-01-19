@@ -74,3 +74,24 @@ void QORMUtilsTest::dateToYear() {
     // Then
     QCOMPARE(fieldName.simplified(), "strftime('%Y', field)");
 }
+
+void QORMUtilsTest::nullInt() {
+
+    // Given
+    auto const nullValue = QORMUtils::null(QVariant::Int);
+
+    // When / Then
+    QVERIFY(nullValue.isNull());
+    QVERIFY(nullValue.isValid());
+}
+
+
+void QORMUtilsTest::nullString() {
+
+    // Given
+    auto const nullValue = QORMUtils::null(QVariant::String);
+
+    // When / Then
+    QVERIFY(nullValue.isNull());
+    QVERIFY(nullValue.isValid());
+}
