@@ -2,6 +2,7 @@
 #define QORMDATABASETEST_H
 
 #include <QtTest/QtTest>
+#include "fixture/testcreator.h"
 
 class QORMDatabaseTest : public QObject {
 
@@ -10,18 +11,20 @@ class QORMDatabaseTest : public QObject {
     static const QString DEFAULT_DATABASE_NAME;
     static const QString DEFAULT_BACKUP_FILE_NAME;
 
+    TestCreator testCreator;
+
 private slots:
-    static void connectShouldFailWithInvalidDatabase();
-    static void connectShouldCreateDatabaseAndReturnTrue();
-    static void connectShouldNotCreateDatabaseAndReturnFalse();
-    static void subsequentConnectShouldReturnFalse();
-    static void disconnectShouldNotDeleteDatabase();
-    static void disconnectShouldDeleteDatabaseInTestMode();
-    static void prepareExecuteShouldFailWithInvalidQuery();
-    static void executeShouldSuccessWithTextQuery();
-    static void executreShouldSuccessWithBuiltQuery();
-    static void optimizeShouldSuccess();
-    static void backupShouldSuccessAndCreateFile();
+    void connectShouldFailWithInvalidDatabase();
+    void connectShouldCreateDatabaseAndReturnTrue();
+    void connectShouldNotCreateDatabaseAndReturnFalse();
+    void subsequentConnectShouldReturnFalse();
+    void disconnectShouldNotDeleteDatabase();
+    void disconnectShouldDeleteDatabaseInTestMode();
+    void prepareExecuteShouldFailWithInvalidQuery();
+    void executeShouldSuccessWithTextQuery();
+    void executeShouldSuccessWithBuiltQuery();
+    void optimizeShouldSuccess();
+    void backupShouldSuccessAndCreateFile();
 
     static void cleanup();
 };

@@ -2,12 +2,15 @@
 #define QORMDATABASE_H
 
 #include <QtSql>
-#include "operations/query.h"
+#include "qormcreator.h"
 #include "qormentity.h"
+#include "operations/query.h"
+#include "operations/query/select.h"
 
 class QORMDatabase {
 
     const QString name;
+    const QORMCreator &creator;
     const bool verbose;
     const bool test;
 
@@ -16,7 +19,7 @@ class QORMDatabase {
     auto execute(QSqlQuery) const -> QSqlQuery;
 
 public:
-    QORMDatabase(const QString &name, bool verbose, bool test);
+    QORMDatabase(const QString &name, const QORMCreator&, bool verbose, bool test);
     ~QORMDatabase();
     QORMDatabase(const QORMDatabase&) = delete;
     QORMDatabase& operator=(const QORMDatabase) = delete;
@@ -38,8 +41,10 @@ public:
     auto execute(const QString&) const -> QSqlQuery;
     auto execute(const Query&) const -> QSqlQuery;
 
+    auto exists(const QString &table, const std::list<Condition>&) const -> bool;
+    //auto referenced(const QString &sourceTable, const QString &destinationTable) const -> bool;
+
      /* TODO (templated functions ?, db creator needed)
-      * exists
       * isReferenced
       * insertAndRetrieveId -> lastInsertedId needed ?
       * select to return a list of entities

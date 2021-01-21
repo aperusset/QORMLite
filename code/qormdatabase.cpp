@@ -13,8 +13,8 @@ void deleteIfTestMode(const QString &name, bool test) {
     }
 }
 
-QORMDatabase::QORMDatabase(const QString &name, bool verbose, bool test) :
-    name(name), verbose(verbose), test(test) {}
+QORMDatabase::QORMDatabase(const QString &name, const QORMCreator &creator, bool verbose, bool test) :
+    name(name), creator(creator), verbose(verbose), test(test) {}
 
 QORMDatabase::~QORMDatabase() {
     this->disconnect();
@@ -73,13 +73,13 @@ auto QORMDatabase::isConnected() const -> bool {
 auto QORMDatabase::connect() -> bool {
     if (!this->isConnected()) {
         deleteIfTestMode(this->name, this->test);
-        auto database = QSqlDatabase::addDatabase(DATABASE_DRIVER, name);
+        auto database = QSqlDatabase::addDatabase(DATABASE_DRIVER, this->name);
         database.setDatabaseName(this->name);
         auto const callCreator = !QFile::exists(database.databaseName());
         if (database.open()) {
             if (callCreator) {
                 qDebug("Create database with name %s", qUtf8Printable(database.databaseName()));
-                // TODO call the database creator
+                this->creator.createAllAndPopulate(*this);
             }
             this->execute("pragma foreign_keys = on"); // activate foreign keys constraints
             return callCreator;
@@ -109,4 +109,8 @@ auto QORMDatabase::backup(const QString &fileName) -> bool {
     auto const success = QFile::copy(databaseName, fileName);
     this->connect();
     return success;
+}
+
+auto QORMDatabase::exists(const QString &table, const std::list<Condition> &conditions) const -> bool {
+    return this->execute(Select(table).where(conditions)).next();
 }

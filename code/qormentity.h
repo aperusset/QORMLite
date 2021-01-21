@@ -4,6 +4,7 @@
 #include <set>
 #include <algorithm>
 #include "qormobserver.h"
+#include "operations/query/condition.h"
 
 template<typename Key>
 class QORMEntity {
@@ -15,7 +16,7 @@ public:
     explicit QORMEntity(const Key &key) : key(key) {}
     QORMEntity(const QORMEntity&) = delete;
     QORMEntity& operator=(const QORMEntity&) = delete;
-    virtual ~QORMEntity() { notifyDelete(); }
+    virtual ~QORMEntity() {}
 
     auto getKey() const -> Key { return this->key; }
     void setKey(const Key &key) { this->key = key; }
@@ -50,7 +51,10 @@ public:
 
     virtual auto exists() const -> bool = 0;
     virtual auto save() -> bool = 0;
-    virtual auto erase() -> bool = 0;
+    virtual auto erase() -> bool {
+        notifyDelete();
+        return true;
+    };
 };
 
 #endif // QORMENTITY_H

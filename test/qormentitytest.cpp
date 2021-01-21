@@ -1,5 +1,4 @@
 #include "qormentitytest.h"
-
 #include "fixture/testentity.h"
 
 void QORMEntityTest::getKey() {

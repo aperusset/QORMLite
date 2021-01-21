@@ -8,7 +8,7 @@ const QString QORMDatabaseTest::DEFAULT_BACKUP_FILE_NAME = "database.backup";
 void QORMDatabaseTest::connectShouldFailWithInvalidDatabase() {
 
     // Given
-    QORMDatabase database("data/base.db", false, false);
+    QORMDatabase database("data/base.db", this->testCreator, false, false);
 
     // When / Then
     QVERIFY_EXCEPTION_THROWN(
@@ -21,7 +21,7 @@ void QORMDatabaseTest::connectShouldFailWithInvalidDatabase() {
 void QORMDatabaseTest::connectShouldCreateDatabaseAndReturnTrue() {
 
     // Given
-    QORMDatabase database(DEFAULT_DATABASE_NAME, false, false);
+    QORMDatabase database(DEFAULT_DATABASE_NAME, this->testCreator, false, false);
 
     // When / Then
     QVERIFY(database.connect());
@@ -32,7 +32,7 @@ void QORMDatabaseTest::connectShouldCreateDatabaseAndReturnTrue() {
 void QORMDatabaseTest::connectShouldNotCreateDatabaseAndReturnFalse() {
 
     // Given
-    QORMDatabase database(DEFAULT_DATABASE_NAME, false, false);
+    QORMDatabase database(DEFAULT_DATABASE_NAME, this->testCreator, false, false);
 
     // When
     database.connect();
@@ -47,7 +47,7 @@ void QORMDatabaseTest::connectShouldNotCreateDatabaseAndReturnFalse() {
 void QORMDatabaseTest::subsequentConnectShouldReturnFalse() {
 
     // Given
-    QORMDatabase database(DEFAULT_DATABASE_NAME, false, false);
+    QORMDatabase database(DEFAULT_DATABASE_NAME, this->testCreator, false, false);
 
     // When
     database.connect();
@@ -61,7 +61,7 @@ void QORMDatabaseTest::subsequentConnectShouldReturnFalse() {
 void QORMDatabaseTest::disconnectShouldNotDeleteDatabase() {
 
     // Given
-    QORMDatabase database(DEFAULT_DATABASE_NAME, false, false);
+    QORMDatabase database(DEFAULT_DATABASE_NAME, this->testCreator, false, false);
 
     // When
     database.connect();
@@ -75,7 +75,7 @@ void QORMDatabaseTest::disconnectShouldNotDeleteDatabase() {
 void QORMDatabaseTest::disconnectShouldDeleteDatabaseInTestMode() {
 
     // Given
-    QORMDatabase database(DEFAULT_DATABASE_NAME, false, true);
+    QORMDatabase database(DEFAULT_DATABASE_NAME, this->testCreator, false, true);
 
     // When
     database.connect();
@@ -90,7 +90,7 @@ void QORMDatabaseTest::disconnectShouldDeleteDatabaseInTestMode() {
 void QORMDatabaseTest::prepareExecuteShouldFailWithInvalidQuery() {
 
     // Given
-    QORMDatabase database(DEFAULT_DATABASE_NAME, false, false);
+    QORMDatabase database(DEFAULT_DATABASE_NAME, this->testCreator, false, false);
     database.connect();
 
     // When / Then
@@ -103,29 +103,29 @@ void QORMDatabaseTest::prepareExecuteShouldFailWithInvalidQuery() {
 void QORMDatabaseTest::executeShouldSuccessWithTextQuery() {
 
     // Given
-    QORMDatabase database(DEFAULT_DATABASE_NAME, false, false);
+    QORMDatabase database(DEFAULT_DATABASE_NAME, this->testCreator, false, false);
     database.connect();
-    auto const select = Select("sqlite_master");
+    auto const select = Select(TestCreator::TEST_TABLE);
 
     // When / Then
-    database.execute(select.generate()).executedQuery();
+    QVERIFY(database.execute(select.generate()).isSelect());
 }
 
-void QORMDatabaseTest::executreShouldSuccessWithBuiltQuery() {
+void QORMDatabaseTest::executeShouldSuccessWithBuiltQuery() {
 
     // Given
-    QORMDatabase database(DEFAULT_DATABASE_NAME, false, false);
+    QORMDatabase database(DEFAULT_DATABASE_NAME, this->testCreator, false, false);
     database.connect();
-    auto const select = Select("sqlite_master");
+    auto const select = Select(TestCreator::TEST_VIEW);
 
     // When / Then
-    database.execute(select).executedQuery();
+    QVERIFY(database.execute(select).isSelect());
 }
 
 void QORMDatabaseTest::optimizeShouldSuccess() {
 
     // Given
-    QORMDatabase database(DEFAULT_DATABASE_NAME, false, false);
+    QORMDatabase database(DEFAULT_DATABASE_NAME, this->testCreator, false, false);
     database.connect();
 
     // When / Then
@@ -135,7 +135,7 @@ void QORMDatabaseTest::optimizeShouldSuccess() {
 void QORMDatabaseTest::backupShouldSuccessAndCreateFile() {
 
     // Given
-    QORMDatabase database(DEFAULT_DATABASE_NAME, false, false);
+    QORMDatabase database(DEFAULT_DATABASE_NAME, this->testCreator, false, false);
     database.connect();
 
     // When / Then

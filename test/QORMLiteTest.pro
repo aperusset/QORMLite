@@ -7,6 +7,7 @@ CONFIG -= app_bundle
 TEMPLATE = app
 
 SOURCES +=  \
+  fixture/testcreator.cpp \
   fixture/testentity.cpp \
   fixture/testobserver.cpp \
   main.cpp \
@@ -27,12 +28,14 @@ SOURCES +=  \
   operations/query/selecttest.cpp \
   operations/query/updatetest.cpp \
   qormcachetest.cpp \
+  qormcreatortest.cpp \
   qormdatabasetest.cpp \
   qormentitytest.cpp \
   qormobservertest.cpp \
   qormutilstest.cpp
 
 HEADERS += \
+  fixture/testcreator.h \
   fixture/testentity.h \
   fixture/testobserver.h \
   operations/model/fieldtest.h \
@@ -52,6 +55,7 @@ HEADERS += \
   operations/query/selecttest.h \
   operations/query/updatetest.h \
   qormcachetest.h \
+  qormcreatortest.h \
   qormdatabasetest.h \
   qormentitytest.h \
   qormobservertest.h \
