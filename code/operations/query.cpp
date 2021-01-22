@@ -6,10 +6,11 @@ void Query::addBindable(const Bindable &bindable) {
     this->bindables.insert(std::make_pair(bindable.getParameter(), bindable.getValue()));
 }
 
-void Query::bind(QSqlQuery &query) const {
+auto Query::bind(QSqlQuery query) const -> QSqlQuery {
     for (auto const &bindable : this->bindables) {
         query.bindValue(bindable.first, bindable.second);
     }
+    return query;
 }
 
 auto Query::hasBindables() const -> bool {

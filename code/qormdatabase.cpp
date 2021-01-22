@@ -27,10 +27,7 @@ auto QORMDatabase::prepare(const QString &query) const -> QSqlQuery {
 }
 
 auto QORMDatabase::prepare(const Query &query) const -> QSqlQuery {
-    // TODO factorizable in one instruction ?
-    QSqlQuery sqlQuery = this->prepare(query.generate());
-    query.bind(sqlQuery);
-    return sqlQuery;
+    return query.bind(this->prepare(query.generate()));
 }
 
 auto QORMDatabase::execute(const QString &query) const -> QSqlQuery {
