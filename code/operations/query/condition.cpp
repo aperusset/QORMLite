@@ -2,14 +2,6 @@
 #include "qormutils.h"
 #include <QStringList>
 
-const QString AND = " and ";
-const QString OR = " or ";
-const QString IS = " is ";
-const QString NOT = " not ";
-const QString NULLABLE = " null ";
-const QString NOT_EQUALS = " <> ";
-const QString EQUALS = " = ";
-
 Condition::Condition(const QString &op, const std::list<Condition> &nestedConditions,
                      const QString &leftField, const QString &rightField, const QVariant &value) :
     op(op), nestedConditions(nestedConditions), leftField(leftField),
@@ -86,45 +78,45 @@ auto Condition::generate() const -> QString {
 }
 
 IsNull::IsNull(const QString &field) :
-    Condition(IS + NULLABLE, {}, field, QString(), QVariant()) {}
+    Condition(" is null ", {}, field, QString(), QVariant()) {}
 
 IsNotNull::IsNotNull(const QString &field) :
-    Condition(IS + NOT + NULLABLE, {}, field, QString(), QVariant()) {}
+    Condition(" is not null ", {}, field, QString(), QVariant()) {}
 
 auto Equals::field(const QString &field, const QVariant &value) -> Condition {
-    return Condition(EQUALS, {}, field, QString(), value);
+    return Condition(" = ", {}, field, QString(), value);
 }
 
 auto Equals::fields(const QString &left, const QString &right) -> Condition {
-    return Condition(EQUALS, {}, left, right, QVariant());
+    return Condition(" = ", {}, left, right, QVariant());
 }
 
 auto Equals::selection(const Selection &selection, const QVariant &value) -> Condition {
-    return Condition(EQUALS, {}, selection, QString(), value);
+    return Condition(" = ", {}, selection, QString(), value);
 }
 
 auto Equals::selections(const Selection &right, const Selection &left) -> Condition {
-    return Condition(EQUALS, {}, right, left, QVariant());
+    return Condition(" = ", {}, right, left, QVariant());
 }
 
 auto NotEquals::field(const QString &field, const QVariant &value) -> Condition {
-    return Condition(NOT_EQUALS, {}, field, QString(), value);
+    return Condition(" <> ", {}, field, QString(), value);
 }
 
 auto NotEquals::fields(const QString &left, const QString &right) -> Condition {
-    return Condition(NOT_EQUALS, {}, left, right, QVariant());
+    return Condition(" <> ", {}, left, right, QVariant());
 }
 
 auto NotEquals::selection(const Selection &selection, const QVariant &value) -> Condition {
-    return Condition(NOT_EQUALS, {}, selection, QString(), value);
+    return Condition(" <> ", {}, selection, QString(), value);
 }
 
 auto NotEquals::selections(const Selection &right, const Selection &left) -> Condition {
-    return Condition(NOT_EQUALS, {}, right, left, QVariant());
+    return Condition(" <> ", {}, right, left, QVariant());
 }
 
 And::And(const std::list<Condition> &conditions) :
-    Condition(AND, conditions, QString(), QString(), QVariant()) {}
+    Condition(" and ", conditions, QString(), QString(), QVariant()) {}
 
 Or::Or(const std::list<Condition> &conditions) :
-    Condition(OR, conditions, QString(), QString(), QVariant()) {}
+    Condition(" or ", conditions, QString(), QString(), QVariant()) {}

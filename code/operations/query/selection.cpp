@@ -1,11 +1,5 @@
 #include "selection.h"
 
-const QString AS = " as ";
-const QString SUM = " sum";
-const QString STRFTIME = " strftime";
-const QString LOWER = " lower";
-const QString COMMA = ", ";
-
 Selection::Selection(const QString &fieldName, const QString &renamedTo) :
     fieldName(fieldName), renamedTo(renamedTo) {}
 
@@ -18,7 +12,7 @@ auto Selection::getRenamedTo() const -> QString {
 }
 
 auto Selection::generate() const -> QString {
-    return (this->fieldName + (this->renamedTo.isNull() ? "" : AS + this->renamedTo)).simplified();
+    return (this->fieldName + (this->renamedTo.isNull() ? "" : " as " + this->renamedTo)).simplified();
 }
 
 auto Selection::operator == (const Selection &selection) const -> bool {
@@ -30,10 +24,10 @@ auto Selection::operator != (const Selection &selection) const -> bool {
 }
 
 Sum::Sum(const QString &fieldToSum, const QString &renameTo) :
-    Selection(SUM + "(" + fieldToSum + ")", renameTo) {}
+    Selection("sum(" + fieldToSum + ")", renameTo) {}
 
 DateFormatter::DateFormatter(const QString &format, const QString &fieldToFormat, const QString &renameTo) :
-    Selection(STRFTIME + "('" + format + "'" + COMMA + fieldToFormat + ")", renameTo) {}
+    Selection("strftime('" + format + "', " + fieldToFormat + ")", renameTo) {}
 
 Lower::Lower(const QString &fieldToLower) :
-    Selection(LOWER + "(" +  fieldToLower + ")", QString()) {}
+    Selection("lower(" +  fieldToLower + ")", QString()) {}

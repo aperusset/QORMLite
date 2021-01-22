@@ -3,7 +3,7 @@
 #include "operations/model/type.h"
 
 const QString FieldTest::DEFAULT_NAME = "defaultName";
-const Type FieldTest::DEFAULT_TYPE = QORMType::integer;
+const Type FieldTest::DEFAULT_TYPE = Integer();
 const QString FieldTest::DEFAULT_VALUE = "'defaultValue'";
 
 void FieldTest::generateNotNullWithoutDefaultValue() {

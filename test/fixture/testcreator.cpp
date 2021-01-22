@@ -14,7 +14,7 @@ const QString TestCreator::TEST_FIELD = "test_field";
 
 void TestCreator::createTables(const QORMDatabase &database) const {
 
-    auto const primaryKey = PrimaryKey(QORMField::notNullWithoutDefaultValue(TEST_FIELD, QORMType::integer));
+    auto const primaryKey = PrimaryKey(QORMField::notNullWithoutDefaultValue(TEST_FIELD, Integer()));
     database.execute(Table(TEST_TABLE, primaryKey));
 }
 

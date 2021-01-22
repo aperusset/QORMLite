@@ -230,7 +230,7 @@ void QORMDatabaseTest::entitiesShouldReturnNonEmptyList() {
 
     // Then
     QVERIFY(convertible);
-    QCOMPARE(2, list.size());
+    QCOMPARE(2U, list.size());
 }
 
 void QORMDatabaseTest::entitiesShouldReturnEmptyList() {

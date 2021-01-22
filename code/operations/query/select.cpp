@@ -1,9 +1,7 @@
 #include "select.h"
 #include "qormutils.h"
 
-const QString ALL = " * ";
-
-Select::Select(const QString &tableName) : Select(tableName, {QString(ALL)}) {}
+Select::Select(const QString &tableName) : Select(tableName, {QString(" * ")}) {}
 
 Select::Select(const QString &tableName, const std::list<Selection> &selections) :
     TableQuery(tableName), selections(selections) {}
@@ -57,7 +55,7 @@ auto Select::generate() const -> QString {
     QStringList generatedOrders;
     std::transform(this->orders.begin(), this->orders.end(), std::back_inserter(generatedOrders),
         [this, &generatedSelections](const Order &order) -> QString {
-            if (std::find(this->selections.begin(), this->selections.end(), Selection(ALL)) == this->selections.end() &&
+            if (std::find(this->selections.begin(), this->selections.end(), Selection(" * ")) == this->selections.end() &&
                 std::find(this->selections.begin(), this->selections.end(), Selection(order.getFieldName())) == this->selections.end()) {
                 generatedSelections << order.getFieldName();
             }

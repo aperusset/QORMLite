@@ -1,10 +1,6 @@
 #include "primarykey.h"
 #include <QStringList>
 
-const QString PRIMARY_KEY = " primary key ";
-const QString AUTO_INCREMENT = " autoincrement ";
-const QString COMMA = ", ";
-
 PrimaryKey::PrimaryKey(const Field &field, const bool autoIncrement) :
     fields({field}), autoIncrement(autoIncrement) {}
 
@@ -28,14 +24,12 @@ auto PrimaryKey::generate() const -> QString {
     if (this->fields.size() == 1 && this->autoIncrement) {
         return (
             this->fields.front().generate() +
-            PRIMARY_KEY + AUTO_INCREMENT
+            " primary key autoincrement"
         ).simplified();
     }
     QStringList constraintFields;
     for (auto const &field : this->fields) {
         constraintFields << field.getName();
     }
-    return (PRIMARY_KEY +
-        "(" + constraintFields.join(COMMA) + ")"
-    ).simplified();
+    return (" primary key (" + constraintFields.join(", ") + ")").simplified();
 }

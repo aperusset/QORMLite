@@ -2,16 +2,6 @@
 #include "field.h"
 #include <QStringList>
 
-const QString CONSTRAINT = " constraint ";
-const QString FOREIGN_KEY = " foreign key ";
-const QString REFERENCES = " references ";
-const QString ON_DELETE = " on delete ";
-const QString RESTRICT = " restrict ";
-const QString CASCADE = " cascade ";
-const QString SET_NULL = " set null ";
-const QString SET_DEFAULT = " set default ";
-const QString COMMA = ", ";
-
 ForeignKey::ForeignKey(const std::list<Reference> &references, const QString &targetTable, const OnAction &onAction) :
     references(references), targetTable(targetTable), onAction(onAction) {
 
@@ -33,28 +23,28 @@ auto ForeignKey::getOnAction() const -> OnAction {
 }
 
 auto ForeignKey::generate() const -> QString {
-    QString foreignKey = CONSTRAINT + "[" + targetTable.toLower() + "_fk]";
+    QString foreignKey = "constraint [" + targetTable.toLower() + "_fk] ";
     QStringList fromFieldNames;
     QStringList toFieldNames;
     for (auto const &reference : references) {
         fromFieldNames << reference.getFrom().getName();
         toFieldNames << reference.getTo().getName();
     }
-    foreignKey += FOREIGN_KEY + "(" + fromFieldNames.join(COMMA) + ")" +
-                  REFERENCES + "[" + targetTable + "](" + toFieldNames.join(COMMA) + ")" +
-                  ON_DELETE;
+    foreignKey += "foreign key (" + fromFieldNames.join(", ") + ") " +
+                  "references [" + targetTable + "](" + toFieldNames.join(", ") + ") " +
+                  "on delete ";
     switch (this->onAction) {
     case OnAction::Cascade:
-        foreignKey += CASCADE;
+        foreignKey += "cascade";
         break;
     case OnAction::Restrict:
-        foreignKey += RESTRICT;
+        foreignKey += "restrict";
         break;
     case OnAction::SetNull:
-        foreignKey += SET_NULL;
+        foreignKey += "set null";
         break;
     case OnAction::SetDefault:
-        foreignKey += SET_DEFAULT;
+        foreignKey += "set default";
         break;
     }
     return foreignKey.simplified();

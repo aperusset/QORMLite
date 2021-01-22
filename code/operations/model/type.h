@@ -44,12 +44,4 @@ public:
    Date();
 };
 
-namespace QORMType {
-
-    const Integer integer;
-    const Decimal decimal;
-    const Varchar varchar;
-    const Date date;
-}
-
 #endif // TYPE_H

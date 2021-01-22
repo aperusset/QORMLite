@@ -1,7 +1,5 @@
 #include "qormdatabase.h"
 
-const QString DATABASE_DRIVER = "QSQLITE";
-
 auto getDatabase(const QString &name) -> QSqlDatabase {
     return QSqlDatabase::database(name, false);
 }
@@ -73,7 +71,7 @@ auto QORMDatabase::isConnected() const -> bool {
 auto QORMDatabase::connect() -> bool {
     if (!this->isConnected()) {
         deleteIfTestMode(this->name, this->test);
-        auto database = QSqlDatabase::addDatabase(DATABASE_DRIVER, this->name);
+        auto database = QSqlDatabase::addDatabase("QSQLITE", this->name);
         database.setDatabaseName(this->name);
         auto const callCreator = !QFile::exists(database.databaseName());
         if (database.open()) {

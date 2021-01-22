@@ -4,8 +4,6 @@
 #include <QtTest/QtTest>
 #include "fixture/testcreator.h"
 
-const QString DEFAULT_DATABASE_NAME;
-
 class QORMCreatorTest : public QObject {
 
     Q_OBJECT

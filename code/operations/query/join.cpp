@@ -1,10 +1,5 @@
 #include "join.h"
 
-const QString INNERJOIN = " inner join ";
-const QString LEFTJOIN = " left join ";
-const QString CROSSJOIN = " cross join ";
-const QString ON = " on ";
-
 Join::Join(const JoinType &joinType, const QString &table, const std::list<Condition> &conditions) :
     joinType(joinType), table(table), condition(And(conditions)) {}
 
@@ -24,11 +19,11 @@ auto Join::generate() const -> QString {
     QString query;
     switch(this->joinType) {
         case JoinType::Inner:
-            query += INNERJOIN;
+            query += "inner join ";
             break;
         case JoinType::Left:
-            query += LEFTJOIN;
+            query += "left join ";
             break;
     }
-    return (query += this->table + ON + this->condition.generate()).simplified();
+    return (query += this->table + " on " + this->condition.generate()).simplified();
 }

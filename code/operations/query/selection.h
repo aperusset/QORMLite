@@ -10,6 +10,7 @@ class Selection : public Operation {
     const QString renamedTo;
 
 public:
+    // implicit conversion from String for a more concise Select query write
     Selection(const QString &fieldName, const QString &renamedTo = QString());
     auto getFieldName() const -> QString;
     auto getRenamedTo() const -> QString;

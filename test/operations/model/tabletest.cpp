@@ -6,8 +6,8 @@
 #include "operations/model/table.h"
 
 const QString TableTest::DEFAULT_TABLE_NAME = "test_table";
-const Field TableTest::DEFAULT_FIELD_1 = QORMField::notNullWithoutDefaultValue("field1", QORMType::integer);
-const Field TableTest::DEFAULT_FIELD_2 = QORMField::notNullWithoutDefaultValue("field2", QORMType::integer);
+const Field TableTest::DEFAULT_FIELD_1 = QORMField::notNullWithoutDefaultValue("field1", Integer());
+const Field TableTest::DEFAULT_FIELD_2 = QORMField::notNullWithoutDefaultValue("field2", Integer());
 
 void TableTest::autoIncrementedPrimaryKeyWithoutFields() {
 

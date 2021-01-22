@@ -1,8 +1,6 @@
 #include "assignement.h"
 #include "qormutils.h"
 
-const QString EQUALS = " = ";
-
 Assignement::Assignement(const QString &fieldName, const QVariant &value) :
     fieldName(fieldName), parameter(QORMUtils::parametrize(fieldName)), value(value) {}
 
@@ -19,5 +17,5 @@ auto Assignement::getValue() const -> QVariant {
 }
 
 auto Assignement::generate() const -> QString {
-    return (this->fieldName + EQUALS + this->parameter).simplified();
+    return (this->fieldName + " = " + this->parameter).simplified();
 }
