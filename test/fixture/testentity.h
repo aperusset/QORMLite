@@ -3,7 +3,7 @@
 
 #include "qormentity.h"
 
-class TestEntity : public QORMEntity<int> {
+class TestEntity : public QORMEntity<> {
 
 public:
     explicit TestEntity(const int key);

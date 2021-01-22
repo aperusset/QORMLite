@@ -6,7 +6,7 @@
 #include "qormobserver.h"
 #include "operations/query/condition.h"
 
-template<typename Key>
+template<typename Key = int>
 class QORMEntity {
 
     Key key;

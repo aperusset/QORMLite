@@ -1,7 +1,7 @@
 #ifndef QORMOBSERVER_H
 #define QORMOBSERVER_H
 
-template<typename Key>
+template<typename Key = int>
 class QORMObserver {
 
 public:

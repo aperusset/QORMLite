@@ -70,6 +70,7 @@ void QORMCreatorTest::createAllAndPopulateShouldSuccess() {
 
     // When
     testCreator.createAllAndPopulate(database);
+    TestCreator::insert(database, Insert(TestCreator::TEST_TABLE));
 
     // Then
     QVERIFY(database.execute(Select(TestCreator::TEST_TABLE)).next());

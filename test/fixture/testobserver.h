@@ -3,7 +3,7 @@
 
 #include "qormobserver.h"
 
-class TestObserver : public QORMObserver<int>  {
+class TestObserver : public QORMObserver<>  {
 
     static const int INVALID_KEY = -1;
 

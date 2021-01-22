@@ -9,7 +9,7 @@ public:
     explicit TestCreator() {};
     void createTables(const QORMDatabase&) const override;
     void createViews(const QORMDatabase&) const override;
-    void populate(const QORMDatabase&) const override;
+    void populate(const QORMDatabase&) const override {};
 
     static const QString TEST_TABLE;
     static const QString TEST_VIEW;

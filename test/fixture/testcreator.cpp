@@ -22,8 +22,3 @@ void TestCreator::createViews(const QORMDatabase &database) const {
 
     database.execute(View(TEST_VIEW, Select(TEST_TABLE)));
 }
-
-void TestCreator::populate(const QORMDatabase &database) const {
-
-    database.execute(Insert(TEST_TABLE));
-}

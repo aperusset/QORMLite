@@ -20,11 +20,19 @@ private slots:
     void subsequentConnectShouldReturnFalse();
     void disconnectShouldNotDeleteDatabase();
     void disconnectShouldDeleteDatabaseInTestMode();
+    void optimizeShouldSuccess();
+    void backupShouldSuccessAndCreateFile();
     void prepareExecuteShouldFailWithInvalidQuery();
     void executeShouldSuccessWithTextQuery();
     void executeShouldSuccessWithBuiltQuery();
-    void optimizeShouldSuccess();
-    void backupShouldSuccessAndCreateFile();
+    void existsShouldReturnTrue();
+    void existsShouldReturnFalse();
+    void insertAndRetrieveKeyAsIntShouldSuccess();
+    void insertAndRetrieveKeyAsIntShouldFail();
+    void entitiesShouldReturnNonEmptyList();
+    void entitiesShouldReturnEmptyList();
+    void resultShouldReturnDefaultValueIfNoResult();
+    void resultShouldReturnQueryValue();
 
     static void cleanup();
 };

@@ -2,9 +2,11 @@
 #define QORMDATABASE_H
 
 #include <QtSql>
+#include <QSqlRecord>
 #include "qormcreator.h"
 #include "qormentity.h"
 #include "operations/query.h"
+#include "operations/query/insert.h"
 #include "operations/query/select.h"
 
 class QORMDatabase {
@@ -42,15 +44,42 @@ public:
     auto execute(const Query&) const -> QSqlQuery;
 
     auto exists(const QString &table, const std::list<Condition>&) const -> bool;
-    //auto referenced(const QString &sourceTable, const QString &destinationTable) const -> bool;
 
-     /* TODO (templated functions ?, db creator needed)
-      * isReferenced
-      * insertAndRetrieveId -> lastInsertedId needed ?
-      * select to return a list of entities
-      * select to return a result or a default value
-      * printQuery for verbose mode
-      */
+    template<typename Key = int>
+    auto insertAndRetrieveKey(const Insert &insert,
+        const std::function<Key(const QVariant&)> &keyExtractor =
+            [](const QVariant &result) -> int {
+                if (!result.isValid() || !result.canConvert<int>()) {
+                    throw std::string("Failed to retrieve last inserted ID as integer");
+                }
+                return result.toInt();
+            }
+    ) const -> Key {
+        return keyExtractor(this->execute(insert).lastInsertId());
+    }
+
+    template<class Entity>
+    auto entities(
+        const Select &select,
+        const std::function<Entity&(const QSqlRecord&)> &extractor
+    ) const -> std::list<std::reference_wrapper<Entity>> {
+        std::list<std::reference_wrapper<Entity>> entities;
+        auto results = this->execute(select);
+        while(results.next()) {
+            entities.push_back(extractor(results.record()));
+        }
+        return entities;
+    }
+
+    template<typename Result>
+    auto result(
+        const Select &select,
+        const Result &defaultValue,
+        const std::function<Result(const QSqlRecord&)> &extractor
+    ) const -> Result {
+        auto result = this->execute(select);
+        return result.next() ? extractor(result.record()) : defaultValue;
+    }
 };
 
 #endif // QORMDATABASE_H
