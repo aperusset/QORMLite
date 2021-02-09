@@ -12,6 +12,7 @@ void deleteIfTestMode(const QString &name, bool test) {
 }
 
 QORMDatabase::QORMDatabase(const QString &name, const QORMCreator &creator, bool verbose, bool test) :
+    databaseMutex(QMutex::RecursionMode::Recursive),
     name(name), creator(creator), verbose(verbose), test(test) {}
 
 QORMDatabase::~QORMDatabase() {
@@ -66,6 +67,7 @@ auto QORMDatabase::isConnected() const -> bool {
 }
 
 auto QORMDatabase::connect() -> bool {
+    const QMutexLocker lock(&databaseMutex);
     if (!this->isConnected()) {
         deleteIfTestMode(this->name, this->test);
         auto database = QSqlDatabase::addDatabase("QSQLITE", this->name);
@@ -85,6 +87,7 @@ auto QORMDatabase::connect() -> bool {
 }
 
 void QORMDatabase::disconnect() {
+    const QMutexLocker lock(&databaseMutex);
     if (this->isConnected()) {
         getDatabase(this->name).close();
         deleteIfTestMode(this->name, this->test);
@@ -98,6 +101,7 @@ void QORMDatabase::optimize() const {
 }
 
 auto QORMDatabase::backup(const QString &fileName) -> bool {
+    const QMutexLocker lock(&databaseMutex);
     auto const databaseName = getDatabase(this->name).databaseName();
     this->optimize();
     this->disconnect();

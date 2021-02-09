@@ -3,6 +3,7 @@
 
 #include <QtSql>
 #include <QSqlRecord>
+#include <QMutex>
 #include "qormcreator.h"
 #include "qormentity.h"
 #include "operations/query.h"
@@ -10,6 +11,8 @@
 #include "operations/query/select.h"
 
 class QORMDatabase {
+
+    QMutex databaseMutex;
 
     const QString name;
     const QORMCreator &creator;

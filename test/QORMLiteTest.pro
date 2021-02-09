@@ -31,6 +31,7 @@ SOURCES +=  \
   qormcreatortest.cpp \
   qormdatabasetest.cpp \
   qormentitytest.cpp \
+  qormlitetest.cpp \
   qormobservertest.cpp \
   qormutilstest.cpp
 
@@ -58,6 +59,7 @@ HEADERS += \
   qormcreatortest.h \
   qormdatabasetest.h \
   qormentitytest.h \
+  qormlitetest.h \
   qormobservertest.h \
   qormutilstest.h
 

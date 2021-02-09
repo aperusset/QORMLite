@@ -29,6 +29,7 @@ SOURCES += \
   operations/query/update.cpp \
   qormcreator.cpp \
   qormdatabase.cpp \
+  qormlite.cpp \
   qormutils.cpp
 
 HEADERS += \
@@ -55,6 +56,7 @@ HEADERS += \
   qormcreator.h \
   qormdatabase.h \
   qormentity.h \
+  qormlite.h \
   qormobserver.h \
   qormutils.h
 

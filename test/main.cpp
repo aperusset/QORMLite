@@ -20,6 +20,7 @@
 #include "operations/query/deletetest.h"
 #include "qormdatabasetest.h"
 #include "qormcreatortest.h"
+#include "qormlitetest.h"
 
 /*
  * Thanks to https://alexhuszagh.github.io/2016/using-qttest-effectively/
@@ -54,6 +55,7 @@ auto main(int argc, char *argv[]) -> int {
         runTest(DeleteTest());
         runTest(QORMDatabaseTest());
         runTest(QORMCreatorTest());
+        runTest(QORMLiteTest());
     } catch (std::string &exception) {
         qFatal("Uncaught exception : %s", exception.c_str());
         return EXIT_FAILURE;
