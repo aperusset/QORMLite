@@ -65,7 +65,7 @@ auto Select::generate() const -> QString {
     QString select = std::accumulate(this->joins.begin(), this->joins.end(),
         "select distinct " + generatedSelections.join(", ") + " from " + this->getTableName(),
          [](const QString &acc, const Join &join) -> QString {
-             return acc + join.generate();
+             return acc + " " + join.generate();
          }
     );
     if (!this->conditions.empty()) {

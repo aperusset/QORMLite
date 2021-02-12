@@ -13,7 +13,7 @@ void deleteIfTestMode(const QString &name, bool test) {
 
 QORMDatabase::QORMDatabase(const QString &name, const QORMCreator &creator, bool verbose, bool test) :
     databaseMutex(QMutex::RecursionMode::Recursive),
-    name(name), creator(creator), verbose(verbose), test(test) {}
+    name(name + ".db"), creator(creator), verbose(verbose), test(test) {}
 
 QORMDatabase::~QORMDatabase() {
     this->disconnect();

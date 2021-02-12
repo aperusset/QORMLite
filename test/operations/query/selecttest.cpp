@@ -77,8 +77,8 @@ void SelectTest::selectAllWithJoins() {
     QVERIFY(!select.willBind(fieldCondition));
     QVERIFY(select.willBind(bindedCondition));
     QCOMPARE(generated,
-        "select distinct * from " + DEFAULT_TABLE_NAME +
-        innerJoin.generate() + leftJoin.generate()
+        "select distinct * from " + DEFAULT_TABLE_NAME + " " +
+        innerJoin.generate() + " " + leftJoin.generate()
     );
 }
 
