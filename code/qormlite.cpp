@@ -5,9 +5,13 @@
 QMutex poolMutex;
 std::map<QString, QORMDatabase*> pool;
 
+auto QORMLite::isInitialized(const QString &name) -> bool {
+    return pool.count(name);
+}
+
 void QORMLite::initialize(const QString &name, const QORMCreator &creator, bool verbose, bool test) {
     const QMutexLocker lock(&poolMutex);
-    if (pool.count(name)) {
+    if (isInitialized(name)) {
         throw std::string("This database is already initialized");
     }
     qDebug("Initializing database %s in %s mode.", qUtf8Printable(name), test ? "test" : "production");
@@ -16,7 +20,7 @@ void QORMLite::initialize(const QString &name, const QORMCreator &creator, bool 
 
 auto QORMLite::get(const QString &name) -> QORMDatabase& {
     const QMutexLocker lock(&poolMutex);
-    if (!pool.count(name)) {
+    if (!isInitialized(name)) {
         throw std::string("You must initialize the database before using it");
     }
     return *pool[name];
@@ -24,7 +28,7 @@ auto QORMLite::get(const QString &name) -> QORMDatabase& {
 
 void QORMLite::destroy(const QString &name) {
     const QMutexLocker lock(&poolMutex);
-    if (pool.count(name)) {
+    if (isInitialized(name)) {
         delete pool[name];
         pool.erase(name);
     }
