@@ -6,9 +6,12 @@
 #include <QMutex>
 #include "qormcreator.h"
 #include "qormentity.h"
+#include "qormutils.h"
 #include "operations/query.h"
 #include "operations/query/insert.h"
 #include "operations/query/select.h"
+#include "operations/query/update.h"
+#include "operations/query/delete.h"
 
 class QORMDatabase {
 
@@ -59,6 +62,18 @@ public:
             }
     ) const -> Key {
         return keyExtractor(this->execute(insert).lastInsertId());
+    }
+
+    template<class Entity>
+    auto entity(
+        const Select &select,
+        const std::function<Entity&(const QSqlRecord&)> &extractor
+    ) const -> Entity& {
+        std::list<std::reference_wrapper<Entity>> allEntites = entities(select, extractor);
+        if (allEntites.empty()) {
+            throw std::string("No entity found with given query : ") + select.generate().toStdString();
+        }
+        return allEntites.front().get();
     }
 
     template<class Entity>

@@ -17,6 +17,7 @@ private slots:
     }
 
     void insert();
+    void insertShouldFail();
     void contains();
     void getShouldSuccess();
     void getShouldFail();

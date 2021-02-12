@@ -16,6 +16,9 @@ class QORMCache {
 
 public:
     auto insert(const Key &key, Entity* const entity) -> Entity& {
+        if (entity == nullptr) {
+            throw std::string("Cannot store a null entity") + std::string(" with key ") + std::to_string(key);
+        }
         if (!this->contains(key)) {
             entities.insert(std::make_pair(key, std::unique_ptr<Entity>(entity)));
         }
@@ -33,8 +36,8 @@ public:
         throw std::string("Cannot retrieve an entity of type ") + typeid(this).name() + std::string(" with key ") + std::to_string(key);
     }
 
-    auto getOrCreate(const Key &key, const std::function<Entity*()> &creator) -> Entity& {
-        return this->contains(key) ? this->get(key) : this->insert(key, creator());
+    auto getOrCreate(const Key &key, const std::function<Entity&()> &creator) -> Entity& {
+        return this->contains(key) ? this->get(key) : creator();
     }
 
     auto remove(const Key &key) -> bool {

@@ -5,6 +5,11 @@ Update::Update(const QString &tableName, const std::list<Assignement> &assigneme
 
 Update::Update(const QString &tableName,
                const std::list<Assignement> &assignements,
+               const Condition &condition) :
+    Update(tableName, assignements, std::list<Condition>({condition})) {}
+
+Update::Update(const QString &tableName,
+               const std::list<Assignement> &assignements,
                const std::list<Condition> &conditions) :
     TableQuery(tableName), assignements(assignements), conditions(conditions) {
 

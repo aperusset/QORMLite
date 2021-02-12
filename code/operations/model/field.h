@@ -24,10 +24,10 @@ public:
 
 namespace QORMField {
 
-    auto notNullWithoutDefaultValue(const QString &name, const Type&) -> Field;
-    auto notNullWithDefaultValue(const QString &name, const Type&, const QString &defaultValue) -> Field;
-    auto nullableWithoutDefaultValue(const QString &name, const Type&) -> Field;
-    auto nullableWithDefaultValue(const QString &name, const Type&, const QString &defaultValue) -> Field;
+    auto notNull(const QString &name, const Type&) -> Field;
+    auto notNullWithDefault(const QString &name, const Type&, const QString &defaultValue) -> Field;
+    auto nullable(const QString &name, const Type&) -> Field;
+    auto nullableWithDefault(const QString &name, const Type&, const QString &defaultValue) -> Field;
 }
 
 #endif // FIELD_H

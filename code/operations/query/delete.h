@@ -11,7 +11,8 @@ class Delete : public TableQuery {
 
 public:
     explicit Delete(const QString &tableName);
-    Delete(const QString &tableName, const std::list<Condition> &conditions);
+    Delete(const QString &tableName, const Condition&);
+    Delete(const QString &tableName, const std::list<Condition>&);
     auto getConditions() const -> std::list<Condition>;
     auto generate() const -> QString override;
 };

@@ -52,6 +52,12 @@ void TypeTest::varcharGenerate() {
     QCOMPARE("varchar(" + QString::number(Varchar::DEFAULT_SIZE) + ")", generated);
 }
 
+void TypeTest::emptyIsCompliant() {
+
+    // Given / When / then
+    QCOMPARE("''", Varchar::EMPTY);
+}
+
 void TypeTest::dateGenerate() {
 
     // When
@@ -59,4 +65,10 @@ void TypeTest::dateGenerate() {
 
     // Then
     QCOMPARE("date", generated);
+}
+
+void TypeTest::nowIsCompliant() {
+
+    // Given / When / then
+    QCOMPARE("date('now')", Date::NOW);
 }

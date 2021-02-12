@@ -13,6 +13,7 @@ class Update : public TableQuery {
 
 public:
     Update(const QString &tableName, const std::list<Assignement>&);
+    Update(const QString &tableName, const std::list<Assignement>&, const Condition&);
     Update(const QString &tableName, const std::list<Assignement>&, const std::list<Condition>&);
     auto getAssignements() const -> std::list<Assignement>;
     auto getConditions() const -> std::list<Condition>;

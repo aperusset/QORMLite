@@ -29,6 +29,8 @@ private slots:
     void existsShouldReturnFalse();
     void insertAndRetrieveKeyAsIntShouldSuccess();
     void insertAndRetrieveKeyAsIntShouldFail();
+    void entityShouldSuccess();
+    void entityShouldThrowWhenNothingFound();
     void entitiesShouldReturnNonEmptyList();
     void entitiesShouldReturnEmptyList();
     void resultShouldReturnDefaultValueIfNoResult();

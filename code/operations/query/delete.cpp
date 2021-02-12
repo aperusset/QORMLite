@@ -2,6 +2,8 @@
 
 Delete::Delete(const QString &tableName) : Delete(tableName, {}) {};
 
+Delete::Delete(const QString &tableName, const Condition &condition) : Delete(tableName, std::list<Condition>({condition})) {};
+
 Delete::Delete(const QString &tableName, const std::list<Condition> &conditions) :
     TableQuery(tableName), conditions(conditions) {
 

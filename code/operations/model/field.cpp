@@ -37,18 +37,18 @@ auto Field::operator != (const Field &field) const -> bool {
     return !(*this == field);
 }
 
-auto QORMField::notNullWithoutDefaultValue(const QString &name, const Type &type) -> Field {
+auto QORMField::notNull(const QString &name, const Type &type) -> Field {
     return Field(name, type, false, QString());
 }
 
-auto QORMField::notNullWithDefaultValue(const QString &name, const Type &type, const QString &defaultValue) -> Field {
+auto QORMField::notNullWithDefault(const QString &name, const Type &type, const QString &defaultValue) -> Field {
     return Field(name, type, false, defaultValue);
 }
 
-auto QORMField::nullableWithoutDefaultValue(const QString &name, const Type &type) -> Field {
+auto QORMField::nullable(const QString &name, const Type &type) -> Field {
     return Field(name, type, true, QString());
 }
 
-auto QORMField::nullableWithDefaultValue(const QString &name, const Type &type, const QString &defaultValue) -> Field {
+auto QORMField::nullableWithDefault(const QString &name, const Type &type, const QString &defaultValue) -> Field {
     return Field(name, type, true, defaultValue);
 }

@@ -11,7 +11,7 @@ void QORMCreatorTest::createTableShouldSuccess() {
 
     // Given
     QORMDatabase database(DEFAULT_DATABASE_NAME, fakeCreator, false, true);
-    auto const primaryKey = PrimaryKey(QORMField::notNullWithoutDefaultValue(TestCreator::TEST_FIELD, Integer()));
+    auto const primaryKey = PrimaryKey(QORMField::notNull(TestCreator::TEST_FIELD, Integer()));
     database.connect();
 
     // When

@@ -18,6 +18,7 @@ class Select : public TableQuery {
 public:
     explicit Select(const QString &tableName);
     Select(const QString &tableName, const std::list<Selection>&);
+    // TODO Select(const QString &tableName, const std::list<QString>&);
     auto getSelections() const -> std::list<Selection>;
     auto getJoins() const -> std::list<Join>;
     auto getConditions() const -> std::list<Condition>;
@@ -26,6 +27,7 @@ public:
 
     auto join(const std::list<Join>&) -> Select&;
     auto where(const std::list<Condition>&) -> Select&;
+    // auto groupBy(...) -> Select&;
     auto orderBy(const std::list<Order>&) -> Select&;
 };
 

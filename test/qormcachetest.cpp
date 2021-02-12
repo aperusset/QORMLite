@@ -21,6 +21,15 @@ void QORMCacheTest::insert() {
     delete entity3;
 }
 
+void QORMCacheTest::insertShouldFail() {
+
+    // Given / When / Then
+    QVERIFY_EXCEPTION_THROWN(
+        cache.insert(0, nullptr),
+        std::string
+    );
+}
+
 void QORMCacheTest::contains() {
 
     // Given
@@ -70,8 +79,9 @@ void QORMCacheTest::getOrCreate() {
 
     // When
     auto const &retrievedEntity = cache.getOrCreate(
-        entity->getKey(), [entity]() -> TestEntity* {
-            return entity;
+        entity->getKey(), [this, entity]() -> TestEntity& {
+            this->cache.insert(entity->getKey(), entity);
+            return *entity;
         }
     );
 

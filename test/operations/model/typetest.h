@@ -13,7 +13,9 @@ private slots:
     static void integerGenerate();
     static void decimalGenerate();
     static void varcharGenerate();
+    static void emptyIsCompliant();
     static void dateGenerate();
+    static void nowIsCompliant();
 };
 
 #endif // TYPETEST_H

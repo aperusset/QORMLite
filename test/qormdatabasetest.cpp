@@ -210,6 +210,49 @@ void QORMDatabaseTest::insertAndRetrieveKeyAsIntShouldFail() {
     );
 }
 
+void QORMDatabaseTest::entityShouldSuccess() {
+
+    // Given
+    QORMDatabase database(DEFAULT_DATABASE_NAME, this->testCreator, false, false);
+    TestEntity testEntity(DEFAULT_VALUE);
+    bool convertible = false;
+
+    // When
+    database.connect();
+    database.execute(Insert(TestCreator::TEST_TABLE));
+    auto const &entity = database.entity<TestEntity>(Select(TestCreator::TEST_TABLE),
+        [&testEntity, &convertible](const QSqlRecord &record) -> TestEntity& {
+            convertible = record.value(TestCreator::TEST_FIELD).canConvert<int>();
+            return testEntity;
+        }
+    );
+
+    // Then
+    QVERIFY(convertible);
+    QCOMPARE(entity.getKey(), testEntity.getKey());
+}
+
+void QORMDatabaseTest::entityShouldThrowWhenNothingFound() {
+
+    // Given
+    QORMDatabase database(DEFAULT_DATABASE_NAME, this->testCreator, false, false);
+    TestEntity testEntity(DEFAULT_VALUE);
+
+    // When
+    database.connect();
+
+    // Then
+    QVERIFY_EXCEPTION_THROWN(
+        database.entity<TestEntity>(Select(TestCreator::TEST_TABLE),
+            [&testEntity](const QSqlRecord &record) -> TestEntity& {
+                record.value(TestCreator::TEST_FIELD).canConvert<int>();
+                return testEntity;
+            }
+        ),
+        std::string
+    );
+}
+
 void QORMDatabaseTest::entitiesShouldReturnNonEmptyList() {
 
     // Given
