@@ -50,7 +50,7 @@ void QORMLiteTest::getShouldSuccess() {
 
     // Then
     QVERIFY(QORMLite::isInitialized(DEFAULT_DATABASE_NAME));
-    QCOMPARE(database.getName(), DEFAULT_DATABASE_NAME);
+    QCOMPARE(database.getName(), DEFAULT_DATABASE_NAME + ".db");
 }
 
 void QORMLiteTest::destroyShouldSuccess() {

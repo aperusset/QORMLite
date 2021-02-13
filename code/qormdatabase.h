@@ -26,6 +26,9 @@ class QORMDatabase {
     auto prepare(const Query&) const -> QSqlQuery;
     auto execute(QSqlQuery) const -> QSqlQuery;
 
+    static const QString TEST_PREFIX;
+    static const QString FILE_EXTENSION;
+
 public:
     QORMDatabase(const QString &name, const QORMCreator&, bool verbose, bool test);
     ~QORMDatabase();

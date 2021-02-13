@@ -12,7 +12,7 @@ Condition::Condition(const QString &op, const std::list<Condition> &nestedCondit
         throw std::string("A condition must have an operator.");
     }
 
-    if ((this->leftField.isNull() || this->leftField.isEmpty()) && nestedConditions.empty()) {
+    if ((this->leftField.isNull() || this->leftField.isEmpty()) && this->nestedConditions.empty()) {
         throw std::string("A condition must have at least a left operand or a nested condition.");
     }
 };

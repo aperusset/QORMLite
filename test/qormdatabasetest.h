@@ -16,6 +16,7 @@ class QORMDatabaseTest : public QObject {
 private slots:
     void connectShouldFailWithInvalidDatabase();
     void connectShouldCreateDatabaseAndReturnTrue();
+    void connectShouldCreatePrefixedDatabaseAndReturnTrue();
     void connectShouldNotCreateDatabaseAndReturnFalse();
     void subsequentConnectShouldReturnFalse();
     void disconnectShouldNotDeleteDatabase();

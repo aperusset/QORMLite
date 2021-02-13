@@ -7,9 +7,9 @@
 #include "operations/query/selection.h"
 #include "fixture/testentity.h"
 
-const QString QORMDatabaseTest::DEFAULT_DATABASE_NAME = "database.db";
+const QString QORMDatabaseTest::DEFAULT_DATABASE_NAME = "database";
 const QString QORMDatabaseTest::DEFAULT_BACKUP_FILE_NAME = "database.backup";
-auto const DEFAULT_VALUE = 42;
+const int DEFAULT_VALUE = 42;
 
 void QORMDatabaseTest::connectShouldFailWithInvalidDatabase() {
 
@@ -31,7 +31,18 @@ void QORMDatabaseTest::connectShouldCreateDatabaseAndReturnTrue() {
 
     // When / Then
     QVERIFY(database.connect());
-    QVERIFY(QFile::exists(DEFAULT_DATABASE_NAME));
+    QVERIFY(QFile::exists(DEFAULT_DATABASE_NAME + ".db"));
+    QVERIFY(database.isConnected());
+}
+
+void QORMDatabaseTest::connectShouldCreatePrefixedDatabaseAndReturnTrue() {
+
+    // Given
+    QORMDatabase database(DEFAULT_DATABASE_NAME, this->testCreator, false, true);
+
+    // When / Then
+    QVERIFY(database.connect());
+    QVERIFY(QFile::exists("test_" + DEFAULT_DATABASE_NAME + ".db"));
     QVERIFY(database.isConnected());
 }
 
@@ -46,7 +57,7 @@ void QORMDatabaseTest::connectShouldNotCreateDatabaseAndReturnFalse() {
 
     // When / Then
     QVERIFY(!database.connect());
-    QVERIFY(QFile::exists(DEFAULT_DATABASE_NAME));
+    QVERIFY(QFile::exists(DEFAULT_DATABASE_NAME + ".db"));
     QVERIFY(database.isConnected());
 }
 
@@ -60,7 +71,7 @@ void QORMDatabaseTest::subsequentConnectShouldReturnFalse() {
 
     // Then
     QVERIFY(!database.connect());
-    QVERIFY(QFile::exists(DEFAULT_DATABASE_NAME));
+    QVERIFY(QFile::exists(DEFAULT_DATABASE_NAME + ".db"));
     QVERIFY(database.isConnected());
 }
 
@@ -74,7 +85,7 @@ void QORMDatabaseTest::disconnectShouldNotDeleteDatabase() {
     database.disconnect();
 
     // Then
-    QVERIFY(QFile::exists(DEFAULT_DATABASE_NAME));
+    QVERIFY(QFile::exists(DEFAULT_DATABASE_NAME + ".db"));
     QVERIFY(!database.isConnected());
 }
 
@@ -88,7 +99,7 @@ void QORMDatabaseTest::disconnectShouldDeleteDatabaseInTestMode() {
     database.disconnect();
 
     // Then
-    QVERIFY(!QFile::exists(DEFAULT_DATABASE_NAME));
+    QVERIFY(!QFile::exists(DEFAULT_DATABASE_NAME + ".db"));
     QVERIFY(database.isTest());
     QVERIFY(!database.isConnected());
 }
@@ -327,6 +338,7 @@ void QORMDatabaseTest::resultShouldReturnQueryValue() {
 }
 
 void QORMDatabaseTest::cleanup() {
-    QFile::remove(DEFAULT_DATABASE_NAME);
+    QFile::remove("test_" + DEFAULT_DATABASE_NAME + ".db");
+    QFile::remove(DEFAULT_DATABASE_NAME + ".db");
     QFile::remove(DEFAULT_BACKUP_FILE_NAME);
 }

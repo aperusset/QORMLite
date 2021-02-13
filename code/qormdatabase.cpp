@@ -11,9 +11,12 @@ void deleteIfTestMode(const QString &name, bool test) {
     }
 }
 
+const QString QORMDatabase::TEST_PREFIX = "test_";
+const QString QORMDatabase::FILE_EXTENSION = ".db";
+
 QORMDatabase::QORMDatabase(const QString &name, const QORMCreator &creator, bool verbose, bool test) :
     databaseMutex(QMutex::RecursionMode::Recursive),
-    name(name + ".db"), creator(creator), verbose(verbose), test(test) {}
+    name((test ? TEST_PREFIX : "") + name + FILE_EXTENSION), creator(creator), verbose(verbose), test(test) {}
 
 QORMDatabase::~QORMDatabase() {
     this->disconnect();
