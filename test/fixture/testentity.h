@@ -2,6 +2,7 @@
 #define TESTENTITY_H
 
 #include "qormentity.h"
+#include <memory>
 
 class TestEntity : public QORMEntity<> {
 
@@ -14,6 +15,6 @@ public:
 };
 
 const int DEFAULT_ENTITY_KEY = 42;
-auto aTestEntity(const int key = DEFAULT_ENTITY_KEY) -> TestEntity*;
+auto aTestEntity(const int key = DEFAULT_ENTITY_KEY) -> std::unique_ptr<TestEntity>;
 
 #endif // TESTENTITY_H

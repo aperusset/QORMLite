@@ -15,12 +15,13 @@ class QORMCache {
     std::map<Key, std::unique_ptr<Entity>> entities;
 
 public:
-    auto insert(const Key &key, Entity* const entity) -> Entity& {
+
+    auto insert(const Key &key, std::unique_ptr<Entity> &&entity) -> Entity& {
         if (entity == nullptr) {
             throw std::string("Cannot store a null entity") + std::string(" with key ") + std::to_string(key);
         }
         if (!this->contains(key)) {
-            entities.insert(std::make_pair(key, std::unique_ptr<Entity>(entity)));
+            entities.insert(std::make_pair(key, std::move(entity)));
         }
         return this->get(key);
     }

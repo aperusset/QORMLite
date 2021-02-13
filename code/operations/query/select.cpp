@@ -3,15 +3,12 @@
 
 Select::Select(const QString &tableName) : Select(tableName, {" * "}) {}
 
-Select::Select(const QString &tableName, const std::initializer_list<QString> &fields) :
+Select::Select(const QString &tableName, const std::list<QString> &fields) :
     TableQuery(tableName) {
     for (auto const &field : fields) {
         this->selections.push_back(Selection(field));
     }
 }
-
-Select::Select(const QString &tableName, const std::list<Selection> &selections) :
-    TableQuery(tableName), selections(selections) {}
 
 auto Select::getSelections() const -> std::list<Selection> {
     return this->selections;

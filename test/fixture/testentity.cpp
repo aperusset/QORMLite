@@ -14,6 +14,6 @@ auto TestEntity::erase() -> bool {
     return true;
 }
 
-auto aTestEntity(const int key) -> TestEntity* {
-    return new TestEntity(key);
+auto aTestEntity(const int key) -> std::unique_ptr<TestEntity> {
+    return std::unique_ptr<TestEntity>( new TestEntity(key) );
 }

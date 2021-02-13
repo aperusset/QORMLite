@@ -1,3 +1,6 @@
+QMAKE_CXXFLAGS += -std=c++0x -std=gnu++11 -Wall
+CONFIG += c++11
+
 QT += testlib sql
 QT -= gui
 
