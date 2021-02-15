@@ -6,7 +6,7 @@ Select::Select(const QString &tableName) : Select(tableName, {" * "}) {}
 Select::Select(const QString &tableName, const std::list<QString> &fields) :
     TableQuery(tableName) {
     for (auto const &field : fields) {
-        this->selections.push_back(Selection(field));
+        this->selections.emplace_back(Selection(field));
     }
 }
 

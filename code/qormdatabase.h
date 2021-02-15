@@ -72,11 +72,11 @@ public:
         const Select &select,
         const std::function<Entity&(const QSqlRecord&)> &extractor
     ) const -> Entity& {
-        std::list<std::reference_wrapper<Entity>> allEntites = entities(select, extractor);
-        if (allEntites.empty()) {
+        auto const allEntities = entities(select, extractor);
+        if (allEntities.empty()) {
             throw std::string("No entity found with given query : ") + select.generate().toStdString();
         }
-        return allEntites.front().get();
+        return allEntities.front().get();
     }
 
     template<class Entity>
