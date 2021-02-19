@@ -105,10 +105,9 @@ void QORMDatabase::optimize() const {
 
 auto QORMDatabase::backup(const QString &fileName) -> bool {
     const QMutexLocker lock(&databaseMutex);
-    auto const databaseName = getDatabase(this->name).databaseName();
     this->optimize();
     this->disconnect();
-    auto const success = QFile::copy(databaseName, fileName);
+    auto const success = QFile::copy(this->name, fileName);
     this->connect();
     return success;
 }
