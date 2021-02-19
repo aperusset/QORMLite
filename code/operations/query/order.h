@@ -14,7 +14,7 @@ class Order : public Operation {
     const Ordering ordering;
 
 protected:
-    Order(const QString &fieldName, const Ordering&);
+    Order(QString fieldName, const Ordering&);
 
 public:
     auto getFieldName() const -> QString;

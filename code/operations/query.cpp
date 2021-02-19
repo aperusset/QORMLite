@@ -21,7 +21,7 @@ auto Query::willBind(const Bindable &bindable) const -> bool {
     return this->bindables.count(bindable.getParameter());
 }
 
-TableQuery::TableQuery(const QString &tableName) : tableName(tableName) {};
+TableQuery::TableQuery(QString tableName) : tableName(std::move(tableName)) {};
 
 auto TableQuery::getTableName() const -> QString {
     return this->tableName;

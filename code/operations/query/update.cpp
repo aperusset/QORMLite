@@ -8,10 +8,10 @@ Update::Update(const QString &tableName,
                const Condition &condition) :
     Update(tableName, assignements, std::list<Condition>({condition})) {}
 
-Update::Update(const QString &tableName,
-               const std::list<Assignement> &assignements,
-               const std::list<Condition> &conditions) :
-    TableQuery(tableName), assignements(assignements), conditions(conditions) {
+Update::Update(const QString &tableName, std::list<Assignement> assignements,
+               std::list<Condition> conditions) :
+    TableQuery(tableName), assignements(std::move(assignements)),
+    conditions(std::move(conditions)) {
 
     if (this->assignements.empty()) {
         throw std::string("An update must have at least one assignement.");

@@ -1,7 +1,7 @@
 #include "join.h"
 
-Join::Join(const JoinType &joinType, const QString &table, const std::list<Condition> &conditions) :
-    joinType(joinType), table(table), condition(And(conditions)) {}
+Join::Join(const JoinType &joinType, QString table, const std::list<Condition> &conditions) :
+    joinType(joinType), table(std::move(table)), condition(And(conditions)) {}
 
 auto Join::getJoinType() const -> JoinType {
     return this->joinType;

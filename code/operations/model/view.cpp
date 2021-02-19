@@ -1,7 +1,7 @@
 #include "view.h"
 
-View::View(const QString &viewName, const Select &select) :
-    viewName(viewName), select(select) {
+View::View(QString viewName, Select select) :
+    viewName(std::move(viewName)), select(std::move(select)) {
 
     if (this->select.hasBindables()) {
         throw std::string("Cannot create a view with parametrized conditions.");

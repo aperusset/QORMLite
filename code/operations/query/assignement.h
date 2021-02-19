@@ -13,7 +13,7 @@ class Assignement : public Operation, public Bindable {
     const QVariant value;
 
 public:
-    Assignement(const QString &fieldName, const QVariant &value);
+    Assignement(QString fieldName, QVariant value);
     auto getFieldName() const -> QString;
     auto getParameter() const -> QString override;
     auto getValue() const -> QVariant override;

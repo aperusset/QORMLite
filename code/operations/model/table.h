@@ -15,7 +15,7 @@ class Table : public Query {
     const std::list<ForeignKey> foreignKeys;
 
 public:
-    Table(const QString &tableName, const PrimaryKey&, const std::list<Field>& = {}, const std::list<ForeignKey>& = {});
+    Table(QString tableName, PrimaryKey, std::list<Field> = {}, std::list<ForeignKey> = {});
     auto getTableName() const -> QString;
     auto getPrimaryKey() const -> PrimaryKey;
     auto getFields() const -> std::list<Field>;

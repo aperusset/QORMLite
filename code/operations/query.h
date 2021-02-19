@@ -30,7 +30,7 @@ class TableQuery : public Query {
     const QString tableName;
 
 protected:
-    explicit TableQuery(const QString &tableName);
+    explicit TableQuery(QString tableName);
 
 public:
     auto getTableName() const -> QString;

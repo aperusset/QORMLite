@@ -4,10 +4,10 @@
 #include <algorithm>
 #include <QStringList>
 
-Table::Table(const QString &tableName, const PrimaryKey &primaryKey,
-             const std::list<Field> &fields, const std::list<ForeignKey> &foreignKeys) :
-    tableName(tableName), primaryKey(primaryKey),
-    fields(fields), foreignKeys(foreignKeys) {}
+Table::Table(QString tableName, PrimaryKey primaryKey,
+             std::list<Field> fields, std::list<ForeignKey> foreignKeys) :
+    tableName(std::move(tableName)), primaryKey(std::move(primaryKey)),
+    fields(std::move(fields)), foreignKeys(std::move(foreignKeys)) {}
 
 auto Table::getTableName() const -> QString {
     return this->tableName;

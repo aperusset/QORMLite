@@ -10,7 +10,7 @@ class Insert : public TableQuery {
 
 public:
     explicit Insert(const QString &tableName);
-    Insert(const QString &tableName, const std::list<Assignement>&);
+    Insert(const QString &tableName, std::list<Assignement>);
     auto getAssignements() const -> std::list<Assignement>;
     auto generate() const -> QString override;
 };

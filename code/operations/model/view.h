@@ -10,7 +10,7 @@ class View : public Query {
     const Select select;
 
 public:
-    View(const QString &viewName, const Select &select);
+    View(QString viewName, Select select);
     auto getViewName() const -> QString;
     auto getSelect() const -> Select;
     auto generate() const -> QString override;

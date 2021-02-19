@@ -14,7 +14,7 @@ class Update : public TableQuery {
 public:
     Update(const QString &tableName, const std::list<Assignement>&);
     Update(const QString &tableName, const std::list<Assignement>&, const Condition&);
-    Update(const QString &tableName, const std::list<Assignement>&, const std::list<Condition>&);
+    Update(const QString &tableName, std::list<Assignement>, std::list<Condition>);
     auto getAssignements() const -> std::list<Assignement>;
     auto getConditions() const -> std::list<Condition>;
     auto generate() const -> QString override;

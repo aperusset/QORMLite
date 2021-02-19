@@ -1,7 +1,7 @@
 #include "selection.h"
 
-Selection::Selection(const QString &fieldName, const QString &renamedTo) :
-    fieldName(fieldName), renamedTo(renamedTo) {}
+Selection::Selection(QString fieldName, QString renamedTo) :
+    fieldName(std::move(fieldName)), renamedTo(std::move(renamedTo)) {}
 
 auto Selection::getFieldName() const -> QString {
     return this->fieldName;

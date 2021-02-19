@@ -1,8 +1,9 @@
 #include "field.h"
 #include "type.h"
 
-Field::Field(const QString &name, const Type &type, const bool nullable, const QString &defaultValue) :
-    name(name), type(type), nullable(nullable), defaultValue(defaultValue) {}
+Field::Field(QString name, Type type, const bool nullable, QString defaultValue) :
+    name(std::move(name)), type(std::move(type)), nullable(nullable),
+    defaultValue(std::move(defaultValue)) {}
 
 auto Field::getName() const -> QString {
     return this->name;

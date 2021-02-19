@@ -2,10 +2,10 @@
 #include "qormutils.h"
 #include <QStringList>
 
-Condition::Condition(const QString &op, const std::list<Condition> &nestedConditions,
-                     const QString &leftField, const QString &rightField, const QVariant &value) :
-    op(op), nestedConditions(nestedConditions), leftField(leftField),
-    rightField(value.isValid() ? QORMUtils::parametrize(leftField) : rightField),
+Condition::Condition(QString op, std::list<Condition> nestedConditions,
+                     QString leftField, QString rightField, const QVariant &value) :
+    op(std::move(op)), nestedConditions(std::move(nestedConditions)), leftField(std::move(leftField)),
+    rightField(value.isValid() ? QORMUtils::parametrize(this->leftField) : std::move(rightField)),
     value(value) {
 
     if (this->op.isNull() || this->op.isEmpty()) {

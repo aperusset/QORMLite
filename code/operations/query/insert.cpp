@@ -2,8 +2,8 @@
 
 Insert::Insert(const QString &tableName) : Insert(tableName, {}) {}
 
-Insert::Insert(const QString &tableName, const std::list<Assignement> &assignements) :
-    TableQuery(tableName), assignements(assignements) {
+Insert::Insert(const QString &tableName, std::list<Assignement> assignements) :
+    TableQuery(tableName), assignements(std::move(assignements)) {
 
     for (auto const &assignement : this->assignements) {
         this->addBindable(assignement);

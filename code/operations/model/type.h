@@ -8,7 +8,7 @@ class Type : public Operation {
     const QString name;
 
 public:
-    explicit Type(const QString &name);
+    explicit Type(QString name);
     auto getName() const -> QString;
     auto generate() const -> QString override;
 };

@@ -10,7 +10,7 @@ class Selection : public Operation {
     const QString renamedTo;
 
 public:
-    explicit Selection(const QString &fieldName, const QString &renamedTo = QString());
+    explicit Selection(QString fieldName, QString renamedTo = QString());
     auto getFieldName() const -> QString;
     auto getRenamedTo() const -> QString;
     auto generate() const -> QString override;

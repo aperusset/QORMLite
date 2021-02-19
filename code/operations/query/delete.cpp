@@ -4,8 +4,8 @@ Delete::Delete(const QString &tableName) : Delete(tableName, {}) {};
 
 Delete::Delete(const QString &tableName, const Condition &condition) : Delete(tableName, std::list<Condition>({condition})) {};
 
-Delete::Delete(const QString &tableName, const std::list<Condition> &conditions) :
-    TableQuery(tableName), conditions(conditions) {
+Delete::Delete(const QString &tableName, std::list<Condition> conditions) :
+    TableQuery(tableName), conditions(std::move(conditions)) {
 
     for (auto const &condition : this->conditions) {
         for (auto const &bindable : condition.getParametrizedConditions()) {

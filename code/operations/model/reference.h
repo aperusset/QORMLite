@@ -9,7 +9,7 @@ class Reference {
     const Field to;
 
 public:
-    Reference(const Field &from, const Field &to);
+    Reference(Field from, Field to);
     auto getFrom() const -> Field;
     auto getTo() const -> Field;
 };

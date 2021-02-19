@@ -19,8 +19,8 @@ class Condition : public Operation, public Bindable {
     auto isParametrized() const -> bool;
 
 public:
-    Condition(const QString &op, const std::list<Condition> &nestedConditions,
-              const QString &leftField, const QString &rightField, const QVariant &value);
+    Condition(QString op, std::list<Condition> nestedConditions,
+              QString leftField, QString rightField, const QVariant &value);
     auto getNestedConditions() const -> std::list<Condition>;
     auto getOperator() const -> QString;
     auto getLeftField() const -> QString;

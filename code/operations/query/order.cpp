@@ -1,7 +1,7 @@
 #include "order.h"
 
-Order::Order(const QString &fieldName, const Ordering &ordering) :
-    fieldName(fieldName), ordering(ordering) {}
+Order::Order(QString fieldName, const Ordering &ordering) :
+    fieldName(std::move(fieldName)), ordering(ordering) {}
 
 auto Order::getFieldName() const -> QString {
     return this->fieldName;

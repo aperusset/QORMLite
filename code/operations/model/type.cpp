@@ -1,7 +1,6 @@
 #include "type.h"
 
-Type::Type(const QString &name) :
-    name(name) {}
+Type::Type(QString name) : name(std::move(name)) {}
 
 auto Type::getName() const -> QString {
     return this->name;

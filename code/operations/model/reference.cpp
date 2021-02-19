@@ -1,7 +1,7 @@
 #include "reference.h"
 
-Reference::Reference(const Field &from, const Field &to) :
-    from(from), to(to) {}
+Reference::Reference(Field from, Field to) :
+    from(std::move(from)), to(std::move(to)) {}
 
 auto Reference::getFrom() const -> Field {
     return this->from;

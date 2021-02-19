@@ -12,7 +12,7 @@ class Field : public Operation {
     const QString defaultValue;
 
 public:
-    Field(const QString &name, const Type&, const bool nullable, const QString &defaultValue);
+    Field(QString name, Type, const bool nullable, QString defaultValue);
     auto getName() const -> QString;
     auto getType() const -> const Type&;
     auto getDefaultValue() const -> QString;
