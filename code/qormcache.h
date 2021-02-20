@@ -16,7 +16,7 @@ class QORMCache {
 
 public:
 
-    auto insert(const Key key, std::unique_ptr<Entity> &&entity) -> Entity& {
+    auto insert(Key key, std::unique_ptr<Entity> &&entity) -> Entity& {
         if (entity == nullptr) {
             throw std::string("Cannot store a null entity") + std::string(" with key ") + std::to_string(key);
         }
