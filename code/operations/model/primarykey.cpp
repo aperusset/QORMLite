@@ -1,10 +1,10 @@
 #include "primarykey.h"
 #include <QStringList>
 
-PrimaryKey::PrimaryKey(const Field field, const bool autoIncrement) :
+PrimaryKey::PrimaryKey(Field field, const bool autoIncrement) :
     fields({std::move(field)}), autoIncrement(autoIncrement) {}
 
-PrimaryKey::PrimaryKey(const std::list<Field> fields) :
+PrimaryKey::PrimaryKey(std::list<Field> fields) :
     fields(std::move(fields)), autoIncrement(false) {
 
     if (this->fields.empty()) {

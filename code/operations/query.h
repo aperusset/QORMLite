@@ -2,23 +2,17 @@
 #define QUERY_H
 
 #include "operation.h"
+#include "query/bindable.h"
 #include <QString>
 #include <QVariant>
+#include <QSqlQuery>
 #include <map>
-#include <list>
-
-class Bindable;
-class QSqlQuery;
 
 class Query : public Operation {
 
     std::map<QString, QVariant> bindables;
 
 protected:
-    Query() = default;
-    Query(Query&) = default;
-    Query(const Query&) = default;
-    Query(Query&&) = default;
     void addBindable(const Bindable&);
 
 public:

@@ -2,7 +2,6 @@
 #define ORDER_H
 
 #include "operations/operation.h"
-#include <QString>
 
 enum class Ordering {
     Asc, Desc

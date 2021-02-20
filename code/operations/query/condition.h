@@ -4,8 +4,6 @@
 #include "operations/operation.h"
 #include "operations/query/selection.h"
 #include "bindable.h"
-#include <QString>
-#include <QVariant>
 #include <list>
 
 class Condition : public Operation, public Bindable {

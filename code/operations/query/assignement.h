@@ -3,8 +3,6 @@
 
 #include "operations/operation.h"
 #include "bindable.h"
-#include <QString>
-#include <QVariant>
 
 class Assignement : public Operation, public Bindable {
 
