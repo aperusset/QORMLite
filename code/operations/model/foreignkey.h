@@ -12,7 +12,7 @@ class ForeignKey : public Operation {
     const OnAction onAction;
 
 public:
-    ForeignKey(const std::list<Reference>&, QString targetTable, const OnAction&);
+    ForeignKey(const std::list<Reference>, QString targetTable, const OnAction&);
     auto getReferences() const -> std::list<Reference>;
     auto getTargetTable() const -> QString;
     auto getOnAction() const -> OnAction;

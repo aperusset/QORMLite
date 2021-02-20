@@ -16,7 +16,9 @@ class Query : public Operation {
 
 protected:
     Query() = default;
+    Query(Query&) = default;
     Query(const Query&) = default;
+    Query(Query&&) = default;
     void addBindable(const Bindable&);
 
 public:

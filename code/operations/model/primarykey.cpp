@@ -1,13 +1,13 @@
 #include "primarykey.h"
 #include <QStringList>
 
-PrimaryKey::PrimaryKey(const Field &field, const bool autoIncrement) :
-    fields({field}), autoIncrement(autoIncrement) {}
+PrimaryKey::PrimaryKey(const Field field, const bool autoIncrement) :
+    fields({std::move(field)}), autoIncrement(autoIncrement) {}
 
-PrimaryKey::PrimaryKey(const std::list<Field> &fields) :
-    fields(fields), autoIncrement(false) {
+PrimaryKey::PrimaryKey(const std::list<Field> fields) :
+    fields(std::move(fields)), autoIncrement(false) {
 
-    if (fields.empty()) {
+    if (this->fields.empty()) {
         throw std::string("Cannot generate a primary key without any field.");
     }
 }

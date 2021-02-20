@@ -3,10 +3,10 @@
 #include <QStringList>
 
 Condition::Condition(QString op, std::list<Condition> nestedConditions,
-                     QString leftField, QString rightField, const QVariant &value) :
+                     QString leftField, QString rightField, QVariant value) :
     op(std::move(op)), nestedConditions(std::move(nestedConditions)), leftField(std::move(leftField)),
     rightField(value.isValid() ? QORMUtils::parametrize(this->leftField) : std::move(rightField)),
-    value(value) {
+    value(std::move(value)) {
 
     if (this->op.isNull() || this->op.isEmpty()) {
         throw std::string("A condition must have an operator.");
