@@ -16,7 +16,7 @@ class Join : public Operation {
     const Condition condition;
 
 protected:
-    Join(const JoinType &joinType, QString table, std::list<Condition>);
+    Join(const JoinType &joinType, QString table, const std::list<Condition>&);
 
 public:
     auto getJoinType() const -> JoinType;
