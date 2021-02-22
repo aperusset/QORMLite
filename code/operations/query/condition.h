@@ -41,6 +41,12 @@ public:
     explicit IsNotNull(const QString &field);
 };
 
+class Like : public Condition {
+
+public:
+    Like(const QString &field, const QString &likePattern);
+};
+
 namespace Equals {
 
     auto field(const QString &field, const QVariant &value) -> Condition;

@@ -83,6 +83,9 @@ IsNull::IsNull(const QString &field) :
 IsNotNull::IsNotNull(const QString &field) :
     Condition(" is not null ", {}, field, QString(), QVariant()) {}
 
+Like::Like(const QString &field, const QString &likePattern) :
+    Condition(" like ", {}, field, "'" + likePattern + "'", QVariant()) {}
+
 auto Equals::field(const QString &field, const QVariant &value) -> Condition {
     return Condition(" = ", {}, field, QString(), value);
 }

@@ -16,6 +16,7 @@ private slots:
     static void parameterShouldReturnRightField();
     static void isNull();
     static void isNotNull();
+    static void like();
     static void equalsField();
     static void equalsFields();
     static void equalsSelection();
