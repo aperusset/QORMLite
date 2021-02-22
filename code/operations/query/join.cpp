@@ -1,7 +1,11 @@
 #include "join.h"
 
-Join::Join(const JoinType &joinType, QString table, const std::list<Condition> &conditions) :
-    joinType(joinType), table(std::move(table)), condition(And(conditions)) {}
+Join::Join(const JoinType &joinType, QString table, std::list<Condition> conditions) :
+    joinType(joinType), table(std::move(table)), conditions(std::move(conditions)) {
+    if (this->joinType != JoinType::Cross && this->conditions.empty()) {
+        throw std::string("Join clause (except cross) must have at least one condition.");
+    }
+}
 
 auto Join::getJoinType() const -> JoinType {
     return this->joinType;
@@ -11,8 +15,8 @@ auto Join::getTable() const -> QString {
     return this->table;
 }
 
-auto Join::getCondition() const -> Condition {
-    return this->condition;
+auto Join::getConditions() const -> std::list<Condition> {
+    return this->conditions;
 }
 
 auto Join::generate() const -> QString {
@@ -24,6 +28,16 @@ auto Join::generate() const -> QString {
         case JoinType::Left:
             query += "left join ";
             break;
+        case JoinType::Right:
+            query += "right join ";
+            break;
+        case JoinType::Cross:
+            query += "cross join ";
+            break;
     }
-    return (query += this->table + " on " + this->condition.generate()).simplified();
+    query += this->table;
+    if (!this->conditions.empty()) {
+        query += " on " + And(this->conditions).generate();
+    }
+    return query.simplified();
 }

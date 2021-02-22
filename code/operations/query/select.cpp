@@ -29,8 +29,10 @@ auto Select::getOrders() const -> std::list<Order> {
 auto Select::join(const std::list<Join> &joins) -> Select& {
     std::copy(joins.begin(), joins.end(), std::back_inserter(this->joins));
     for (auto const &join : joins) {
-        for (auto const &bindable : join.getCondition().getParametrizedConditions()) {
-            this->addBindable(bindable);
+        for (auto const &condition : join.getConditions()) {
+            for (auto const &bindable : condition.getParametrizedConditions()) {
+                this->addBindable(bindable);
+            }
         }
     }
     return *this;
