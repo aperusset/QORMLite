@@ -2,7 +2,6 @@
 #define SELECTION_H
 
 #include "operations/operation.h"
-#include <QString>
 
 class Selection : public Operation {
 

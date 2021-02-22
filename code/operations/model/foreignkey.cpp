@@ -1,11 +1,10 @@
 #include "foreignkey.h"
-#include "field.h"
 #include <QStringList>
 
-ForeignKey::ForeignKey(const std::list<Reference> &references, QString targetTable, const OnAction &onAction) :
-    references(references), targetTable(std::move(targetTable)), onAction(onAction) {
+ForeignKey::ForeignKey(std::list<Reference> references, QString targetTable, const OnAction &onAction) :
+    references(std::move(references)), targetTable(std::move(targetTable)), onAction(onAction) {
 
-    if (references.empty()) {
+    if (this->references.empty()) {
         throw std::string("Cannot generate a foreign key without any reference.");
     }
 }

@@ -4,8 +4,6 @@
 #include "operations/operation.h"
 #include "operations/query/selection.h"
 #include "bindable.h"
-#include <QString>
-#include <QVariant>
 #include <list>
 
 class Condition : public Operation, public Bindable {
@@ -20,7 +18,7 @@ class Condition : public Operation, public Bindable {
 
 public:
     Condition(QString op, std::list<Condition> nestedConditions,
-              QString leftField, QString rightField, const QVariant &value);
+              QString leftField, QString rightField, QVariant value);
     auto getNestedConditions() const -> std::list<Condition>;
     auto getOperator() const -> QString;
     auto getLeftField() const -> QString;

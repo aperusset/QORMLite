@@ -1,6 +1,5 @@
 #include "query.h"
 #include "query/bindable.h"
-#include <QSqlQuery>
 
 void Query::addBindable(const Bindable &bindable) {
     this->bindables.insert(std::make_pair(bindable.getParameter(), bindable.getValue()));

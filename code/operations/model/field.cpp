@@ -1,5 +1,4 @@
 #include "field.h"
-#include "type.h"
 
 Field::Field(QString name, Type type, const bool nullable, QString defaultValue) :
     name(std::move(name)), type(std::move(type)), nullable(nullable),

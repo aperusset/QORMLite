@@ -3,6 +3,7 @@
 
 #include "operations/query.h"
 #include "assignement.h"
+#include <list>
 
 class Insert : public TableQuery {
 

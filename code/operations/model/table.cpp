@@ -1,6 +1,4 @@
 #include "table.h"
-#include "field.h"
-#include <list>
 #include <algorithm>
 #include <QStringList>
 
