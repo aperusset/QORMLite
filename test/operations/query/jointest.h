@@ -11,8 +11,13 @@ class JoinTest : public QObject {
     static const QString DEFAULT_FIELD_NAME;
 
 private slots:
+    static void innerJoinShouldFailWithoutConditions();
     static void innerJoinGenerate();
+    static void leftJoinShouldFailWithoutConditions();
     static void leftJoinGenerate();
+    static void rightJoinShouldFailWithoutConditions();
+    static void rightJoinGenerate();
+    static void crossJoinGenerate();
 };
 
 #endif // JOINTEST_H
