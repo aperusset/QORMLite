@@ -19,6 +19,8 @@ private slots:
     static void selectAllWithOrders();
     static void selectFieldWithOrdersSelected();
     static void selectFieldWithOrdersNotSelected();
+    static void selectAllWithLimit();
+    static void selectAllWithOffset();
     static void lastInsertedId();
 };
 

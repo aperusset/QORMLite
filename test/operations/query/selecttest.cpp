@@ -175,6 +175,40 @@ void SelectTest::selectFieldWithOrdersNotSelected() {
     );
 }
 
+void SelectTest::selectAllWithLimit() {
+
+    // Given
+    auto const limit = 10;
+    auto const select = Select(DEFAULT_TABLE_NAME).limit(limit);
+
+    // When
+    auto const generated = select.generate();
+
+    // Then
+    QCOMPARE(select.getTableName(), DEFAULT_TABLE_NAME);
+    QCOMPARE(generated,
+        "select distinct * from " + DEFAULT_TABLE_NAME +
+        " limit " + QString::number(limit)
+    );
+}
+
+void SelectTest::selectAllWithOffset() {
+
+    // Given
+    auto const offset = 10;
+    auto const select = Select(DEFAULT_TABLE_NAME).offset(offset);
+
+    // When
+    auto const generated = select.generate();
+
+    // Then
+    QCOMPARE(select.getTableName(), DEFAULT_TABLE_NAME);
+    QCOMPARE(generated,
+        "select distinct * from " + DEFAULT_TABLE_NAME +
+        " offset " + QString::number(offset)
+    );
+}
+
 void SelectTest::lastInsertedId() {
 
     // Given

@@ -14,6 +14,8 @@ class Select : public TableQuery {
     std::list<Join> joins;
     std::list<Condition> conditions;
     std::list<Order> orders;
+    QVariant maxResults;
+    QVariant skippedResults;
 
 public:
     explicit Select(const QString &tableName);
@@ -28,6 +30,8 @@ public:
     auto where(const std::list<Condition>&) -> Select&;
     // auto groupBy(...) -> Select&;
     auto orderBy(const std::list<Order>&) -> Select&;
+    auto limit(const unsigned int limit) -> Select&;
+    auto offset(const unsigned int offset) -> Select&;
 };
 
 class LastInsertedId : public Query {

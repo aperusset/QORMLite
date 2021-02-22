@@ -53,6 +53,16 @@ auto Select::orderBy(const std::list<Order> &orders) -> Select& {
     return *this;
 }
 
+auto Select::limit(const unsigned int limit) -> Select& {
+    this->maxResults = QVariant(limit);
+    return *this;
+}
+
+auto Select::offset(const unsigned int offset) -> Select& {
+    this->skippedResults = QVariant(offset);
+    return *this;
+}
+
 auto Select::generate() const -> QString {
     QStringList generatedSelections;
     std::transform(this->selections.begin(), this->selections.end(),
@@ -77,7 +87,14 @@ auto Select::generate() const -> QString {
     if (!this->conditions.empty()) {
         select += " where " + And(this->conditions).generate();
     }
-    return (select += generatedOrders.isEmpty() ? "" : " order by " + generatedOrders.join(", ")).simplified();
+    select += generatedOrders.isEmpty() ? "" : " order by " + generatedOrders.join(", ");
+    if (this->maxResults.isValid()) {
+        select += " limit " + this->maxResults.toString();
+    }
+    if (this->skippedResults.isValid()) {
+        select += " offset " + this->skippedResults.toString();
+    }
+    return select.simplified();
 }
 
 auto LastInsertedId::generate() const -> QString {
