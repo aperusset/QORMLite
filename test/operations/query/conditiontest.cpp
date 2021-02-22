@@ -71,6 +71,26 @@ void ConditionTest::isNotNull() {
     QVERIFY(isNotNull.getParametrizedConditions().empty());
 }
 
+void ConditionTest::like() {
+
+    // Given
+    const auto *const likePattern = "%test%";
+    auto const like = Like(DEFAULT_FIELD_NAME, likePattern);
+
+    // When
+    auto const expectedLikePattern = QString("'") + likePattern + "'";
+    auto const generated = like.generate();
+
+    // Then
+    QCOMPARE(generated,
+        DEFAULT_FIELD_NAME + " like " + expectedLikePattern
+    );
+    QVERIFY(like.getNestedConditions().empty());
+    QCOMPARE(like.getRightField(), expectedLikePattern);
+    QVERIFY(like.getValue().isNull());
+    QVERIFY(like.getParametrizedConditions().empty());
+}
+
 void ConditionTest::equalsField() {
 
     // Given
