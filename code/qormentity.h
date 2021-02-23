@@ -50,9 +50,12 @@ public:
     }
 
     virtual auto exists() const -> bool = 0;
-    virtual auto save() -> bool = 0;
+    virtual auto save() -> bool {
+        this->notifyChange();
+        return true;
+    };
     virtual auto erase() -> bool {
-        notifyDelete();
+        this->notifyDelete();
         return true;
     };
 };
