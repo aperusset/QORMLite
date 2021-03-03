@@ -24,6 +24,7 @@ SOURCES +=  \
   operations/query/assignementtest.cpp \
   operations/query/conditiontest.cpp \
   operations/query/deletetest.cpp \
+  operations/query/groupbytest.cpp \
   operations/query/inserttest.cpp \
   operations/query/jointest.cpp \
   operations/query/ordertest.cpp \
@@ -52,6 +53,7 @@ HEADERS += \
   operations/query/assignementtest.h \
   operations/query/conditiontest.h \
   operations/query/deletetest.h \
+  operations/query/groupbytest.h \
   operations/query/inserttest.h \
   operations/query/jointest.h \
   operations/query/ordertest.h \

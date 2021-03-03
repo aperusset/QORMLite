@@ -1,11 +1,13 @@
 #ifndef QORMCACHE_H
 #define QORMCACHE_H
 
-#include "qormentity.h"
 #include <type_traits>
 #include <map>
 #include <memory>
 #include <functional>
+#include <utility>
+#include <string>
+#include "qormentity.h"
 
 template<typename Key, class Entity>
 class QORMCache {
@@ -15,7 +17,6 @@ class QORMCache {
     std::map<Key, std::unique_ptr<Entity>> entities;
 
 public:
-
     auto insert(Key key, std::unique_ptr<Entity> &&entity) -> Entity& {
         if (entity == nullptr) {
             throw std::string("Cannot store a null entity") + std::string(" with key ") + std::to_string(key);

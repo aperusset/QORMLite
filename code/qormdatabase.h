@@ -4,6 +4,8 @@
 #include <QtSql>
 #include <QSqlRecord>
 #include <QMutex>
+#include <string>
+#include <list>
 #include "qormcreator.h"
 #include "qormentity.h"
 #include "qormutils.h"
@@ -86,7 +88,7 @@ public:
     ) const -> std::list<std::reference_wrapper<Entity>> {
         std::list<std::reference_wrapper<Entity>> entities;
         auto results = this->execute(select);
-        while(results.next()) {
+        while (results.next()) {
             entities.push_back(extractor(results.record()));
         }
         return entities;

@@ -21,6 +21,7 @@ SOURCES += \
   operations/query/assignement.cpp \
   operations/query/condition.cpp \
   operations/query/delete.cpp \
+  operations/query/groupby.cpp \
   operations/query/insert.cpp \
   operations/query/join.cpp \
   operations/query/order.cpp \
@@ -46,6 +47,7 @@ HEADERS += \
   operations/query/bindable.h \
   operations/query/condition.h \
   operations/query/delete.h \
+  operations/query/groupby.h \
   operations/query/insert.h \
   operations/query/join.h \
   operations/query/order.h \

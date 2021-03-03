@@ -61,6 +61,6 @@ namespace QORMUtils {
      * @return the null value
      */
     auto null(QVariant::Type type) -> QVariant;
-}
+} // namespace QORMUtils
 
 #endif // Q_ORM_UTILS_H
