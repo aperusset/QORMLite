@@ -3,16 +3,15 @@
 
 #include <set>
 #include <algorithm>
-#include "qormobserver.h"
+#include "./qormobserver.h"
 #include "operations/query/condition.h"
 
 template<typename Key = int>
 class QORMEntity {
-
     Key key;
     std::set<QORMObserver<Key>*> observers;
 
-public:
+ public:
     explicit QORMEntity(const Key &key) : key(key) {}
     QORMEntity(const QORMEntity&) = delete;
     QORMEntity(QORMEntity&&) = delete;
@@ -39,16 +38,14 @@ public:
         std::for_each(observers.begin(), observers.end(),
             [this](QORMObserver<Key> *observer) {
                 observer->onChange(this->key);
-            }
-        );
+            });
     }
 
     virtual void notifyDelete() const {
         std::for_each(observers.begin(), observers.end(),
             [this](QORMObserver<Key> *observer) {
                 observer->onDelete(this->key);
-            }
-        );
+            });
     }
 
     virtual auto save() -> bool {
@@ -64,4 +61,4 @@ public:
     virtual auto exists() const -> bool = 0;
 };
 
-#endif // QORMENTITY_H
+#endif  // QORMENTITY_H

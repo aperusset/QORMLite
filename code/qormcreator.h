@@ -12,8 +12,7 @@
 class QORMDatabase;
 
 class QORMCreator {
-
-public:
+ public:
     void createAllAndPopulate(const QORMDatabase&) const;
     virtual void createTables(const QORMDatabase&) const = 0;
     virtual void createViews(const QORMDatabase&) const = 0;
@@ -24,9 +23,11 @@ public:
     QORMCreator& operator=(const QORMCreator&) = delete;
     virtual ~QORMCreator() {}
 
-    static void createTable(const QORMDatabase&, const QString&, const PrimaryKey&, const std::list<Field>& = {}, const std::list<ForeignKey>& = {});
+    static void createTable(const QORMDatabase&, const QString&,
+                            const PrimaryKey&, const std::list<Field>& = {},
+                            const std::list<ForeignKey>& = {});
     static void createView(const QORMDatabase&, const QString&, const Select&);
     static void insert(const QORMDatabase&, const Insert&);
 };
 
-#endif // QORMCREATOR_H
+#endif  // QORMCREATOR_H

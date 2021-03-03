@@ -4,11 +4,10 @@
 #include "operations/operation.h"
 
 class Selection : public Operation {
-
     const QString fieldName;
     const QString renamedTo;
 
-public:
+ public:
     explicit Selection(QString fieldName, QString renamedTo = QString());
     auto getFieldName() const -> QString;
     auto getRenamedTo() const -> QString;
@@ -18,21 +17,19 @@ public:
 };
 
 class Sum : public Selection {
-
-    public:
-        Sum(const QString &fieldToSum, const QString &renameTo);
+ public:
+    Sum(const QString &fieldToSum, const QString &renameTo);
 };
 
 class DateFormatter : public Selection {
-
-    public:
-        DateFormatter(const QString &format, const QString &fieldToFormat, const QString &renameTo);
+ public:
+    DateFormatter(const QString &format, const QString &fieldToFormat,
+                  const QString &renameTo);
 };
 
 class Lower : public Selection {
-
-    public:
-        explicit Lower(const QString &fieldToLower);
+ public:
+    explicit Lower(const QString &fieldToLower);
 };
 
-#endif // SELECTION_H
+#endif  // SELECTION_H

@@ -1,16 +1,15 @@
 #ifndef PRIMARYKEY_H
 #define PRIMARYKEY_H
 
-#include "operations/operation.h"
-#include "field.h"
 #include <list>
+#include "operations/operation.h"
+#include "./field.h"
 
 class PrimaryKey : public Operation {
-
     const std::list<Field> fields;
     const bool autoIncrement;
 
-public:
+ public:
     explicit PrimaryKey(Field, const bool autoIncrement = true);
     explicit PrimaryKey(std::list<Field>);
     auto getFields() const -> std::list<Field>;
@@ -18,4 +17,4 @@ public:
     auto generate() const -> QString override;
 };
 
-#endif // PRIMARYKEY_H
+#endif  // PRIMARYKEY_H

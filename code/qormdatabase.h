@@ -6,9 +6,9 @@
 #include <QMutex>
 #include <string>
 #include <list>
-#include "qormcreator.h"
-#include "qormentity.h"
-#include "qormutils.h"
+#include "./qormcreator.h"
+#include "./qormentity.h"
+#include "./qormutils.h"
 #include "operations/query.h"
 #include "operations/query/insert.h"
 #include "operations/query/select.h"
@@ -16,7 +16,6 @@
 #include "operations/query/delete.h"
 
 class QORMDatabase {
-
     QMutex databaseMutex;
 
     const QString name;
@@ -31,8 +30,9 @@ class QORMDatabase {
     static const QString TEST_PREFIX;
     static const QString FILE_EXTENSION;
 
-public:
-    QORMDatabase(const QString &name, const QORMCreator&, bool verbose, bool test);
+ public:
+    QORMDatabase(const QString &name, const QORMCreator&, bool verbose,
+                 bool test);
     ~QORMDatabase();
     QORMDatabase(const QORMDatabase&) = delete;
     QORMDatabase& operator=(const QORMDatabase) = delete;
@@ -54,38 +54,37 @@ public:
     auto execute(const QString&) const -> QSqlQuery;
     auto execute(const Query&) const -> QSqlQuery;
 
-    auto exists(const QString &table, const std::list<Condition>&) const -> bool;
+    auto exists(const QString &table,
+                const std::list<Condition>&) const -> bool;
 
     template<typename Key = int>
     auto insertAndRetrieveKey(const Insert &insert,
         const std::function<Key(const QVariant&)> &keyExtractor =
             [](const QVariant &result) -> int {
                 if (!result.isValid() || !result.canConvert<int>()) {
-                    throw std::string("Failed to retrieve last inserted ID as integer");
+                    throw std::string("Failed to get last inserted ID as int");
                 }
                 return result.toInt();
-            }
-    ) const -> Key {
+            }) const -> Key {
         return keyExtractor(this->execute(insert).lastInsertId());
     }
 
     template<class Entity>
-    auto entity(
-        const Select &select,
-        const std::function<Entity&(const QSqlRecord&)> &extractor
-    ) const -> Entity& {
+    auto entity(const Select &select,
+                const std::function<Entity&(const QSqlRecord&)> &extractor)
+    const -> Entity& {
         auto const allEntities = entities(select, extractor);
         if (allEntities.empty()) {
-            throw std::string("No entity found with given query : ") + select.generate().toStdString();
+            throw std::string("No entity found with given query : ")
+                    .append(select.generate().toStdString());
         }
         return allEntities.front().get();
     }
 
     template<class Entity>
-    auto entities(
-        const Select &select,
-        const std::function<Entity&(const QSqlRecord&)> &extractor
-    ) const -> std::list<std::reference_wrapper<Entity>> {
+    auto entities(const Select &select,
+                  const std::function<Entity&(const QSqlRecord&)> &extractor)
+    const -> std::list<std::reference_wrapper<Entity>> {
         std::list<std::reference_wrapper<Entity>> entities;
         auto results = this->execute(select);
         while (results.next()) {
@@ -95,14 +94,13 @@ public:
     }
 
     template<typename Result>
-    auto result(
-        const Select &select,
-        const Result &defaultValue,
-        const std::function<Result(const QSqlRecord&)> &extractor
-    ) const -> Result {
+    auto result(const Select &select,
+                const Result &defaultValue,
+                const std::function<Result(const QSqlRecord&)> &extractor)
+    const -> Result {
         auto result = this->execute(select);
         return result.next() ? extractor(result.record()) : defaultValue;
     }
 };
 
-#endif // QORMDATABASE_H
+#endif  // QORMDATABASE_H

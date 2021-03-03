@@ -5,10 +5,9 @@
 #include <QVariant>
 
 class Bindable {
-
-public:
+ public:
     virtual auto getParameter() const -> QString = 0;
     virtual auto getValue() const -> QVariant = 0;
 };
 
-#endif // BINDABLE_H
+#endif  // BINDABLE_H

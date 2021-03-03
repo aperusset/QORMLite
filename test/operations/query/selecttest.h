@@ -16,6 +16,9 @@ private slots:
     static void selectMultipleFields();
     static void selectAllWithJoins();
     static void selectAllWithConditions();
+    static void selectAllWithGroupBy();
+    static void selectAllWithoutGroupByWithHavingShouldFail();
+    static void selectAllWithGroupByAndHaving();
     static void selectAllWithOrders();
     static void selectFieldWithOrdersSelected();
     static void selectFieldWithOrdersNotSelected();

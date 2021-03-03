@@ -8,29 +8,26 @@ enum class Ordering {
 };
 
 class Order : public Operation {
-
     const QString fieldName;
     const Ordering ordering;
 
-protected:
+ protected:
     Order(QString fieldName, const Ordering&);
 
-public:
+ public:
     auto getFieldName() const -> QString;
     auto getOrdering() const -> Ordering;
     auto generate() const -> QString override;
 };
 
 class Asc : public Order {
-
-public:
+ public:
     explicit Asc(const QString &fieldName);
 };
 
 class Desc : public Order {
-
-public:
+ public:
     explicit Desc(const QString &fieldName);
 };
 
-#endif // ORDER_H
+#endif  // ORDER_H

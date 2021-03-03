@@ -24,8 +24,9 @@ namespace QORMUtils {
     auto backupFileName(const QString &databaseName) -> QString;
 
     /**
-     * @brief Transform a field name so that it will be useable as parameter in a
-     * parametrized query. Convert to lower case, remove (). and space characters.
+     * @brief Transform a field name so that it will be useable as parameter in
+     * aparametrized query. Convert to lower case, remove (). and space
+     * characters.
      * @param field the field to parametrize
      * @return the parametrized field
      */
@@ -37,7 +38,8 @@ namespace QORMUtils {
      * @param renameTo the alias name
      * @return the selection
      */
-    auto dateToDay(const QString &fieldName, const QString &renameTo) -> Selection;
+    auto dateToDay(const QString &fieldName,
+                   const QString &renameTo) -> Selection;
 
     /**
      * @brief Generate a SQL selection to extract the month from a date field
@@ -45,7 +47,8 @@ namespace QORMUtils {
      * @param renameTo the alias name
      * @return the selection
      */
-    auto dateToMonth(const QString &fieldName, const QString &renameTo) -> Selection;
+    auto dateToMonth(const QString &fieldName,
+                     const QString &renameTo) -> Selection;
 
     /**
      * @brief Generate a SQL selection to extract the year from a date field
@@ -53,7 +56,8 @@ namespace QORMUtils {
      * @param renameTo the alias name
      * @return the selection
      */
-    auto dateToYear(const QString &fieldName, const QString &renameTo) -> Selection;
+    auto dateToYear(const QString &fieldName,
+                    const QString &renameTo) -> Selection;
 
     /**
      * @brief Generate a null SQL value for specified type
@@ -61,6 +65,6 @@ namespace QORMUtils {
      * @return the null value
      */
     auto null(QVariant::Type type) -> QVariant;
-} // namespace QORMUtils
+}  // namespace QORMUtils
 
-#endif // Q_ORM_UTILS_H
+#endif  // Q_ORM_UTILS_H
