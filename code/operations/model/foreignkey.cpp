@@ -1,11 +1,14 @@
 #include "foreignkey.h"
 #include <QStringList>
+#include <utility>
+#include <string>
 
-ForeignKey::ForeignKey(std::list<Reference> references, QString targetTable, const OnAction &onAction) :
-    references(std::move(references)), targetTable(std::move(targetTable)), onAction(onAction) {
-
+ForeignKey::ForeignKey(std::list<Reference> references, QString targetTable,
+                       const OnAction &onAction) :
+    references(std::move(references)), targetTable(std::move(targetTable)),
+    onAction(onAction) {
     if (this->references.empty()) {
-        throw std::string("Cannot generate a foreign key without any reference.");
+        throw std::string("Cannot generate foreign key without any reference.");
     }
 }
 
@@ -30,8 +33,8 @@ auto ForeignKey::generate() const -> QString {
         toFieldNames << reference.getTo().getName();
     }
     foreignKey += "foreign key (" + fromFieldNames.join(", ") + ") " +
-                  "references [" + targetTable + "](" + toFieldNames.join(", ") + ") " +
-                  "on delete ";
+                  "references [" + targetTable + "](" +
+                  toFieldNames.join(", ") + ") " + "on delete ";
     switch (this->onAction) {
     case OnAction::Cascade:
         foreignKey += "cascade";

@@ -79,6 +79,62 @@ void SelectionTest::sum() {
     );
 }
 
+void SelectionTest::avg() {
+
+    // Given
+    auto const avg = Avg(DEFAULT_FIELD_NAME, DEFAULT_RENAMED_TO);
+
+    // When
+    auto const generated = avg.generate();
+
+    // Then
+    QCOMPARE(generated,
+        "avg(" + DEFAULT_FIELD_NAME + ") as " + DEFAULT_RENAMED_TO
+    );
+}
+
+void SelectionTest::count() {
+
+    // Given
+    auto const count = Count(DEFAULT_FIELD_NAME, DEFAULT_RENAMED_TO);
+
+    // When
+    auto const generated = count.generate();
+
+    // Then
+    QCOMPARE(generated,
+        "count(" + DEFAULT_FIELD_NAME + ") as " + DEFAULT_RENAMED_TO
+    );
+}
+
+void SelectionTest::min() {
+
+    // Given
+    auto const min = Min(DEFAULT_FIELD_NAME, DEFAULT_RENAMED_TO);
+
+    // When
+    auto const generated = min.generate();
+
+    // Then
+    QCOMPARE(generated,
+        "min(" + DEFAULT_FIELD_NAME + ") as " + DEFAULT_RENAMED_TO
+    );
+}
+
+void SelectionTest::max() {
+
+    // Given
+    auto const max = Max(DEFAULT_FIELD_NAME, DEFAULT_RENAMED_TO);
+
+    // When
+    auto const generated = max.generate();
+
+    // Then
+    QCOMPARE(generated,
+        "max(" + DEFAULT_FIELD_NAME + ") as " + DEFAULT_RENAMED_TO
+    );
+}
+
 void SelectionTest::dateFormatter() {
 
     // Given
@@ -104,5 +160,19 @@ void SelectionTest::lower() {
     // Then
     QCOMPARE(generated,
         "lower(" + DEFAULT_FIELD_NAME + ")"
+    );
+}
+
+void SelectionTest::upper() {
+
+    // Given
+    auto const upper = Upper(DEFAULT_FIELD_NAME);
+
+    // When
+    auto const generated = upper.generate();
+
+    // Then
+    QCOMPARE(generated,
+        "upper(" + DEFAULT_FIELD_NAME + ")"
     );
 }

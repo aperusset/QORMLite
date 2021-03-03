@@ -17,8 +17,13 @@ private slots:
     static void equals();
     static void notEquals();
     static void sum();
+    static void avg();
+    static void count();
+    static void min();
+    static void max();
     static void dateFormatter();
     static void lower();
+    static void upper();
 };
 
 #endif // SELECTIONTEST_H

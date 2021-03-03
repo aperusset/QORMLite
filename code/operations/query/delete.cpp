@@ -1,13 +1,13 @@
 #include "delete.h"
+#include <utility>
 
-Delete::Delete(const QString &tableName) : Delete(tableName, {}) {};
+Delete::Delete(const QString &tableName) : Delete(tableName, {}) {}
 
 Delete::Delete(const QString &tableName, Condition condition) :
-    Delete(tableName, std::list<Condition>({std::move(condition)})) {};
+    Delete(tableName, std::list<Condition>({std::move(condition)})) {}
 
 Delete::Delete(const QString &tableName, std::list<Condition> conditions) :
     TableQuery(tableName), conditions(std::move(conditions)) {
-
     for (auto const &condition : this->conditions) {
         for (auto const &bindable : condition.getParametrizedConditions()) {
             this->addBindable(bindable);

@@ -1,4 +1,5 @@
 #include "order.h"
+#include <utility>
 
 Order::Order(QString fieldName, const Ordering &ordering) :
     fieldName(std::move(fieldName)), ordering(ordering) {}
@@ -13,7 +14,7 @@ auto Order::getOrdering() const -> Ordering {
 
 auto Order::generate() const -> QString {
     QString order;
-    switch(this->ordering) {
+    switch (this->ordering) {
     case Ordering::Asc:
         order = " asc ";
         break;
@@ -24,6 +25,6 @@ auto Order::generate() const -> QString {
     return (this->fieldName + order).simplified();
 }
 
-Asc::Asc(const QString &fieldName) : Order(fieldName, Ordering::Asc) {};
+Asc::Asc(const QString &fieldName) : Order(fieldName, Ordering::Asc) {}
 
-Desc::Desc(const QString &fieldName) : Order(fieldName, Ordering::Desc) {};
+Desc::Desc(const QString &fieldName) : Order(fieldName, Ordering::Desc) {}

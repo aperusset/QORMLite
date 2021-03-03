@@ -1,8 +1,10 @@
 #include "assignement.h"
+#include <utility>
 #include "qormutils.h"
 
 Assignement::Assignement(QString fieldName, QVariant value) :
-    fieldName(std::move(fieldName)), parameter(QORMUtils::parametrize(this->fieldName)),
+    fieldName(std::move(fieldName)),
+    parameter(QORMUtils::parametrize(this->fieldName)),
     value(std::move(value)) {}
 
 auto Assignement::getFieldName() const -> QString {

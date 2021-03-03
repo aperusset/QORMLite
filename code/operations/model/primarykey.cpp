@@ -1,12 +1,13 @@
 #include "primarykey.h"
 #include <QStringList>
+#include <utility>
+#include <string>
 
 PrimaryKey::PrimaryKey(Field field, const bool autoIncrement) :
     fields({std::move(field)}), autoIncrement(autoIncrement) {}
 
 PrimaryKey::PrimaryKey(std::list<Field> fields) :
     fields(std::move(fields)), autoIncrement(false) {
-
     if (this->fields.empty()) {
         throw std::string("Cannot generate a primary key without any field.");
     }
@@ -22,10 +23,8 @@ auto PrimaryKey::isAutoIncrement() const -> bool {
 
 auto PrimaryKey::generate() const -> QString {
     if (this->fields.size() == 1 && this->autoIncrement) {
-        return (
-            this->fields.front().generate() +
-            " primary key autoincrement"
-        ).simplified();
+        return (this->fields.front().generate() +
+                " primary key autoincrement").simplified();
     }
     QStringList constraintFields;
     for (auto const &field : this->fields) {

@@ -1,6 +1,9 @@
 #include "update.h"
+#include <utility>
+#include <string>
 
-Update::Update(const QString &tableName, const std::list<Assignement> &assignements) :
+Update::Update(const QString &tableName,
+               const std::list<Assignement> &assignements) :
     Update(tableName, assignements, {}) {}
 
 Update::Update(const QString &tableName,
@@ -12,7 +15,6 @@ Update::Update(const QString &tableName, std::list<Assignement> assignements,
                std::list<Condition> conditions) :
     TableQuery(tableName), assignements(std::move(assignements)),
     conditions(std::move(conditions)) {
-
     if (this->assignements.empty()) {
         throw std::string("An update must have at least one assignement.");
     }

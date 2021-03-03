@@ -11,13 +11,18 @@ auto QORMLite::isInitialized(const QString &name) -> bool {
     return pool.count(name);
 }
 
-void QORMLite::initialize(const QString &name, const QORMCreator &creator, bool verbose, bool test) {
+void QORMLite::initialize(const QString &name, const QORMCreator &creator,
+                          bool verbose, bool test) {
     const QMutexLocker lock(&poolMutex);
     if (isInitialized(name)) {
         throw std::string("This database is already initialized");
     }
-    qDebug("Initializing database %s in %s mode.", qUtf8Printable(name), test ? "test" : "production");
-    pool.insert(std::make_pair(name, new QORMDatabase(name, creator, verbose, test)));
+    qDebug(
+        "Initializing database %s in %s mode.",
+        qUtf8Printable(name), test ? "test" : "production");
+    pool.insert(std::make_pair(
+        name,
+        new QORMDatabase(name, creator, verbose, test)));
 }
 
 auto QORMLite::get(const QString &name) -> QORMDatabase& {

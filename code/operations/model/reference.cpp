@@ -1,4 +1,5 @@
 #include "reference.h"
+#include <utility>
 
 Reference::Reference(Field from, Field to) :
     from(std::move(from)), to(std::move(to)) {}
