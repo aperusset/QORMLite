@@ -1,9 +1,11 @@
 #include "join.h"
 
-Join::Join(const JoinType &joinType, QString table, std::list<Condition> conditions) :
-    joinType(joinType), table(std::move(table)), conditions(std::move(conditions)) {
+Join::Join(const JoinType &joinType, QString table,
+           std::list<Condition> conditions) :
+    joinType(joinType), table(std::move(table)),
+    conditions(std::move(conditions)) {
     if (this->joinType != JoinType::Cross && this->conditions.empty()) {
-        throw std::string("Join clause (except cross) must have at least one condition.");
+        throw std::string("Join clause must have at least one condition.");
     }
 }
 

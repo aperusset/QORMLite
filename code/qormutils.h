@@ -65,6 +65,15 @@ namespace QORMUtils {
      * @return the null value
      */
     auto null(QVariant::Type type) -> QVariant;
+
+    /**
+     * @brief Say if a STL list container contains or not an element.
+     * @return true : contains, false : does not contain
+     */
+    template<typename T>
+    auto contains(const std::list<T> &list, const T &element) -> bool {
+        return std::find(list.begin(), list.end(), element) != list.end();
+    }
 }  // namespace QORMUtils
 
 #endif  // Q_ORM_UTILS_H

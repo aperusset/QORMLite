@@ -16,6 +16,8 @@ private slots:
     static void dateToYear();
     static void nullInt();
     static void nullString();
+    static void containsShouldReturnTrue();
+    static void containsShouldReturnFalse();
 };
 
 #endif // QORMUTILSTEST_H

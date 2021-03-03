@@ -1,27 +1,31 @@
 #include "condition.h"
-#include "qormutils.h"
 #include <QStringList>
+#include <utility>
+#include <string>
+#include "qormutils.h"
 
 Condition::Condition(QString op, std::list<Condition> nestedConditions,
                      QString leftField, QString rightField, QVariant value) :
-    op(std::move(op)), nestedConditions(std::move(nestedConditions)), leftField(std::move(leftField)),
-    rightField(value.isValid() ? QORMUtils::parametrize(this->leftField) : std::move(rightField)),
+    op(std::move(op)), nestedConditions(std::move(nestedConditions)),
+    leftField(std::move(leftField)),
+    rightField(value.isValid() ?
+            QORMUtils::parametrize(this->leftField) :
+            std::move(rightField)),
     value(std::move(value)) {
-
     if (this->op.isNull() || this->op.isEmpty()) {
         throw std::string("A condition must have an operator.");
     }
 
-    if ((this->leftField.isNull() || this->leftField.isEmpty()) && this->nestedConditions.empty()) {
-        throw std::string("A condition must have at least a left operand or a nested condition.");
+    if ((this->leftField.isNull() || this->leftField.isEmpty()) &&
+            this->nestedConditions.empty()) {
+        throw std::string("A condition must have a left operand or be nested.");
     }
-};
+}
 
 auto Condition::isParametrized() const -> bool {
     return value.isValid() || std::any_of(
         nestedConditions.begin(), nestedConditions.end(),
-        std::bind(&Condition::isParametrized, std::placeholders::_1)
-    );
+        std::bind(&Condition::isParametrized, std::placeholders::_1));
 }
 
 auto Condition::getNestedConditions() const -> std::list<Condition> {
@@ -56,8 +60,7 @@ auto Condition::getParametrizedConditions() const -> std::list<Condition> {
     for (auto const &nestedCondition : this->nestedConditions) {
         if (nestedCondition.isParametrized()) {
             parametrizedConditions.splice(parametrizedConditions.end(),
-                nestedCondition.getParametrizedConditions()
-            );
+                nestedCondition.getParametrizedConditions());
         }
     }
     return parametrizedConditions;
@@ -94,15 +97,18 @@ auto Equals::fields(const QString &left, const QString &right) -> Condition {
     return Condition(" = ", {}, left, right, QVariant());
 }
 
-auto Equals::selection(const Selection &selection, const QVariant &value) -> Condition {
+auto Equals::selection(const Selection &selection,
+                       const QVariant &value) -> Condition {
     return Condition(" = ", {}, selection, QString(), value);
 }
 
-auto Equals::selections(const Selection &right, const Selection &left) -> Condition {
+auto Equals::selections(const Selection &right,
+                        const Selection &left) -> Condition {
     return Condition(" = ", {}, right, left, QVariant());
 }
 
-auto NotEquals::field(const QString &field, const QVariant &value) -> Condition {
+auto NotEquals::field(const QString &field,
+                      const QVariant &value) -> Condition {
     return Condition(" <> ", {}, field, QString(), value);
 }
 
@@ -110,11 +116,13 @@ auto NotEquals::fields(const QString &left, const QString &right) -> Condition {
     return Condition(" <> ", {}, left, right, QVariant());
 }
 
-auto NotEquals::selection(const Selection &selection, const QVariant &value) -> Condition {
+auto NotEquals::selection(const Selection &selection,
+                          const QVariant &value) -> Condition {
     return Condition(" <> ", {}, selection, QString(), value);
 }
 
-auto NotEquals::selections(const Selection &right, const Selection &left) -> Condition {
+auto NotEquals::selections(const Selection &right,
+                           const Selection &left) -> Condition {
     return Condition(" <> ", {}, right, left, QVariant());
 }
 

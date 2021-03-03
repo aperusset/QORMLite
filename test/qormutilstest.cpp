@@ -95,3 +95,24 @@ void QORMUtilsTest::nullString() {
     QVERIFY(nullValue.isNull());
     QVERIFY(nullValue.isValid());
 }
+
+void QORMUtilsTest::containsShouldReturnTrue() {
+
+    // Given
+    const std::list<int> values{0, 1};
+
+    // When / Then
+    QVERIFY(QORMUtils::contains(values, 0));
+    QVERIFY(QORMUtils::contains(values, 1));
+}
+
+void QORMUtilsTest::containsShouldReturnFalse() {
+
+    // Given
+    const std::list<int> values{0, 1};
+    const std::list<int> empty;
+
+    // When / Then
+    QVERIFY(!QORMUtils::contains(values, 2));
+    QVERIFY(!QORMUtils::contains(empty, 1));
+}

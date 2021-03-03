@@ -21,6 +21,26 @@ class Sum : public Selection {
     Sum(const QString &fieldToSum, const QString &renameTo);
 };
 
+class Avg : public Selection {
+ public:
+    Avg(const QString &fieldToAvg, const QString &renameTo);
+};
+
+class Count : public Selection {
+ public:
+    Count(const QString &fieldToCount, const QString &renameTo);
+};
+
+class Min : public Selection {
+ public:
+    Min(const QString &fieldToMin, const QString &renameTo);
+};
+
+class Max : public Selection {
+ public:
+    Max(const QString &fieldToMax, const QString &renameTo);
+};
+
 class DateFormatter : public Selection {
  public:
     DateFormatter(const QString &format, const QString &fieldToFormat,
@@ -30,6 +50,11 @@ class DateFormatter : public Selection {
 class Lower : public Selection {
  public:
     explicit Lower(const QString &fieldToLower);
+};
+
+class Upper : public Selection {
+ public:
+    explicit Upper(const QString &fieldToUpper);
 };
 
 #endif  // SELECTION_H
