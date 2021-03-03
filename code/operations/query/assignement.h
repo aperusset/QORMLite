@@ -2,15 +2,14 @@
 #define ASSIGNEMENT_H
 
 #include "operations/operation.h"
-#include "bindable.h"
+#include "./bindable.h"
 
 class Assignement : public Operation, public Bindable {
-
     const QString fieldName;
     const QString parameter;
     const QVariant value;
 
-public:
+ public:
     Assignement(QString fieldName, QVariant value);
     auto getFieldName() const -> QString;
     auto getParameter() const -> QString override;
@@ -18,5 +17,4 @@ public:
     auto generate() const -> QString override;
 };
 
-
-#endif // ASSIGNEMENT_H
+#endif  // ASSIGNEMENT_H

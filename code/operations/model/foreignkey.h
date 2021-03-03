@@ -1,17 +1,16 @@
 #ifndef FOREIGNKEY_H
 #define FOREIGNKEY_H
 
-#include "operations/operation.h"
-#include "reference.h"
 #include <list>
+#include "operations/operation.h"
+#include "./reference.h"
 
 class ForeignKey : public Operation {
-
     const std::list<Reference> references;
     const QString targetTable;
     const OnAction onAction;
 
-public:
+ public:
     ForeignKey(std::list<Reference>, QString targetTable, const OnAction&);
     auto getReferences() const -> std::list<Reference>;
     auto getTargetTable() const -> QString;
@@ -19,4 +18,4 @@ public:
     auto generate() const -> QString override;
 };
 
-#endif // FOREIGNKEY_H
+#endif  // FOREIGNKEY_H

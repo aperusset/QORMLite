@@ -1,27 +1,32 @@
 #ifndef QORMCACHE_H
 #define QORMCACHE_H
 
-#include "qormentity.h"
 #include <type_traits>
 #include <map>
 #include <memory>
 #include <functional>
+#include <utility>
+#include <string>
+#include "./qormentity.h"
 
 template<typename Key, class Entity>
 class QORMCache {
-
-    static_assert(std::is_base_of<QORMEntity<Key>, Entity>::value, "Entity must extend QORMEntity");
+    static_assert(
+        std::is_base_of<QORMEntity<Key>, Entity>::value,
+        "Entity must extend QORMEntity");
 
     std::map<Key, std::unique_ptr<Entity>> entities;
 
-public:
-
+ public:
     auto insert(Key key, std::unique_ptr<Entity> &&entity) -> Entity& {
         if (entity == nullptr) {
-            throw std::string("Cannot store a null entity") + std::string(" with key ") + std::to_string(key);
+            throw std::string("Cannot store a null entity with key ")
+                    .append(std::to_string(key));
         }
         if (!this->contains(key)) {
-            entities.insert(std::make_pair(std::move(key), std::forward<std::unique_ptr<Entity>>(entity)));
+            entities.insert(std::make_pair(
+                std::move(key),
+                std::forward<std::unique_ptr<Entity>>(entity)));
         }
         return this->get(key);
     }
@@ -34,10 +39,14 @@ public:
         if (this->contains(key)) {
             return *entities.at(key).get();
         }
-        throw std::string("Cannot retrieve an entity of type ") + typeid(this).name() + std::string(" with key ") + std::to_string(key);
+        throw std::string("Cannot retrieve an entity of type ")
+                .append(typeid(this).name())
+                .append(" with key ")
+                .append(std::to_string(key));
     }
 
-    auto getOrCreate(const Key &key, const std::function<Entity&()> &creator) -> Entity& {
+    auto getOrCreate(const Key &key,
+                     const std::function<Entity&()> &creator) -> Entity& {
         return this->contains(key) ? this->get(key) : creator();
     }
 
@@ -54,4 +63,4 @@ public:
     }
 };
 
-#endif // QORMCACHE_H
+#endif  // QORMCACHE_H

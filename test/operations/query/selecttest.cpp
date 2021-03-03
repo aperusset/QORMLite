@@ -105,6 +105,58 @@ void SelectTest::selectAllWithConditions() {
     );
 }
 
+void SelectTest::selectAllWithGroupBy() {
+
+    // Given
+    auto const select = Select(DEFAULT_TABLE_NAME).groupBy({DEFAULT_FIELD_NAME, DEFAULT_FIELD_NAME});
+
+    // When
+    auto const generated = select.generate();
+
+    // Then
+    QCOMPARE(select.getTableName(), DEFAULT_TABLE_NAME);
+    QCOMPARE(generated,
+        "select distinct * from " + DEFAULT_TABLE_NAME +
+        " group by " + DEFAULT_FIELD_NAME + ", " + DEFAULT_FIELD_NAME
+    );
+}
+
+void SelectTest::selectAllWithoutGroupByWithHavingShouldFail() {
+
+    // Given
+    auto const fieldCondition = Equals::field(DEFAULT_FIELD_NAME, 0);
+
+    // When / Then
+    QVERIFY_EXCEPTION_THROWN(
+        Select(DEFAULT_TABLE_NAME).having({fieldCondition}),
+        std::string
+    );
+}
+
+void SelectTest::selectAllWithGroupByAndHaving() {
+
+    // Given
+    auto const fieldCondition = Equals::fields(DEFAULT_FIELD_NAME, DEFAULT_FIELD_NAME);
+    auto const bindedCondition = Equals::field(DEFAULT_FIELD_NAME, 0);
+    auto const select = Select(DEFAULT_TABLE_NAME)
+            .groupBy({DEFAULT_FIELD_NAME, DEFAULT_FIELD_NAME})
+            .having({fieldCondition, bindedCondition});
+
+    // When
+    auto const generated = select.generate();
+
+    // Then
+    QCOMPARE(select.getTableName(), DEFAULT_TABLE_NAME);
+    QCOMPARE(generated,
+        "select distinct * from " + DEFAULT_TABLE_NAME +
+        " group by " + DEFAULT_FIELD_NAME + ", " + DEFAULT_FIELD_NAME +
+        " having (" +
+             fieldCondition.generate() + " and " +
+             bindedCondition.generate() +
+        ")"
+    );
+}
+
 void SelectTest::selectAllWithOrders() {
 
     // Given

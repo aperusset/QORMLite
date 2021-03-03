@@ -1,6 +1,20 @@
 #include "select.h"
 #include "qormutils.h"
 
+namespace {
+
+auto bindConditions(Select &select,
+                    const std::list<Condition> &conditions) -> Select& {
+    for (auto const &condition : conditions) {
+        for (auto const &bindable : condition.getParametrizedConditions()) {
+            select.addBindable(bindable);
+        }
+    }
+    return select;
+}
+
+}
+
 Select::Select(const QString &tableName) : Select(tableName, {" * "}) {}
 
 Select::Select(const QString &tableName, const std::list<QString> &fields) :
@@ -29,23 +43,27 @@ auto Select::getOrders() const -> std::list<Order> {
 auto Select::join(const std::list<Join> &joins) -> Select& {
     std::copy(joins.begin(), joins.end(), std::back_inserter(this->joins));
     for (auto const &join : joins) {
-        for (auto const &condition : join.getConditions()) {
-            for (auto const &bindable : condition.getParametrizedConditions()) {
-                this->addBindable(bindable);
-            }
-        }
+        bindConditions(*this, join.getConditions());
     }
     return *this;
 }
 
 auto Select::where(const std::list<Condition> &conditions) -> Select& {
     std::copy(conditions.begin(), conditions.end(), std::back_inserter(this->conditions));
-    for (auto const &condition : conditions) {
-        for (auto const &bindable : condition.getParametrizedConditions()) {
-            this->addBindable(bindable);
-        }
-    }
+    return bindConditions(*this, conditions);
+}
+
+auto Select::groupBy(const std::list<QString> &groupBy) -> Select& {
+    std::copy(groupBy.begin(), groupBy.end(), std::back_inserter(this->groupedBy));
     return *this;
+}
+
+auto Select::having(const std::list<Condition> &conditions) -> Select& {
+    if (this->groupedBy.empty()) {
+        throw std::string("Cannot use having clause without group by clause.");
+    }
+    std::copy(conditions.begin(), conditions.end(), std::back_inserter(this->havings));
+    return bindConditions(*this, conditions);
 }
 
 auto Select::orderBy(const std::list<Order> &orders) -> Select& {
@@ -86,6 +104,12 @@ auto Select::generate() const -> QString {
     );
     if (!this->conditions.empty()) {
         select += " where " + And(this->conditions).generate();
+    }
+    if (!this->groupedBy.empty()) {
+        select += " group by " + QStringList::fromStdList(this->groupedBy).join(", ");
+    }
+    if (!this->havings.empty()) {
+        select += " having " + And(this->havings).generate();
     }
     select += generatedOrders.isEmpty() ? "" : " order by " + generatedOrders.join(", ");
     if (this->maxResults.isValid()) {

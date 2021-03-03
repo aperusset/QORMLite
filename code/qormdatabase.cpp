@@ -1,4 +1,5 @@
 #include "qormdatabase.h"
+#include <algorithm>
 
 auto getDatabase(const QString &name) -> QSqlDatabase {
     return QSqlDatabase::database(name, false);

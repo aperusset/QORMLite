@@ -1,15 +1,14 @@
 #ifndef DELETE_H
 #define DELETE_H
 
-#include "operations/query.h"
-#include "condition.h"
 #include <list>
+#include "operations/query.h"
+#include "./condition.h"
 
 class Delete : public TableQuery {
-
     const std::list<Condition> conditions;
 
-public:
+ public:
     explicit Delete(const QString &tableName);
     Delete(const QString &tableName, Condition);
     Delete(const QString &tableName, std::list<Condition>);
@@ -17,4 +16,4 @@ public:
     auto generate() const -> QString override;
 };
 
-#endif // DELETE_H
+#endif  // DELETE_H

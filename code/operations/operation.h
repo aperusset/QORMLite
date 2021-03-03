@@ -4,14 +4,13 @@
 #include <QString>
 
 class Operation {
-
-public:
+ public:
     Operation() = default;
     Operation(const Operation&) = default;
     Operation(Operation&&) = default;
     Operation& operator=(const Operation&) = delete;
     Operation& operator=(Operation&&) = delete;
-    virtual ~Operation() {};
+    virtual ~Operation() {}
 
     operator QString() const { return this->generate(); }
     virtual auto generate() const -> QString = 0;
@@ -22,4 +21,4 @@ public:
     static void* operator new[](size_t) = delete;
 };
 
-#endif // OPERATION_H
+#endif  // OPERATION_H

@@ -1,6 +1,8 @@
 #include "qormlite.h"
 #include <QMutex>
 #include <map>
+#include <utility>
+#include <string>
 
 QMutex poolMutex;
 std::map<QString, QORMDatabase*> pool;
@@ -36,7 +38,7 @@ void QORMLite::destroy(const QString &name) {
 
 void QORMLite::destroyAll() {
     const QMutexLocker lock(&poolMutex);
-    for (const auto& database: pool) {
+    for (const auto& database : pool) {
         delete database.second;
     }
     pool.clear();
