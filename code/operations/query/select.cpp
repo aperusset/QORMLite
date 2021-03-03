@@ -42,6 +42,18 @@ auto Select::getOrders() const -> std::list<Order> {
     return this->orders;
 }
 
+auto Select::getMaxResults() const -> QVariant {
+    return this->maxResults;
+}
+
+auto Select::getSkippedResults() const -> QVariant {
+    return this->skippedResults;
+}
+
+auto Select::getMergedSelects() const -> std::list<Select> {
+    return this->mergedSelects;
+}
+
 auto Select::join(const std::list<Join> &joins) -> Select& {
     std::copy(joins.begin(), joins.end(), std::back_inserter(this->joins));
     for (auto const &join : joins) {
@@ -86,6 +98,14 @@ auto Select::offset(const unsigned int offset) -> Select& {
     return *this;
 }
 
+auto Select::merge(Select select) -> Select& {
+    if (this->selections.size() != select.selections.size()) {
+        throw std::string("Two selects must have same number of selections.");
+    }
+    this->mergedSelects.emplace_back(std::move(select));
+    return *this;
+}
+
 auto Select::generate() const -> QString {
     QStringList generatedSelections;
     std::transform(this->selections.begin(), this->selections.end(),
@@ -127,6 +147,11 @@ auto Select::generate() const -> QString {
     if (this->skippedResults.isValid()) {
         select += " offset " + this->skippedResults.toString();
     }
+    select += std::accumulate(this->mergedSelects.begin(),
+                              this->mergedSelects.end(), QString(""),
+        [](const QString &acc, const Select &mergedSelect) -> QString {
+            return acc + " union " + mergedSelect.generate();
+        });
     return select.simplified();
 }
 

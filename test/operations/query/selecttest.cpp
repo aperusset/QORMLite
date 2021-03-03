@@ -238,6 +238,7 @@ void SelectTest::selectAllWithLimit() {
 
     // Then
     QCOMPARE(select.getTableName(), DEFAULT_TABLE_NAME);
+    QCOMPARE(select.getMaxResults().toInt(), limit);
     QCOMPARE(generated,
         "select distinct * from " + DEFAULT_TABLE_NAME +
         " limit " + QString::number(limit)
@@ -255,9 +256,42 @@ void SelectTest::selectAllWithOffset() {
 
     // Then
     QCOMPARE(select.getTableName(), DEFAULT_TABLE_NAME);
+    QCOMPARE(select.getSkippedResults().toInt(), offset);
     QCOMPARE(generated,
         "select distinct * from " + DEFAULT_TABLE_NAME +
         " offset " + QString::number(offset)
+    );
+}
+
+void SelectTest::selectWithIncompatibleUnionsShouldFail() {
+
+    // Given
+    auto select1 = Select(DEFAULT_TABLE_NAME);
+    auto const select2 = Select(DEFAULT_TABLE_NAME, {DEFAULT_FIELD_NAME, DEFAULT_FIELD_NAME});
+
+    // When / Then
+    QVERIFY_EXCEPTION_THROWN(
+        select1.merge(select2),
+        std::string
+    );
+}
+
+void SelectTest::selectAllWithUnions() {
+
+    // Given
+    auto select1 = Select(DEFAULT_TABLE_NAME);
+    auto const select2 = Select(DEFAULT_TABLE_NAME);
+    auto const select3 = Select(DEFAULT_TABLE_NAME);
+
+    // When
+    auto const select1Generated = select1.generate();
+    auto const generated = select1.merge(select2).merge(select3).generate();
+
+    // Then
+    QCOMPARE(select1.getMergedSelects().size(), 2);
+    QCOMPARE(generated,
+        select1Generated + " union " + select2.generate() +
+             " union " + select3.generate()
     );
 }
 
