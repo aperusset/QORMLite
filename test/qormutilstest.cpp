@@ -116,3 +116,18 @@ void QORMUtilsTest::containsShouldReturnFalse() {
     QVERIFY(!QORMUtils::contains(values, 2));
     QVERIFY(!QORMUtils::contains(empty, 1));
 }
+
+void QORMUtilsTest::joinToStringShouldJoinWithSeparator() {
+
+    // Given
+    const std::list<int> values{0, 1, 2};
+
+    // When
+    auto const joined = QORMUtils::joinToString<int>(values, "-",
+        [](const int &value) -> QString {
+            return QString::number(value);
+        });
+
+    // Then
+    QCOMPARE(joined, "0-1-2");
+}

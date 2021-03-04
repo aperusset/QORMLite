@@ -6,6 +6,8 @@
 #include "operations/query/selection.h"
 #include "./bindable.h"
 
+class Select;
+
 class Condition : public Operation, public Bindable {
     const QString op;
     const std::list<Condition> nestedConditions;
@@ -56,6 +58,15 @@ namespace NotEquals {
     auto selection(const Selection&, const QVariant &value) -> Condition;
     auto selections(const Selection &right, const Selection &left) -> Condition;
 }  // namespace NotEquals
+
+class In : public Condition {
+    std::list<QString> elements;
+
+ public:
+    explicit In(const QString &field, const Select&);
+    explicit In(const QString &field, const std::list<QString>&);
+    explicit In(const QString &field, const std::list<int>&);
+};
 
 class And : public Condition {
  public:
