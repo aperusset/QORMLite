@@ -1,7 +1,9 @@
 #include "conditiontest.h"
 #include "operations/query/condition.h"
+#include "operations/query/select.h"
 #include "qormutils.h"
 
+const QString ConditionTest::DEFAULT_TABLE_NAME = "table";
 const QString ConditionTest::DEFAULT_FIELD_NAME = "field";
 const QVariant ConditionTest::DEFAULT_VALUE = QVariant::fromValue(42);
 
@@ -229,6 +231,67 @@ void ConditionTest::notEqualsSelections() {
     QVERIFY(notEquals.getNestedConditions().empty());
     QVERIFY(notEquals.getValue().isNull());
     QVERIFY(notEquals.getParametrizedConditions().empty());
+}
+
+void ConditionTest::inWithSelect() {
+
+    // Given
+    auto const select = Select(DEFAULT_TABLE_NAME);
+    auto const in = In(DEFAULT_FIELD_NAME, select);
+
+    // When
+    auto const generated = in.generate();
+
+    // Then
+    QCOMPARE(generated,
+        DEFAULT_FIELD_NAME + " in (" + select.generate() + ")"
+    );
+}
+
+void ConditionTest::inWithEmptyIntegersShouldFail() {
+
+    // Given / When / Then
+    QVERIFY_EXCEPTION_THROWN(
+        In(DEFAULT_FIELD_NAME, std::list<int>()),
+        std::string
+    );
+}
+
+void ConditionTest::inWithEmptyStringsShouldFail() {
+
+    // Given / When / Then
+    QVERIFY_EXCEPTION_THROWN(
+        In(DEFAULT_FIELD_NAME, std::list<QString>()),
+        std::string
+    );
+}
+
+void ConditionTest::inWithIntegers() {
+
+    // Given
+    auto const in = In(DEFAULT_FIELD_NAME, {0, 1, 2});
+
+    // When
+    auto const generated = in.generate();
+
+    // Then
+    QCOMPARE(generated,
+        DEFAULT_FIELD_NAME + " in (0, 1, 2)"
+    );
+}
+
+void ConditionTest::inWithStrings() {
+
+    // Given
+    auto const in = In(DEFAULT_FIELD_NAME, {"test1", "test2", "test3"});
+
+    // When
+    auto const generated = in.generate();
+
+    // Then
+    QCOMPARE(generated,
+        DEFAULT_FIELD_NAME + " in ('test1', 'test2', 'test3')"
+    );
 }
 
 void ConditionTest::andSingleCondition() {

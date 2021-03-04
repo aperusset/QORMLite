@@ -1,8 +1,8 @@
 #include "condition.h"
-#include <QStringList>
 #include <utility>
 #include <string>
 #include "qormutils.h"
+#include "./select.h"
 
 Condition::Condition(QString op, std::list<Condition> nestedConditions,
                      QString leftField, QString rightField, QVariant value) :
@@ -124,6 +124,31 @@ auto NotEquals::selection(const Selection &selection,
 auto NotEquals::selections(const Selection &right,
                            const Selection &left) -> Condition {
     return Condition(" <> ", {}, right, left, QVariant());
+}
+
+In::In(const QString &field, const Select &select) :
+    Condition(" in ", {}, field, "(" + select.generate() + ")", QVariant()) {}
+
+In::In(const QString &field, const std::list<QString> &elements) :
+    Condition(" in ", {}, field,
+              "(" + QORMUtils::joinToString<QString>(elements, ", ",
+                    [](const QString &element) -> QString {
+                        return "'" + element + "'";
+                    }) + ")", QVariant())  {
+    if (elements.empty()) {
+        throw std::string("In condition must contain at least one value.");
+    }
+}
+
+In::In(const QString &field, const std::list<int> &elements) :
+    Condition(" in ", {}, field,
+              "(" + QORMUtils::joinToString<int>(elements, ", ",
+                    [](const int &element) -> QString {
+                        return QString::number(element);
+                    }) + ")", QVariant())  {
+    if (elements.empty()) {
+        throw std::string("In condition must contain at least one value.");
+    }
 }
 
 And::And(const std::list<Condition> &conditions) :

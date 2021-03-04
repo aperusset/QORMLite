@@ -7,6 +7,7 @@ class ConditionTest : public QObject {
 
     Q_OBJECT
 
+    static const QString DEFAULT_TABLE_NAME;
     static const QString DEFAULT_FIELD_NAME;
     static const QVariant DEFAULT_VALUE;
 
@@ -25,6 +26,11 @@ private slots:
     static void notEqualsFields();
     static void notEqualsSelection();
     static void notEqualsSelections();
+    static void inWithSelect();
+    static void inWithEmptyIntegersShouldFail();
+    static void inWithEmptyStringsShouldFail();
+    static void inWithIntegers();
+    static void inWithStrings();
     static void andSingleCondition();
     static void andMultipleConditions();
     static void orSingleCondition();

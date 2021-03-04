@@ -18,6 +18,7 @@ private slots:
     static void nullString();
     static void containsShouldReturnTrue();
     static void containsShouldReturnFalse();
+    static void joinToStringShouldJoinWithSeparator();
 };
 
 #endif // QORMUTILSTEST_H
