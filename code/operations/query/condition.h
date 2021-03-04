@@ -60,8 +60,6 @@ namespace NotEquals {
 }  // namespace NotEquals
 
 class In : public Condition {
-    std::list<QString> elements;
-
  public:
     explicit In(const QString &field, const Select&);
     explicit In(const QString &field, const std::list<QString>&);
