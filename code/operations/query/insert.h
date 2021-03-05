@@ -2,7 +2,7 @@
 #define INSERT_H
 
 #include <list>
-#include "operations/query.h"
+#include "operations/query/tablequery.h"
 #include "operations/query/assignment.h"
 
 class Insert : public TableQuery {

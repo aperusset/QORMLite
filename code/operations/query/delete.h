@@ -2,7 +2,7 @@
 #define DELETE_H
 
 #include <list>
-#include "operations/query.h"
+#include "operations/query/tablequery.h"
 #include "operations/query/condition/condition.h"
 
 class Delete : public TableQuery {

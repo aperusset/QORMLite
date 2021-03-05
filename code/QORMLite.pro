@@ -75,6 +75,7 @@ HEADERS += \
   operations/query/selection/selection.h \
   operations/query/selection/sum.h \
   operations/query/selection/upper.h \
+  operations/query/tablequery.h \
   operations/query/update.h \
   qormcache.h \
   qormcreator.h \

@@ -2,7 +2,7 @@
 #define SELECT_H
 
 #include <list>
-#include "operations/query.h"
+#include "operations/query/tablequery.h"
 #include "operations/query/selection/selection.h"
 #include "operations/query/join/join.h"
 #include "operations/query/condition/condition.h"
