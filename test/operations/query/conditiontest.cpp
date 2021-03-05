@@ -8,6 +8,7 @@
 #include "operations/query/condition/in.h"
 #include "operations/query/condition/and.h"
 #include "operations/query/condition/or.h"
+#include "operations/query/selection/sum.h"
 #include "operations/query/select.h"
 #include "qormutils.h"
 

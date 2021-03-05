@@ -3,7 +3,7 @@
 
 #include <list>
 #include "operations/operation.h"
-#include "operations/query/selection.h"
+#include "operations/query/selection/selection.h"
 #include "operations/query/bindable.h"
 
 class Select;

@@ -1,5 +1,13 @@
 #include "selectiontest.h"
-#include "operations/query/selection.h"
+#include "operations/query/selection/selection.h"
+#include "operations/query/selection/sum.h"
+#include "operations/query/selection/avg.h"
+#include "operations/query/selection/count.h"
+#include "operations/query/selection/min.h"
+#include "operations/query/selection/max.h"
+#include "operations/query/selection/dateformatter.h"
+#include "operations/query/selection/lower.h"
+#include "operations/query/selection/upper.h"
 
 const QString SelectionTest::DEFAULT_FIELD_NAME = "defaultFieldName";
 const QString SelectionTest::DEFAULT_RENAMED_TO = "renamedTo";

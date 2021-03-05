@@ -27,7 +27,7 @@ SOURCES += \
   operations/query/join/join.cpp \
   operations/query/order/order.cpp \
   operations/query/select.cpp \
-  operations/query/selection.cpp \
+  operations/query/selection/selection.cpp \
   operations/query/update.cpp \
   qormcreator.cpp \
   qormdatabase.cpp \
@@ -66,7 +66,15 @@ HEADERS += \
   operations/query/order/desc.h \
   operations/query/order/order.h \
   operations/query/select.h \
-  operations/query/selection.h \
+  operations/query/selection/avg.h \
+  operations/query/selection/count.h \
+  operations/query/selection/dateformatter.h \
+  operations/query/selection/lower.h \
+  operations/query/selection/max.h \
+  operations/query/selection/min.h \
+  operations/query/selection/selection.h \
+  operations/query/selection/sum.h \
+  operations/query/selection/upper.h \
   operations/query/update.h \
   qormcache.h \
   qormcreator.h \

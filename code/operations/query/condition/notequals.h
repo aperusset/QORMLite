@@ -3,7 +3,7 @@
 
 #include <QString>
 #include <QVariant>
-#include "operations/query/selection.h"
+#include "operations/query/selection/selection.h"
 #include "operations/query/condition/condition.h"
 
 namespace NotEquals {

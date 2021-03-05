@@ -3,7 +3,7 @@
 
 #include <list>
 #include "operations/query.h"
-#include "operations/query/selection.h"
+#include "operations/query/selection/selection.h"
 #include "operations/query/join/join.h"
 #include "operations/query/condition/condition.h"
 #include "operations/query/order/order.h"
