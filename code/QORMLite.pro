@@ -14,7 +14,9 @@ SOURCES += \
   operations/model/foreignkey.cpp \
   operations/model/primarykey.cpp \
   operations/model/table.cpp \
-  operations/model/type.cpp \
+  operations/model/type/date.cpp \
+  operations/model/type/type.cpp \
+  operations/model/type/varchar.cpp \
   operations/model/view.cpp \
   operations/query.cpp \
   operations/query/assignment.cpp \
@@ -40,7 +42,11 @@ HEADERS += \
   operations/model/primarykey.h \
   operations/model/reference.h \
   operations/model/table.h \
-  operations/model/type.h \
+  operations/model/type/date.h \
+  operations/model/type/decimal.h \
+  operations/model/type/integer.h \
+  operations/model/type/type.h \
+  operations/model/type/varchar.h \
   operations/model/view.h \
   operations/operation.h \
   operations/query.h \

@@ -1,5 +1,9 @@
 #include "typetest.h"
-#include "operations/model/type.h"
+#include "operations/model/type/type.h"
+#include "operations/model/type/integer.h"
+#include "operations/model/type/date.h"
+#include "operations/model/type/decimal.h"
+#include "operations/model/type/varchar.h"
 
 void TypeTest::generate() {
 

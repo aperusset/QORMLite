@@ -1,7 +1,7 @@
 #include "qormcreatortest.h"
 #include "qormdatabase.h"
 #include "operations/model/primarykey.h"
-#include "operations/model/field.h"
+#include "operations/model/type/integer.h"
 #include "operations/query/select.h"
 #include "operations/query/insert.h"
 

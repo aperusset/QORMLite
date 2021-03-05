@@ -2,7 +2,7 @@
 #define FIELDTEST_H
 
 #include <QtTest/QtTest>
-#include "operations/model/type.h"
+#include "operations/model/type/type.h"
 
 class FieldTest : public QObject {
 

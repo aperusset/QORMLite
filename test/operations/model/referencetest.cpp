@@ -1,6 +1,6 @@
 #include "referencetest.h"
 #include "operations/model/reference.h"
-#include "operations/model/type.h"
+#include "operations/model/type/type.h"
 #include "operations/model/field.h"
 
 void ReferenceTest::getFrom() {

@@ -2,7 +2,7 @@
 #define FIELD_H
 
 #include "operations/operation.h"
-#include "operations/model/type.h"
+#include "operations/model/type/type.h"
 
 class Field : public Operation {
     const QString name;

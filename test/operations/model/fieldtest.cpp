@@ -1,6 +1,6 @@
 #include "fieldtest.h"
 #include "operations/model/field.h"
-#include "operations/model/type.h"
+#include "operations/model/type/integer.h"
 
 const QString FieldTest::DEFAULT_NAME = "defaultName";
 const Type FieldTest::DEFAULT_TYPE = Integer();

@@ -2,7 +2,7 @@
 #include "qormdatabase.h"
 #include "operations/model/table.h"
 #include "operations/model/primarykey.h"
-#include "operations/model/type.h"
+#include "operations/model/type/integer.h"
 #include "operations/model/field.h"
 #include "operations/model/view.h"
 #include "operations/query/select.h"
