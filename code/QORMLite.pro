@@ -13,12 +13,11 @@ SOURCES += \
   operations/model/field.cpp \
   operations/model/foreignkey.cpp \
   operations/model/primarykey.cpp \
-  operations/model/reference.cpp \
   operations/model/table.cpp \
   operations/model/type.cpp \
   operations/model/view.cpp \
   operations/query.cpp \
-  operations/query/assignement.cpp \
+  operations/query/assignment.cpp \
   operations/query/condition.cpp \
   operations/query/delete.cpp \
   operations/query/insert.cpp \
@@ -42,7 +41,7 @@ HEADERS += \
   operations/model/view.h \
   operations/operation.h \
   operations/query.h \
-  operations/query/assignement.h \
+  operations/query/assignment.h \
   operations/query/bindable.h \
   operations/query/condition.h \
   operations/query/delete.h \

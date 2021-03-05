@@ -3,7 +3,7 @@
 
 #include <list>
 #include "operations/operation.h"
-#include "./reference.h"
+#include "operations/model/reference.h"
 
 class ForeignKey : public Operation {
     const std::list<Reference> references;
@@ -17,5 +17,17 @@ class ForeignKey : public Operation {
     auto getOnAction() const -> OnAction;
     auto generate() const -> QString override;
 };
+
+inline auto ForeignKey::getReferences() const -> std::list<Reference> {
+    return this->references;
+}
+
+inline auto ForeignKey::getTargetTable() const -> QString {
+    return this->targetTable;
+}
+
+inline auto ForeignKey::getOnAction() const -> OnAction {
+    return this->onAction;
+}
 
 #endif  // FOREIGNKEY_H

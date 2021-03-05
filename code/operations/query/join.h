@@ -3,7 +3,7 @@
 
 #include <list>
 #include "operations/operation.h"
-#include "./condition.h"
+#include "operations/query/condition.h"
 
 enum class JoinType {
     Inner, Left, Right, Cross
@@ -23,6 +23,19 @@ class Join : public Operation {
     auto getConditions() const -> std::list<Condition>;
     auto generate() const -> QString override;
 };
+
+inline auto Join::getJoinType() const -> JoinType {
+    return this->joinType;
+}
+
+inline auto Join::getTable() const -> QString {
+    return this->table;
+}
+
+inline auto Join::getConditions() const -> std::list<Condition> {
+    return this->conditions;
+}
+
 
 class InnerJoin : public Join {
  public:

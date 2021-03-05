@@ -1,17 +1,13 @@
-#include "insert.h"
+#include "operations/query/insert.h"
 #include <utility>
 
 Insert::Insert(const QString &tableName) : Insert(tableName, {}) {}
 
-Insert::Insert(const QString &tableName, std::list<Assignement> assignements) :
+Insert::Insert(const QString &tableName, std::list<Assignment> assignements) :
     TableQuery(tableName), assignements(std::move(assignements)) {
     for (auto const &assignement : this->assignements) {
         this->addBindable(assignement);
     }
-}
-
-auto Insert::getAssignements() const -> std::list<Assignement> {
-    return this->assignements;
 }
 
 auto Insert::generate() const -> QString {

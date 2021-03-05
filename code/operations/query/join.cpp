@@ -1,4 +1,6 @@
-#include "join.h"
+#include "operations/query/join.h"
+#include <utility>
+#include <string>
 
 Join::Join(const JoinType &joinType, QString table,
            std::list<Condition> conditions) :
@@ -9,21 +11,9 @@ Join::Join(const JoinType &joinType, QString table,
     }
 }
 
-auto Join::getJoinType() const -> JoinType {
-    return this->joinType;
-}
-
-auto Join::getTable() const -> QString {
-    return this->table;
-}
-
-auto Join::getConditions() const -> std::list<Condition> {
-    return this->conditions;
-}
-
 auto Join::generate() const -> QString {
     QString query;
-    switch(this->joinType) {
+    switch (this->joinType) {
         case JoinType::Inner:
             query += "inner join ";
             break;

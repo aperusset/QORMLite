@@ -3,22 +3,30 @@
 
 #include <list>
 #include "operations/query.h"
-#include "./assignement.h"
-#include "./condition.h"
+#include "operations/query/assignment.h"
+#include "operations/query/condition.h"
 
 class Update : public TableQuery {
-    const std::list<Assignement> assignements;
+    const std::list<Assignment> assignements;
     const std::list<Condition> conditions;
 
  public:
-    Update(const QString &tableName, const std::list<Assignement>&);
-    Update(const QString &tableName, const std::list<Assignement>&,
+    Update(const QString &tableName, const std::list<Assignment>&);
+    Update(const QString &tableName, const std::list<Assignment>&,
            const Condition&);
-    Update(const QString &tableName, std::list<Assignement>,
+    Update(const QString &tableName, std::list<Assignment>,
            std::list<Condition>);
-    auto getAssignements() const -> std::list<Assignement>;
+    auto getAssignements() const -> std::list<Assignment>;
     auto getConditions() const -> std::list<Condition>;
     auto generate() const -> QString override;
 };
+
+inline auto Update::getAssignements() const -> std::list<Assignment> {
+    return this->assignements;
+}
+
+inline auto Update::getConditions() const -> std::list<Condition> {
+    return this->conditions;
+}
 
 #endif  // UPDATE_H

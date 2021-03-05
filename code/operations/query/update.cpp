@@ -1,17 +1,17 @@
-#include "update.h"
+#include "operations/query/update.h"
 #include <utility>
 #include <string>
 
 Update::Update(const QString &tableName,
-               const std::list<Assignement> &assignements) :
+               const std::list<Assignment> &assignements) :
     Update(tableName, assignements, {}) {}
 
 Update::Update(const QString &tableName,
-               const std::list<Assignement> &assignements,
+               const std::list<Assignment> &assignements,
                const Condition &condition) :
     Update(tableName, assignements, std::list<Condition>({condition})) {}
 
-Update::Update(const QString &tableName, std::list<Assignement> assignements,
+Update::Update(const QString &tableName, std::list<Assignment> assignements,
                std::list<Condition> conditions) :
     TableQuery(tableName), assignements(std::move(assignements)),
     conditions(std::move(conditions)) {
@@ -27,14 +27,6 @@ Update::Update(const QString &tableName, std::list<Assignement> assignements,
             this->addBindable(bindable);
         }
     }
-}
-
-auto Update::getAssignements() const -> std::list<Assignement> {
-    return this->assignements;
-}
-
-auto Update::getConditions() const -> std::list<Condition> {
-    return this->conditions;
 }
 
 auto Update::generate() const -> QString {

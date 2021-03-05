@@ -5,7 +5,8 @@
 #include <QVariant>
 #include <QSqlQuery>
 #include <map>
-#include "./operation.h"
+#include <utility>
+#include "operations/operation.h"
 #include "query/bindable.h"
 
 class Query : public Operation {
@@ -22,10 +23,15 @@ class TableQuery : public Query {
     const QString tableName;
 
  protected:
-    explicit TableQuery(QString tableName);
+    explicit TableQuery(QString tableName) :
+        tableName(std::move(tableName)) {}
 
  public:
     auto getTableName() const -> QString;
 };
+
+inline auto TableQuery::getTableName() const -> QString {
+    return this->tableName;
+}
 
 #endif  // QUERY_H

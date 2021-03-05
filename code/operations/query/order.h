@@ -20,14 +20,24 @@ class Order : public Operation {
     auto generate() const -> QString override;
 };
 
+inline auto Order::getFieldName() const -> QString {
+    return this->fieldName;
+}
+
+inline auto Order::getOrdering() const -> Ordering {
+    return this->ordering;
+}
+
 class Asc : public Order {
  public:
-    explicit Asc(const QString &fieldName);
+    explicit Asc(const QString &fieldName) :
+        Order(fieldName, Ordering::Asc) {}
 };
 
 class Desc : public Order {
  public:
-    explicit Desc(const QString &fieldName);
+    explicit Desc(const QString &fieldName) :
+        Order(fieldName, Ordering::Desc) {}
 };
 
 #endif  // ORDER_H

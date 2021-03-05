@@ -3,7 +3,7 @@
 #include "operations/query/select.h"
 #include "operations/query/insert.h"
 #include "operations/query/delete.h"
-#include "operations/query/assignement.h"
+#include "operations/query/assignment.h"
 #include "operations/query/selection.h"
 #include "fixture/testentity.h"
 
@@ -216,7 +216,7 @@ void QORMDatabaseTest::insertAndRetrieveKeyAsIntShouldFail() {
 
     // Then
     QVERIFY_EXCEPTION_THROWN(
-        database.insertAndRetrieveKey(Insert(TestCreator::TEST_TABLE, {Assignement(TestCreator::TEST_FIELD, 0)})),
+        database.insertAndRetrieveKey(Insert(TestCreator::TEST_TABLE, {Assignment(TestCreator::TEST_FIELD, 0)})),
         std::string
     );
 }

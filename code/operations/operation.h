@@ -16,7 +16,6 @@ class Operation {
     virtual auto generate() const -> QString = 0;
 
     // Prevent heap allocation for database operations
-    // https://en.wikibooks.org/wiki/More_C%2B%2B_Idioms/Requiring_or_Prohibiting_Heap-based_Objects
     static void* operator new(size_t) = delete;
     static void* operator new[](size_t) = delete;
 };

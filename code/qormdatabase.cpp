@@ -1,6 +1,8 @@
 #include "qormdatabase.h"
 #include <algorithm>
 
+namespace  {
+
 auto getDatabase(const QString &name) -> QSqlDatabase {
     return QSqlDatabase::database(name, false);
 }
@@ -11,6 +13,8 @@ void deleteIfTestMode(const QString &name, bool test) {
         QFile::remove(fileName);
     }
 }
+
+}  // namespace
 
 const QString QORMDatabase::TEST_PREFIX = "test_";
 const QString QORMDatabase::FILE_EXTENSION = ".db";
@@ -59,18 +63,6 @@ auto QORMDatabase::execute(QSqlQuery query) const -> QSqlQuery {
                 query.lastError().driverText().toStdString() + ")";
     }
     return query;
-}
-
-auto QORMDatabase::getName() const -> QString {
-    return this->name;
-}
-
-auto QORMDatabase::isVerbose() const -> bool {
-    return this->verbose;
-}
-
-auto QORMDatabase::isTest() const -> bool {
-    return this->test;
 }
 
 auto QORMDatabase::isConnected() const -> bool {

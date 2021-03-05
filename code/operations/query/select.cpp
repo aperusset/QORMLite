@@ -1,6 +1,7 @@
-#include "select.h"
+#include "operations/query/select.h"
 #include <string>
 #include <algorithm>
+#include <utility>
 #include "qormutils.h"
 
 namespace {
@@ -24,34 +25,6 @@ Select::Select(const QString &tableName, const std::list<QString> &fields) :
     for (auto const &field : fields) {
         this->selections.emplace_back(Selection(field));
     }
-}
-
-auto Select::getSelections() const -> std::list<Selection> {
-    return this->selections;
-}
-
-auto Select::getJoins() const -> std::list<Join> {
-    return this->joins;
-}
-
-auto Select::getConditions() const -> std::list<Condition> {
-    return this->conditions;
-}
-
-auto Select::getOrders() const -> std::list<Order> {
-    return this->orders;
-}
-
-auto Select::getMaxResults() const -> QVariant {
-    return this->maxResults;
-}
-
-auto Select::getSkippedResults() const -> QVariant {
-    return this->skippedResults;
-}
-
-auto Select::getMergedSelects() const -> std::list<Select> {
-    return this->mergedSelects;
 }
 
 auto Select::join(const std::list<Join> &joins) -> Select& {

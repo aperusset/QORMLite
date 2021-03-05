@@ -1,26 +1,10 @@
-#include "field.h"
+#include "operations/model/field.h"
 #include <utility>
 
 Field::Field(QString name, Type type, const bool nullable,
              QString defaultValue) :
     name(std::move(name)), type(std::move(type)), nullable(nullable),
     defaultValue(std::move(defaultValue)) {}
-
-auto Field::getName() const -> QString {
-    return this->name;
-}
-
-auto Field::getType() const -> const Type& {
-    return this->type;
-}
-
-auto Field::getDefaultValue() const -> QString {
-    return this->defaultValue;
-}
-
-auto Field::isNullable() const -> bool {
-    return this->nullable;
-}
 
 auto Field::generate() const -> QString {
     return (

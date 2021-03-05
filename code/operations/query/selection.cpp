@@ -1,16 +1,8 @@
-#include "selection.h"
+#include "operations/query/selection.h"
 #include <utility>
 
 Selection::Selection(QString fieldName, QString renamedTo) :
     fieldName(std::move(fieldName)), renamedTo(std::move(renamedTo)) {}
-
-auto Selection::getFieldName() const -> QString {
-    return this->fieldName;
-}
-
-auto Selection::getRenamedTo() const -> QString {
-    return this->renamedTo;
-}
 
 auto Selection::generate() const -> QString {
     return (this->fieldName +

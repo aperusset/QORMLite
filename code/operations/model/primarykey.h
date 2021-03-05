@@ -3,7 +3,7 @@
 
 #include <list>
 #include "operations/operation.h"
-#include "./field.h"
+#include "operations/model/field.h"
 
 class PrimaryKey : public Operation {
     const std::list<Field> fields;
@@ -16,5 +16,13 @@ class PrimaryKey : public Operation {
     auto isAutoIncrement() const -> bool;
     auto generate() const -> QString override;
 };
+
+inline auto PrimaryKey::getFields() const -> std::list<Field> {
+    return this->fields;
+}
+
+inline auto PrimaryKey::isAutoIncrement() const -> bool {
+    return this->autoIncrement;
+}
 
 #endif  // PRIMARYKEY_H

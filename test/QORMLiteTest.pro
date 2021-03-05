@@ -21,7 +21,7 @@ SOURCES +=  \
   operations/model/tabletest.cpp \
   operations/model/typetest.cpp \
   operations/model/viewtest.cpp \
-  operations/query/assignementtest.cpp \
+  operations/query/assignmenttest.cpp \
   operations/query/conditiontest.cpp \
   operations/query/deletetest.cpp \
   operations/query/inserttest.cpp \
@@ -49,7 +49,7 @@ HEADERS += \
   operations/model/tabletest.h \
   operations/model/typetest.h \
   operations/model/viewtest.h \
-  operations/query/assignementtest.h \
+  operations/query/assignmenttest.h \
   operations/query/conditiontest.h \
   operations/query/deletetest.h \
   operations/query/inserttest.h \

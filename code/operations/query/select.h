@@ -3,10 +3,10 @@
 
 #include <list>
 #include "operations/query.h"
-#include "./selection.h"
-#include "./join.h"
-#include "./condition.h"
-#include "./order.h"
+#include "operations/query/selection.h"
+#include "operations/query/join.h"
+#include "operations/query/condition.h"
+#include "operations/query/order.h"
 
 class Select : public TableQuery {
     std::list<Selection> selections;
@@ -40,6 +40,34 @@ class Select : public TableQuery {
     auto offset(const unsigned int offset) -> Select&;
     auto merge(Select) -> Select&;
 };
+
+inline auto Select::getSelections() const -> std::list<Selection> {
+    return this->selections;
+}
+
+inline auto Select::getJoins() const -> std::list<Join> {
+    return this->joins;
+}
+
+inline auto Select::getConditions() const -> std::list<Condition> {
+    return this->conditions;
+}
+
+inline auto Select::getOrders() const -> std::list<Order> {
+    return this->orders;
+}
+
+inline auto Select::getMaxResults() const -> QVariant {
+    return this->maxResults;
+}
+
+inline auto Select::getSkippedResults() const -> QVariant {
+    return this->skippedResults;
+}
+
+inline auto Select::getMergedSelects() const -> std::list<Select> {
+    return this->mergedSelects;
+}
 
 class LastInsertedId : public Query {
  public:

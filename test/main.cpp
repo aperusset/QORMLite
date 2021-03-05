@@ -11,7 +11,7 @@
 #include "operations/model/referencetest.h"
 #include "operations/model/foreignkeytest.h"
 #include "operations/query/ordertest.h"
-#include "operations/query/assignementtest.h"
+#include "operations/query/assignmenttest.h"
 #include "operations/query/selectiontest.h"
 #include "operations/query/conditiontest.h"
 #include "operations/query/jointest.h"
@@ -35,7 +35,7 @@ auto main(int argc, char *argv[]) -> int {
         std::make_shared<ReferenceTest>(),
         std::make_shared<ForeignKeyTest>(),
         std::make_shared<OrderTest>(),
-        std::make_shared<AssignementTest>(),
+        std::make_shared<AssignmentTest>(),
         std::make_shared<SelectionTest>(),
         std::make_shared<ConditionTest>(),
         std::make_shared<JoinTest>(),

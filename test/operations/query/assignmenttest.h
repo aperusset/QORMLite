@@ -3,7 +3,7 @@
 
 #include <QtTest/QtTest>
 
-class AssignementTest : public QObject {
+class AssignmentTest : public QObject {
 
     Q_OBJECT
 

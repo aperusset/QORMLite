@@ -16,6 +16,14 @@ class Selection : public Operation {
     auto operator != (const Selection&) const -> bool;
 };
 
+inline auto Selection::getFieldName() const -> QString {
+    return this->fieldName;
+}
+
+inline auto Selection::getRenamedTo() const -> QString {
+    return this->renamedTo;
+}
+
 class Sum : public Selection {
  public:
     Sum(const QString &fieldToSum, const QString &renameTo);

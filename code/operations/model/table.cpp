@@ -1,4 +1,4 @@
-#include "table.h"
+#include "operations/model/table.h"
 #include <QStringList>
 #include <algorithm>
 #include <utility>
@@ -8,22 +8,6 @@ Table::Table(QString tableName, PrimaryKey primaryKey,
              std::list<Field> fields, std::list<ForeignKey> foreignKeys) :
     tableName(std::move(tableName)), primaryKey(std::move(primaryKey)),
     fields(std::move(fields)), foreignKeys(std::move(foreignKeys)) {}
-
-auto Table::getTableName() const -> QString {
-    return this->tableName;
-}
-
-auto Table::getPrimaryKey() const -> PrimaryKey {
-    return this->primaryKey;
-}
-
-auto Table::getFields() const -> std::list<Field> {
-    return this->fields;
-}
-
-auto Table::getForeignKeys() const -> std::list<ForeignKey> {
-    return this->foreignKeys;
-}
 
 auto Table::generate() const -> QString {
     auto const pKeyFields = this->primaryKey.getFields();

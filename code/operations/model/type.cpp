@@ -1,11 +1,7 @@
-#include "type.h"
+#include "operations/model/type.h"
 #include <utility>
 
 Type::Type(QString name) : name(std::move(name)) {}
-
-auto Type::getName() const -> QString {
-    return this->name;
-}
 
 auto Type::generate() const -> QString {
     return this->name;

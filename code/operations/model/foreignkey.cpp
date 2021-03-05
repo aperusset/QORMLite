@@ -1,4 +1,4 @@
-#include "foreignkey.h"
+#include "operations/model/foreignkey.h"
 #include <QStringList>
 #include <utility>
 #include <string>
@@ -10,18 +10,6 @@ ForeignKey::ForeignKey(std::list<Reference> references, QString targetTable,
     if (this->references.empty()) {
         throw std::string("Cannot generate foreign key without any reference.");
     }
-}
-
-auto ForeignKey::getReferences() const -> std::list<Reference> {
-    return this->references;
-}
-
-auto ForeignKey::getTargetTable() const -> QString {
-    return this->targetTable;
-}
-
-auto ForeignKey::getOnAction() const -> OnAction {
-    return this->onAction;
 }
 
 auto ForeignKey::generate() const -> QString {
