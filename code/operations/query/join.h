@@ -3,7 +3,7 @@
 
 #include <list>
 #include "operations/operation.h"
-#include "operations/query/condition.h"
+#include "operations/query/condition/condition.h"
 
 enum class JoinType {
     Inner, Left, Right, Cross

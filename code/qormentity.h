@@ -4,7 +4,7 @@
 #include <set>
 #include <algorithm>
 #include "./qormobserver.h"
-#include "operations/query/condition.h"
+#include "operations/query/condition/condition.h"
 
 template<typename Key = int>
 class QORMEntity {

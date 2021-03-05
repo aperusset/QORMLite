@@ -1,6 +1,7 @@
 #include "operations/query/join.h"
 #include <utility>
 #include <string>
+#include "operations/query/condition/and.h"
 
 Join::Join(const JoinType &joinType, QString table,
            std::list<Condition> conditions) :

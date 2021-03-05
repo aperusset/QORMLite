@@ -18,7 +18,10 @@ SOURCES += \
   operations/model/view.cpp \
   operations/query.cpp \
   operations/query/assignment.cpp \
-  operations/query/condition.cpp \
+  operations/query/condition/condition.cpp \
+  operations/query/condition/equals.cpp \
+  operations/query/condition/in.cpp \
+  operations/query/condition/notequals.cpp \
   operations/query/delete.cpp \
   operations/query/insert.cpp \
   operations/query/join.cpp \
@@ -43,7 +46,15 @@ HEADERS += \
   operations/query.h \
   operations/query/assignment.h \
   operations/query/bindable.h \
-  operations/query/condition.h \
+  operations/query/condition/and.h \
+  operations/query/condition/condition.h \
+  operations/query/condition/equals.h \
+  operations/query/condition/in.h \
+  operations/query/condition/isnotnull.h \
+  operations/query/condition/isnull.h \
+  operations/query/condition/like.h \
+  operations/query/condition/notequals.h \
+  operations/query/condition/or.h \
   operations/query/delete.h \
   operations/query/insert.h \
   operations/query/join.h \

@@ -1,7 +1,8 @@
 #include "viewtest.h"
 #include "operations/model/view.h"
 #include "operations/query/select.h"
-#include "operations/query/condition.h"
+#include "operations/query/condition/condition.h"
+#include "operations/query/condition/equals.h"
 
 const QString ViewTest::DEFAULT_VIEW_NAME = "view_name";
 const QString ViewTest::DEFAULT_TABLE_NAME = "table_name";

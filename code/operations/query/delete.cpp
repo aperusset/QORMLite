@@ -1,5 +1,6 @@
 #include "operations/query/delete.h"
 #include <utility>
+#include "operations/query/condition/and.h"
 
 Delete::Delete(const QString &tableName) : Delete(tableName, {}) {}
 

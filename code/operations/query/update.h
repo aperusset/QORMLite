@@ -4,7 +4,7 @@
 #include <list>
 #include "operations/query.h"
 #include "operations/query/assignment.h"
-#include "operations/query/condition.h"
+#include "operations/query/condition/condition.h"
 
 class Update : public TableQuery {
     const std::list<Assignment> assignements;

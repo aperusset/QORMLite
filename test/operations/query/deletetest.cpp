@@ -1,7 +1,9 @@
 #include "deletetest.h"
 
 #include "operations/query/delete.h"
-#include "operations/query/condition.h"
+#include "operations/query/condition/condition.h"
+#include "operations/query/condition/equals.h"
+#include "operations/query/condition/and.h"
 
 const QString DeleteTest::DEFAULT_TABLE_NAME = "table_name";
 const QString DeleteTest::DEFAULT_FIELD_NAME = "field_name";

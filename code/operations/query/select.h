@@ -5,7 +5,7 @@
 #include "operations/query.h"
 #include "operations/query/selection.h"
 #include "operations/query/join.h"
-#include "operations/query/condition.h"
+#include "operations/query/condition/condition.h"
 #include "operations/query/order.h"
 
 class Select : public TableQuery {

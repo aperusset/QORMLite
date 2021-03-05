@@ -2,7 +2,7 @@
 #include "operations/query/select.h"
 #include "operations/query/selection.h"
 #include "operations/query/join.h"
-#include "operations/query/condition.h"
+#include "operations/query/condition/equals.h"
 #include "operations/query/order.h"
 
 const QString SelectTest::DEFAULT_TABLE_NAME = "table_name";
