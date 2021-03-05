@@ -1,8 +1,8 @@
-#include "condition.h"
+#include "operations/query/condition.h"
 #include <utility>
 #include <string>
 #include "qormutils.h"
-#include "./select.h"
+#include "operations/query/select.h"
 
 Condition::Condition(QString op, std::list<Condition> nestedConditions,
                      QString leftField, QString rightField, QVariant value) :
@@ -26,30 +26,6 @@ auto Condition::isParametrized() const -> bool {
     return value.isValid() || std::any_of(
         nestedConditions.begin(), nestedConditions.end(),
         std::bind(&Condition::isParametrized, std::placeholders::_1));
-}
-
-auto Condition::getNestedConditions() const -> std::list<Condition> {
-    return this->nestedConditions;
-}
-
-auto Condition::getOperator() const -> QString {
-    return this->op;
-}
-
-auto Condition::getLeftField() const -> QString {
-    return this->leftField;
-}
-
-auto Condition::getRightField() const -> QString {
-    return this->rightField;
-}
-
-auto Condition::getParameter() const -> QString {
-    return this->getRightField();
-}
-
-auto Condition::getValue() const -> QVariant {
-    return this->value;
 }
 
 auto Condition::getParametrizedConditions() const -> std::list<Condition> {

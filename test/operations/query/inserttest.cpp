@@ -1,6 +1,6 @@
 #include "inserttest.h"
 #include "operations/query/insert.h"
-#include "operations/query/assignement.h"
+#include "operations/query/assignment.h"
 
 const QString InsertTest::DEFAULT_TABLE_NAME = "table_name";
 const QString InsertTest::DEFAULT_FIELD_NAME = "field";
@@ -23,7 +23,7 @@ void InsertTest::generateDefaultValues() {
 void InsertTest::generateWithAssignements() {
 
     // Given
-    auto const assignement = Assignement(DEFAULT_FIELD_NAME, 1);
+    auto const assignement = Assignment(DEFAULT_FIELD_NAME, 1);
     auto const insert = Insert(DEFAULT_TABLE_NAME, {assignement, assignement});
 
     // When

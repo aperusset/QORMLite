@@ -1,4 +1,4 @@
-#include "primarykey.h"
+#include "operations/model/primarykey.h"
 #include <QStringList>
 #include <utility>
 #include <string>
@@ -11,14 +11,6 @@ PrimaryKey::PrimaryKey(std::list<Field> fields) :
     if (this->fields.empty()) {
         throw std::string("Cannot generate a primary key without any field.");
     }
-}
-
-auto PrimaryKey::getFields() const -> std::list<Field> {
-    return this->fields;
-}
-
-auto PrimaryKey::isAutoIncrement() const -> bool {
-    return this->autoIncrement;
 }
 
 auto PrimaryKey::generate() const -> QString {

@@ -4,7 +4,7 @@
 #include <list>
 #include "operations/operation.h"
 #include "operations/query/selection.h"
-#include "./bindable.h"
+#include "operations/query/bindable.h"
 
 class Select;
 
@@ -29,6 +29,30 @@ class Condition : public Operation, public Bindable {
     auto getParametrizedConditions() const -> std::list<Condition>;
     auto generate() const -> QString override;
 };
+
+inline auto Condition::getNestedConditions() const -> std::list<Condition> {
+    return this->nestedConditions;
+}
+
+inline auto Condition::getOperator() const -> QString {
+    return this->op;
+}
+
+inline auto Condition::getLeftField() const -> QString {
+    return this->leftField;
+}
+
+inline auto Condition::getRightField() const -> QString {
+    return this->rightField;
+}
+
+inline auto Condition::getParameter() const -> QString {
+    return this->getRightField();
+}
+
+inline auto Condition::getValue() const -> QVariant {
+    return this->value;
+}
 
 class IsNull : public Condition {
  public:

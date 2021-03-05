@@ -15,4 +15,12 @@ class View : public Query {
     auto generate() const -> QString override;
 };
 
+inline auto View::getViewName() const -> QString {
+    return this->viewName;
+}
+
+inline auto View::getSelect() const -> Select {
+    return this->select;
+}
+
 #endif  // VIEW_H

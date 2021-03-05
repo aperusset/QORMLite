@@ -12,6 +12,10 @@ class Type : public Operation {
     auto generate() const -> QString override;
 };
 
+inline auto Type::getName() const -> QString {
+    return this->name;
+}
+
 class Integer : public Type {
  public:
     Integer();

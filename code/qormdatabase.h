@@ -103,4 +103,16 @@ class QORMDatabase {
     }
 };
 
+inline auto QORMDatabase::getName() const -> QString {
+    return this->name;
+}
+
+inline auto QORMDatabase::isVerbose() const -> bool {
+    return this->verbose;
+}
+
+inline auto QORMDatabase::isTest() const -> bool {
+    return this->test;
+}
+
 #endif  // QORMDATABASE_H

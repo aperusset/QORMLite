@@ -1,4 +1,4 @@
-#include "delete.h"
+#include "operations/query/delete.h"
 #include <utility>
 
 Delete::Delete(const QString &tableName) : Delete(tableName, {}) {}
@@ -13,10 +13,6 @@ Delete::Delete(const QString &tableName, std::list<Condition> conditions) :
             this->addBindable(bindable);
         }
     }
-}
-
-auto Delete::getConditions() const -> std::list<Condition> {
-    return this->conditions;
 }
 
 auto Delete::generate() const -> QString {

@@ -2,7 +2,7 @@
 #define FIELD_H
 
 #include "operations/operation.h"
-#include "./type.h"
+#include "operations/model/type.h"
 
 class Field : public Operation {
     const QString name;
@@ -20,6 +20,22 @@ class Field : public Operation {
     auto operator == (const Field&) const -> bool;
     auto operator != (const Field&) const -> bool;
 };
+
+inline auto Field::getName() const -> QString {
+    return this->name;
+}
+
+inline auto Field::getType() const -> const Type& {
+    return this->type;
+}
+
+inline auto Field::getDefaultValue() const -> QString {
+    return this->defaultValue;
+}
+
+inline auto Field::isNullable() const -> bool {
+    return this->nullable;
+}
 
 namespace QORMField {
 
