@@ -4,6 +4,7 @@
 #include "operations/model/reference.h"
 #include "operations/model/foreignkey.h"
 #include "operations/model/table.h"
+#include "operations/model/type/integer.h"
 
 const QString TableTest::DEFAULT_TABLE_NAME = "test_table";
 const Field TableTest::DEFAULT_FIELD_1 = QORMField::notNull("field1", Integer());

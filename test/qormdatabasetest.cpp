@@ -4,7 +4,8 @@
 #include "operations/query/insert.h"
 #include "operations/query/delete.h"
 #include "operations/query/assignment.h"
-#include "operations/query/selection.h"
+#include "operations/query/selection/sum.h"
+#include "operations/query/condition/equals.h"
 #include "fixture/testentity.h"
 
 const QString QORMDatabaseTest::DEFAULT_DATABASE_NAME = "database";

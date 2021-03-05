@@ -1,6 +1,7 @@
 #include "operations/query/update.h"
 #include <utility>
 #include <string>
+#include "operations/query/condition/and.h"
 
 Update::Update(const QString &tableName,
                const std::list<Assignment> &assignements) :

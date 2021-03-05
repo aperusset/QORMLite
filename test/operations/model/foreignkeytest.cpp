@@ -1,8 +1,8 @@
 #include "foreignkeytest.h"
 #include "operations/model/reference.h"
 #include "operations/model/foreignkey.h"
-#include "operations/model/type.h"
-#include "operations/model/field.h"
+#include "operations/model/type/type.h"
+#include "operations/model/type/integer.h"
 
 const QString ForeignKeyTest::DEFAULT_TARGET_TABLE = "targetTable";
 

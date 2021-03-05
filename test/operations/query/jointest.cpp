@@ -1,6 +1,11 @@
 #include "jointest.h"
-#include "operations/query/join.h"
-#include "operations/query/condition.h"
+#include "operations/query/join/join.h"
+#include "operations/query/join/innerjoin.h"
+#include "operations/query/join/leftjoin.h"
+#include "operations/query/join/rightjoin.h"
+#include "operations/query/join/crossjoin.h"
+#include "operations/query/condition/equals.h"
+#include "operations/query/condition/and.h"
 
 const QString JoinTest::DEFAULT_TABLE_NAME = "table";
 const QString JoinTest::DEFAULT_FIELD_NAME = "field";

@@ -1,6 +1,7 @@
 #include "qormutils.h"
 #include <QRandomGenerator>
 #include <QRegExp>
+#include "operations/query/selection/dateformatter.h"
 
 auto QORMUtils::formatSQLiteDate(const QDate &date) -> QString {
     return date.toString("yyyy-MM-dd");

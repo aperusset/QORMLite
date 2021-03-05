@@ -2,11 +2,11 @@
 #define SELECT_H
 
 #include <list>
-#include "operations/query.h"
-#include "operations/query/selection.h"
-#include "operations/query/join.h"
-#include "operations/query/condition.h"
-#include "operations/query/order.h"
+#include "operations/query/tablequery.h"
+#include "operations/query/selection/selection.h"
+#include "operations/query/join/join.h"
+#include "operations/query/condition/condition.h"
+#include "operations/query/order/order.h"
 
 class Select : public TableQuery {
     std::list<Selection> selections;

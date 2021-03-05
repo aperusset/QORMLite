@@ -1,5 +1,6 @@
 #include "ordertest.h"
-#include "operations/query/order.h"
+#include "operations/query/order/asc.h"
+#include "operations/query/order/desc.h"
 
 const QString OrderTest::DEFAULT_FIELD_NAME = "fieldName";
 

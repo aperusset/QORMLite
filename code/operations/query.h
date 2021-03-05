@@ -19,19 +19,4 @@ class Query : public Operation {
     auto willBind(const Bindable&) const -> bool;
 };
 
-class TableQuery : public Query {
-    const QString tableName;
-
- protected:
-    explicit TableQuery(QString tableName) :
-        tableName(std::move(tableName)) {}
-
- public:
-    auto getTableName() const -> QString;
-};
-
-inline auto TableQuery::getTableName() const -> QString {
-    return this->tableName;
-}
-
 #endif  // QUERY_H

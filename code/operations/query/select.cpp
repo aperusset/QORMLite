@@ -3,6 +3,7 @@
 #include <algorithm>
 #include <utility>
 #include "qormutils.h"
+#include "operations/query/condition/and.h"
 
 namespace {
 

@@ -7,7 +7,7 @@
 #include <QDate>
 #include <list>
 #include <algorithm>
-#include "operations/query/selection.h"
+#include "operations/query/selection/selection.h"
 
 namespace QORMUtils {
 

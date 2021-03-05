@@ -3,7 +3,7 @@
 
 #include <list>
 #include "operations/operation.h"
-#include "operations/query/selection.h"
+#include "operations/query/selection/selection.h"
 #include "operations/query/bindable.h"
 
 class Select;
@@ -53,51 +53,5 @@ inline auto Condition::getParameter() const -> QString {
 inline auto Condition::getValue() const -> QVariant {
     return this->value;
 }
-
-class IsNull : public Condition {
- public:
-    explicit IsNull(const QString &field);
-};
-
-class IsNotNull : public Condition {
- public:
-    explicit IsNotNull(const QString &field);
-};
-
-class Like : public Condition {
- public:
-    Like(const QString &field, const QString &likePattern);
-};
-
-namespace Equals {
-    auto field(const QString &field, const QVariant &value) -> Condition;
-    auto fields(const QString &left, const QString &right) -> Condition;
-    auto selection(const Selection&, const QVariant &value) -> Condition;
-    auto selections(const Selection &right, const Selection &left) -> Condition;
-}  // namespace Equals
-
-namespace NotEquals {
-    auto field(const QString &field, const QVariant &value) -> Condition;
-    auto fields(const QString &left, const QString &right) -> Condition;
-    auto selection(const Selection&, const QVariant &value) -> Condition;
-    auto selections(const Selection &right, const Selection &left) -> Condition;
-}  // namespace NotEquals
-
-class In : public Condition {
- public:
-    explicit In(const QString &field, const Select&);
-    explicit In(const QString &field, const std::list<QString>&);
-    explicit In(const QString &field, const std::list<int>&);
-};
-
-class And : public Condition {
- public:
-    explicit And(const std::list<Condition>&);
-};
-
-class Or : public Condition {
- public:
-    explicit Or(const std::list<Condition>&);
-};
 
 #endif  // CONDITION_H

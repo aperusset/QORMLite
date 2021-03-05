@@ -1,6 +1,6 @@
 #include "qormutilstest.h"
 #include "qormutils.h"
-#include "operations/query/selection.h"
+#include "operations/query/selection/selection.h"
 
 void QORMUtilsTest::formatSQLiteDate() {
 
