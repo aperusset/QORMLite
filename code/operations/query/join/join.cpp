@@ -1,4 +1,4 @@
-#include "operations/query/join.h"
+#include "operations/query/join/join.h"
 #include <utility>
 #include <string>
 #include "operations/query/condition/and.h"

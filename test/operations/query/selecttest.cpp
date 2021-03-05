@@ -1,7 +1,8 @@
 #include "selecttest.h"
 #include "operations/query/select.h"
 #include "operations/query/selection.h"
-#include "operations/query/join.h"
+#include "operations/query/join/innerjoin.h"
+#include "operations/query/join/leftjoin.h"
 #include "operations/query/condition/equals.h"
 #include "operations/query/order.h"
 

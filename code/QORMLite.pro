@@ -24,7 +24,7 @@ SOURCES += \
   operations/query/condition/notequals.cpp \
   operations/query/delete.cpp \
   operations/query/insert.cpp \
-  operations/query/join.cpp \
+  operations/query/join/join.cpp \
   operations/query/order.cpp \
   operations/query/select.cpp \
   operations/query/selection.cpp \
@@ -57,7 +57,11 @@ HEADERS += \
   operations/query/condition/or.h \
   operations/query/delete.h \
   operations/query/insert.h \
-  operations/query/join.h \
+  operations/query/join/crossjoin.h \
+  operations/query/join/innerjoin.h \
+  operations/query/join/join.h \
+  operations/query/join/leftjoin.h \
+  operations/query/join/rightjoin.h \
   operations/query/order.h \
   operations/query/select.h \
   operations/query/selection.h \

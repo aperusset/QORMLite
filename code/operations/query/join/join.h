@@ -36,29 +36,4 @@ inline auto Join::getConditions() const -> std::list<Condition> {
     return this->conditions;
 }
 
-
-class InnerJoin : public Join {
- public:
-    InnerJoin(const QString &table, const std::list<Condition> &conditions) :
-        Join(JoinType::Inner, table, conditions) {}
-};
-
-class LeftJoin : public Join {
- public:
-    LeftJoin(const QString &table, const std::list<Condition> &conditions) :
-        Join(JoinType::Left, table, conditions) {}
-};
-
-class RightJoin : public Join {
- public:
-    RightJoin(const QString &table, const std::list<Condition> &conditions) :
-        Join(JoinType::Right, table, conditions) {}
-};
-
-class CrossJoin : public Join {
- public:
-    explicit CrossJoin(const QString &table) :
-    Join(JoinType::Cross, table, {}) {}
-};
-
 #endif  // JOIN_H
