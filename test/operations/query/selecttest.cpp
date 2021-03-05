@@ -4,7 +4,8 @@
 #include "operations/query/join/innerjoin.h"
 #include "operations/query/join/leftjoin.h"
 #include "operations/query/condition/equals.h"
-#include "operations/query/order.h"
+#include "operations/query/order/asc.h"
+#include "operations/query/order/desc.h"
 
 const QString SelectTest::DEFAULT_TABLE_NAME = "table_name";
 const QString SelectTest::DEFAULT_FIELD_NAME = "field";

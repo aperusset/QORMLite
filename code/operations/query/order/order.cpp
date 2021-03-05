@@ -1,4 +1,4 @@
-#include "operations/query/order.h"
+#include "operations/query/order/order.h"
 #include <utility>
 
 Order::Order(QString fieldName, const Ordering &ordering) :
