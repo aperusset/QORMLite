@@ -107,8 +107,9 @@ auto Select::generate() const -> QString {
         select += " where " + And(this->conditions).generate();
     }
     if (!this->groupedBy.empty()) {
-        select += " group by " +
-                QStringList::fromStdList(this->groupedBy).join(", ");
+        select += " group by " +  QStringList(this->groupedBy.begin(),
+                                              this->groupedBy.end())
+                .join(", ");
     }
     if (!this->havings.empty()) {
         select += " having " + And(this->havings).generate();

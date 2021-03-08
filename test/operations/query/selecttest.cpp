@@ -290,7 +290,7 @@ void SelectTest::selectAllWithUnions() {
     auto const generated = select1.merge(select2).merge(select3).generate();
 
     // Then
-    QCOMPARE(select1.getMergedSelects().size(), 2);
+    QCOMPARE(select1.getMergedSelects().size(), 2U);
     QCOMPARE(generated,
         select1Generated + " union " + select2.generate() +
              " union " + select3.generate()
