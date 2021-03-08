@@ -2,18 +2,12 @@ include(../QORMLiteParent.pri)
 
 TEMPLATE = lib
 
-CONFIG(debug)
-{
-DESTDIR = $$OUT_PWD/../lib/debug/$$VERSION
-}
-
-CONFIG(release)
-{
-DESTDIR = $$OUT_PWD/../lib/release/$$VERSION
-}
-
-CONFIG += skip_target_version_ext
+CONFIG += skip_target_version_ext plugin
 DEFINES += QORMLITE_LIBRARY
+
+win32:CONFIG(release, debug|release): DESTDIR = $$OUT_PWD/../lib/release/$$VERSION
+else:win32:CONFIG(debug, debug|release): DESTDIR = $$OUT_PWD/../lib/debug/$$VERSION
+else:unix: DESTDIR = $$OUT_PWD/../../lib/$$VERSION
 
 SOURCES += \
   operations/model/field.cpp \

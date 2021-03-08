@@ -1,5 +1,7 @@
 *.pro.user
 *.stash
+*debug/
+*release/
 *code/debug/
 *code/release/
 *test/debug/

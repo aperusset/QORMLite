@@ -1,6 +1,7 @@
 TEMPLATE = subdirs
-CONFIG += ordered
 
 SUBDIRS += \
   code/QORMLite.pro \
   test/QORMLiteTest.pro
+
+test/QORMLiteTest.pro.depends = code/QORMLite.pro

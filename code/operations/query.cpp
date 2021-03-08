@@ -1,5 +1,4 @@
 #include "operations/query.h"
-#include "query/bindable.h"
 
 void Query::addBindable(const Bindable &bindable) {
     this->bindables.insert(std::make_pair(
