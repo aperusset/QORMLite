@@ -1,13 +1,18 @@
-QMAKE_CXXFLAGS += -std=c++0x -std=gnu++11 -Wall
-CONFIG += c++11
+include(../QORMLiteParent.pri)
 
-QT += testlib sql
-QT -= gui
+TEMPLATE = app
 
 CONFIG += qt console warn_on depend_includepath testcase
 CONFIG -= app_bundle
 
-TEMPLATE = app
+QT += testlib
+
+win32:CONFIG(release, debug|release): LIBS += -L$$OUT_PWD/../lib/release/$$VERSION -lQORMLite
+else:win32:CONFIG(debug, debug|release): LIBS += -L$$OUT_PWD/../lib/debug/$$VERSION -lQORMLite
+else:unix: LIBS += -L$$OUT_PWD/../lib/ -lQORMLite
+
+INCLUDEPATH += $$PWD/../code
+DEPENDPATH += $$PWD/../code
 
 SOURCES +=  \
   fixture/testcreator.cpp \
@@ -65,10 +70,3 @@ HEADERS += \
   qormlitetest.h \
   qormobservertest.h \
   qormutilstest.h
-
-win32:CONFIG(release, debug|release): LIBS += -L$$OUT_PWD/../code/release/ -lQORMLite
-else:win32:CONFIG(debug, debug|release): LIBS += -L$$OUT_PWD/../code/debug/ -lQORMLite
-else:unix: LIBS += -L$$OUT_PWD/../code/ -lQORMLite
-
-INCLUDEPATH += $$PWD/../code
-DEPENDPATH += $$PWD/../code

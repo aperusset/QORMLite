@@ -1,13 +1,19 @@
+include(../QORMLiteParent.pri)
+
 TEMPLATE = lib
+
+CONFIG(debug)
+{
+DESTDIR = $$OUT_PWD/../lib/debug/$$VERSION
+}
+
+CONFIG(release)
+{
+DESTDIR = $$OUT_PWD/../lib/release/$$VERSION
+}
+
+CONFIG += skip_target_version_ext
 DEFINES += QORMLITE_LIBRARY
-
-QMAKE_CXXFLAGS += -std=c++0x -std=gnu++11 -Wall
-CONFIG += c++11
-
-QT -= gui
-QT += core sql
-
-DEFINES += QT_DEPRECATED_WARNINGS
 
 SOURCES += \
   operations/model/field.cpp \

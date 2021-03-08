@@ -1,7 +1,12 @@
 *.pro.user
 *.stash
-*debug/
-*release/
+*code/debug/
+*code/release/
+*test/debug/
+*test/release/
+*lib/
 Makefile*
 target_wrapper.bat
 object_script.*
+*.a
+*.rc
