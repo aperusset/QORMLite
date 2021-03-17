@@ -4,12 +4,8 @@
 #include <utility>
 #include <string>
 
-namespace {
-
 QMutex poolMutex;
 std::map<QString, QORM::Database*> pool;
-
-}  // namespace
 
 auto QORM::isInitialized(const QString &name) -> bool {
     return pool.count(name);
