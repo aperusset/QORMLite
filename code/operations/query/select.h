@@ -1,5 +1,5 @@
-#ifndef SELECT_H
-#define SELECT_H
+#ifndef OPERATIONS_QUERY_SELECT_H_
+#define OPERATIONS_QUERY_SELECT_H_
 
 #include <list>
 #include "operations/query/tablequery.h"
@@ -7,6 +7,8 @@
 #include "operations/query/join/join.h"
 #include "operations/query/condition/condition.h"
 #include "operations/query/order/order.h"
+
+namespace QORM {
 
 class Select : public TableQuery {
     std::list<Selection> selections;
@@ -74,4 +76,6 @@ class LastInsertedId : public Query {
     auto generate() const -> QString override;
 };
 
-#endif  // SELECT_H
+}  // namespace QORM
+
+#endif  // OPERATIONS_QUERY_SELECT_H_

@@ -1,9 +1,11 @@
-#ifndef JOIN_H
-#define JOIN_H
+#ifndef OPERATIONS_QUERY_JOIN_JOIN_H_
+#define OPERATIONS_QUERY_JOIN_JOIN_H_
 
 #include <list>
 #include "operations/operation.h"
 #include "operations/query/condition/condition.h"
+
+namespace QORM {
 
 enum class JoinType {
     Inner, Left, Right, Cross
@@ -36,4 +38,6 @@ inline auto Join::getConditions() const -> std::list<Condition> {
     return this->conditions;
 }
 
-#endif  // JOIN_H
+}  // namespace QORM
+
+#endif  // OPERATIONS_QUERY_JOIN_JOIN_H_

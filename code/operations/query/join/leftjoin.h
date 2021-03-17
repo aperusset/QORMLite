@@ -1,9 +1,11 @@
-#ifndef LEFTJOIN_H
-#define LEFTJOIN_H
+#ifndef OPERATIONS_QUERY_JOIN_LEFTJOIN_H_
+#define OPERATIONS_QUERY_JOIN_LEFTJOIN_H_
 
 #include <QString>
 #include <list>
 #include "operations/query/join/join.h"
+
+namespace QORM {
 
 class LeftJoin : public Join {
  public:
@@ -11,4 +13,6 @@ class LeftJoin : public Join {
         Join(JoinType::Left, table, conditions) {}
 };
 
-#endif  // LEFTJOIN_H
+}  // namespace QORM
+
+#endif  // OPERATIONS_QUERY_JOIN_LEFTJOIN_H_

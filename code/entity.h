@@ -1,49 +1,51 @@
-#ifndef QORMENTITY_H
-#define QORMENTITY_H
+#ifndef ENTITY_H_
+#define ENTITY_H_
 
-#include <set>
 #include <algorithm>
-#include "./qormobserver.h"
+#include <set>
+#include "./observer.h"
 #include "operations/query/condition/condition.h"
 
+namespace QORM {
+
 template<typename Key = int>
-class QORMEntity {
+class Entity {
     Key key;
-    std::set<QORMObserver<Key>*> observers;
+    std::set<Observer<Key>*> observers;
 
  public:
-    explicit QORMEntity(const Key &key) : key(key) {}
-    QORMEntity(const QORMEntity&) = delete;
-    QORMEntity(QORMEntity&&) = delete;
-    QORMEntity& operator=(const QORMEntity&) = delete;
-    QORMEntity& operator=(QORMEntity&&) = delete;
-    virtual ~QORMEntity() {}
+    explicit Entity(const Key &key) : key(key) {}
+    Entity(const Entity&) = delete;
+    Entity(Entity&&) = delete;
+    Entity& operator=(const Entity&) = delete;
+    Entity& operator=(Entity&&) = delete;
+    virtual ~Entity() {}
 
     auto getKey() const -> Key { return this->key; }
     void setKey(const Key &key) { this->key = key; }
 
-    auto isAttached(QORMObserver<Key> &observer) const -> bool {
+    auto isAttached(Observer<Key> &observer) const -> bool {
         return observers.find(&observer) != observers.end();
     }
 
-    virtual void attach(QORMObserver<Key> &observer) {
+    virtual void attach(Observer<Key> &observer) {
         observers.insert(&observer);
     }
 
-    virtual void detach(QORMObserver<Key> &observer) {
+    virtual void detach(Observer<Key> &observer) {
         observers.erase(&observer);
     }
 
     virtual void notifyChange() const {
         std::for_each(observers.begin(), observers.end(),
-            [this](QORMObserver<Key> *observer) {
+            [this](Observer<Key> *observer) {
                 observer->onChange(this->key);
             });
     }
 
     virtual void notifyDelete() const {
         std::for_each(observers.begin(), observers.end(),
-            [this](QORMObserver<Key> *observer) {
+            [this](Observer<Key> *observer) {
                 observer->onDelete(this->key);
             });
     }
@@ -61,4 +63,6 @@ class QORMEntity {
     virtual auto exists() const -> bool = 0;
 };
 
-#endif  // QORMENTITY_H
+}  // namespace QORM
+
+#endif  // ENTITY_H_

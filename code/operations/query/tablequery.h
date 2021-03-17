@@ -1,9 +1,11 @@
-#ifndef TABLEQUERY_H
-#define TABLEQUERY_H
+#ifndef OPERATIONS_QUERY_TABLEQUERY_H_
+#define OPERATIONS_QUERY_TABLEQUERY_H_
 
 #include <QString>
 #include <utility>
 #include "operations/query.h"
+
+namespace QORM {
 
 class TableQuery : public Query {
     const QString tableName;
@@ -20,4 +22,6 @@ inline auto TableQuery::getTableName() const -> QString {
     return this->tableName;
 }
 
-#endif  // TABLEQUERY_H
+}  // namespace QORM
+
+#endif  // OPERATIONS_QUERY_TABLEQUERY_H_

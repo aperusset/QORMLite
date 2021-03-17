@@ -1,8 +1,10 @@
-#ifndef BINDABLE_H
-#define BINDABLE_H
+#ifndef OPERATIONS_QUERY_BINDABLE_H_
+#define OPERATIONS_QUERY_BINDABLE_H_
 
 #include <QString>
 #include <QVariant>
+
+namespace QORM {
 
 class Bindable {
  public:
@@ -10,4 +12,6 @@ class Bindable {
     virtual auto getValue() const -> QVariant = 0;
 };
 
-#endif  // BINDABLE_H
+}  // namespace QORM
+
+#endif  // OPERATIONS_QUERY_BINDABLE_H_

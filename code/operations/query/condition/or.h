@@ -1,10 +1,12 @@
-#ifndef OR_H
-#define OR_H
+#ifndef OPERATIONS_QUERY_CONDITION_OR_H_
+#define OPERATIONS_QUERY_CONDITION_OR_H_
 
 #include <QString>
 #include <QVariant>
 #include <list>
 #include "operations/query/condition/condition.h"
+
+namespace QORM {
 
 class Or : public Condition {
  public:
@@ -12,4 +14,6 @@ class Or : public Condition {
         Condition(" or ", conditions, QString(), QString(), QVariant()) {}
 };
 
-#endif  // OR_H
+}  // namespace QORM
+
+#endif  // OPERATIONS_QUERY_CONDITION_OR_H_

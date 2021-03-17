@@ -1,8 +1,10 @@
-#ifndef MAX_H
-#define MAX_H
+#ifndef OPERATIONS_QUERY_SELECTION_MAX_H_
+#define OPERATIONS_QUERY_SELECTION_MAX_H_
 
 #include <QString>
 #include "operations/query/selection/selection.h"
+
+namespace QORM {
 
 class Max : public Selection {
  public:
@@ -10,4 +12,6 @@ class Max : public Selection {
         Selection("max(" + fieldToMax + ")", renameTo) {}
 };
 
-#endif  // MAX_H
+}  // namespace QORM
+
+#endif  // OPERATIONS_QUERY_SELECTION_MAX_H_

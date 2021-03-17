@@ -1,8 +1,10 @@
-#ifndef REFERENCE_H
-#define REFERENCE_H
+#ifndef OPERATIONS_MODEL_REFERENCE_H_
+#define OPERATIONS_MODEL_REFERENCE_H_
 
 #include <utility>
 #include "operations/model/field.h"
+
+namespace QORM {
 
 class Reference {
     const Field from;
@@ -27,4 +29,6 @@ enum class OnAction {
     Restrict, Cascade, SetNull, SetDefault
 };
 
-#endif  // REFERENCE_H
+}  // namespace QORM
+
+#endif  // OPERATIONS_MODEL_REFERENCE_H_

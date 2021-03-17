@@ -1,8 +1,10 @@
-#ifndef ASSIGNMENT_H
-#define ASSIGNMENT_H
+#ifndef OPERATIONS_QUERY_ASSIGNMENT_H_
+#define OPERATIONS_QUERY_ASSIGNMENT_H_
 
 #include "operations/operation.h"
 #include "operations/query/bindable.h"
+
+namespace QORM {
 
 class Assignment : public Operation, public Bindable {
     const QString fieldName;
@@ -29,4 +31,6 @@ inline auto Assignment::getValue() const -> QVariant {
     return this->value;
 }
 
-#endif  // ASSIGNMENT_H
+}  // namespace QORM
+
+#endif  // OPERATIONS_QUERY_ASSIGNMENT_H_

@@ -1,28 +1,28 @@
 #ifndef TESTCREATOR_H
 #define TESTCREATOR_H
 
-#include "qormcreator.h"
+#include "creator.h"
 
-class TestCreator : public QORMCreator {
+class TestCreator : public QORM::Creator {
 
 public:
     explicit TestCreator() {};
-    void createTables(const QORMDatabase&) const override;
-    void createViews(const QORMDatabase&) const override;
-    void populate(const QORMDatabase&) const override {};
+    void createTables(const QORM::Database&) const override;
+    void createViews(const QORM::Database&) const override;
+    void populate(const QORM::Database&) const override {};
 
     static const QString TEST_TABLE;
     static const QString TEST_VIEW;
     static const QString TEST_FIELD;
 };
 
-class FakeCreator : public QORMCreator {
+class FakeCreator : public QORM::Creator {
 
 public:
     explicit FakeCreator() {};
-    void createTables(const QORMDatabase&) const override {}
-    void createViews(const QORMDatabase&) const override {}
-    void populate(const QORMDatabase&) const override {}
+    void createTables(const QORM::Database&) const override {}
+    void createViews(const QORM::Database&) const override {}
+    void populate(const QORM::Database&) const override {}
 };
 
 #endif // TESTCREATOR_H

@@ -1,6 +1,8 @@
 #include "qormutilstest.h"
-#include "qormutils.h"
+#include "utils.h"
 #include "operations/query/selection/selection.h"
+
+using namespace QORM;
 
 void QORMUtilsTest::formatSQLiteDate() {
 
@@ -8,7 +10,7 @@ void QORMUtilsTest::formatSQLiteDate() {
     auto const date = QDate(2010, 10, 30);
 
     // When
-    auto const sqliteDate = QORMUtils::formatSQLiteDate(date);
+    auto const sqliteDate = Utils::formatSQLiteDate(date);
 
     // Then
     QCOMPARE("2010-10-30", sqliteDate);
@@ -21,10 +23,10 @@ void QORMUtilsTest::backupFileName() {
     const auto *const name = "testDatabase";
 
     // When
-    auto const backupFileName = QORMUtils::backupFileName(name);
+    auto const backupFileName = Utils::backupFileName(name);
 
     // Then
-    QCOMPARE(QString("backup_") + name + "_" + QORMUtils::formatSQLiteDate(now) + ".db", backupFileName);
+    QCOMPARE(QString("backup_") + name + "_" + Utils::formatSQLiteDate(now) + ".db", backupFileName);
 }
 
 void QORMUtilsTest::parametrize() {
@@ -33,7 +35,7 @@ void QORMUtilsTest::parametrize() {
     const auto *const fieldName = "FieldName.(really funny at all)";
 
     // When
-    auto const parametrizedFieldName = QORMUtils::parametrize(fieldName);
+    auto const parametrizedFieldName = Utils::parametrize(fieldName);
 
     // Then
     QCOMPARE(":fieldnamereallyfunnyatall", parametrizedFieldName);
@@ -42,7 +44,7 @@ void QORMUtilsTest::parametrize() {
 void QORMUtilsTest::dateToDay() {
 
     // Given
-    auto const selection = QORMUtils::dateToDay("field", "rename");
+    auto const selection = Utils::dateToDay("field", "rename");
 
     // When
     auto const fieldName = selection.getFieldName();
@@ -54,7 +56,7 @@ void QORMUtilsTest::dateToDay() {
 void QORMUtilsTest::dateToMonth() {
 
     // Given
-    auto const selection = QORMUtils::dateToMonth("field", "rename");
+    auto const selection = Utils::dateToMonth("field", "rename");
 
     // When
     auto const fieldName = selection.getFieldName();
@@ -66,7 +68,7 @@ void QORMUtilsTest::dateToMonth() {
 void QORMUtilsTest::dateToYear() {
 
     // Given
-    auto const selection = QORMUtils::dateToYear("field", "rename");
+    auto const selection = Utils::dateToYear("field", "rename");
 
     // When
     auto const fieldName = selection.getFieldName();
@@ -78,7 +80,7 @@ void QORMUtilsTest::dateToYear() {
 void QORMUtilsTest::nullInt() {
 
     // Given
-    auto const nullValue = QORMUtils::null(QVariant::Int);
+    auto const nullValue = Utils::null(QVariant::Int);
 
     // When / Then
     QVERIFY(nullValue.isNull());
@@ -89,7 +91,7 @@ void QORMUtilsTest::nullInt() {
 void QORMUtilsTest::nullString() {
 
     // Given
-    auto const nullValue = QORMUtils::null(QVariant::String);
+    auto const nullValue = Utils::null(QVariant::String);
 
     // When / Then
     QVERIFY(nullValue.isNull());
@@ -102,8 +104,8 @@ void QORMUtilsTest::containsShouldReturnTrue() {
     const std::list<int> values{0, 1};
 
     // When / Then
-    QVERIFY(QORMUtils::contains(values, 0));
-    QVERIFY(QORMUtils::contains(values, 1));
+    QVERIFY(Utils::contains(values, 0));
+    QVERIFY(Utils::contains(values, 1));
 }
 
 void QORMUtilsTest::containsShouldReturnFalse() {
@@ -113,8 +115,8 @@ void QORMUtilsTest::containsShouldReturnFalse() {
     const std::list<int> empty;
 
     // When / Then
-    QVERIFY(!QORMUtils::contains(values, 2));
-    QVERIFY(!QORMUtils::contains(empty, 1));
+    QVERIFY(!Utils::contains(values, 2));
+    QVERIFY(!Utils::contains(empty, 1));
 }
 
 void QORMUtilsTest::joinToStringShouldJoinWithSeparator() {
@@ -123,7 +125,7 @@ void QORMUtilsTest::joinToStringShouldJoinWithSeparator() {
     const std::list<int> values{0, 1, 2};
 
     // When
-    auto const joined = QORMUtils::joinToString<int>(values, "-",
+    auto const joined = Utils::joinToString<int>(values, "-",
         [](const int &value) -> QString {
             return QString::number(value);
         });

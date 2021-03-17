@@ -3,6 +3,8 @@
 #include "operations/model/field.h"
 #include "operations/model/type/type.h"
 
+using namespace QORM;
+
 void PrimaryKeyTest::getSingleField() {
 
     // Given

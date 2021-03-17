@@ -1,18 +1,18 @@
-#ifndef QORMLITE_H
-#define QORMLITE_H
+#ifndef QORMLITE_H_
+#define QORMLITE_H_
 
 #include <QString>
-#include "./qormcreator.h"
-#include "./qormdatabase.h"
+#include "./creator.h"
+#include "./database.h"
 
-namespace QORMLite {
+namespace QORM {
 
     auto isInitialized(const QString &name) -> bool;
-    void initialize(const QString &name, const QORMCreator&,
-                    bool verbose = false, bool test = false);
-    auto get(const QString &name) -> QORMDatabase&;
+    void initialize(const QString &name, const Creator&, bool verbose = false,
+                    bool test = false);
+    auto get(const QString &name) -> Database&;
     void destroy(const QString &name);
     void destroyAll();
 }
 
-#endif  // QORMLITE_H
+#endif  // QORMLITE_H_

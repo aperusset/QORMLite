@@ -1,8 +1,10 @@
-#ifndef DESC_H
-#define DESC_H
+#ifndef OPERATIONS_QUERY_ORDER_DESC_H_
+#define OPERATIONS_QUERY_ORDER_DESC_H_
 
 #include <QString>
 #include "operations/query/order/order.h"
+
+namespace QORM {
 
 class Desc : public Order {
  public:
@@ -10,4 +12,6 @@ class Desc : public Order {
         Order(fieldName, Ordering::Desc) {}
 };
 
-#endif  // DESC_H
+}  // namespace QORM
+
+#endif  // OPERATIONS_QUERY_ORDER_DESC_H_

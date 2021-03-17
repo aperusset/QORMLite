@@ -1,10 +1,12 @@
-#ifndef CONDITION_H
-#define CONDITION_H
+#ifndef OPERATIONS_QUERY_CONDITION_CONDITION_H_
+#define OPERATIONS_QUERY_CONDITION_CONDITION_H_
 
 #include <list>
 #include "operations/operation.h"
 #include "operations/query/selection/selection.h"
 #include "operations/query/bindable.h"
+
+namespace QORM {
 
 class Select;
 
@@ -54,4 +56,6 @@ inline auto Condition::getValue() const -> QVariant {
     return this->value;
 }
 
-#endif  // CONDITION_H
+}  // namespace QORM
+
+#endif  // OPERATIONS_QUERY_CONDITION_CONDITION_H_

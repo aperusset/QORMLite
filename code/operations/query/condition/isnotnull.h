@@ -1,8 +1,10 @@
-#ifndef ISNOTNULL_H
-#define ISNOTNULL_H
+#ifndef OPERATIONS_QUERY_CONDITION_ISNOTNULL_H_
+#define OPERATIONS_QUERY_CONDITION_ISNOTNULL_H_
 
 #include <QString>
 #include "operations/query/condition/condition.h"
+
+namespace QORM {
 
 class IsNotNull : public Condition {
  public:
@@ -10,4 +12,6 @@ class IsNotNull : public Condition {
         Condition(" is not null ", {}, field, QString(), QVariant()) {}
 };
 
-#endif  // ISNOTNULL_H
+}  // namespace QORM
+
+#endif  // OPERATIONS_QUERY_CONDITION_ISNOTNULL_H_

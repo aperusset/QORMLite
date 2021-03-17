@@ -1,9 +1,11 @@
-#ifndef CROSSJOIN_H
-#define CROSSJOIN_H
+#ifndef OPERATIONS_QUERY_JOIN_CROSSJOIN_H_
+#define OPERATIONS_QUERY_JOIN_CROSSJOIN_H_
 
 #include <QString>
 #include <list>
 #include "operations/query/join/join.h"
+
+namespace QORM {
 
 class CrossJoin : public Join {
  public:
@@ -11,4 +13,6 @@ class CrossJoin : public Join {
     Join(JoinType::Cross, table, {}) {}
 };
 
-#endif  // CROSSJOIN_H
+}  // namespace QORM
+
+#endif  // OPERATIONS_QUERY_JOIN_CROSSJOIN_H_

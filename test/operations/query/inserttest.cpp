@@ -2,6 +2,8 @@
 #include "operations/query/insert.h"
 #include "operations/query/assignment.h"
 
+using namespace QORM;
+
 const QString InsertTest::DEFAULT_TABLE_NAME = "table_name";
 const QString InsertTest::DEFAULT_FIELD_NAME = "field";
 

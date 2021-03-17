@@ -7,7 +7,7 @@
 class FieldTest : public QObject {
 
     static const QString DEFAULT_NAME;
-    static const Type DEFAULT_TYPE;
+    static const QORM::Type DEFAULT_TYPE;
     static const QString DEFAULT_VALUE;
 
     Q_OBJECT

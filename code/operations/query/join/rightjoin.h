@@ -1,9 +1,11 @@
-#ifndef RIGHTJOIN_H
-#define RIGHTJOIN_H
+#ifndef OPERATIONS_QUERY_JOIN_RIGHTJOIN_H_
+#define OPERATIONS_QUERY_JOIN_RIGHTJOIN_H_
 
 #include <QString>
 #include <list>
 #include "operations/query/join/join.h"
+
+namespace QORM {
 
 class RightJoin : public Join {
  public:
@@ -11,4 +13,6 @@ class RightJoin : public Join {
         Join(JoinType::Right, table, conditions) {}
 };
 
-#endif  // RIGHTJOIN_H
+}  // namespace QORM
+
+#endif  // OPERATIONS_QUERY_JOIN_RIGHTJOIN_H_

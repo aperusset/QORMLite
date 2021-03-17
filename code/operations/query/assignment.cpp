@@ -1,12 +1,12 @@
 #include "operations/query/assignment.h"
 #include <utility>
-#include "qormutils.h"
+#include "utils.h"
 
-Assignment::Assignment(QString fieldName, QVariant value) :
+QORM::Assignment::Assignment(QString fieldName, QVariant value) :
     fieldName(std::move(fieldName)),
-    parameter(QORMUtils::parametrize(this->fieldName)),
+    parameter(QORM::Utils::parametrize(this->fieldName)),
     value(std::move(value)) {}
 
-auto Assignment::generate() const -> QString {
+auto QORM::Assignment::generate() const -> QString {
     return (this->fieldName + " = " + this->parameter).simplified();
 }

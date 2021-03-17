@@ -1,9 +1,9 @@
 #ifndef QORMTESTOBSERVER_H
 #define QORMTESTOBSERVER_H
 
-#include "qormobserver.h"
+#include "observer.h"
 
-class TestObserver : public QORMObserver<>  {
+class TestObserver : public QORM::Observer<>  {
 
     static const int INVALID_KEY = -1;
 

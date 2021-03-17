@@ -5,6 +5,8 @@
 #include "operations/query/condition/equals.h"
 #include "operations/query/condition/and.h"
 
+using namespace QORM;
+
 const QString DeleteTest::DEFAULT_TABLE_NAME = "table_name";
 const QString DeleteTest::DEFAULT_FIELD_NAME = "field_name";
 

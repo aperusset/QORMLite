@@ -1,9 +1,11 @@
-#ifndef LIKE_H
-#define LIKE_H
+#ifndef OPERATIONS_QUERY_CONDITION_LIKE_H_
+#define OPERATIONS_QUERY_CONDITION_LIKE_H_
 
 #include <QString>
 #include <QVariant>
 #include "operations/query/condition/condition.h"
+
+namespace QORM {
 
 class Like : public Condition {
  public:
@@ -11,4 +13,6 @@ class Like : public Condition {
         Condition(" like ", {}, field, "'" + likePattern + "'", QVariant()) {}
 };
 
-#endif  // LIKE_H
+}  // namespace QORM
+
+#endif  // OPERATIONS_QUERY_CONDITION_LIKE_H_

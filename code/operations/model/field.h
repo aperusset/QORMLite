@@ -1,8 +1,10 @@
-#ifndef FIELD_H
-#define FIELD_H
+#ifndef OPERATIONS_MODEL_FIELD_H_
+#define OPERATIONS_MODEL_FIELD_H_
 
 #include "operations/operation.h"
 #include "operations/model/type/type.h"
+
+namespace QORM {
 
 class Field : public Operation {
     const QString name;
@@ -19,6 +21,13 @@ class Field : public Operation {
     auto generate() const -> QString override;
     auto operator == (const Field&) const -> bool;
     auto operator != (const Field&) const -> bool;
+
+    static auto notNull(const QString &name, const Type&) -> Field;
+    static auto notNullWithDefault(const QString &name, const Type&,
+                                   const QString &defaultValue) -> Field;
+    static auto null(const QString &name, const Type&) -> Field;
+    static auto nullWithDefault(const QString &name, const Type&,
+                                const QString &defaultValue) -> Field;
 };
 
 inline auto Field::getName() const -> QString {
@@ -37,14 +46,6 @@ inline auto Field::isNullable() const -> bool {
     return this->nullable;
 }
 
-namespace QORMField {
+}  // namespace QORM
 
-    auto notNull(const QString &name, const Type&) -> Field;
-    auto notNullWithDefault(const QString &name, const Type&,
-                            const QString &defaultValue) -> Field;
-    auto nullable(const QString &name, const Type&) -> Field;
-    auto nullableWithDefault(const QString &name, const Type&,
-                             const QString &defaultValue) -> Field;
-}
-
-#endif  // FIELD_H
+#endif  // OPERATIONS_MODEL_FIELD_H_

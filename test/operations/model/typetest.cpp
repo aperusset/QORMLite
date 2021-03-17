@@ -5,6 +5,8 @@
 #include "operations/model/type/decimal.h"
 #include "operations/model/type/varchar.h"
 
+using namespace QORM;
+
 void TypeTest::generate() {
 
     // Given

@@ -1,8 +1,10 @@
-#ifndef DECIMAL_H
-#define DECIMAL_H
+#ifndef OPERATIONS_MODEL_TYPE_DECIMAL_H_
+#define OPERATIONS_MODEL_TYPE_DECIMAL_H_
 
 #include <QString>
 #include "operations/model/type/type.h"
+
+namespace QORM {
 
 class Decimal : public Type {
  public:
@@ -16,4 +18,6 @@ class Decimal : public Type {
              QString::number(decimals) + ")") {}
 };
 
-#endif  // DECIMAL_H
+}  // namespace QORM
+
+#endif  // OPERATIONS_MODEL_TYPE_DECIMAL_H_

@@ -1,5 +1,5 @@
 #include "operations/model/type/date.h"
 
-const QString Date::NOW = "date('now')";
+const QString QORM::Date::NOW = "date('now')";
 
-Date::Date() : Type("date") {}
+QORM::Date::Date() : Type("date") {}

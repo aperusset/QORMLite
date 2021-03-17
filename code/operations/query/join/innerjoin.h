@@ -1,9 +1,11 @@
-#ifndef INNERJOIN_H
-#define INNERJOIN_H
+#ifndef OPERATIONS_QUERY_JOIN_INNERJOIN_H_
+#define OPERATIONS_QUERY_JOIN_INNERJOIN_H_
 
 #include <QString>
 #include <list>
 #include "operations/query/join/join.h"
+
+namespace QORM {
 
 class InnerJoin : public Join {
  public:
@@ -11,4 +13,6 @@ class InnerJoin : public Join {
         Join(JoinType::Inner, table, conditions) {}
 };
 
-#endif  // INNERJOIN_H
+}  // namespace QORM
+
+#endif  // OPERATIONS_QUERY_JOIN_INNERJOIN_H_

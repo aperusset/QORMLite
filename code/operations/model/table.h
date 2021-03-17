@@ -1,11 +1,13 @@
-#ifndef TABLE_H
-#define TABLE_H
+#ifndef OPERATIONS_MODEL_TABLE_H_
+#define OPERATIONS_MODEL_TABLE_H_
 
 #include <list>
 #include "operations/query.h"
 #include "operations/model/field.h"
 #include "operations/model/primarykey.h"
 #include "operations/model/foreignkey.h"
+
+namespace QORM {
 
 class Table : public Query {
     const QString tableName;
@@ -39,4 +41,6 @@ inline auto Table::getForeignKeys() const -> std::list<ForeignKey> {
     return this->foreignKeys;
 }
 
-#endif  // TABLE_H
+}  // namespace QORM
+
+#endif  // OPERATIONS_MODEL_TABLE_H_

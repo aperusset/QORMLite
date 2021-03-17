@@ -4,6 +4,8 @@
 #include "operations/model/type/type.h"
 #include "operations/model/type/integer.h"
 
+using namespace QORM;
+
 const QString ForeignKeyTest::DEFAULT_TARGET_TABLE = "targetTable";
 
 void ForeignKeyTest::emptyReferencesListShouldFail() {

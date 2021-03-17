@@ -1,8 +1,10 @@
-#ifndef COUNT_H
-#define COUNT_H
+#ifndef OPERATIONS_QUERY_SELECTION_COUNT_H_
+#define OPERATIONS_QUERY_SELECTION_COUNT_H_
 
 #include <QString>
 #include "operations/query/selection/selection.h"
+
+namespace QORM {
 
 class Count : public Selection {
  public:
@@ -10,4 +12,6 @@ class Count : public Selection {
         Selection("count(" + fieldToCount + ")", renameTo) {}
 };
 
-#endif  // COUNT_H
+}  // namespace QORM
+
+#endif  // OPERATIONS_QUERY_SELECTION_COUNT_H_

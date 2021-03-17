@@ -1,8 +1,10 @@
-#ifndef MIN_H
-#define MIN_H
+#ifndef OPERATIONS_QUERY_SELECTION_MIN_H_
+#define OPERATIONS_QUERY_SELECTION_MIN_H_
 
 #include <QString>
 #include "operations/query/selection/selection.h"
+
+namespace QORM {
 
 class Min : public Selection {
  public:
@@ -10,4 +12,6 @@ class Min : public Selection {
         Selection("min(" + fieldToMin + ")", renameTo) {}
 };
 
-#endif  // MIN_H
+}  // namespace QORM
+
+#endif  // OPERATIONS_QUERY_SELECTION_MIN_H_

@@ -1,8 +1,10 @@
-#ifndef VARCHAR_H
-#define VARCHAR_H
+#ifndef OPERATIONS_MODEL_TYPE_VARCHAR_H_
+#define OPERATIONS_MODEL_TYPE_VARCHAR_H_
 
 #include <QString>
 #include "operations/model/type/type.h"
+
+namespace QORM {
 
 class Varchar : public Type {
  public:
@@ -13,4 +15,6 @@ class Varchar : public Type {
     explicit Varchar(const int size = DEFAULT_SIZE);
 };
 
-#endif  // VARCHAR_H
+}  // namespace QORM
+
+#endif  // OPERATIONS_MODEL_TYPE_VARCHAR_H_

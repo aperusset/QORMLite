@@ -3,8 +3,8 @@
 #include <string>
 #include "operations/query/condition/and.h"
 
-Join::Join(const JoinType &joinType, QString table,
-           std::list<Condition> conditions) :
+QORM::Join::Join(const JoinType &joinType, QString table,
+                 std::list<Condition> conditions) :
     joinType(joinType), table(std::move(table)),
     conditions(std::move(conditions)) {
     if (this->joinType != JoinType::Cross && this->conditions.empty()) {
@@ -12,7 +12,7 @@ Join::Join(const JoinType &joinType, QString table,
     }
 }
 
-auto Join::generate() const -> QString {
+auto QORM::Join::generate() const -> QString {
     QString query;
     switch (this->joinType) {
         case JoinType::Inner:

@@ -1,7 +1,9 @@
-#ifndef ORDER_H
-#define ORDER_H
+#ifndef OPERATIONS_QUERY_ORDER_ORDER_H_
+#define OPERATIONS_QUERY_ORDER_ORDER_H_
 
 #include "operations/operation.h"
+
+namespace QORM {
 
 enum class Ordering {
     Asc, Desc
@@ -28,4 +30,6 @@ inline auto Order::getOrdering() const -> Ordering {
     return this->ordering;
 }
 
-#endif  // ORDER_H
+}  // namespace QORM
+
+#endif  // OPERATIONS_QUERY_ORDER_ORDER_H_

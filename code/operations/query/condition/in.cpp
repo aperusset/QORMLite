@@ -1,13 +1,13 @@
 #include "operations/query/condition/in.h"
 #include <string>
-#include "qormutils.h"
+#include "utils.h"
 
-In::In(const QString &field, const Select &select) :
+QORM::In::In(const QString &field, const Select &select) :
     Condition(" in ", {}, field, "(" + select.generate() + ")", QVariant()) {}
 
-In::In(const QString &field, const std::list<QString> &elements) :
+QORM::In::In(const QString &field, const std::list<QString> &elements) :
     Condition(" in ", {}, field,
-              "(" + QORMUtils::joinToString<QString>(elements, ", ",
+              "(" + QORM::Utils::joinToString<QString>(elements, ", ",
                     [](const QString &element) -> QString {
                         return "'" + element + "'";
                     }) + ")", QVariant())  {
@@ -16,9 +16,9 @@ In::In(const QString &field, const std::list<QString> &elements) :
     }
 }
 
-In::In(const QString &field, const std::list<int> &elements) :
+QORM::In::In(const QString &field, const std::list<int> &elements) :
     Condition(" in ", {}, field,
-              "(" + QORMUtils::joinToString<int>(elements, ", ",
+              "(" + QORM::Utils::joinToString<int>(elements, ", ",
                     [](const int &element) -> QString {
                         return QString::number(element);
                     }) + ")", QVariant())  {

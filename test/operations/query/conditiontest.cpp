@@ -10,7 +10,9 @@
 #include "operations/query/condition/or.h"
 #include "operations/query/selection/sum.h"
 #include "operations/query/select.h"
-#include "qormutils.h"
+#include "utils.h"
+
+using namespace QORM;
 
 const QString ConditionTest::DEFAULT_TABLE_NAME = "table";
 const QString ConditionTest::DEFAULT_FIELD_NAME = "field";
@@ -112,7 +114,7 @@ void ConditionTest::equalsField() {
 
     // Then
     QCOMPARE(generated,
-        DEFAULT_FIELD_NAME + " = " + QORMUtils::parametrize(DEFAULT_FIELD_NAME)
+        DEFAULT_FIELD_NAME + " = " + QORM::Utils::parametrize(DEFAULT_FIELD_NAME)
     );
     QVERIFY(equals.getNestedConditions().empty());
     QCOMPARE(equals.getValue().toInt(), DEFAULT_VALUE.toInt());
@@ -147,7 +149,7 @@ void ConditionTest::equalsSelection() {
 
     // Then
     QCOMPARE(generated,
-        sum.generate() + " = " + QORMUtils::parametrize(sum.generate())
+        sum.generate() + " = " + QORM::Utils::parametrize(sum.generate())
     );
     QVERIFY(equals.getNestedConditions().empty());
     QCOMPARE(equals.getValue().toInt(), DEFAULT_VALUE.toInt());
@@ -182,7 +184,7 @@ void ConditionTest::notEqualsField() {
 
     // Then
     QCOMPARE(generated,
-        DEFAULT_FIELD_NAME + " <> " + QORMUtils::parametrize(DEFAULT_FIELD_NAME)
+        DEFAULT_FIELD_NAME + " <> " + QORM::Utils::parametrize(DEFAULT_FIELD_NAME)
     );
     QVERIFY(notEquals.getNestedConditions().empty());
     QCOMPARE(notEquals.getValue().toInt(), DEFAULT_VALUE.toInt());
@@ -217,7 +219,7 @@ void ConditionTest::notEqualsSelection() {
 
     // Then
     QCOMPARE(generated,
-        sum.generate() + " <> " + QORMUtils::parametrize(sum.generate())
+        sum.generate() + " <> " + QORM::Utils::parametrize(sum.generate())
     );
     QVERIFY(notEquals.getNestedConditions().empty());
     QCOMPARE(notEquals.getValue().toInt(), DEFAULT_VALUE.toInt());

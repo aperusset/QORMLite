@@ -1,9 +1,11 @@
-#ifndef FOREIGNKEY_H
-#define FOREIGNKEY_H
+#ifndef OPERATIONS_MODEL_FOREIGNKEY_H_
+#define OPERATIONS_MODEL_FOREIGNKEY_H_
 
 #include <list>
 #include "operations/operation.h"
 #include "operations/model/reference.h"
+
+namespace QORM {
 
 class ForeignKey : public Operation {
     const std::list<Reference> references;
@@ -30,4 +32,6 @@ inline auto ForeignKey::getOnAction() const -> OnAction {
     return this->onAction;
 }
 
-#endif  // FOREIGNKEY_H
+}  // namespace QORM
+
+#endif  // OPERATIONS_MODEL_FOREIGNKEY_H_

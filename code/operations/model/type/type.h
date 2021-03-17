@@ -1,7 +1,9 @@
-#ifndef TYPE_H
-#define TYPE_H
+#ifndef OPERATIONS_MODEL_TYPE_TYPE_H_
+#define OPERATIONS_MODEL_TYPE_TYPE_H_
 
 #include "operations/operation.h"
+
+namespace QORM {
 
 class Type : public Operation {
     const QString name;
@@ -16,4 +18,6 @@ inline auto Type::getName() const -> QString {
     return this->name;
 }
 
-#endif  // TYPE_H
+}  // namespace QORM
+
+#endif  // OPERATIONS_MODEL_TYPE_TYPE_H_

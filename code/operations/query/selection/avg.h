@@ -1,8 +1,10 @@
-#ifndef AVG_H
-#define AVG_H
+#ifndef OPERATIONS_QUERY_SELECTION_AVG_H_
+#define OPERATIONS_QUERY_SELECTION_AVG_H_
 
 #include <QString>
 #include "operations/query/selection/selection.h"
+
+namespace QORM {
 
 class Avg : public Selection {
  public:
@@ -10,4 +12,6 @@ class Avg : public Selection {
         Selection("avg(" + fieldToAvg + ")", renameTo) {}
 };
 
-#endif  // AVG_H
+}  // namespace QORM
+
+#endif  // OPERATIONS_QUERY_SELECTION_AVG_H_

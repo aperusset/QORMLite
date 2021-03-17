@@ -1,13 +1,15 @@
-#ifndef QUERY_H
-#define QUERY_H
+#ifndef OPERATIONS_QUERY_H_
+#define OPERATIONS_QUERY_H_
 
+#include <QSqlQuery>
 #include <QString>
 #include <QVariant>
-#include <QSqlQuery>
 #include <map>
 #include <utility>
-#include "operations/operation.h"
 #include "query/bindable.h"
+#include "operations/operation.h"
+
+namespace QORM {
 
 class Query : public Operation {
     std::map<QString, QVariant> bindables;
@@ -19,4 +21,6 @@ class Query : public Operation {
     auto willBind(const Bindable&) const -> bool;
 };
 
-#endif  // QUERY_H
+}  // namespace QORM
+
+#endif  // OPERATIONS_QUERY_H_

@@ -1,7 +1,9 @@
-#ifndef SELECTION_H
-#define SELECTION_H
+#ifndef OPERATIONS_QUERY_SELECTION_SELECTION_H_
+#define OPERATIONS_QUERY_SELECTION_SELECTION_H_
 
 #include "operations/operation.h"
+
+namespace QORM {
 
 class Selection : public Operation {
     const QString fieldName;
@@ -24,4 +26,6 @@ inline auto Selection::getRenamedTo() const -> QString {
     return this->renamedTo;
 }
 
-#endif  // SELECTION_H
+}  // namespace QORM
+
+#endif  // OPERATIONS_QUERY_SELECTION_SELECTION_H_

@@ -1,6 +1,6 @@
 #include "operations/model/type/varchar.h"
 
-const QString Varchar::EMPTY = "''";
+const QString QORM::Varchar::EMPTY = "''";
 
-Varchar::Varchar(const int size) :
+QORM::Varchar::Varchar(const int size) :
     Type("varchar(" + QString::number(size) + ")") {}

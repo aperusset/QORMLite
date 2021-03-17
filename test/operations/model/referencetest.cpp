@@ -3,6 +3,8 @@
 #include "operations/model/type/type.h"
 #include "operations/model/field.h"
 
+using namespace QORM;
+
 void ReferenceTest::getFrom() {
 
     // Given

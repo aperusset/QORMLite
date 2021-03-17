@@ -1,8 +1,10 @@
-#ifndef VIEW_H
-#define VIEW_H
+#ifndef OPERATIONS_MODEL_VIEW_H_
+#define OPERATIONS_MODEL_VIEW_H_
 
 #include "operations/query.h"
 #include "operations/query/select.h"
+
+namespace QORM {
 
 class View : public Query {
     const QString viewName;
@@ -23,4 +25,6 @@ inline auto View::getSelect() const -> Select {
     return this->select;
 }
 
-#endif  // VIEW_H
+}  // namespace QORM
+
+#endif  // OPERATIONS_MODEL_VIEW_H_

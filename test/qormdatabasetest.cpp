@@ -1,5 +1,5 @@
 #include "qormdatabasetest.h"
-#include "qormdatabase.h"
+#include "database.h"
 #include "operations/query/select.h"
 #include "operations/query/insert.h"
 #include "operations/query/delete.h"
@@ -8,6 +8,8 @@
 #include "operations/query/condition/equals.h"
 #include "fixture/testentity.h"
 
+using namespace QORM;
+
 const QString QORMDatabaseTest::DEFAULT_DATABASE_NAME = "database";
 const QString QORMDatabaseTest::DEFAULT_BACKUP_FILE_NAME = "database.backup";
 const int DEFAULT_VALUE = 42;
@@ -15,7 +17,7 @@ const int DEFAULT_VALUE = 42;
 void QORMDatabaseTest::connectShouldFailWithInvalidDatabase() {
 
     // Given
-    QORMDatabase database("data/base.db", this->testCreator, false, false);
+    Database database("data/base.db", this->testCreator, false, false);
 
     // When / Then
     QVERIFY_EXCEPTION_THROWN(
@@ -28,7 +30,7 @@ void QORMDatabaseTest::connectShouldFailWithInvalidDatabase() {
 void QORMDatabaseTest::connectShouldCreateDatabaseAndReturnTrue() {
 
     // Given
-    QORMDatabase database(DEFAULT_DATABASE_NAME, this->testCreator, false, false);
+    Database database(DEFAULT_DATABASE_NAME, this->testCreator, false, false);
 
     // When / Then
     QVERIFY(database.connect());
@@ -39,7 +41,7 @@ void QORMDatabaseTest::connectShouldCreateDatabaseAndReturnTrue() {
 void QORMDatabaseTest::connectShouldCreatePrefixedDatabaseAndReturnTrue() {
 
     // Given
-    QORMDatabase database(DEFAULT_DATABASE_NAME, this->testCreator, false, true);
+    Database database(DEFAULT_DATABASE_NAME, this->testCreator, false, true);
 
     // When / Then
     QVERIFY(database.connect());
@@ -50,7 +52,7 @@ void QORMDatabaseTest::connectShouldCreatePrefixedDatabaseAndReturnTrue() {
 void QORMDatabaseTest::connectShouldNotCreateDatabaseAndReturnFalse() {
 
     // Given
-    QORMDatabase database(DEFAULT_DATABASE_NAME, this->testCreator, false, false);
+    Database database(DEFAULT_DATABASE_NAME, this->testCreator, false, false);
 
     // When
     database.connect();
@@ -65,7 +67,7 @@ void QORMDatabaseTest::connectShouldNotCreateDatabaseAndReturnFalse() {
 void QORMDatabaseTest::subsequentConnectShouldReturnFalse() {
 
     // Given
-    QORMDatabase database(DEFAULT_DATABASE_NAME, this->testCreator, false, false);
+    Database database(DEFAULT_DATABASE_NAME, this->testCreator, false, false);
 
     // When
     database.connect();
@@ -79,7 +81,7 @@ void QORMDatabaseTest::subsequentConnectShouldReturnFalse() {
 void QORMDatabaseTest::disconnectShouldNotDeleteDatabase() {
 
     // Given
-    QORMDatabase database(DEFAULT_DATABASE_NAME, this->testCreator, false, false);
+    Database database(DEFAULT_DATABASE_NAME, this->testCreator, false, false);
 
     // When
     database.connect();
@@ -93,7 +95,7 @@ void QORMDatabaseTest::disconnectShouldNotDeleteDatabase() {
 void QORMDatabaseTest::disconnectShouldDeleteDatabaseInTestMode() {
 
     // Given
-    QORMDatabase database(DEFAULT_DATABASE_NAME, this->testCreator, false, true);
+    Database database(DEFAULT_DATABASE_NAME, this->testCreator, false, true);
 
     // When
     database.connect();
@@ -108,7 +110,7 @@ void QORMDatabaseTest::disconnectShouldDeleteDatabaseInTestMode() {
 void QORMDatabaseTest::optimizeShouldSuccess() {
 
     // Given
-    QORMDatabase database(DEFAULT_DATABASE_NAME, this->testCreator, false, false);
+    Database database(DEFAULT_DATABASE_NAME, this->testCreator, false, false);
 
     // When
     database.connect();
@@ -120,7 +122,7 @@ void QORMDatabaseTest::optimizeShouldSuccess() {
 void QORMDatabaseTest::backupShouldSuccessAndCreateFile() {
 
     // Given
-    QORMDatabase database(DEFAULT_DATABASE_NAME, this->testCreator, false, false);
+    Database database(DEFAULT_DATABASE_NAME, this->testCreator, false, false);
 
     // When
     database.connect();
@@ -133,7 +135,7 @@ void QORMDatabaseTest::backupShouldSuccessAndCreateFile() {
 void QORMDatabaseTest::prepareExecuteShouldFailWithInvalidQuery() {
 
     // Given
-    QORMDatabase database(DEFAULT_DATABASE_NAME, this->testCreator, false, false);
+    Database database(DEFAULT_DATABASE_NAME, this->testCreator, false, false);
 
     // When
     database.connect();
@@ -148,7 +150,7 @@ void QORMDatabaseTest::prepareExecuteShouldFailWithInvalidQuery() {
 void QORMDatabaseTest::executeShouldSuccessWithTextQuery() {
 
     // Given
-    QORMDatabase database(DEFAULT_DATABASE_NAME, this->testCreator, false, false);
+    Database database(DEFAULT_DATABASE_NAME, this->testCreator, false, false);
 
     // When
     database.connect();
@@ -160,7 +162,7 @@ void QORMDatabaseTest::executeShouldSuccessWithTextQuery() {
 void QORMDatabaseTest::executeShouldSuccessWithBuiltQuery() {
 
     // Given
-    QORMDatabase database(DEFAULT_DATABASE_NAME, this->testCreator, false, false);
+    Database database(DEFAULT_DATABASE_NAME, this->testCreator, false, false);
 
     // When
     database.connect();
@@ -172,7 +174,7 @@ void QORMDatabaseTest::executeShouldSuccessWithBuiltQuery() {
 void QORMDatabaseTest::existsShouldReturnTrue() {
 
     // Given
-    QORMDatabase database(DEFAULT_DATABASE_NAME, this->testCreator, false, false);
+    Database database(DEFAULT_DATABASE_NAME, this->testCreator, false, false);
 
     // When
     database.connect();
@@ -185,7 +187,7 @@ void QORMDatabaseTest::existsShouldReturnTrue() {
 void QORMDatabaseTest::existsShouldReturnFalse() {
 
     // Given
-    QORMDatabase database(DEFAULT_DATABASE_NAME, this->testCreator, false, false);
+    Database database(DEFAULT_DATABASE_NAME, this->testCreator, false, false);
 
     // When
     database.connect();
@@ -197,7 +199,7 @@ void QORMDatabaseTest::existsShouldReturnFalse() {
 void QORMDatabaseTest::insertAndRetrieveKeyAsIntShouldSuccess() {
 
     // Given
-    QORMDatabase database(DEFAULT_DATABASE_NAME, this->testCreator, false, false);
+    Database database(DEFAULT_DATABASE_NAME, this->testCreator, false, false);
 
     // When
     database.connect();
@@ -210,7 +212,7 @@ void QORMDatabaseTest::insertAndRetrieveKeyAsIntShouldSuccess() {
 void QORMDatabaseTest::insertAndRetrieveKeyAsIntShouldFail() {
 
     // Given
-    QORMDatabase database(DEFAULT_DATABASE_NAME, this->testCreator, false, false);
+    Database database(DEFAULT_DATABASE_NAME, this->testCreator, false, false);
 
     // When
     database.connect();
@@ -225,7 +227,7 @@ void QORMDatabaseTest::insertAndRetrieveKeyAsIntShouldFail() {
 void QORMDatabaseTest::entityShouldSuccess() {
 
     // Given
-    QORMDatabase database(DEFAULT_DATABASE_NAME, this->testCreator, false, false);
+    Database database(DEFAULT_DATABASE_NAME, this->testCreator, false, false);
     TestEntity testEntity(DEFAULT_VALUE);
     bool convertible = false;
 
@@ -247,7 +249,7 @@ void QORMDatabaseTest::entityShouldSuccess() {
 void QORMDatabaseTest::entityShouldThrowWhenNothingFound() {
 
     // Given
-    QORMDatabase database(DEFAULT_DATABASE_NAME, this->testCreator, false, false);
+    Database database(DEFAULT_DATABASE_NAME, this->testCreator, false, false);
     TestEntity testEntity(DEFAULT_VALUE);
 
     // When
@@ -268,7 +270,7 @@ void QORMDatabaseTest::entityShouldThrowWhenNothingFound() {
 void QORMDatabaseTest::entitiesShouldReturnNonEmptyList() {
 
     // Given
-    QORMDatabase database(DEFAULT_DATABASE_NAME, this->testCreator, false, false);
+    Database database(DEFAULT_DATABASE_NAME, this->testCreator, false, false);
     TestEntity testEntity(DEFAULT_VALUE);
     bool convertible = false;
 
@@ -291,7 +293,7 @@ void QORMDatabaseTest::entitiesShouldReturnNonEmptyList() {
 void QORMDatabaseTest::entitiesShouldReturnEmptyList() {
 
     // Given
-    QORMDatabase database(DEFAULT_DATABASE_NAME, this->testCreator, false, false);
+    Database database(DEFAULT_DATABASE_NAME, this->testCreator, false, false);
 
     // When
     database.connect();
@@ -304,7 +306,7 @@ void QORMDatabaseTest::entitiesShouldReturnEmptyList() {
 void QORMDatabaseTest::resultShouldReturnDefaultValueIfNoResult() {
 
     // Given
-    QORMDatabase database(DEFAULT_DATABASE_NAME, this->testCreator, false, false);
+    Database database(DEFAULT_DATABASE_NAME, this->testCreator, false, false);
 
     // When
     database.connect();
@@ -322,7 +324,7 @@ void QORMDatabaseTest::resultShouldReturnDefaultValueIfNoResult() {
 void QORMDatabaseTest::resultShouldReturnQueryValue() {
 
     // Given
-    QORMDatabase database(DEFAULT_DATABASE_NAME, this->testCreator, false, false);
+    Database database(DEFAULT_DATABASE_NAME, this->testCreator, false, false);
 
     // When
     database.connect();

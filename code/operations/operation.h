@@ -1,7 +1,9 @@
-#ifndef OPERATION_H
-#define OPERATION_H
+#ifndef OPERATIONS_OPERATION_H_
+#define OPERATIONS_OPERATION_H_
 
 #include <QString>
+
+namespace QORM {
 
 class Operation {
  public:
@@ -20,4 +22,6 @@ class Operation {
     static void* operator new[](size_t) = delete;
 };
 
-#endif  // OPERATION_H
+}  // namespace QORM
+
+#endif  // OPERATIONS_OPERATION_H_

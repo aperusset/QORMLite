@@ -1,9 +1,11 @@
-#ifndef INSERT_H
-#define INSERT_H
+#ifndef OPERATIONS_QUERY_INSERT_H_
+#define OPERATIONS_QUERY_INSERT_H_
 
 #include <list>
 #include "operations/query/tablequery.h"
 #include "operations/query/assignment.h"
+
+namespace QORM {
 
 class Insert : public TableQuery {
     const std::list<Assignment> assignements;
@@ -19,4 +21,6 @@ inline auto Insert::getAssignements() const -> std::list<Assignment> {
     return this->assignements;
 }
 
-#endif  // INSERT_H
+}  // namespace QORM
+
+#endif  // OPERATIONS_QUERY_INSERT_H_

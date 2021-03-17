@@ -1,10 +1,12 @@
-#ifndef NOTEQUALS_H
-#define NOTEQUALS_H
+#ifndef OPERATIONS_QUERY_CONDITION_NOTEQUALS_H_
+#define OPERATIONS_QUERY_CONDITION_NOTEQUALS_H_
 
 #include <QString>
 #include <QVariant>
 #include "operations/query/selection/selection.h"
 #include "operations/query/condition/condition.h"
+
+namespace QORM {
 
 namespace NotEquals {
     auto field(const QString &field, const QVariant &value) -> Condition;
@@ -13,4 +15,6 @@ namespace NotEquals {
     auto selections(const Selection &right, const Selection &left) -> Condition;
 }  // namespace NotEquals
 
-#endif  // NOTEQUALS_H
+}  // namespace QORM
+
+#endif  // OPERATIONS_QUERY_CONDITION_NOTEQUALS_H_

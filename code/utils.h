@@ -1,5 +1,5 @@
-#ifndef Q_ORM_UTILS_H
-#define Q_ORM_UTILS_H
+#ifndef UTILS_H_
+#define UTILS_H_
 
 #include <QString>
 #include <QStringList>
@@ -9,7 +9,9 @@
 #include <algorithm>
 #include "operations/query/selection/selection.h"
 
-namespace QORMUtils {
+namespace QORM {
+
+namespace Utils {
 
     /**
      * @brief Format a QDate to database valid date
@@ -92,6 +94,9 @@ namespace QORMUtils {
                        std::back_inserter(transformed), transformer);
         return transformed.join(separator);
     }
-}  // namespace QORMUtils
 
-#endif  // Q_ORM_UTILS_H
+}  // namespace Utils
+
+}  // namespace QORM
+
+#endif  // UTILS_H_

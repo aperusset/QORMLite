@@ -2,14 +2,14 @@
 #define QORMCACHETEST_H
 
 #include <QtTest/QtTest>
-#include "qormcache.h"
+#include "cache.h"
 #include "fixture/testentity.h"
 
 class QORMCacheTest : public QObject {
 
     Q_OBJECT
 
-    QORMCache<int, TestEntity> cache;
+    QORM::Cache<int, TestEntity> cache;
 
 private slots:
     void cleanup() {

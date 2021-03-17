@@ -1,10 +1,10 @@
 #ifndef TESTENTITY_H
 #define TESTENTITY_H
 
-#include "qormentity.h"
+#include "entity.h"
 #include <memory>
 
-class TestEntity : public QORMEntity<> {
+class TestEntity : public QORM::Entity<> {
 
 public:
     explicit TestEntity(const int key);

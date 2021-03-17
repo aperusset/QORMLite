@@ -1,10 +1,12 @@
-#ifndef AND_H
-#define AND_H
+#ifndef OPERATIONS_QUERY_CONDITION_AND_H_
+#define OPERATIONS_QUERY_CONDITION_AND_H_
 
 #include <QString>
 #include <QVariant>
 #include <list>
 #include "operations/query/condition/condition.h"
+
+namespace QORM {
 
 class And : public Condition {
  public:
@@ -12,4 +14,6 @@ class And : public Condition {
         Condition(" and ", conditions, QString(), QString(), QVariant()) {}
 };
 
-#endif  // AND_H
+}  // namespace QORM
+
+#endif  // OPERATIONS_QUERY_CONDITION_AND_H_

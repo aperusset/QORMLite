@@ -2,14 +2,15 @@
 #include <utility>
 #include <string>
 #include "operations/query/select.h"
-#include "qormutils.h"
+#include "utils.h"
 
-Condition::Condition(QString op, std::list<Condition> nestedConditions,
-                     QString leftField, QString rightField, QVariant value) :
+QORM::Condition::Condition(QString op, std::list<Condition> nestedConditions,
+                           QString leftField, QString rightField,
+                           QVariant value) :
     op(std::move(op)), nestedConditions(std::move(nestedConditions)),
     leftField(std::move(leftField)),
     rightField(value.isValid() ?
-            QORMUtils::parametrize(this->leftField) :
+            QORM::Utils::parametrize(this->leftField) :
             std::move(rightField)),
     value(std::move(value)) {
     if (this->op.isNull() || this->op.isEmpty()) {
@@ -22,13 +23,14 @@ Condition::Condition(QString op, std::list<Condition> nestedConditions,
     }
 }
 
-auto Condition::isParametrized() const -> bool {
+auto QORM::Condition::isParametrized() const -> bool {
     return value.isValid() || std::any_of(
         nestedConditions.begin(), nestedConditions.end(),
         std::bind(&Condition::isParametrized, std::placeholders::_1));
 }
 
-auto Condition::getParametrizedConditions() const -> std::list<Condition> {
+auto QORM::Condition::getParametrizedConditions()
+const -> std::list<Condition> {
     if (value.isValid()) {
         return {*this};
     }
@@ -42,7 +44,7 @@ auto Condition::getParametrizedConditions() const -> std::list<Condition> {
     return parametrizedConditions;
 }
 
-auto Condition::generate() const -> QString {
+auto QORM::Condition::generate() const -> QString {
     if (this->nestedConditions.empty()) {
         return (this->leftField + this->op + this->rightField).simplified();
     }

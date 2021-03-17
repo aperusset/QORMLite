@@ -1,9 +1,11 @@
-#ifndef PRIMARYKEY_H
-#define PRIMARYKEY_H
+#ifndef OPERATIONS_MODEL_PRIMARYKEY_H_
+#define OPERATIONS_MODEL_PRIMARYKEY_H_
 
 #include <list>
 #include "operations/operation.h"
 #include "operations/model/field.h"
+
+namespace QORM {
 
 class PrimaryKey : public Operation {
     const std::list<Field> fields;
@@ -25,4 +27,6 @@ inline auto PrimaryKey::isAutoIncrement() const -> bool {
     return this->autoIncrement;
 }
 
-#endif  // PRIMARYKEY_H
+}  // namespace QORM
+
+#endif  // OPERATIONS_MODEL_PRIMARYKEY_H_

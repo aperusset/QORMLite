@@ -1,8 +1,10 @@
-#ifndef ASC_H
-#define ASC_H
+#ifndef OPERATIONS_QUERY_ORDER_ASC_H_
+#define OPERATIONS_QUERY_ORDER_ASC_H_
 
 #include <QString>
 #include "operations/query/order/order.h"
+
+namespace QORM {
 
 class Asc : public Order {
  public:
@@ -10,4 +12,6 @@ class Asc : public Order {
         Order(fieldName, Ordering::Asc) {}
 };
 
-#endif  // ASC_H
+}  // namespace QORM
+
+#endif  // OPERATIONS_QUERY_ORDER_ASC_H_
