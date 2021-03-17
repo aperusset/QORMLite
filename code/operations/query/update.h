@@ -1,5 +1,5 @@
-#ifndef UPDATE_H
-#define UPDATE_H
+#ifndef OPERATIONS_QUERY_UPDATE_H_
+#define OPERATIONS_QUERY_UPDATE_H_
 
 #include <list>
 #include "operations/query/tablequery.h"
@@ -33,4 +33,4 @@ inline auto Update::getConditions() const -> std::list<Condition> {
 
 }  // namespace QORM
 
-#endif  // UPDATE_H
+#endif  // OPERATIONS_QUERY_UPDATE_H_

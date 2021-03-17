@@ -1,5 +1,5 @@
-#ifndef JOIN_H
-#define JOIN_H
+#ifndef OPERATIONS_QUERY_JOIN_JOIN_H_
+#define OPERATIONS_QUERY_JOIN_JOIN_H_
 
 #include <list>
 #include "operations/operation.h"
@@ -40,4 +40,4 @@ inline auto Join::getConditions() const -> std::list<Condition> {
 
 }  // namespace QORM
 
-#endif  // JOIN_H
+#endif  // OPERATIONS_QUERY_JOIN_JOIN_H_

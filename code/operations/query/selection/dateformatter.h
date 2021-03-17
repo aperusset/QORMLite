@@ -1,5 +1,5 @@
-#ifndef DATEFORMATTER_H
-#define DATEFORMATTER_H
+#ifndef OPERATIONS_QUERY_SELECTION_DATEFORMATTER_H_
+#define OPERATIONS_QUERY_SELECTION_DATEFORMATTER_H_
 
 #include <QString>
 #include "operations/query/selection/selection.h"
@@ -16,4 +16,4 @@ class DateFormatter : public Selection {
 
 }  // namespace QORM
 
-#endif  // DATEFORMATTER_H
+#endif  // OPERATIONS_QUERY_SELECTION_DATEFORMATTER_H_

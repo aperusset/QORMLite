@@ -1,5 +1,5 @@
-#ifndef TABLE_H
-#define TABLE_H
+#ifndef OPERATIONS_MODEL_TABLE_H_
+#define OPERATIONS_MODEL_TABLE_H_
 
 #include <list>
 #include "operations/query.h"
@@ -43,4 +43,4 @@ inline auto Table::getForeignKeys() const -> std::list<ForeignKey> {
 
 }  // namespace QORM
 
-#endif  // TABLE_H
+#endif  // OPERATIONS_MODEL_TABLE_H_

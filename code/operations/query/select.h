@@ -1,5 +1,5 @@
-#ifndef SELECT_H
-#define SELECT_H
+#ifndef OPERATIONS_QUERY_SELECT_H_
+#define OPERATIONS_QUERY_SELECT_H_
 
 #include <list>
 #include "operations/query/tablequery.h"
@@ -78,4 +78,4 @@ class LastInsertedId : public Query {
 
 }  // namespace QORM
 
-#endif  // SELECT_H
+#endif  // OPERATIONS_QUERY_SELECT_H_

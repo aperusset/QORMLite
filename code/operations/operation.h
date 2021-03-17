@@ -1,5 +1,5 @@
-#ifndef OPERATION_H
-#define OPERATION_H
+#ifndef OPERATIONS_OPERATION_H_
+#define OPERATIONS_OPERATION_H_
 
 #include <QString>
 
@@ -24,4 +24,4 @@ class Operation {
 
 }  // namespace QORM
 
-#endif  // OPERATION_H
+#endif  // OPERATIONS_OPERATION_H_

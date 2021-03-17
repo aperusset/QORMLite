@@ -1,5 +1,5 @@
-#ifndef CONDITION_H
-#define CONDITION_H
+#ifndef OPERATIONS_QUERY_CONDITION_CONDITION_H_
+#define OPERATIONS_QUERY_CONDITION_CONDITION_H_
 
 #include <list>
 #include "operations/operation.h"
@@ -58,4 +58,4 @@ inline auto Condition::getValue() const -> QVariant {
 
 }  // namespace QORM
 
-#endif  // CONDITION_H
+#endif  // OPERATIONS_QUERY_CONDITION_CONDITION_H_

@@ -1,5 +1,5 @@
-#ifndef NOTEQUALS_H
-#define NOTEQUALS_H
+#ifndef OPERATIONS_QUERY_CONDITION_NOTEQUALS_H_
+#define OPERATIONS_QUERY_CONDITION_NOTEQUALS_H_
 
 #include <QString>
 #include <QVariant>
@@ -17,4 +17,4 @@ namespace NotEquals {
 
 }  // namespace QORM
 
-#endif  // NOTEQUALS_H
+#endif  // OPERATIONS_QUERY_CONDITION_NOTEQUALS_H_

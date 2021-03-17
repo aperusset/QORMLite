@@ -1,5 +1,5 @@
-#ifndef ASSIGNMENT_H
-#define ASSIGNMENT_H
+#ifndef OPERATIONS_QUERY_ASSIGNMENT_H_
+#define OPERATIONS_QUERY_ASSIGNMENT_H_
 
 #include "operations/operation.h"
 #include "operations/query/bindable.h"
@@ -33,4 +33,4 @@ inline auto Assignment::getValue() const -> QVariant {
 
 }  // namespace QORM
 
-#endif  // ASSIGNMENT_H
+#endif  // OPERATIONS_QUERY_ASSIGNMENT_H_

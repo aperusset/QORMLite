@@ -1,5 +1,5 @@
-#ifndef QORMLITE_H
-#define QORMLITE_H
+#ifndef QORMLITE_H_
+#define QORMLITE_H_
 
 #include <QString>
 #include "./creator.h"
@@ -15,4 +15,4 @@ namespace QORM {
     void destroyAll();
 }
 
-#endif  // QORMLITE_H
+#endif  // QORMLITE_H_

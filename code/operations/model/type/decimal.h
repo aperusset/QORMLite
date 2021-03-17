@@ -1,5 +1,5 @@
-#ifndef DECIMAL_H
-#define DECIMAL_H
+#ifndef OPERATIONS_MODEL_TYPE_DECIMAL_H_
+#define OPERATIONS_MODEL_TYPE_DECIMAL_H_
 
 #include <QString>
 #include "operations/model/type/type.h"
@@ -20,4 +20,4 @@ class Decimal : public Type {
 
 }  // namespace QORM
 
-#endif  // DECIMAL_H
+#endif  // OPERATIONS_MODEL_TYPE_DECIMAL_H_

@@ -1,5 +1,5 @@
-#ifndef VARCHAR_H
-#define VARCHAR_H
+#ifndef OPERATIONS_MODEL_TYPE_VARCHAR_H_
+#define OPERATIONS_MODEL_TYPE_VARCHAR_H_
 
 #include <QString>
 #include "operations/model/type/type.h"
@@ -17,4 +17,4 @@ class Varchar : public Type {
 
 }  // namespace QORM
 
-#endif  // VARCHAR_H
+#endif  // OPERATIONS_MODEL_TYPE_VARCHAR_H_

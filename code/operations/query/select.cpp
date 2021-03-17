@@ -8,7 +8,8 @@
 namespace {
 
 auto bindConditions(QORM::Select *select,
-                    const std::list<QORM::Condition> &conditions) -> QORM::Select& {
+                    const std::list<QORM::Condition> &conditions)
+-> QORM::Select& {
     for (auto const &condition : conditions) {
         for (auto const &bindable : condition.getParametrizedConditions()) {
             select->addBindable(bindable);

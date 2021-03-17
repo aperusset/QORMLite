@@ -1,5 +1,5 @@
-#ifndef BINDABLE_H
-#define BINDABLE_H
+#ifndef OPERATIONS_QUERY_BINDABLE_H_
+#define OPERATIONS_QUERY_BINDABLE_H_
 
 #include <QString>
 #include <QVariant>
@@ -14,4 +14,4 @@ class Bindable {
 
 }  // namespace QORM
 
-#endif  // BINDABLE_H
+#endif  // OPERATIONS_QUERY_BINDABLE_H_

@@ -1,5 +1,5 @@
-#ifndef ORDER_H
-#define ORDER_H
+#ifndef OPERATIONS_QUERY_ORDER_ORDER_H_
+#define OPERATIONS_QUERY_ORDER_ORDER_H_
 
 #include "operations/operation.h"
 
@@ -32,4 +32,4 @@ inline auto Order::getOrdering() const -> Ordering {
 
 }  // namespace QORM
 
-#endif  // ORDER_H
+#endif  // OPERATIONS_QUERY_ORDER_ORDER_H_

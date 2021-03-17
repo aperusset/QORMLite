@@ -1,5 +1,5 @@
-#ifndef IN_H
-#define IN_H
+#ifndef OPERATIONS_QUERY_CONDITION_IN_H_
+#define OPERATIONS_QUERY_CONDITION_IN_H_
 
 #include <QString>
 #include <list>
@@ -17,4 +17,4 @@ class In : public Condition {
 
 }  // namespace QORM
 
-#endif  // IN_H
+#endif  // OPERATIONS_QUERY_CONDITION_IN_H_

@@ -12,7 +12,8 @@ QORM::Update::Update(const QString &tableName,
                      const Condition &condition) :
     Update(tableName, assignements, std::list<Condition>({condition})) {}
 
-QORM::Update::Update(const QString &tableName, std::list<Assignment> assignements,
+QORM::Update::Update(const QString &tableName,
+                     std::list<Assignment> assignements,
                      std::list<Condition> conditions) :
     TableQuery(tableName), assignements(std::move(assignements)),
     conditions(std::move(conditions)) {

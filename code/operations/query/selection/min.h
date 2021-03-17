@@ -1,5 +1,5 @@
-#ifndef MIN_H
-#define MIN_H
+#ifndef OPERATIONS_QUERY_SELECTION_MIN_H_
+#define OPERATIONS_QUERY_SELECTION_MIN_H_
 
 #include <QString>
 #include "operations/query/selection/selection.h"
@@ -14,4 +14,4 @@ class Min : public Selection {
 
 }  // namespace QORM
 
-#endif  // MIN_H
+#endif  // OPERATIONS_QUERY_SELECTION_MIN_H_

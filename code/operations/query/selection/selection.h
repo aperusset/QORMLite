@@ -1,5 +1,5 @@
-#ifndef SELECTION_H
-#define SELECTION_H
+#ifndef OPERATIONS_QUERY_SELECTION_SELECTION_H_
+#define OPERATIONS_QUERY_SELECTION_SELECTION_H_
 
 #include "operations/operation.h"
 
@@ -28,4 +28,4 @@ inline auto Selection::getRenamedTo() const -> QString {
 
 }  // namespace QORM
 
-#endif  // SELECTION_H
+#endif  // OPERATIONS_QUERY_SELECTION_SELECTION_H_

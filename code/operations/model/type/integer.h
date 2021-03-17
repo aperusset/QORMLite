@@ -1,5 +1,5 @@
-#ifndef INTEGER_H
-#define INTEGER_H
+#ifndef OPERATIONS_MODEL_TYPE_INTEGER_H_
+#define OPERATIONS_MODEL_TYPE_INTEGER_H_
 
 #include "operations/model/type/type.h"
 
@@ -12,4 +12,4 @@ class Integer : public Type {
 
 }  // namespace QORM
 
-#endif  // INTEGER_H
+#endif  // OPERATIONS_MODEL_TYPE_INTEGER_H_

@@ -1,5 +1,5 @@
-#ifndef TABLEQUERY_H
-#define TABLEQUERY_H
+#ifndef OPERATIONS_QUERY_TABLEQUERY_H_
+#define OPERATIONS_QUERY_TABLEQUERY_H_
 
 #include <QString>
 #include <utility>
@@ -24,4 +24,4 @@ inline auto TableQuery::getTableName() const -> QString {
 
 }  // namespace QORM
 
-#endif  // TABLEQUERY_H
+#endif  // OPERATIONS_QUERY_TABLEQUERY_H_

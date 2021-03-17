@@ -1,5 +1,5 @@
-#ifndef ISNOTNULL_H
-#define ISNOTNULL_H
+#ifndef OPERATIONS_QUERY_CONDITION_ISNOTNULL_H_
+#define OPERATIONS_QUERY_CONDITION_ISNOTNULL_H_
 
 #include <QString>
 #include "operations/query/condition/condition.h"
@@ -14,4 +14,4 @@ class IsNotNull : public Condition {
 
 }  // namespace QORM
 
-#endif  // ISNOTNULL_H
+#endif  // OPERATIONS_QUERY_CONDITION_ISNOTNULL_H_

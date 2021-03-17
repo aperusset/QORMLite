@@ -1,5 +1,5 @@
-#ifndef LEFTJOIN_H
-#define LEFTJOIN_H
+#ifndef OPERATIONS_QUERY_JOIN_LEFTJOIN_H_
+#define OPERATIONS_QUERY_JOIN_LEFTJOIN_H_
 
 #include <QString>
 #include <list>
@@ -15,4 +15,4 @@ class LeftJoin : public Join {
 
 }  // namespace QORM
 
-#endif  // LEFTJOIN_H
+#endif  // OPERATIONS_QUERY_JOIN_LEFTJOIN_H_

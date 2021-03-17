@@ -1,5 +1,5 @@
-#ifndef DESC_H
-#define DESC_H
+#ifndef OPERATIONS_QUERY_ORDER_DESC_H_
+#define OPERATIONS_QUERY_ORDER_DESC_H_
 
 #include <QString>
 #include "operations/query/order/order.h"
@@ -14,4 +14,4 @@ class Desc : public Order {
 
 }  // namespace QORM
 
-#endif  // DESC_H
+#endif  // OPERATIONS_QUERY_ORDER_DESC_H_

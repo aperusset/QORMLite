@@ -1,5 +1,5 @@
-#ifndef CROSSJOIN_H
-#define CROSSJOIN_H
+#ifndef OPERATIONS_QUERY_JOIN_CROSSJOIN_H_
+#define OPERATIONS_QUERY_JOIN_CROSSJOIN_H_
 
 #include <QString>
 #include <list>
@@ -15,4 +15,4 @@ class CrossJoin : public Join {
 
 }  // namespace QORM
 
-#endif  // CROSSJOIN_H
+#endif  // OPERATIONS_QUERY_JOIN_CROSSJOIN_H_

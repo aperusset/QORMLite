@@ -1,5 +1,5 @@
-#ifndef FIELD_H
-#define FIELD_H
+#ifndef OPERATIONS_MODEL_FIELD_H_
+#define OPERATIONS_MODEL_FIELD_H_
 
 #include "operations/operation.h"
 #include "operations/model/type/type.h"
@@ -48,4 +48,4 @@ inline auto Field::isNullable() const -> bool {
 
 }  // namespace QORM
 
-#endif  // FIELD_H
+#endif  // OPERATIONS_MODEL_FIELD_H_

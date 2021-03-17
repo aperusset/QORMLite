@@ -1,5 +1,5 @@
-#ifndef PRIMARYKEY_H
-#define PRIMARYKEY_H
+#ifndef OPERATIONS_MODEL_PRIMARYKEY_H_
+#define OPERATIONS_MODEL_PRIMARYKEY_H_
 
 #include <list>
 #include "operations/operation.h"
@@ -29,4 +29,4 @@ inline auto PrimaryKey::isAutoIncrement() const -> bool {
 
 }  // namespace QORM
 
-#endif  // PRIMARYKEY_H
+#endif  // OPERATIONS_MODEL_PRIMARYKEY_H_

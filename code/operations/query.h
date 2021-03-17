@@ -1,5 +1,5 @@
-#ifndef QUERY_H
-#define QUERY_H
+#ifndef OPERATIONS_QUERY_H_
+#define OPERATIONS_QUERY_H_
 
 #include <QSqlQuery>
 #include <QString>
@@ -23,4 +23,4 @@ class Query : public Operation {
 
 }  // namespace QORM
 
-#endif  // QUERY_H
+#endif  // OPERATIONS_QUERY_H_

@@ -1,5 +1,5 @@
-#ifndef INNERJOIN_H
-#define INNERJOIN_H
+#ifndef OPERATIONS_QUERY_JOIN_INNERJOIN_H_
+#define OPERATIONS_QUERY_JOIN_INNERJOIN_H_
 
 #include <QString>
 #include <list>
@@ -15,4 +15,4 @@ class InnerJoin : public Join {
 
 }  // namespace QORM
 
-#endif  // INNERJOIN_H
+#endif  // OPERATIONS_QUERY_JOIN_INNERJOIN_H_

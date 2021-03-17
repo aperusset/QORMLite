@@ -1,5 +1,5 @@
-#ifndef QORMCREATOR_H
-#define QORMCREATOR_H
+#ifndef CREATOR_H_
+#define CREATOR_H_
 
 #include <QString>
 #include <list>
@@ -36,4 +36,4 @@ class Creator {
 
 }  // namespace QORM
 
-#endif  // QORMCREATOR_H
+#endif  // CREATOR_H_

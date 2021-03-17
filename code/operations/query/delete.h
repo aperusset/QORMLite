@@ -1,5 +1,5 @@
-#ifndef DELETE_H
-#define DELETE_H
+#ifndef OPERATIONS_QUERY_DELETE_H_
+#define OPERATIONS_QUERY_DELETE_H_
 
 #include <list>
 #include "operations/query/tablequery.h"
@@ -24,4 +24,4 @@ inline auto Delete::getConditions() const -> std::list<Condition> {
 
 }  // namespace QORM
 
-#endif  // DELETE_H
+#endif  // OPERATIONS_QUERY_DELETE_H_

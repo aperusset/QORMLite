@@ -1,5 +1,5 @@
-#ifndef EQUALS_H
-#define EQUALS_H
+#ifndef OPERATIONS_QUERY_CONDITION_EQUALS_H_
+#define OPERATIONS_QUERY_CONDITION_EQUALS_H_
 
 #include <QString>
 #include <QVariant>
@@ -17,4 +17,4 @@ namespace Equals {
 
 }  // namespace QORM
 
-#endif  // EQUALS_H
+#endif  // OPERATIONS_QUERY_CONDITION_EQUALS_H_

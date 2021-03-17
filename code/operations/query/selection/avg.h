@@ -1,5 +1,5 @@
-#ifndef AVG_H
-#define AVG_H
+#ifndef OPERATIONS_QUERY_SELECTION_AVG_H_
+#define OPERATIONS_QUERY_SELECTION_AVG_H_
 
 #include <QString>
 #include "operations/query/selection/selection.h"
@@ -14,4 +14,4 @@ class Avg : public Selection {
 
 }  // namespace QORM
 
-#endif  // AVG_H
+#endif  // OPERATIONS_QUERY_SELECTION_AVG_H_

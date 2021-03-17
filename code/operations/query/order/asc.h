@@ -1,5 +1,5 @@
-#ifndef ASC_H
-#define ASC_H
+#ifndef OPERATIONS_QUERY_ORDER_ASC_H_
+#define OPERATIONS_QUERY_ORDER_ASC_H_
 
 #include <QString>
 #include "operations/query/order/order.h"
@@ -14,4 +14,4 @@ class Asc : public Order {
 
 }  // namespace QORM
 
-#endif  // ASC_H
+#endif  // OPERATIONS_QUERY_ORDER_ASC_H_

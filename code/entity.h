@@ -1,5 +1,5 @@
-#ifndef QORMENTITY_H
-#define QORMENTITY_H
+#ifndef ENTITY_H_
+#define ENTITY_H_
 
 #include <algorithm>
 #include <set>
@@ -65,4 +65,4 @@ class Entity {
 
 }  // namespace QORM
 
-#endif  // QORMENTITY_H
+#endif  // ENTITY_H_

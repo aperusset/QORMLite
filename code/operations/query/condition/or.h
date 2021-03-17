@@ -1,5 +1,5 @@
-#ifndef OR_H
-#define OR_H
+#ifndef OPERATIONS_QUERY_CONDITION_OR_H_
+#define OPERATIONS_QUERY_CONDITION_OR_H_
 
 #include <QString>
 #include <QVariant>
@@ -16,4 +16,4 @@ class Or : public Condition {
 
 }  // namespace QORM
 
-#endif  // OR_H
+#endif  // OPERATIONS_QUERY_CONDITION_OR_H_

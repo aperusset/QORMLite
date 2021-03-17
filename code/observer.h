@@ -1,5 +1,5 @@
-#ifndef QORMOBSERVER_H
-#define QORMOBSERVER_H
+#ifndef OBSERVER_H_
+#define OBSERVER_H_
 
 namespace QORM {
 
@@ -13,4 +13,4 @@ class Observer {
 
 }  // namespace QORM
 
-#endif  // QORMOBSERVER_H
+#endif  // OBSERVER_H_

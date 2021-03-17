@@ -1,5 +1,5 @@
-#ifndef TYPE_H
-#define TYPE_H
+#ifndef OPERATIONS_MODEL_TYPE_TYPE_H_
+#define OPERATIONS_MODEL_TYPE_TYPE_H_
 
 #include "operations/operation.h"
 
@@ -20,4 +20,4 @@ inline auto Type::getName() const -> QString {
 
 }  // namespace QORM
 
-#endif  // TYPE_H
+#endif  // OPERATIONS_MODEL_TYPE_TYPE_H_

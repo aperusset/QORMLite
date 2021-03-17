@@ -1,5 +1,5 @@
-#ifndef REFERENCE_H
-#define REFERENCE_H
+#ifndef OPERATIONS_MODEL_REFERENCE_H_
+#define OPERATIONS_MODEL_REFERENCE_H_
 
 #include <utility>
 #include "operations/model/field.h"
@@ -31,4 +31,4 @@ enum class OnAction {
 
 }  // namespace QORM
 
-#endif  // REFERENCE_H
+#endif  // OPERATIONS_MODEL_REFERENCE_H_

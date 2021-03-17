@@ -1,5 +1,5 @@
-#ifndef RIGHTJOIN_H
-#define RIGHTJOIN_H
+#ifndef OPERATIONS_QUERY_JOIN_RIGHTJOIN_H_
+#define OPERATIONS_QUERY_JOIN_RIGHTJOIN_H_
 
 #include <QString>
 #include <list>
@@ -15,4 +15,4 @@ class RightJoin : public Join {
 
 }  // namespace QORM
 
-#endif  // RIGHTJOIN_H
+#endif  // OPERATIONS_QUERY_JOIN_RIGHTJOIN_H_

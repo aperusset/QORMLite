@@ -1,5 +1,5 @@
-#ifndef DATE_H
-#define DATE_H
+#ifndef OPERATIONS_MODEL_TYPE_DATE_H_
+#define OPERATIONS_MODEL_TYPE_DATE_H_
 
 #include <QString>
 #include "operations/model/type/type.h"
@@ -14,4 +14,4 @@ class Date : public Type {
 
 }  // namespace QORM
 
-#endif  // DATE_H
+#endif  // OPERATIONS_MODEL_TYPE_DATE_H_

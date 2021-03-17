@@ -3,8 +3,8 @@
 #include <utility>
 #include <string>
 
-QORM::ForeignKey::ForeignKey(std::list<Reference> references, QString targetTable,
-                             const OnAction &onAction) :
+QORM::ForeignKey::ForeignKey(std::list<Reference> references,
+                             QString targetTable, const OnAction &onAction) :
     references(std::move(references)), targetTable(std::move(targetTable)),
     onAction(onAction) {
     if (this->references.empty()) {

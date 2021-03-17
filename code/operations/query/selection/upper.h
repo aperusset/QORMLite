@@ -1,5 +1,5 @@
-#ifndef UPPER_H
-#define UPPER_H
+#ifndef OPERATIONS_QUERY_SELECTION_UPPER_H_
+#define OPERATIONS_QUERY_SELECTION_UPPER_H_
 
 #include <QString>
 #include "operations/query/selection/selection.h"
@@ -14,4 +14,4 @@ class Upper : public Selection {
 
 }  // namespace QORM
 
-#endif  // UPPER_H
+#endif  // OPERATIONS_QUERY_SELECTION_UPPER_H_

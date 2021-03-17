@@ -1,5 +1,5 @@
-#ifndef QORMDATABASE_H
-#define QORMDATABASE_H
+#ifndef DATABASE_H_
+#define DATABASE_H_
 
 #include <QMutex>
 #include <QSqlRecord>
@@ -119,4 +119,4 @@ inline auto Database::isTest() const -> bool {
 
 }  // namespace QORM
 
-#endif  // QORMDATABASE_H
+#endif  // DATABASE_H_

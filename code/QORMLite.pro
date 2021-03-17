@@ -10,6 +10,7 @@ else:win32:CONFIG(debug, debug|release): DESTDIR = $$OUT_PWD/../lib/debug/$$VERS
 else:unix: DESTDIR = $$OUT_PWD/../../lib/$$VERSION
 
 SOURCES += \
+  creator.cpp \
   database.cpp \
   operations/model/field.cpp \
   operations/model/foreignkey.cpp \
@@ -32,9 +33,8 @@ SOURCES += \
   operations/query/select.cpp \
   operations/query/selection/selection.cpp \
   operations/query/update.cpp \
-  qormcreator.cpp \
   qormlite.cpp \
-  qormutils.cpp
+  utils.cpp
 
 HEADERS += \
   cache.h \

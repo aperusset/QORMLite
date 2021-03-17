@@ -1,5 +1,5 @@
-#ifndef VIEW_H
-#define VIEW_H
+#ifndef OPERATIONS_MODEL_VIEW_H_
+#define OPERATIONS_MODEL_VIEW_H_
 
 #include "operations/query.h"
 #include "operations/query/select.h"
@@ -27,4 +27,4 @@ inline auto View::getSelect() const -> Select {
 
 }  // namespace QORM
 
-#endif  // VIEW_H
+#endif  // OPERATIONS_MODEL_VIEW_H_

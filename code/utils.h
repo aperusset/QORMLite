@@ -1,5 +1,5 @@
-#ifndef Q_ORM_UTILS_H
-#define Q_ORM_UTILS_H
+#ifndef UTILS_H_
+#define UTILS_H_
 
 #include <QString>
 #include <QStringList>
@@ -95,8 +95,8 @@ namespace Utils {
         return transformed.join(separator);
     }
 
-}  // namesapce Utils
+}  // namespace Utils
 
 }  // namespace QORM
 
-#endif  // Q_ORM_UTILS_H
+#endif  // UTILS_H_

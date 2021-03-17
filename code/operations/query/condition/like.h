@@ -1,5 +1,5 @@
-#ifndef LIKE_H
-#define LIKE_H
+#ifndef OPERATIONS_QUERY_CONDITION_LIKE_H_
+#define OPERATIONS_QUERY_CONDITION_LIKE_H_
 
 #include <QString>
 #include <QVariant>
@@ -15,4 +15,4 @@ class Like : public Condition {
 
 }  // namespace QORM
 
-#endif  // LIKE_H
+#endif  // OPERATIONS_QUERY_CONDITION_LIKE_H_

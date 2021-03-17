@@ -1,5 +1,5 @@
-#ifndef SUM_H
-#define SUM_H
+#ifndef OPERATIONS_QUERY_SELECTION_SUM_H_
+#define OPERATIONS_QUERY_SELECTION_SUM_H_
 
 #include <QString>
 #include "operations/query/selection/selection.h"
@@ -14,4 +14,4 @@ class Sum : public Selection {
 
 }  // namespace QORM
 
-#endif  // SUM_H
+#endif  // OPERATIONS_QUERY_SELECTION_SUM_H_

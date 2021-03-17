@@ -29,7 +29,8 @@ auto QORM::Condition::isParametrized() const -> bool {
         std::bind(&Condition::isParametrized, std::placeholders::_1));
 }
 
-auto QORM::Condition::getParametrizedConditions() const -> std::list<Condition> {
+auto QORM::Condition::getParametrizedConditions()
+const -> std::list<Condition> {
     if (value.isValid()) {
         return {*this};
     }

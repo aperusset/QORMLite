@@ -1,5 +1,5 @@
-#ifndef QORMCACHE_H
-#define QORMCACHE_H
+#ifndef CACHE_H_
+#define CACHE_H_
 
 #include <functional>
 #include <map>
@@ -67,4 +67,4 @@ class Cache {
 
 }  // namespace QORM
 
-#endif  // QORMCACHE_H
+#endif  // CACHE_H_

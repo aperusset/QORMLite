@@ -1,5 +1,5 @@
-#ifndef MAX_H
-#define MAX_H
+#ifndef OPERATIONS_QUERY_SELECTION_MAX_H_
+#define OPERATIONS_QUERY_SELECTION_MAX_H_
 
 #include <QString>
 #include "operations/query/selection/selection.h"
@@ -14,4 +14,4 @@ class Max : public Selection {
 
 }  // namespace QORM
 
-#endif  // MAX_H
+#endif  // OPERATIONS_QUERY_SELECTION_MAX_H_

@@ -1,5 +1,5 @@
-#ifndef COUNT_H
-#define COUNT_H
+#ifndef OPERATIONS_QUERY_SELECTION_COUNT_H_
+#define OPERATIONS_QUERY_SELECTION_COUNT_H_
 
 #include <QString>
 #include "operations/query/selection/selection.h"
@@ -14,4 +14,4 @@ class Count : public Selection {
 
 }  // namespace QORM
 
-#endif  // COUNT_H
+#endif  // OPERATIONS_QUERY_SELECTION_COUNT_H_
