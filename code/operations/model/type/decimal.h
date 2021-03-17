@@ -4,6 +4,8 @@
 #include <QString>
 #include "operations/model/type/type.h"
 
+namespace QORM {
+
 class Decimal : public Type {
  public:
     static const int DEFAULT_DIGITS = 9;
@@ -15,5 +17,7 @@ class Decimal : public Type {
         Type("decimal(" + QString::number(digits) + "," +
              QString::number(decimals) + ")") {}
 };
+
+}  // namespace QORM
 
 #endif  // DECIMAL_H

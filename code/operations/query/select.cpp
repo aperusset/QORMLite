@@ -2,13 +2,13 @@
 #include <string>
 #include <algorithm>
 #include <utility>
-#include "qormutils.h"
+#include "utils.h"
 #include "operations/query/condition/and.h"
 
 namespace {
 
-auto bindConditions(Select *select,
-                    const std::list<Condition> &conditions) -> Select& {
+auto bindConditions(QORM::Select *select,
+                    const std::list<QORM::Condition> &conditions) -> QORM::Select& {
     for (auto const &condition : conditions) {
         for (auto const &bindable : condition.getParametrizedConditions()) {
             select->addBindable(bindable);
@@ -19,16 +19,17 @@ auto bindConditions(Select *select,
 
 }  // namespace
 
-Select::Select(const QString &tableName) : Select(tableName, {" * "}) {}
+QORM::Select::Select(const QString &tableName) : Select(tableName, {" * "}) {}
 
-Select::Select(const QString &tableName, const std::list<QString> &fields) :
+QORM::Select::Select(const QString &tableName,
+                     const std::list<QString> &fields) :
     TableQuery(tableName) {
     for (auto const &field : fields) {
         this->selections.emplace_back(Selection(field));
     }
 }
 
-auto Select::join(const std::list<Join> &joins) -> Select& {
+auto QORM::Select::join(const std::list<Join> &joins) -> Select& {
     std::copy(joins.begin(), joins.end(), std::back_inserter(this->joins));
     for (auto const &join : joins) {
         bindConditions(this, join.getConditions());
@@ -36,19 +37,19 @@ auto Select::join(const std::list<Join> &joins) -> Select& {
     return *this;
 }
 
-auto Select::where(const std::list<Condition> &conditions) -> Select& {
+auto QORM::Select::where(const std::list<Condition> &conditions) -> Select& {
     std::copy(conditions.begin(), conditions.end(),
               std::back_inserter(this->conditions));
     return bindConditions(this, conditions);
 }
 
-auto Select::groupBy(const std::list<QString> &groupBy) -> Select& {
+auto QORM::Select::groupBy(const std::list<QString> &groupBy) -> Select& {
     std::copy(groupBy.begin(), groupBy.end(),
               std::back_inserter(this->groupedBy));
     return *this;
 }
 
-auto Select::having(const std::list<Condition> &conditions) -> Select& {
+auto QORM::Select::having(const std::list<Condition> &conditions) -> Select& {
     if (this->groupedBy.empty()) {
         throw std::string("Cannot use having clause without group by clause.");
     }
@@ -57,22 +58,22 @@ auto Select::having(const std::list<Condition> &conditions) -> Select& {
     return bindConditions(this, conditions);
 }
 
-auto Select::orderBy(const std::list<Order> &orders) -> Select& {
+auto QORM::Select::orderBy(const std::list<Order> &orders) -> Select& {
     std::copy(orders.begin(), orders.end(), std::back_inserter(this->orders));
     return *this;
 }
 
-auto Select::limit(const unsigned int limit) -> Select& {
+auto QORM::Select::limit(const unsigned int limit) -> Select& {
     this->maxResults = QVariant(limit);
     return *this;
 }
 
-auto Select::offset(const unsigned int offset) -> Select& {
+auto QORM::Select::offset(const unsigned int offset) -> Select& {
     this->skippedResults = QVariant(offset);
     return *this;
 }
 
-auto Select::merge(Select select) -> Select& {
+auto QORM::Select::merge(Select select) -> Select& {
     if (this->selections.size() != select.selections.size()) {
         throw std::string("Two selects must have same number of selections.");
     }
@@ -80,7 +81,7 @@ auto Select::merge(Select select) -> Select& {
     return *this;
 }
 
-auto Select::generate() const -> QString {
+auto QORM::Select::generate() const -> QString {
     QStringList generatedSelections;
     std::transform(this->selections.begin(), this->selections.end(),
         std::back_inserter(generatedSelections),
@@ -89,8 +90,8 @@ auto Select::generate() const -> QString {
     std::transform(this->orders.begin(), this->orders.end(),
                    std::back_inserter(generatedOrders),
         [this, &generatedSelections](const Order &order) -> QString {
-            if (!QORMUtils::contains(this->selections, Selection(" * ")) &&
-                !QORMUtils::contains(
+            if (!QORM::Utils::contains(this->selections, Selection(" * ")) &&
+                !QORM::Utils::contains(
                         this->selections,
                         Selection(order.getFieldName()))) {
                 generatedSelections << order.getFieldName();
@@ -130,6 +131,6 @@ auto Select::generate() const -> QString {
     return select.simplified();
 }
 
-auto LastInsertedId::generate() const -> QString {
+auto QORM::LastInsertedId::generate() const -> QString {
     return "select last_insert_rowid()";
 }

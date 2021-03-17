@@ -5,6 +5,8 @@
 #include <utility>
 #include "operations/query.h"
 
+namespace QORM {
+
 class TableQuery : public Query {
     const QString tableName;
 
@@ -19,5 +21,7 @@ class TableQuery : public Query {
 inline auto TableQuery::getTableName() const -> QString {
     return this->tableName;
 }
+
+}  // namespace QORM
 
 #endif  // TABLEQUERY_H

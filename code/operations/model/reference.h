@@ -4,6 +4,8 @@
 #include <utility>
 #include "operations/model/field.h"
 
+namespace QORM {
+
 class Reference {
     const Field from;
     const Field to;
@@ -26,5 +28,7 @@ inline auto Reference::getTo() const -> Field {
 enum class OnAction {
     Restrict, Cascade, SetNull, SetDefault
 };
+
+}  // namespace QORM
 
 #endif  // REFERENCE_H

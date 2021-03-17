@@ -9,6 +9,8 @@
 #include "operations/query/selection/lower.h"
 #include "operations/query/selection/upper.h"
 
+using namespace QORM;
+
 const QString SelectionTest::DEFAULT_FIELD_NAME = "defaultFieldName";
 const QString SelectionTest::DEFAULT_RENAMED_TO = "renamedTo";
 const QString SelectionTest::DEFAULT_FORMAT = "format";

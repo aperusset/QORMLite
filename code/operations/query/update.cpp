@@ -3,17 +3,17 @@
 #include <string>
 #include "operations/query/condition/and.h"
 
-Update::Update(const QString &tableName,
-               const std::list<Assignment> &assignements) :
+QORM::Update::Update(const QString &tableName,
+                     const std::list<Assignment> &assignements) :
     Update(tableName, assignements, {}) {}
 
-Update::Update(const QString &tableName,
-               const std::list<Assignment> &assignements,
-               const Condition &condition) :
+QORM::Update::Update(const QString &tableName,
+                     const std::list<Assignment> &assignements,
+                     const Condition &condition) :
     Update(tableName, assignements, std::list<Condition>({condition})) {}
 
-Update::Update(const QString &tableName, std::list<Assignment> assignements,
-               std::list<Condition> conditions) :
+QORM::Update::Update(const QString &tableName, std::list<Assignment> assignements,
+                     std::list<Condition> conditions) :
     TableQuery(tableName), assignements(std::move(assignements)),
     conditions(std::move(conditions)) {
     if (this->assignements.empty()) {
@@ -30,7 +30,7 @@ Update::Update(const QString &tableName, std::list<Assignment> assignements,
     }
 }
 
-auto Update::generate() const -> QString {
+auto QORM::Update::generate() const -> QString {
     QString update = "update " + this->getTableName() + " set ";
     QStringList assignements;
     for (auto const &assignement : this->assignements) {

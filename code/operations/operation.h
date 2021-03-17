@@ -3,6 +3,8 @@
 
 #include <QString>
 
+namespace QORM {
+
 class Operation {
  public:
     Operation() = default;
@@ -19,5 +21,7 @@ class Operation {
     static void* operator new(size_t) = delete;
     static void* operator new[](size_t) = delete;
 };
+
+}  // namespace QORM
 
 #endif  // OPERATION_H

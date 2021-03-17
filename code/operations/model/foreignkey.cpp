@@ -3,8 +3,8 @@
 #include <utility>
 #include <string>
 
-ForeignKey::ForeignKey(std::list<Reference> references, QString targetTable,
-                       const OnAction &onAction) :
+QORM::ForeignKey::ForeignKey(std::list<Reference> references, QString targetTable,
+                             const OnAction &onAction) :
     references(std::move(references)), targetTable(std::move(targetTable)),
     onAction(onAction) {
     if (this->references.empty()) {
@@ -12,7 +12,7 @@ ForeignKey::ForeignKey(std::list<Reference> references, QString targetTable,
     }
 }
 
-auto ForeignKey::generate() const -> QString {
+auto QORM::ForeignKey::generate() const -> QString {
     QString foreignKey = "constraint [" + targetTable.toLower() + "_fk] ";
     QStringList fromFieldNames;
     QStringList toFieldNames;

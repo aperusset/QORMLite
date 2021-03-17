@@ -1,17 +1,19 @@
 #include "qormcreatortest.h"
-#include "qormdatabase.h"
+#include "database.h"
 #include "operations/model/primarykey.h"
 #include "operations/model/type/integer.h"
 #include "operations/query/select.h"
 #include "operations/query/insert.h"
+
+using namespace QORM;
 
 const QString QORMCreatorTest::DEFAULT_DATABASE_NAME = "database.db";
 
 void QORMCreatorTest::createTableShouldSuccess() {
 
     // Given
-    QORMDatabase database(DEFAULT_DATABASE_NAME, fakeCreator, false, true);
-    auto const primaryKey = PrimaryKey(QORMField::notNull(TestCreator::TEST_FIELD, Integer()));
+    QORM::Database database(DEFAULT_DATABASE_NAME, fakeCreator, false, true);
+    auto const primaryKey = PrimaryKey(Field::notNull(TestCreator::TEST_FIELD, Integer()));
     database.connect();
 
     // When
@@ -24,7 +26,7 @@ void QORMCreatorTest::createTableShouldSuccess() {
 void QORMCreatorTest::createViewShouldSuccess() {
 
     // Given
-    QORMDatabase database(DEFAULT_DATABASE_NAME, fakeCreator, false, true);
+    QORM::Database database(DEFAULT_DATABASE_NAME, fakeCreator, false, true);
     database.connect();
     testCreator.createTables(database);
 
@@ -38,7 +40,7 @@ void QORMCreatorTest::createViewShouldSuccess() {
 void QORMCreatorTest::createViewShouldFailIfTableNotExists() {
 
     // Given
-    QORMDatabase database(DEFAULT_DATABASE_NAME, fakeCreator, false, true);
+    QORM::Database database(DEFAULT_DATABASE_NAME, fakeCreator, false, true);
     database.connect();
 
     // When / Then
@@ -51,7 +53,7 @@ void QORMCreatorTest::createViewShouldFailIfTableNotExists() {
 void QORMCreatorTest::insertShouldSuccess() {
 
     // Given
-    QORMDatabase database(DEFAULT_DATABASE_NAME, fakeCreator, false, true);
+    QORM::Database database(DEFAULT_DATABASE_NAME, fakeCreator, false, true);
     database.connect();
     testCreator.createTables(database);
 
@@ -65,7 +67,7 @@ void QORMCreatorTest::insertShouldSuccess() {
 void QORMCreatorTest::createAllAndPopulateShouldSuccess() {
 
     // Given
-    QORMDatabase database(DEFAULT_DATABASE_NAME, fakeCreator, false, true);
+    QORM::Database database(DEFAULT_DATABASE_NAME, fakeCreator, false, true);
     database.connect();
 
     // When

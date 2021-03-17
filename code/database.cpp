@@ -1,4 +1,4 @@
-#include "qormdatabase.h"
+#include "database.h"
 #include <algorithm>
 
 namespace  {
@@ -16,20 +16,20 @@ void deleteIfTestMode(const QString &name, bool test) {
 
 }  // namespace
 
-const QString QORMDatabase::TEST_PREFIX = "test_";
-const QString QORMDatabase::FILE_EXTENSION = ".db";
+const QString QORM::Database::TEST_PREFIX = "test_";
+const QString QORM::Database::FILE_EXTENSION = ".db";
 
-QORMDatabase::QORMDatabase(const QString &name, const QORMCreator &creator,
+QORM::Database::Database(const QString &name, const QORM::Creator &creator,
                            bool verbose, bool test) :
     databaseMutex(QMutex::RecursionMode::Recursive),
     name((test ? TEST_PREFIX : "") + name + FILE_EXTENSION), creator(creator),
     verbose(verbose), test(test) {}
 
-QORMDatabase::~QORMDatabase() {
+QORM::Database::~Database() {
     this->disconnect();
 }
 
-auto QORMDatabase::prepare(const QString &query) const -> QSqlQuery {
+auto QORM::Database::prepare(const QString &query) const -> QSqlQuery {
     QSqlQuery sqlQuery(getDatabase(this->name));
     if (!sqlQuery.prepare(query + ";")) {
         throw std::string("Preparing error : ") +
@@ -40,19 +40,19 @@ auto QORMDatabase::prepare(const QString &query) const -> QSqlQuery {
     return sqlQuery;
 }
 
-auto QORMDatabase::prepare(const Query &query) const -> QSqlQuery {
+auto QORM::Database::prepare(const Query &query) const -> QSqlQuery {
     return query.bind(this->prepare(query.generate()));
 }
 
-auto QORMDatabase::execute(const QString &query) const -> QSqlQuery {
+auto QORM::Database::execute(const QString &query) const -> QSqlQuery {
     return this->execute(this->prepare(query));
 }
 
-auto QORMDatabase::execute(const Query &query) const -> QSqlQuery {
+auto QORM::Database::execute(const Query &query) const -> QSqlQuery {
     return this->execute(this->prepare(query));
 }
 
-auto QORMDatabase::execute(QSqlQuery query) const -> QSqlQuery {
+auto QORM::Database::execute(QSqlQuery query) const -> QSqlQuery {
     if (this->verbose) {
         qDebug("%s", qUtf8Printable(query.lastQuery()));
     }
@@ -65,11 +65,11 @@ auto QORMDatabase::execute(QSqlQuery query) const -> QSqlQuery {
     return query;
 }
 
-auto QORMDatabase::isConnected() const -> bool {
+auto QORM::Database::isConnected() const -> bool {
     return getDatabase(this->name).isOpen();
 }
 
-auto QORMDatabase::connect() -> bool {
+auto QORM::Database::connect() -> bool {
     const QMutexLocker lock(&databaseMutex);
     if (!this->isConnected()) {
         deleteIfTestMode(this->name, this->test);
@@ -95,7 +95,7 @@ auto QORMDatabase::connect() -> bool {
     return false;
 }
 
-void QORMDatabase::disconnect() {
+void QORM::Database::disconnect() {
     const QMutexLocker lock(&databaseMutex);
     if (this->isConnected()) {
         getDatabase(this->name).close();
@@ -104,12 +104,12 @@ void QORMDatabase::disconnect() {
     }
 }
 
-void QORMDatabase::optimize() const {
+void QORM::Database::optimize() const {
     this->execute("vacuum");
     this->execute("reindex");
 }
 
-auto QORMDatabase::backup(const QString &fileName) -> bool {
+auto QORM::Database::backup(const QString &fileName) -> bool {
     const QMutexLocker lock(&databaseMutex);
     this->optimize();
     this->disconnect();
@@ -118,8 +118,8 @@ auto QORMDatabase::backup(const QString &fileName) -> bool {
     return success;
 }
 
-auto QORMDatabase::exists(const QString &table,
-                          const std::list<Condition> &conditions)
+auto QORM::Database::exists(const QString &table,
+                            const std::list<Condition> &conditions)
 const -> bool {
     return this->execute(Select(table).where(conditions)).next();
 }

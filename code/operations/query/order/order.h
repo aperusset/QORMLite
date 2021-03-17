@@ -3,6 +3,8 @@
 
 #include "operations/operation.h"
 
+namespace QORM {
+
 enum class Ordering {
     Asc, Desc
 };
@@ -27,5 +29,7 @@ inline auto Order::getFieldName() const -> QString {
 inline auto Order::getOrdering() const -> Ordering {
     return this->ordering;
 }
+
+}  // namespace QORM
 
 #endif  // ORDER_H

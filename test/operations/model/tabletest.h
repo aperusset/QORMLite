@@ -2,16 +2,15 @@
 #define TABLETEST_H
 
 #include <QtTest/QtTest>
-
-class Field;
+#include "operations/model/field.h"
 
 class TableTest : public QObject {
 
     Q_OBJECT
 
     static const QString DEFAULT_TABLE_NAME;
-    static const Field DEFAULT_FIELD_1;
-    static const Field DEFAULT_FIELD_2;
+    static const QORM::Field DEFAULT_FIELD_1;
+    static const QORM::Field DEFAULT_FIELD_2;
 
 private slots:
     static void autoIncrementedPrimaryKeyWithoutFields();

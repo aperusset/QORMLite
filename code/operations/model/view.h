@@ -4,6 +4,8 @@
 #include "operations/query.h"
 #include "operations/query/select.h"
 
+namespace QORM {
+
 class View : public Query {
     const QString viewName;
     const Select select;
@@ -22,5 +24,7 @@ inline auto View::getViewName() const -> QString {
 inline auto View::getSelect() const -> Select {
     return this->select;
 }
+
+}  // namespace QORM
 
 #endif  // VIEW_H

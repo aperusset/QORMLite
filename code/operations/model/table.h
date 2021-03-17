@@ -7,6 +7,8 @@
 #include "operations/model/primarykey.h"
 #include "operations/model/foreignkey.h"
 
+namespace QORM {
+
 class Table : public Query {
     const QString tableName;
     const PrimaryKey primaryKey;
@@ -38,5 +40,7 @@ inline auto Table::getFields() const -> std::list<Field> {
 inline auto Table::getForeignKeys() const -> std::list<ForeignKey> {
     return this->foreignKeys;
 }
+
+}  // namespace QORM
 
 #endif  // TABLE_H

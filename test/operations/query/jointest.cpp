@@ -7,6 +7,8 @@
 #include "operations/query/condition/equals.h"
 #include "operations/query/condition/and.h"
 
+using namespace QORM;
+
 const QString JoinTest::DEFAULT_TABLE_NAME = "table";
 const QString JoinTest::DEFAULT_FIELD_NAME = "field";
 

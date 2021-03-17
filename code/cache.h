@@ -1,19 +1,21 @@
 #ifndef QORMCACHE_H
 #define QORMCACHE_H
 
-#include <type_traits>
+#include <functional>
 #include <map>
 #include <memory>
-#include <functional>
-#include <utility>
 #include <string>
-#include "./qormentity.h"
+#include <type_traits>
+#include <utility>
+#include "./entity.h"
+
+namespace QORM {
 
 template<typename Key, class Entity>
-class QORMCache {
+class Cache {
     static_assert(
-        std::is_base_of<QORMEntity<Key>, Entity>::value,
-        "Entity must extend QORMEntity");
+        std::is_base_of<QORM::Entity<Key>, Entity>::value,
+        "Entity must extend QORM::Entity");
 
     std::map<Key, std::unique_ptr<Entity>> entities;
 
@@ -54,7 +56,7 @@ class QORMCache {
         return entities.erase(key);
     }
 
-    auto size() -> size_t {
+    auto size() const -> size_t {
         return entities.size();
     }
 
@@ -62,5 +64,7 @@ class QORMCache {
         entities.clear();
     }
 };
+
+}  // namespace QORM
 
 #endif  // QORMCACHE_H

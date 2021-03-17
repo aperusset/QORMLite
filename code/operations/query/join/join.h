@@ -5,6 +5,8 @@
 #include "operations/operation.h"
 #include "operations/query/condition/condition.h"
 
+namespace QORM {
+
 enum class JoinType {
     Inner, Left, Right, Cross
 };
@@ -35,5 +37,7 @@ inline auto Join::getTable() const -> QString {
 inline auto Join::getConditions() const -> std::list<Condition> {
     return this->conditions;
 }
+
+}  // namespace QORM
 
 #endif  // JOIN_H

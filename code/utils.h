@@ -9,7 +9,9 @@
 #include <algorithm>
 #include "operations/query/selection/selection.h"
 
-namespace QORMUtils {
+namespace QORM {
+
+namespace Utils {
 
     /**
      * @brief Format a QDate to database valid date
@@ -92,6 +94,9 @@ namespace QORMUtils {
                        std::back_inserter(transformed), transformer);
         return transformed.join(separator);
     }
-}  // namespace QORMUtils
+
+}  // namesapce Utils
+
+}  // namespace QORM
 
 #endif  // Q_ORM_UTILS_H

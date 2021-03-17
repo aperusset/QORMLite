@@ -5,6 +5,8 @@
 #include "operations/query/tablequery.h"
 #include "operations/query/condition/condition.h"
 
+namespace QORM {
+
 class Delete : public TableQuery {
     const std::list<Condition> conditions;
 
@@ -19,5 +21,7 @@ class Delete : public TableQuery {
 inline auto Delete::getConditions() const -> std::list<Condition> {
     return this->conditions;
 }
+
+}  // namespace QORM
 
 #endif  // DELETE_H

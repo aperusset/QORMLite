@@ -3,6 +3,8 @@
 
 #include "operations/operation.h"
 
+namespace QORM {
+
 class Type : public Operation {
     const QString name;
 
@@ -15,5 +17,7 @@ class Type : public Operation {
 inline auto Type::getName() const -> QString {
     return this->name;
 }
+
+}  // namespace QORM
 
 #endif  // TYPE_H

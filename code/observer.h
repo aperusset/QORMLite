@@ -1,12 +1,16 @@
 #ifndef QORMOBSERVER_H
 #define QORMOBSERVER_H
 
+namespace QORM {
+
 template<typename Key = int>
-class QORMObserver {
+class Observer {
  public:
     virtual void onChange(const Key&) = 0;
     virtual void onDelete(const Key&) = 0;
-    virtual ~QORMObserver() {}
+    virtual ~Observer() {}
 };
+
+}  // namespace QORM
 
 #endif  // QORMOBSERVER_H

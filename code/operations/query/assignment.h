@@ -4,6 +4,8 @@
 #include "operations/operation.h"
 #include "operations/query/bindable.h"
 
+namespace QORM {
+
 class Assignment : public Operation, public Bindable {
     const QString fieldName;
     const QString parameter;
@@ -28,5 +30,7 @@ inline auto Assignment::getParameter() const -> QString {
 inline auto Assignment::getValue() const -> QVariant {
     return this->value;
 }
+
+}  // namespace QORM
 
 #endif  // ASSIGNMENT_H

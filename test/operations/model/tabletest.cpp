@@ -6,9 +6,11 @@
 #include "operations/model/table.h"
 #include "operations/model/type/integer.h"
 
+using namespace QORM;
+
 const QString TableTest::DEFAULT_TABLE_NAME = "test_table";
-const Field TableTest::DEFAULT_FIELD_1 = QORMField::notNull("field1", Integer());
-const Field TableTest::DEFAULT_FIELD_2 = QORMField::notNull("field2", Integer());
+const Field TableTest::DEFAULT_FIELD_1 = Field::notNull("field1", Integer());
+const Field TableTest::DEFAULT_FIELD_2 = Field::notNull("field2", Integer());
 
 void TableTest::autoIncrementedPrimaryKeyWithoutFields() {
 

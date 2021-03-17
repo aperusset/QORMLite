@@ -1,25 +1,27 @@
 #ifndef QORMDATABASE_H
 #define QORMDATABASE_H
 
-#include <QtSql>
-#include <QSqlRecord>
 #include <QMutex>
-#include <string>
+#include <QSqlRecord>
+#include <QtSql>
 #include <list>
-#include "./qormcreator.h"
-#include "./qormentity.h"
-#include "./qormutils.h"
+#include <string>
+#include "./creator.h"
+#include "./entity.h"
+#include "./utils.h"
 #include "operations/query.h"
+#include "operations/query/delete.h"
 #include "operations/query/insert.h"
 #include "operations/query/select.h"
 #include "operations/query/update.h"
-#include "operations/query/delete.h"
 
-class QORMDatabase {
+namespace QORM {
+
+class Database {
     QMutex databaseMutex;
 
     const QString name;
-    const QORMCreator &creator;
+    const QORM::Creator &creator;
     const bool verbose;
     const bool test;
 
@@ -31,11 +33,13 @@ class QORMDatabase {
     static const QString FILE_EXTENSION;
 
  public:
-    QORMDatabase(const QString &name, const QORMCreator&, bool verbose,
+    Database(const QString &name, const QORM::Creator&, bool verbose,
                  bool test);
-    ~QORMDatabase();
-    QORMDatabase(const QORMDatabase&) = delete;
-    QORMDatabase& operator=(const QORMDatabase) = delete;
+    ~Database();
+    Database(const Database&) = delete;
+    Database(Database&&) = delete;
+    Database& operator=(const Database&) = delete;
+    Database& operator=(Database&&) = delete;
 
     auto getName() const -> QString;
     auto isVerbose() const -> bool;
@@ -50,10 +54,8 @@ class QORMDatabase {
     void disconnect();
     void optimize() const;
     auto backup(const QString &fileName) -> bool;
-
     auto execute(const QString&) const -> QSqlQuery;
     auto execute(const Query&) const -> QSqlQuery;
-
     auto exists(const QString &table,
                 const std::list<Condition>&) const -> bool;
 
@@ -103,16 +105,18 @@ class QORMDatabase {
     }
 };
 
-inline auto QORMDatabase::getName() const -> QString {
+inline auto Database::getName() const -> QString {
     return this->name;
 }
 
-inline auto QORMDatabase::isVerbose() const -> bool {
+inline auto Database::isVerbose() const -> bool {
     return this->verbose;
 }
 
-inline auto QORMDatabase::isTest() const -> bool {
+inline auto Database::isTest() const -> bool {
     return this->test;
 }
+
+}  // namespace QORM
 
 #endif  // QORMDATABASE_H

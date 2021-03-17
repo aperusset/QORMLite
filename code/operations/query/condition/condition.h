@@ -6,6 +6,8 @@
 #include "operations/query/selection/selection.h"
 #include "operations/query/bindable.h"
 
+namespace QORM {
+
 class Select;
 
 class Condition : public Operation, public Bindable {
@@ -53,5 +55,7 @@ inline auto Condition::getParameter() const -> QString {
 inline auto Condition::getValue() const -> QVariant {
     return this->value;
 }
+
+}  // namespace QORM
 
 #endif  // CONDITION_H

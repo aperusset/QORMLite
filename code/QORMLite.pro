@@ -10,6 +10,7 @@ else:win32:CONFIG(debug, debug|release): DESTDIR = $$OUT_PWD/../lib/debug/$$VERS
 else:unix: DESTDIR = $$OUT_PWD/../../lib/$$VERSION
 
 SOURCES += \
+  database.cpp \
   operations/model/field.cpp \
   operations/model/foreignkey.cpp \
   operations/model/primarykey.cpp \
@@ -32,11 +33,15 @@ SOURCES += \
   operations/query/selection/selection.cpp \
   operations/query/update.cpp \
   qormcreator.cpp \
-  qormdatabase.cpp \
   qormlite.cpp \
   qormutils.cpp
 
 HEADERS += \
+  cache.h \
+  creator.h \
+  database.h \
+  entity.h \
+  observer.h \
   operations/model/field.h \
   operations/model/foreignkey.h \
   operations/model/primarykey.h \
@@ -83,11 +88,6 @@ HEADERS += \
   operations/query/selection/upper.h \
   operations/query/tablequery.h \
   operations/query/update.h \
-  qormcache.h \
-  qormcreator.h \
-  qormdatabase.h \
-  qormentity.h \
   qormlite.h \
-  qormobserver.h \
-  qormutils.h
+  utils.h
 

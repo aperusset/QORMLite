@@ -8,6 +8,8 @@
 #include "operations/query/condition/condition.h"
 #include "operations/query/order/order.h"
 
+namespace QORM {
+
 class Select : public TableQuery {
     std::list<Selection> selections;
     std::list<Join> joins;
@@ -73,5 +75,7 @@ class LastInsertedId : public Query {
  public:
     auto generate() const -> QString override;
 };
+
+}  // namespace QORM
 
 #endif  // SELECT_H

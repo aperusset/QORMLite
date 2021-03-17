@@ -3,6 +3,8 @@
 
 #include "operations/operation.h"
 
+namespace QORM {
+
 class Selection : public Operation {
     const QString fieldName;
     const QString renamedTo;
@@ -23,5 +25,7 @@ inline auto Selection::getFieldName() const -> QString {
 inline auto Selection::getRenamedTo() const -> QString {
     return this->renamedTo;
 }
+
+}  // namespace QORM
 
 #endif  // SELECTION_H

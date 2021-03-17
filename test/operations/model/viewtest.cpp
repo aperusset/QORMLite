@@ -4,6 +4,8 @@
 #include "operations/query/condition/condition.h"
 #include "operations/query/condition/equals.h"
 
+using namespace QORM;
+
 const QString ViewTest::DEFAULT_VIEW_NAME = "view_name";
 const QString ViewTest::DEFAULT_TABLE_NAME = "table_name";
 const QString ViewTest::DEFAULT_FIELD_NAME = "field_name";

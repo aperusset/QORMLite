@@ -6,6 +6,8 @@
 #include "operations/query/assignment.h"
 #include "operations/query/condition/condition.h"
 
+namespace QORM {
+
 class Update : public TableQuery {
     const std::list<Assignment> assignements;
     const std::list<Condition> conditions;
@@ -28,5 +30,7 @@ inline auto Update::getAssignements() const -> std::list<Assignment> {
 inline auto Update::getConditions() const -> std::list<Condition> {
     return this->conditions;
 }
+
+}  // namespace QORM
 
 #endif  // UPDATE_H

@@ -1,6 +1,6 @@
 #include "testentity.h"
 
-TestEntity::TestEntity(const int key) : QORMEntity(key) {}
+TestEntity::TestEntity(const int key) : Entity(key) {}
 
 auto TestEntity::exists() const -> bool {
     return true;
