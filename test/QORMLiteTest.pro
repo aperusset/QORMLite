@@ -9,7 +9,7 @@ QT += testlib
 
 win32:CONFIG(release, debug|release): LIBS += -L$$OUT_PWD/../lib/release/$$VERSION -lQORMLite
 else:win32:CONFIG(debug, debug|release): LIBS += -L$$OUT_PWD/../lib/debug/$$VERSION -lQORMLite
-else:unix: LIBS += -L$$OUT_PWD/../../lib/$$VERSION -lQORMLite
+else:unix: LIBS += -L$$OUT_PWD/../lib/$$VERSION -lQORMLite
 
 INCLUDEPATH += $$PWD/../code
 DEPENDPATH += $$PWD/../code

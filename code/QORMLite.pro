@@ -7,7 +7,7 @@ DEFINES += QORMLITE_LIBRARY
 
 win32:CONFIG(release, debug|release): DESTDIR = $$OUT_PWD/../lib/release/$$VERSION
 else:win32:CONFIG(debug, debug|release): DESTDIR = $$OUT_PWD/../lib/debug/$$VERSION
-else:unix: DESTDIR = $$OUT_PWD/../../lib/$$VERSION
+else:unix: DESTDIR = $$OUT_PWD/../lib/$$VERSION
 
 SOURCES += \
   creator.cpp \
