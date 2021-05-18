@@ -34,6 +34,7 @@ void QORMEntityTest::attached() {
     entity.attach(this->observer);
 
     // Then
+    QCOMPARE(entity.getObservers().size(), 1U);
     QVERIFY(entity.isAttached(this->observer));
 }
 
@@ -43,6 +44,7 @@ void QORMEntityTest::notAttached() {
     TestEntity entity(DEFAULT_ENTITY_KEY);
 
     // Then
+    QVERIFY(entity.getObservers().empty());
     QVERIFY(!entity.isAttached(this->observer));
 }
 
@@ -56,5 +58,6 @@ void QORMEntityTest::detach() {
     entity.detach(this->observer);
 
     // Then
+    QVERIFY(entity.getObservers().empty());
     QVERIFY(!entity.isAttached(this->observer));
 }
