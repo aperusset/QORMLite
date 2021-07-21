@@ -22,7 +22,7 @@ class Database {
     QMutex databaseMutex;
 
     const QORM::Connector &connector;
-    const QORM::Creator &creator;
+    const QORM::Creator *creator;
     const bool verbose;
 
     auto prepare(const QString&) const -> QSqlQuery;
@@ -30,8 +30,8 @@ class Database {
     auto execute(QSqlQuery) const -> QSqlQuery;
 
  public:
-    Database(const QORM::Connector&, const QORM::Creator&,
-             bool verbose = false);
+    explicit Database(const QORM::Connector&, bool verbose);
+    Database(const QORM::Connector&, const QORM::Creator&, bool verbose);
     ~Database();
     Database(const Database&) = delete;
     Database(Database&&) = delete;

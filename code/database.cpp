@@ -1,10 +1,16 @@
 #include "database.h"
 #include <algorithm>
 
+QORM::Database::Database(const QORM::Connector &connector, bool verbose) :
+    databaseMutex(QMutex::RecursionMode::Recursive),
+    connector(connector), creator(nullptr), verbose(verbose) {
+}
+
+
 QORM::Database::Database(const QORM::Connector &connector,
                          const QORM::Creator &creator, bool verbose) :
     databaseMutex(QMutex::RecursionMode::Recursive),
-    connector(connector), creator(creator), verbose(verbose) {
+    connector(connector), creator(&creator), verbose(verbose) {
 }
 
 QORM::Database::~Database() {
@@ -59,15 +65,17 @@ auto QORM::Database::connect() -> bool {
     const QMutexLocker lock(&databaseMutex);
     if (!this->isConnected()) {
         this->connector.connect();
-        auto const shouldBeCreated = !this->creator.isCreated(*this,
-            this->connector.tables(), this->connector.views());
-        if (shouldBeCreated) {
-            qDebug(
-                "Create database with name %s",
-                qUtf8Printable(connector.getName()));
-            this->creator.createAllAndPopulate(*this);
+        if (this->creator != nullptr) {
+            auto const shouldBeCreated = !this->creator->isCreated(*this,
+                this->connector.tables(), this->connector.views());
+            if (shouldBeCreated) {
+                qDebug(
+                    "Create database with name %s",
+                    qUtf8Printable(connector.getName()));
+                this->creator->createAllAndPopulate(*this);
+            }
+            return shouldBeCreated;
         }
-        return shouldBeCreated;
     }
     return false;
 }
