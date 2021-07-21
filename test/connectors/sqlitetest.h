@@ -1,30 +1,35 @@
 #ifndef SQLITETEST_H
 #define SQLITETEST_H
 
+#include "fixture/maindatabasetest.h"
 #include <QtTest/QtTest>
 
-class SQLiteTest : public QObject {
+class SQLiteTest : public MainDatabaseTest {
 
     Q_OBJECT
 
-    static const QString DEFAULT_DATABASE_NAME;
-    static const QString DEFAULT_BACKUP_FILE_NAME;
+public:
+    auto databaseName() const -> QString override {
+        return "sqlitedatabase";
+    }
+
+    auto databaseBackupName() const -> QString override {
+        return "sqlitedatabase.backup";
+    }
 
 private slots:
-    static void initShouldFailIfNameIsEmpty();
-    static void initShouldAddFileExtensionToName();
-    static void initShouldAddTestPrefixAndFileExtensionToName();
-    static void initShouldDeleteDatabaseFile();
-    static void driverNameShouldBeCompliant();
-    static void connectShouldFailWithInvalidDatabaseName();
-    static void connectShouldEnableRegexpButNotForeignKeys();
-    static void connectShouldEnableRegexpAndForeignKeys();
-    static void disconnectShouldNotDeleteDatabaseFile();
-    static void disconnectShouldDeleteDatabaseFile();
-    static void tablesShouldReturnWithoutSequence();
-    static void backupShouldSuccessAndCreateFile();
-
-    static void cleanup();
+    void initShouldFailIfNameIsEmpty();
+    void initShouldAddFileExtensionToName();
+    void initShouldAddTestPrefixAndFileExtensionToName();
+    void initShouldDeleteDatabaseFile();
+    void driverNameShouldBeCompliant();
+    void connectShouldFailWithInvalidDatabaseName();
+    void connectShouldEnableRegexpButNotForeignKeys();
+    void connectShouldEnableRegexpAndForeignKeys();
+    void disconnectShouldNotDeleteDatabaseFile();
+    void disconnectShouldDeleteDatabaseFile();
+    void tablesShouldReturnWithoutSequence();
+    void backupShouldSuccessAndCreateFile();
 };
 
 #endif // SQLITETEST_H

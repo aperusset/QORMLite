@@ -7,7 +7,7 @@ class TestConnector : public QORM::Connector {
 
     static bool preConnectCalled;
     static bool postConnectCalled;
-    static bool optimzeCalled;
+    static bool optimizeCalled;
 
 public:
     explicit TestConnector(const QString &name) : Connector(name) {}
@@ -23,7 +23,7 @@ public:
     }
 
     void optimize() const override {
-        optimzeCalled = true;
+        optimizeCalled = true;
     }
 
     auto driverName() const -> QString override {
@@ -47,7 +47,7 @@ public:
     }
 
     auto isOptimizeCalled() const -> bool {
-        return optimzeCalled;
+        return optimizeCalled;
     }
 };
 

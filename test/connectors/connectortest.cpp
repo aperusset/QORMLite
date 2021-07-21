@@ -3,8 +3,6 @@
 #include "operations/model/table.h"
 #include "operations/model/view.h"
 
-const QString ConnectorTest::DEFAULT_DATABASE_NAME = "database";
-
 void ConnectorTest::initShouldFailIfNameIsEmpty() {
 
     // Given / When / Then
@@ -17,12 +15,12 @@ void ConnectorTest::initShouldFailIfNameIsEmpty() {
 void ConnectorTest::initShouldFailIfIfNameAlreadyUsed() {
 
     // Given
-    auto const &testConnector = TestConnector(DEFAULT_DATABASE_NAME);
+    auto const &testConnector = TestConnector(this->databaseName());
     testConnector.connect();
 
     // When / Then
     QVERIFY_EXCEPTION_THROWN(
-        TestConnector testConnector(DEFAULT_DATABASE_NAME),
+        TestConnector testConnector(this->databaseName()),
         std::string
     );
     QVERIFY(testConnector.isConnected());
@@ -31,14 +29,14 @@ void ConnectorTest::initShouldFailIfIfNameAlreadyUsed() {
 void ConnectorTest::initShouldSuccessWithValidName() {
 
     // Given / When / Then
-    TestConnector testConnector(DEFAULT_DATABASE_NAME);
+    TestConnector testConnector(this->databaseName());
     QVERIFY(!testConnector.isConnected());
 }
 
 void ConnectorTest::getDatabaseNameShouldReturnName() {
 
     // Given
-    TestConnector testConnector(DEFAULT_DATABASE_NAME);
+    TestConnector testConnector(this->databaseName());
 
     // When / Thenauto const &testConnector = TestConnector(DEFAULT_DATABASE_NAME);
     QCOMPARE(
@@ -51,7 +49,7 @@ void ConnectorTest::getDatabaseNameShouldReturnName() {
 void ConnectorTest::getDatabaseShouldFailIfDatabaseClosed() {
 
     // Given
-    auto const &testConnector = TestConnector(DEFAULT_DATABASE_NAME);
+    auto const &testConnector = TestConnector(this->databaseName());
 
     // When / Then
     QVERIFY_EXCEPTION_THROWN(
@@ -63,7 +61,7 @@ void ConnectorTest::getDatabaseShouldFailIfDatabaseClosed() {
 void ConnectorTest::connectShouldSuccessPreOpenPostAndOptimize() {
 
     // Given
-    auto const &testConnector = TestConnector(DEFAULT_DATABASE_NAME);
+    auto const &testConnector = TestConnector(this->databaseName());
 
     // When
     testConnector.connect();
@@ -74,7 +72,7 @@ void ConnectorTest::connectShouldSuccessPreOpenPostAndOptimize() {
     QVERIFY(database.isOpen());
     QCOMPARE(
         database.databaseName(),
-        DEFAULT_DATABASE_NAME
+        this->databaseName()
     );
     QVERIFY(testConnector.isPreConnectCalled());
     QVERIFY(testConnector.isPostConnectCalled());
@@ -84,7 +82,7 @@ void ConnectorTest::connectShouldSuccessPreOpenPostAndOptimize() {
 void ConnectorTest::disconnectShouldSuccessWithOpenedDatabase() {
 
     // Given
-    auto const &testConnector = TestConnector(DEFAULT_DATABASE_NAME);
+    auto const &testConnector = TestConnector(this->databaseName());
 
     // When
     testConnector.connect();
@@ -97,7 +95,7 @@ void ConnectorTest::disconnectShouldSuccessWithOpenedDatabase() {
 void ConnectorTest::disconnectShouldSuccessWithClosedDatabase() {
 
     // Given
-    auto const &testConnector = TestConnector(DEFAULT_DATABASE_NAME);
+    auto const &testConnector = TestConnector(this->databaseName());
 
     // When
     testConnector.connect();
@@ -111,7 +109,7 @@ void ConnectorTest::disconnectShouldSuccessWithClosedDatabase() {
 void ConnectorTest::shouldReturnListOfAvailableTables() {
 
     // Given
-    auto const &testConnector = TestConnector(DEFAULT_DATABASE_NAME);
+    auto const &testConnector = TestConnector(this->databaseName());
     auto const field = QORM::Field::notNull("field", QORM::Type("integer"));
     auto const primaryKey = QORM::PrimaryKey(field, false);
     auto const table = QORM::Table("test_table", primaryKey);
@@ -129,7 +127,7 @@ void ConnectorTest::shouldReturnListOfAvailableTables() {
 void ConnectorTest::shouldReturnListOfAvailableViews() {
 
     // Given
-    auto const &testConnector = TestConnector(DEFAULT_DATABASE_NAME);
+    auto const &testConnector = TestConnector(this->databaseName());
     auto const field = QORM::Field::notNull("field", QORM::Type("integer"));
     auto const primaryKey = QORM::PrimaryKey(field, false);
     auto const table = QORM::Table("test_table", primaryKey);
@@ -145,11 +143,4 @@ void ConnectorTest::shouldReturnListOfAvailableViews() {
     // Then
     QCOMPARE(views.size(), 1U);
     QCOMPARE(views.front(), view.getViewName());
-}
-
-void ConnectorTest::cleanup() {
-    for(auto &connection : QSqlDatabase::connectionNames()) {
-        QSqlDatabase::database(connection, false).close();
-        QSqlDatabase::removeDatabase(connection);
-    }
 }

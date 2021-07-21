@@ -1,27 +1,29 @@
 #ifndef CONNECTORTEST_H
 #define CONNECTORTEST_H
 
+#include "fixture/maindatabasetest.h"
 #include <QtTest/QtTest>
 
-class ConnectorTest : public QObject {
+class ConnectorTest : public MainDatabaseTest {
 
     Q_OBJECT
 
-    static const QString DEFAULT_DATABASE_NAME;
+public:
+    auto databaseName() const -> QString override {
+        return "connectordatabase";
+    }
 
 private slots:
-    static void initShouldFailIfNameIsEmpty();
-    static void initShouldFailIfIfNameAlreadyUsed();
-    static void initShouldSuccessWithValidName();
-    static void getDatabaseNameShouldReturnName();
-    static void getDatabaseShouldFailIfDatabaseClosed();
-    static void connectShouldSuccessPreOpenPostAndOptimize();
-    static void disconnectShouldSuccessWithOpenedDatabase();
-    static void disconnectShouldSuccessWithClosedDatabase();
-    static void shouldReturnListOfAvailableTables();
-    static void shouldReturnListOfAvailableViews();
-
-    static void cleanup();
+    void initShouldFailIfNameIsEmpty();
+    void initShouldFailIfIfNameAlreadyUsed();
+    void initShouldSuccessWithValidName();
+    void getDatabaseNameShouldReturnName();
+    void getDatabaseShouldFailIfDatabaseClosed();
+    void connectShouldSuccessPreOpenPostAndOptimize();
+    void disconnectShouldSuccessWithOpenedDatabase();
+    void disconnectShouldSuccessWithClosedDatabase();
+    void shouldReturnListOfAvailableTables();
+    void shouldReturnListOfAvailableViews();
 };
 
 #endif // CONNECTORTEST_H

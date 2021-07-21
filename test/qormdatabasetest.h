@@ -2,15 +2,19 @@
 #define QORMDATABASETEST_H
 
 #include <QtTest/QtTest>
+#include "fixture/maindatabasetest.h"
 #include "fixture/testcreator.h"
 
-class QORMDatabaseTest : public QObject {
+class QORMDatabaseTest : public MainDatabaseTest {
 
     Q_OBJECT
 
-    static const QString DEFAULT_DATABASE_NAME;
-
     TestCreator testCreator;
+
+public:
+    auto databaseName() const -> QString override {
+        return "database";
+    }
 
 private slots:
     void connectShouldReturnTrue();
@@ -30,9 +34,6 @@ private slots:
     void entitiesShouldReturnEmptyList();
     void resultShouldReturnDefaultValueIfNoResult();
     void resultShouldReturnQueryValue();
-
-    static void init();
-    static void cleanup();
 };
 
 #endif // QORMDATABASETEST_H

@@ -6,9 +6,6 @@
 
 using namespace QORM;
 
-const QString SQLiteTest::DEFAULT_DATABASE_NAME = "sqlitedatabase";
-const QString SQLiteTest::DEFAULT_BACKUP_FILE_NAME = "database.backup";
-
 void SQLiteTest::initShouldFailIfNameIsEmpty() {
 
     // Given / When / Then
@@ -21,33 +18,33 @@ void SQLiteTest::initShouldFailIfNameIsEmpty() {
 void SQLiteTest::initShouldAddFileExtensionToName() {
 
     // Given
-    auto const &sqlite = SQLite(DEFAULT_DATABASE_NAME, true, false);
+    auto const &sqlite = SQLite(this->databaseName(), true, false);
 
     // When / Then
     QVERIFY(!sqlite.isTest());
     QCOMPARE(
         sqlite.getName(),
-        DEFAULT_DATABASE_NAME + ".db"
+        this->databaseName() + ".db"
     );
 }
 
 void SQLiteTest::initShouldAddTestPrefixAndFileExtensionToName() {
 
     // Given
-    auto const &sqlite = SQLite(DEFAULT_DATABASE_NAME, true, true);
+    auto const &sqlite = SQLite(this->databaseName(), true, true);
 
     // When / Then
     QVERIFY(sqlite.isTest());
     QCOMPARE(
         sqlite.getName(),
-        "test_" + DEFAULT_DATABASE_NAME + ".db"
+        "test_" + this->databaseName() + ".db"
     );
 }
 
 void SQLiteTest::initShouldDeleteDatabaseFile() {
 
     // Given
-    auto const &sqlite = SQLite("test_" + DEFAULT_DATABASE_NAME, true, false);
+    auto const &sqlite = SQLite("test_" + this->databaseName(), true, false);
 
     // When
     sqlite.connect();
@@ -55,7 +52,7 @@ void SQLiteTest::initShouldDeleteDatabaseFile() {
 
     // Then
     QVERIFY(QFile::exists(sqlite.getName()));
-    auto const &sqliteTest = SQLite(DEFAULT_DATABASE_NAME, true, true);
+    auto const &sqliteTest = SQLite(this->databaseName(), true, true);
     QCOMPARE(
         sqliteTest.getName(),
         sqlite.getName()
@@ -66,7 +63,7 @@ void SQLiteTest::initShouldDeleteDatabaseFile() {
 void SQLiteTest::driverNameShouldBeCompliant() {
 
     // Given
-    auto const &sqlite = SQLite(DEFAULT_DATABASE_NAME, true, false);
+    auto const &sqlite = SQLite(this->databaseName(), true, false);
 
     // When / Then
     QCOMPARE(sqlite.driverName(), "QSQLITE");
@@ -87,7 +84,7 @@ void SQLiteTest::connectShouldFailWithInvalidDatabaseName() {
 void SQLiteTest::connectShouldEnableRegexpButNotForeignKeys() {
 
     // Given
-    auto const &sqlite = SQLite("test_" + DEFAULT_DATABASE_NAME, false, false);
+    auto const &sqlite = SQLite("test_" + this->databaseName(), false, false);
 
     // When
     sqlite.connect();
@@ -109,7 +106,7 @@ void SQLiteTest::connectShouldEnableRegexpButNotForeignKeys() {
 void SQLiteTest::connectShouldEnableRegexpAndForeignKeys() {
 
     // Given
-    auto const &sqlite = SQLite("test_" + DEFAULT_DATABASE_NAME, true, false);
+    auto const &sqlite = SQLite("test_" + this->databaseName(), true, false);
 
     // When
     sqlite.connect();
@@ -131,7 +128,7 @@ void SQLiteTest::connectShouldEnableRegexpAndForeignKeys() {
 void SQLiteTest::disconnectShouldNotDeleteDatabaseFile() {
 
     // Given
-    auto const &sqlite = SQLite(DEFAULT_DATABASE_NAME, true, false);
+    auto const &sqlite = SQLite(this->databaseName(), true, false);
 
     // When
     sqlite.connect();
@@ -144,7 +141,7 @@ void SQLiteTest::disconnectShouldNotDeleteDatabaseFile() {
 void SQLiteTest::disconnectShouldDeleteDatabaseFile() {
 
     // Given
-    auto const &sqlite = SQLite(DEFAULT_DATABASE_NAME, true, true);
+    auto const &sqlite = SQLite(this->databaseName(), true, true);
 
     // When
     sqlite.connect();
@@ -157,7 +154,7 @@ void SQLiteTest::disconnectShouldDeleteDatabaseFile() {
 void SQLiteTest::tablesShouldReturnWithoutSequence() {
 
     // Given
-    auto const &sqlite = SQLite(DEFAULT_DATABASE_NAME, true, true);
+    auto const &sqlite = SQLite(this->databaseName(), true, true);
     auto const field = QORM::Field::notNull("field", QORM::Type("integer"));
     auto const primaryKey = QORM::PrimaryKey(field);
     auto const table = QORM::Table("test_table", primaryKey);
@@ -176,22 +173,12 @@ void SQLiteTest::tablesShouldReturnWithoutSequence() {
 void SQLiteTest::backupShouldSuccessAndCreateFile() {
 
     // Given
-    auto const &sqlite = SQLite(DEFAULT_DATABASE_NAME, true, false);
+    auto const &sqlite = SQLite(this->databaseName(), true, false);
 
     // When
     sqlite.connect();
 
     // Then
-    QVERIFY(sqlite.backup(DEFAULT_BACKUP_FILE_NAME));
-    QVERIFY(QFile::exists(DEFAULT_BACKUP_FILE_NAME));
-}
-
-void SQLiteTest::cleanup() {
-    for(auto &connection : QSqlDatabase::connectionNames()) {
-        QSqlDatabase::database(connection, false).close();
-        QSqlDatabase::removeDatabase(connection);
-        QFile::remove(connection);
-    }
-    QFile::remove(DEFAULT_DATABASE_NAME + ".db");
-    QFile::remove(DEFAULT_BACKUP_FILE_NAME);
+    QVERIFY(sqlite.backup(this->databaseBackupName()));
+    QVERIFY(QFile::exists(this->databaseBackupName()));
 }

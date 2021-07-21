@@ -4,12 +4,11 @@
 
 using namespace QORM;
 
-const QString QORMLiteTest::DEFAULT_DATABASE_NAME = "database";
 
 void QORMLiteTest::isInitializedShouldReturnFalse() {
 
     // Given / When / Then
-    QVERIFY(!QORM::isInitialized(DEFAULT_DATABASE_NAME));
+    QVERIFY(!QORM::isInitialized(this->databaseName()));
 }
 
 void QORMLiteTest::initializeShouldSuccessAndIsInitializedShouldReturnTrue() {
@@ -18,7 +17,7 @@ void QORMLiteTest::initializeShouldSuccessAndIsInitializedShouldReturnTrue() {
     QORM::initialize(*this->connector, this->creator, false);
 
     // Then
-    QVERIFY(QORM::isInitialized(DEFAULT_DATABASE_NAME));
+    QVERIFY(QORM::isInitialized(this->databaseName()));
 }
 
 void QORMLiteTest::initializeShouldFailIfDatabaseAlreadyExists() {
@@ -27,7 +26,7 @@ void QORMLiteTest::initializeShouldFailIfDatabaseAlreadyExists() {
     QORM::initialize(*this->connector, this->creator, false);
 
     // When / Then
-    QVERIFY(QORM::isInitialized(DEFAULT_DATABASE_NAME));
+    QVERIFY(QORM::isInitialized(this->databaseName()));
     QVERIFY_EXCEPTION_THROWN(
         QORM::initialize(*this->connector, this->creator, false),
         std::string
@@ -38,7 +37,7 @@ void QORMLiteTest::getShouldFailIfDatabaseNotExists() {
 
     // Given / When / Then
     QVERIFY_EXCEPTION_THROWN(
-        QORM::get(DEFAULT_DATABASE_NAME),
+        QORM::get(this->databaseName()),
         std::string
     );
 }
@@ -49,11 +48,11 @@ void QORMLiteTest::getShouldSuccess() {
     QORM::initialize(*this->connector, this->creator, false);
 
     // When
-    auto const &database = QORM::get(DEFAULT_DATABASE_NAME);
+    auto const &database = QORM::get(this->databaseName());
 
     // Then
-    QVERIFY(QORM::isInitialized(DEFAULT_DATABASE_NAME));
-    QCOMPARE(database.getName(), DEFAULT_DATABASE_NAME);
+    QVERIFY(QORM::isInitialized(this->databaseName()));
+    QCOMPARE(database.getName(), this->databaseName());
 }
 
 void QORMLiteTest::destroyShouldSuccess() {
@@ -62,10 +61,10 @@ void QORMLiteTest::destroyShouldSuccess() {
     QORM::initialize(*this->connector, this->creator, false);
 
     // When
-    QORM::destroy(DEFAULT_DATABASE_NAME);
+    QORM::destroy(this->databaseName());
 
     // Then
-    QVERIFY(!QORM::isInitialized(DEFAULT_DATABASE_NAME));
+    QVERIFY(!QORM::isInitialized(this->databaseName()));
 }
 
 void QORMLiteTest::destroyAllShouldSuccess() {
@@ -77,11 +76,11 @@ void QORMLiteTest::destroyAllShouldSuccess() {
     QORM::destroyAll();
 
     // Then
-    QVERIFY(!QORM::isInitialized(DEFAULT_DATABASE_NAME));
+    QVERIFY(!QORM::isInitialized(this->databaseName()));
 }
 
 void QORMLiteTest::initTestCase() {
-    this->connector = new TestConnector(DEFAULT_DATABASE_NAME);
+    this->connector = new TestConnector(this->databaseName());
 }
 
 void QORMLiteTest::cleanupTestCase() {

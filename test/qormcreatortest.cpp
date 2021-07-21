@@ -8,12 +8,10 @@
 
 using namespace QORM;
 
-const QString QORMCreatorTest::DEFAULT_DATABASE_NAME = "database";
-
 void QORMCreatorTest::isCreatedShouldReturnFalseIfNotConnected() {
 
     // Given
-    auto const &connector = TestConnector(DEFAULT_DATABASE_NAME);
+    auto const &connector = TestConnector(this->databaseName());
     QORM::Database database(connector, testCreator, false);
 
     // When / Then
@@ -23,7 +21,7 @@ void QORMCreatorTest::isCreatedShouldReturnFalseIfNotConnected() {
 void QORMCreatorTest::isCreatedShouldReturnFalseIfTablesNotCreated() {
 
     // Given
-    auto const &connector = TestConnector(DEFAULT_DATABASE_NAME);
+    auto const &connector = TestConnector(this->databaseName());
     QORM::Database database(connector, testCreator, false);
     database.connect();
 
@@ -34,7 +32,7 @@ void QORMCreatorTest::isCreatedShouldReturnFalseIfTablesNotCreated() {
 void QORMCreatorTest::isCreatedShouldReturnFalseIfViewsNotCreated() {
 
     // Given
-    auto const &connector = TestConnector(DEFAULT_DATABASE_NAME);
+    auto const &connector = TestConnector(this->databaseName());
     QORM::Database database(connector, testCreator, false);
     database.connect();
 
@@ -45,7 +43,7 @@ void QORMCreatorTest::isCreatedShouldReturnFalseIfViewsNotCreated() {
 void QORMCreatorTest::isCreatedShouldReturnTrue() {
 
     // Given
-    auto const &connector = TestConnector(DEFAULT_DATABASE_NAME);
+    auto const &connector = TestConnector(this->databaseName());
     QORM::Database database(connector, testCreator, false);
     database.connect();
 
@@ -56,7 +54,7 @@ void QORMCreatorTest::isCreatedShouldReturnTrue() {
 void QORMCreatorTest::createTableShouldSuccess() {
 
     // Given
-    auto const &connector = TestConnector(DEFAULT_DATABASE_NAME);
+    auto const &connector = TestConnector(this->databaseName());
     QORM::Database database(connector, fakeCreator, false);
     auto const primaryKey = PrimaryKey(Field::notNull(TestCreator::TEST_FIELD, Integer()));
     database.connect();
@@ -71,7 +69,7 @@ void QORMCreatorTest::createTableShouldSuccess() {
 void QORMCreatorTest::createViewShouldSuccess() {
 
     // Given
-    auto const &connector = TestConnector(DEFAULT_DATABASE_NAME);
+    auto const &connector = TestConnector(this->databaseName());
     QORM::Database database(connector, fakeCreator, false);
     database.connect();
     testCreator.createTables(database);
@@ -86,7 +84,7 @@ void QORMCreatorTest::createViewShouldSuccess() {
 void QORMCreatorTest::createViewShouldFailIfTableNotExists() {
 
     // Given
-    auto const &connector = TestConnector(DEFAULT_DATABASE_NAME);
+    auto const &connector = TestConnector(this->databaseName());
     QORM::Database database(connector, fakeCreator, false);
     database.connect();
 
@@ -100,7 +98,7 @@ void QORMCreatorTest::createViewShouldFailIfTableNotExists() {
 void QORMCreatorTest::insertShouldSuccess() {
 
     // Given
-    auto const &connector = TestConnector(DEFAULT_DATABASE_NAME);
+    auto const &connector = TestConnector(this->databaseName());
     QORM::Database database(connector, fakeCreator, false);
     database.connect();
     testCreator.createTables(database);
@@ -115,7 +113,7 @@ void QORMCreatorTest::insertShouldSuccess() {
 void QORMCreatorTest::createAllAndPopulateShouldSuccess() {
 
     // Given
-    auto const &connector = TestConnector(DEFAULT_DATABASE_NAME);
+    auto const &connector = TestConnector(this->databaseName());
     QORM::Database database(connector, fakeCreator, false);
     database.connect();
 
@@ -126,13 +124,4 @@ void QORMCreatorTest::createAllAndPopulateShouldSuccess() {
     // Then
     QVERIFY(database.execute(Select(TestCreator::TEST_TABLE)).next());
     QVERIFY(database.execute(Select(TestCreator::TEST_VIEW)).next());
-}
-
-void QORMCreatorTest::init() {
-    QFile::remove(DEFAULT_DATABASE_NAME);
-}
-
-void QORMCreatorTest::cleanup() {
-    QFile::remove(DEFAULT_DATABASE_NAME);
-    QSqlDatabase::removeDatabase(DEFAULT_DATABASE_NAME);
 }

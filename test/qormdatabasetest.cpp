@@ -11,13 +11,12 @@
 
 using namespace QORM;
 
-const QString QORMDatabaseTest::DEFAULT_DATABASE_NAME = "database";
 const int DEFAULT_VALUE = 42;
 
 void QORMDatabaseTest::connectShouldReturnTrue() {
 
     // Given
-    auto const &connector = TestConnector(DEFAULT_DATABASE_NAME);
+    auto const &connector = TestConnector(this->databaseName());
     Database database(connector, this->testCreator, false);
 
     // When / Then
@@ -28,7 +27,7 @@ void QORMDatabaseTest::connectShouldReturnTrue() {
 void QORMDatabaseTest::subsequentConnectShouldReturnFalse() {
 
     // Given
-    auto const &connector = TestConnector(DEFAULT_DATABASE_NAME);
+    auto const &connector = TestConnector(this->databaseName());
     Database database(connector, this->testCreator, false);
 
     // When
@@ -42,7 +41,7 @@ void QORMDatabaseTest::subsequentConnectShouldReturnFalse() {
 void QORMDatabaseTest::disconnectShouldSuccess() {
 
     // Given
-    auto const &connector = TestConnector(DEFAULT_DATABASE_NAME);
+    auto const &connector = TestConnector(this->databaseName());
     Database database(connector, this->testCreator, false);
 
     // When
@@ -56,7 +55,7 @@ void QORMDatabaseTest::disconnectShouldSuccess() {
 void QORMDatabaseTest::optimizeShouldSuccess() {
 
     // Given
-    auto const &connector = TestConnector(DEFAULT_DATABASE_NAME);
+    auto const &connector = TestConnector(this->databaseName());
     Database database(connector, this->testCreator, false);
 
     // When
@@ -69,7 +68,7 @@ void QORMDatabaseTest::optimizeShouldSuccess() {
 void QORMDatabaseTest::prepareExecuteShouldFailWithInvalidQuery() {
 
     // Given
-    auto const &connector = TestConnector(DEFAULT_DATABASE_NAME);
+    auto const &connector = TestConnector(this->databaseName());
     Database database(connector, this->testCreator, false);
 
     // When
@@ -85,7 +84,7 @@ void QORMDatabaseTest::prepareExecuteShouldFailWithInvalidQuery() {
 void QORMDatabaseTest::executeShouldSuccessWithTextQuery() {
 
     // Given
-    auto const &connector = TestConnector(DEFAULT_DATABASE_NAME);
+    auto const &connector = TestConnector(this->databaseName());
     Database database(connector, this->testCreator, false);
 
     // When
@@ -98,7 +97,7 @@ void QORMDatabaseTest::executeShouldSuccessWithTextQuery() {
 void QORMDatabaseTest::executeShouldSuccessWithBuiltQuery() {
 
     // Given
-    auto const &connector = TestConnector(DEFAULT_DATABASE_NAME);
+    auto const &connector = TestConnector(this->databaseName());
     Database database(connector, this->testCreator, false);
 
     // When
@@ -111,7 +110,7 @@ void QORMDatabaseTest::executeShouldSuccessWithBuiltQuery() {
 void QORMDatabaseTest::existsShouldReturnTrue() {
 
     // Given
-    auto const &connector = TestConnector(DEFAULT_DATABASE_NAME);
+    auto const &connector = TestConnector(this->databaseName());
     Database database(connector, this->testCreator, false);
 
     // When
@@ -125,7 +124,7 @@ void QORMDatabaseTest::existsShouldReturnTrue() {
 void QORMDatabaseTest::existsShouldReturnFalse() {
 
     // Given
-    auto const &connector = TestConnector(DEFAULT_DATABASE_NAME);
+    auto const &connector = TestConnector(this->databaseName());
     Database database(connector, this->testCreator, false);
 
     // When
@@ -138,7 +137,7 @@ void QORMDatabaseTest::existsShouldReturnFalse() {
 void QORMDatabaseTest::insertAndRetrieveKeyAsIntShouldSuccess() {
 
     // Given
-    auto const &connector = TestConnector(DEFAULT_DATABASE_NAME);
+    auto const &connector = TestConnector(this->databaseName());
     Database database(connector, this->testCreator, false);
 
     // When
@@ -152,7 +151,7 @@ void QORMDatabaseTest::insertAndRetrieveKeyAsIntShouldSuccess() {
 void QORMDatabaseTest::insertAndRetrieveKeyAsIntShouldFail() {
 
     // Given
-    auto const &connector = TestConnector(DEFAULT_DATABASE_NAME);
+    auto const &connector = TestConnector(this->databaseName());
     Database database(connector, this->testCreator, false);
 
     // When
@@ -168,7 +167,7 @@ void QORMDatabaseTest::insertAndRetrieveKeyAsIntShouldFail() {
 void QORMDatabaseTest::entityShouldSuccess() {
 
     // Given
-    auto const &connector = TestConnector(DEFAULT_DATABASE_NAME);
+    auto const &connector = TestConnector(this->databaseName());
     Database database(connector, this->testCreator, false);
     TestEntity testEntity(DEFAULT_VALUE);
     bool convertible = false;
@@ -191,7 +190,7 @@ void QORMDatabaseTest::entityShouldSuccess() {
 void QORMDatabaseTest::entityShouldThrowWhenNothingFound() {
 
     // Given
-    auto const &connector = TestConnector(DEFAULT_DATABASE_NAME);
+    auto const &connector = TestConnector(this->databaseName());
     Database database(connector, this->testCreator, false);
     TestEntity testEntity(DEFAULT_VALUE);
 
@@ -213,7 +212,7 @@ void QORMDatabaseTest::entityShouldThrowWhenNothingFound() {
 void QORMDatabaseTest::entitiesShouldReturnNonEmptyList() {
 
     // Given
-    auto const &connector = TestConnector(DEFAULT_DATABASE_NAME);
+    auto const &connector = TestConnector(this->databaseName());
     Database database(connector, this->testCreator, false);
     TestEntity testEntity(DEFAULT_VALUE);
     bool convertible = false;
@@ -237,7 +236,7 @@ void QORMDatabaseTest::entitiesShouldReturnNonEmptyList() {
 void QORMDatabaseTest::entitiesShouldReturnEmptyList() {
 
     // Given
-    auto const &connector = TestConnector(DEFAULT_DATABASE_NAME);
+    auto const &connector = TestConnector(this->databaseName());
     Database database(connector, this->testCreator, false);
 
     // When
@@ -251,7 +250,7 @@ void QORMDatabaseTest::entitiesShouldReturnEmptyList() {
 void QORMDatabaseTest::resultShouldReturnDefaultValueIfNoResult() {
 
     // Given
-    auto const &connector = TestConnector(DEFAULT_DATABASE_NAME);
+    auto const &connector = TestConnector(this->databaseName());
     Database database(connector, this->testCreator, false);
 
     // When
@@ -270,7 +269,7 @@ void QORMDatabaseTest::resultShouldReturnDefaultValueIfNoResult() {
 void QORMDatabaseTest::resultShouldReturnQueryValue() {
 
     // Given
-    auto const &connector = TestConnector(DEFAULT_DATABASE_NAME);
+    auto const &connector = TestConnector(this->databaseName());
     Database database(connector, this->testCreator, false);
 
     // When
@@ -285,13 +284,4 @@ void QORMDatabaseTest::resultShouldReturnQueryValue() {
 
     // Then
     QCOMPARE(result, 1);
-}
-
-void QORMDatabaseTest::init() {
-    QFile::remove(DEFAULT_DATABASE_NAME);
-}
-
-void QORMDatabaseTest::cleanup() {
-    QFile::remove(DEFAULT_DATABASE_NAME);
-    QSqlDatabase::removeDatabase(DEFAULT_DATABASE_NAME);
 }

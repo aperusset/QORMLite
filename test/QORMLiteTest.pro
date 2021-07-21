@@ -51,6 +51,7 @@ HEADERS += \
   connectors/connectortest.h \
   connectors/odbctest.h \
   connectors/sqlitetest.h \
+  fixture/maindatabasetest.h \
   fixture/testconnector.h \
   fixture/testcreator.h \
   fixture/testentity.h \
