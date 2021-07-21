@@ -23,6 +23,7 @@
 #include "operations/query/deletetest.h"
 #include "connectors/connectortest.h"
 #include "connectors/sqlitetest.h"
+#include "connectors/odbctest.h"
 
 auto main(int argc, char *argv[]) -> int {
 
@@ -49,6 +50,7 @@ auto main(int argc, char *argv[]) -> int {
         std::make_shared<DeleteTest>(),
         std::make_shared<ConnectorTest>(),
         std::make_shared<SQLiteTest>(),
+        std::make_shared<ODBCTest>(),
         std::make_shared<QORMDatabaseTest>(),
         std::make_shared<QORMCreatorTest>(),
         std::make_shared<QORMLiteTest>()

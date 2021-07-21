@@ -11,6 +11,7 @@ else:unix: DESTDIR = $$OUT_PWD/../lib/$$VERSION
 
 SOURCES += \
   connectors/connector.cpp \
+  connectors/odbc.cpp \
   connectors/sqlite.cpp \
   creator.cpp \
   database.cpp \
@@ -41,6 +42,7 @@ SOURCES += \
 HEADERS += \
   cache.h \
   connectors/connector.h \
+  connectors/odbc.h \
   connectors/sqlite.h \
   creator.h \
   database.h \

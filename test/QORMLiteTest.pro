@@ -16,6 +16,7 @@ DEPENDPATH += $$PWD/../code
 
 SOURCES +=  \
   connectors/connectortest.cpp \
+  connectors/odbctest.cpp \
   connectors/sqlitetest.cpp \
   fixture/testconnector.cpp \
   fixture/testcreator.cpp \
@@ -48,6 +49,7 @@ SOURCES +=  \
 
 HEADERS += \
   connectors/connectortest.h \
+  connectors/odbctest.h \
   connectors/sqlitetest.h \
   fixture/testconnector.h \
   fixture/testcreator.h \

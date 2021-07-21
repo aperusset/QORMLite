@@ -63,6 +63,15 @@ void SQLiteTest::initShouldDeleteDatabaseFile() {
     QVERIFY(!QFile::exists(sqliteTest.getName()));
 }
 
+void SQLiteTest::driverNameShouldBeCompliant() {
+
+    // Given
+    auto const &sqlite = SQLite(DEFAULT_DATABASE_NAME, false);
+
+    // When / Then
+    QCOMPARE(sqlite.driverName(), "QSQLITE");
+}
+
 void SQLiteTest::connectShouldFailWithInvalidDatabaseName() {
 
     // Given

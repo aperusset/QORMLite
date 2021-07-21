@@ -15,6 +15,7 @@ private slots:
     static void initShouldAddFileExtensionToName();
     static void initShouldAddTestPrefixAndFileExtensionToName();
     static void initShouldDeleteDatabaseFile();
+    static void driverNameShouldBeCompliant();
     static void connectShouldFailWithInvalidDatabaseName();
     static void connectShouldEnableRegexpButNotForeignKeys();
     static void connectShouldEnableRegexpAndForeignKeys();
