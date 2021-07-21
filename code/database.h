@@ -30,7 +30,8 @@ class Database {
     auto execute(QSqlQuery) const -> QSqlQuery;
 
  public:
-    Database(const QORM::Connector&, const QORM::Creator&, bool verbose = false);
+    Database(const QORM::Connector&, const QORM::Creator&,
+             bool verbose = false);
     ~Database();
     Database(const Database&) = delete;
     Database(Database&&) = delete;

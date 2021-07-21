@@ -1,9 +1,9 @@
 #ifndef CONNECTOR_H_
 #define CONNECTOR_H_
 
-#include <list>
 #include <QString>
 #include <QSqlDatabase>
+#include <list>
 
 namespace QORM {
 

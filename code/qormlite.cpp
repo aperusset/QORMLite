@@ -11,7 +11,8 @@ auto QORM::isInitialized(const QString &name) -> bool {
     return pool.count(name);
 }
 
-void QORM::initialize(const Connector &connector, const Creator &creator, bool verbose) {
+void QORM::initialize(const Connector &connector, const Creator &creator,
+                      bool verbose) {
     const QMutexLocker lock(&poolMutex);
     if (isInitialized(connector.getName())) {
         throw std::string("This database is already initialized");

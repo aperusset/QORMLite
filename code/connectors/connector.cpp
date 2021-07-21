@@ -1,6 +1,8 @@
 #include "connector.h"
 #include <QSqlError>
 #include <QStringList>
+#include <utility>
+#include <string>
 
 namespace {
 

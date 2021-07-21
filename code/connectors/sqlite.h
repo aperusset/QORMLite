@@ -1,7 +1,8 @@
 #ifndef SQLITE_H_
 #define SQLITE_H_
 
-#include "connector.h"
+#include <list>
+#include "./connector.h"
 
 namespace QORM {
 
@@ -39,4 +40,4 @@ inline auto QORM::SQLite::driverName() const -> QString {
 
 }  // namespace QORM
 
-#endif // SQLITE_H_
+#endif  // SQLITE_H_
