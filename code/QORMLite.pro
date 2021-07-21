@@ -10,6 +10,8 @@ else:win32:CONFIG(debug, debug|release): DESTDIR = $$OUT_PWD/../lib/debug/$$VERS
 else:unix: DESTDIR = $$OUT_PWD/../lib/$$VERSION
 
 SOURCES += \
+  connectors/connector.cpp \
+  connectors/sqlite.cpp \
   creator.cpp \
   database.cpp \
   operations/model/field.cpp \
@@ -38,6 +40,8 @@ SOURCES += \
 
 HEADERS += \
   cache.h \
+  connectors/connector.h \
+  connectors/sqlite.h \
   creator.h \
   database.h \
   entity.h \

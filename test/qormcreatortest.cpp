@@ -4,15 +4,60 @@
 #include "operations/model/type/integer.h"
 #include "operations/query/select.h"
 #include "operations/query/insert.h"
+#include "fixture/testconnector.h"
 
 using namespace QORM;
 
-const QString QORMCreatorTest::DEFAULT_DATABASE_NAME = "database.db";
+const QString QORMCreatorTest::DEFAULT_DATABASE_NAME = "database";
+
+void QORMCreatorTest::isCreatedShouldReturnFalseIfNotConnected() {
+
+    // Given
+    auto const &connector = TestConnector(DEFAULT_DATABASE_NAME);
+    QORM::Database database(connector, testCreator);
+
+    // When / Then
+    QVERIFY(!testCreator.isCreated(database, { TestCreator::TEST_TABLE }, { TestCreator::TEST_VIEW }));
+}
+
+void QORMCreatorTest::isCreatedShouldReturnFalseIfTablesNotCreated() {
+
+    // Given
+    auto const &connector = TestConnector(DEFAULT_DATABASE_NAME);
+    QORM::Database database(connector, testCreator);
+    database.connect();
+
+    // When / Then
+    QVERIFY(!testCreator.isCreated(database, { TestCreator::TEST_TABLE, "another_table" }, { TestCreator::TEST_VIEW }));
+}
+
+void QORMCreatorTest::isCreatedShouldReturnFalseIfViewsNotCreated() {
+
+    // Given
+    auto const &connector = TestConnector(DEFAULT_DATABASE_NAME);
+    QORM::Database database(connector, testCreator);
+    database.connect();
+
+    // When / Then
+    QVERIFY(!testCreator.isCreated(database, { TestCreator::TEST_TABLE }, { TestCreator::TEST_VIEW, "another_view" }));
+}
+
+void QORMCreatorTest::isCreatedShouldReturnTrue() {
+
+    // Given
+    auto const &connector = TestConnector(DEFAULT_DATABASE_NAME);
+    QORM::Database database(connector, testCreator);
+    database.connect();
+
+    // When / Then
+    QVERIFY(testCreator.isCreated(database, { TestCreator::TEST_TABLE }, { TestCreator::TEST_VIEW }));
+}
 
 void QORMCreatorTest::createTableShouldSuccess() {
 
     // Given
-    QORM::Database database(DEFAULT_DATABASE_NAME, fakeCreator, false, true);
+    auto const &connector = TestConnector(DEFAULT_DATABASE_NAME);
+    QORM::Database database(connector, fakeCreator);
     auto const primaryKey = PrimaryKey(Field::notNull(TestCreator::TEST_FIELD, Integer()));
     database.connect();
 
@@ -26,7 +71,8 @@ void QORMCreatorTest::createTableShouldSuccess() {
 void QORMCreatorTest::createViewShouldSuccess() {
 
     // Given
-    QORM::Database database(DEFAULT_DATABASE_NAME, fakeCreator, false, true);
+    auto const &connector = TestConnector(DEFAULT_DATABASE_NAME);
+    QORM::Database database(connector, fakeCreator);
     database.connect();
     testCreator.createTables(database);
 
@@ -40,7 +86,8 @@ void QORMCreatorTest::createViewShouldSuccess() {
 void QORMCreatorTest::createViewShouldFailIfTableNotExists() {
 
     // Given
-    QORM::Database database(DEFAULT_DATABASE_NAME, fakeCreator, false, true);
+    auto const &connector = TestConnector(DEFAULT_DATABASE_NAME);
+    QORM::Database database(connector, fakeCreator);
     database.connect();
 
     // When / Then
@@ -53,7 +100,8 @@ void QORMCreatorTest::createViewShouldFailIfTableNotExists() {
 void QORMCreatorTest::insertShouldSuccess() {
 
     // Given
-    QORM::Database database(DEFAULT_DATABASE_NAME, fakeCreator, false, true);
+    auto const &connector = TestConnector(DEFAULT_DATABASE_NAME);
+    QORM::Database database(connector, fakeCreator);
     database.connect();
     testCreator.createTables(database);
 
@@ -67,7 +115,8 @@ void QORMCreatorTest::insertShouldSuccess() {
 void QORMCreatorTest::createAllAndPopulateShouldSuccess() {
 
     // Given
-    QORM::Database database(DEFAULT_DATABASE_NAME, fakeCreator, false, true);
+    auto const &connector = TestConnector(DEFAULT_DATABASE_NAME);
+    QORM::Database database(connector, fakeCreator);
     database.connect();
 
     // When
@@ -77,4 +126,13 @@ void QORMCreatorTest::createAllAndPopulateShouldSuccess() {
     // Then
     QVERIFY(database.execute(Select(TestCreator::TEST_TABLE)).next());
     QVERIFY(database.execute(Select(TestCreator::TEST_VIEW)).next());
+}
+
+void QORMCreatorTest::init() {
+    QFile::remove(DEFAULT_DATABASE_NAME);
+}
+
+void QORMCreatorTest::cleanup() {
+    QFile::remove(DEFAULT_DATABASE_NAME);
+    QSqlDatabase::removeDatabase(DEFAULT_DATABASE_NAME);
 }

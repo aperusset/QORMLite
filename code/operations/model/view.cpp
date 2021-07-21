@@ -10,5 +10,5 @@ QORM::View::View(QString viewName, Select select) :
 }
 
 auto QORM::View::generate() const -> QString {
-    return "create view [" + this->viewName + "] as " + select.generate();
+    return "create view if not exists " + this->viewName + " as " + select.generate();
 }

@@ -14,11 +14,18 @@ class QORMCreatorTest : public QObject {
     FakeCreator fakeCreator;
 
 private slots:
+    void isCreatedShouldReturnFalseIfNotConnected();
+    void isCreatedShouldReturnFalseIfTablesNotCreated();
+    void isCreatedShouldReturnFalseIfViewsNotCreated();
+    void isCreatedShouldReturnTrue();
     void createTableShouldSuccess();
     void createViewShouldSuccess();
     void createViewShouldFailIfTableNotExists();
     void insertShouldSuccess();
     void createAllAndPopulateShouldSuccess();
+
+    static void init();
+    static void cleanup();
 };
 
 #endif // QORMCREATORTEST_H

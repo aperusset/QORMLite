@@ -15,6 +15,9 @@ INCLUDEPATH += $$PWD/../code
 DEPENDPATH += $$PWD/../code
 
 SOURCES +=  \
+  connectors/connectortest.cpp \
+  connectors/sqlitetest.cpp \
+  fixture/testconnector.cpp \
   fixture/testcreator.cpp \
   fixture/testentity.cpp \
   fixture/testobserver.cpp \
@@ -44,6 +47,9 @@ SOURCES +=  \
   qormutilstest.cpp
 
 HEADERS += \
+  connectors/connectortest.h \
+  connectors/sqlitetest.h \
+  fixture/testconnector.h \
   fixture/testcreator.h \
   fixture/testentity.h \
   fixture/testobserver.h \

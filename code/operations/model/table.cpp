@@ -26,7 +26,7 @@ auto QORM::Table::generate() const -> QString {
     std::transform(fieldsToGenerate.begin(), fieldsToGenerate.end(),
         std::back_inserter(generatedFields),
         std::bind(&Field::generate, std::placeholders::_1));
-    QString creation = "create table " + this->tableName + "(" +
+    QString creation = "create table if not exists " + this->tableName + "(" +
                        generatedFields.join(", ");
     if (!isAutoIncrement) {
         creation += ", " + this->primaryKey.generate();

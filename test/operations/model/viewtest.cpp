@@ -34,6 +34,6 @@ void ViewTest::generate() {
 
     // Then
     QCOMPARE(generated,
-        "create view [" + DEFAULT_VIEW_NAME + "] as " + select.generate()
+        "create view if not exists " + DEFAULT_VIEW_NAME + " as " + select.generate()
     );
 }

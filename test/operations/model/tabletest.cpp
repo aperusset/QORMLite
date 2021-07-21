@@ -24,7 +24,7 @@ void TableTest::autoIncrementedPrimaryKeyWithoutFields() {
     // Then
     QCOMPARE(table.getTableName(), DEFAULT_TABLE_NAME);
     QCOMPARE(generated,
-        "create table test_table(" +
+        "create table if not exists test_table(" +
             primaryKey.generate() +
         ")"
     );
@@ -42,7 +42,7 @@ void TableTest::autoIncrementedPrimaryKeyWithFields() {
     // Then
     QCOMPARE(table.getTableName(), DEFAULT_TABLE_NAME);
     QCOMPARE(generated,
-        "create table test_table(" +
+        "create table if not exists test_table(" +
             primaryKey.generate() + ", " +
             DEFAULT_FIELD_2.generate() +
         ")"
@@ -61,7 +61,7 @@ void TableTest::autoIncrementedPrimaryKeyWithDuplicatedFields() {
     // Then
     QCOMPARE(table.getTableName(), DEFAULT_TABLE_NAME);
     QCOMPARE(generated,
-        "create table test_table(" +
+        "create table if not exists test_table(" +
             primaryKey.generate() + ", " +
             DEFAULT_FIELD_2.generate() +
         ")"
@@ -80,7 +80,7 @@ void TableTest::primaryKeyWithoutAdditionalFields() {
     // Then
     QCOMPARE(table.getTableName(), DEFAULT_TABLE_NAME);
     QCOMPARE(generated,
-        "create table test_table(" +
+        "create table if not exists test_table(" +
             DEFAULT_FIELD_1.generate() + ", " +
             DEFAULT_FIELD_2.generate() + ", " +
             primaryKey.generate() +
@@ -100,7 +100,7 @@ void TableTest::primaryKeyWithAdditionalFields() {
     // Then
     QCOMPARE(table.getTableName(), DEFAULT_TABLE_NAME);
     QCOMPARE(generated,
-        "create table test_table(" +
+        "create table if not exists test_table(" +
             DEFAULT_FIELD_1.generate() + ", " +
             DEFAULT_FIELD_2.generate() + ", " +
             primaryKey.generate() +
@@ -120,7 +120,7 @@ void TableTest::primaryKeyWithDuplicatedFields() {
     // Then
     QCOMPARE(table.getTableName(), DEFAULT_TABLE_NAME);
     QCOMPARE(generated,
-        "create table test_table(" +
+        "create table if not exists test_table(" +
             DEFAULT_FIELD_1.generate() + ", " +
             DEFAULT_FIELD_2.generate() + ", " +
             primaryKey.generate() +
@@ -141,7 +141,7 @@ void TableTest::singleForeignKey() {
     // Then
     QCOMPARE(table.getTableName(), DEFAULT_TABLE_NAME);
     QCOMPARE(generated,
-        "create table test_table(" +
+        "create table if not exists test_table(" +
             primaryKey.generate() + ", " +
             foreignKey.generate() +
         ")"
@@ -161,7 +161,7 @@ void TableTest::multipleForeignKeys() {
     // Then
     QCOMPARE(table.getTableName(), DEFAULT_TABLE_NAME);
     QCOMPARE(generated,
-        "create table test_table(" +
+        "create table if not exists test_table(" +
             primaryKey.generate() + ", " +
             foreignKey.generate() + ", " +
             foreignKey.generate() +

@@ -9,20 +9,14 @@ class QORMDatabaseTest : public QObject {
     Q_OBJECT
 
     static const QString DEFAULT_DATABASE_NAME;
-    static const QString DEFAULT_BACKUP_FILE_NAME;
 
     TestCreator testCreator;
 
 private slots:
-    void connectShouldFailWithInvalidDatabase();
-    void connectShouldCreateDatabaseAndReturnTrue();
-    void connectShouldCreatePrefixedDatabaseAndReturnTrue();
-    void connectShouldNotCreateDatabaseAndReturnFalse();
+    void connectShouldReturnTrue();
     void subsequentConnectShouldReturnFalse();
-    void disconnectShouldNotDeleteDatabase();
-    void disconnectShouldDeleteDatabaseInTestMode();
+    void disconnectShouldSuccess();
     void optimizeShouldSuccess();
-    void backupShouldSuccessAndCreateFile();
     void prepareExecuteShouldFailWithInvalidQuery();
     void executeShouldSuccessWithTextQuery();
     void executeShouldSuccessWithBuiltQuery();
@@ -37,6 +31,7 @@ private slots:
     void resultShouldReturnDefaultValueIfNoResult();
     void resultShouldReturnQueryValue();
 
+    static void init();
     static void cleanup();
 };
 

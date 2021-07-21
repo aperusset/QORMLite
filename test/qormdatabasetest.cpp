@@ -7,110 +7,57 @@
 #include "operations/query/selection/sum.h"
 #include "operations/query/condition/equals.h"
 #include "fixture/testentity.h"
+#include "fixture/testconnector.h"
 
 using namespace QORM;
 
 const QString QORMDatabaseTest::DEFAULT_DATABASE_NAME = "database";
-const QString QORMDatabaseTest::DEFAULT_BACKUP_FILE_NAME = "database.backup";
 const int DEFAULT_VALUE = 42;
 
-void QORMDatabaseTest::connectShouldFailWithInvalidDatabase() {
+void QORMDatabaseTest::connectShouldReturnTrue() {
 
     // Given
-    Database database("data/base.db", this->testCreator, false, false);
-
-    // When / Then
-    QVERIFY_EXCEPTION_THROWN(
-        database.connect(),
-        std::string
-    );
-    QVERIFY(!database.isConnected());
-}
-
-void QORMDatabaseTest::connectShouldCreateDatabaseAndReturnTrue() {
-
-    // Given
-    Database database(DEFAULT_DATABASE_NAME, this->testCreator, false, false);
+    auto const &connector = TestConnector(DEFAULT_DATABASE_NAME);
+    Database database(connector, this->testCreator, false);
 
     // When / Then
     QVERIFY(database.connect());
-    QVERIFY(QFile::exists(DEFAULT_DATABASE_NAME + ".db"));
-    QVERIFY(database.isConnected());
-}
-
-void QORMDatabaseTest::connectShouldCreatePrefixedDatabaseAndReturnTrue() {
-
-    // Given
-    Database database(DEFAULT_DATABASE_NAME, this->testCreator, false, true);
-
-    // When / Then
-    QVERIFY(database.connect());
-    QVERIFY(QFile::exists("test_" + DEFAULT_DATABASE_NAME + ".db"));
-    QVERIFY(database.isConnected());
-}
-
-void QORMDatabaseTest::connectShouldNotCreateDatabaseAndReturnFalse() {
-
-    // Given
-    Database database(DEFAULT_DATABASE_NAME, this->testCreator, false, false);
-
-    // When
-    database.connect();
-    database.disconnect();
-
-    // When / Then
-    QVERIFY(!database.connect());
-    QVERIFY(QFile::exists(DEFAULT_DATABASE_NAME + ".db"));
     QVERIFY(database.isConnected());
 }
 
 void QORMDatabaseTest::subsequentConnectShouldReturnFalse() {
 
     // Given
-    Database database(DEFAULT_DATABASE_NAME, this->testCreator, false, false);
+    auto const &connector = TestConnector(DEFAULT_DATABASE_NAME);
+    Database database(connector, this->testCreator, false);
 
     // When
     database.connect();
 
-    // Then
+    // When / Then
     QVERIFY(!database.connect());
-    QVERIFY(QFile::exists(DEFAULT_DATABASE_NAME + ".db"));
     QVERIFY(database.isConnected());
 }
 
-void QORMDatabaseTest::disconnectShouldNotDeleteDatabase() {
+void QORMDatabaseTest::disconnectShouldSuccess() {
 
     // Given
-    Database database(DEFAULT_DATABASE_NAME, this->testCreator, false, false);
+    auto const &connector = TestConnector(DEFAULT_DATABASE_NAME);
+    Database database(connector, this->testCreator, false);
 
     // When
     database.connect();
     database.disconnect();
 
     // Then
-    QVERIFY(QFile::exists(DEFAULT_DATABASE_NAME + ".db"));
-    QVERIFY(!database.isConnected());
-}
-
-void QORMDatabaseTest::disconnectShouldDeleteDatabaseInTestMode() {
-
-    // Given
-    Database database(DEFAULT_DATABASE_NAME, this->testCreator, false, true);
-
-    // When
-    database.connect();
-    database.disconnect();
-
-    // Then
-    QVERIFY(!QFile::exists(DEFAULT_DATABASE_NAME + ".db"));
-    QVERIFY(database.isTest());
     QVERIFY(!database.isConnected());
 }
 
 void QORMDatabaseTest::optimizeShouldSuccess() {
 
     // Given
-    Database database(DEFAULT_DATABASE_NAME, this->testCreator, false, false);
+    auto const &connector = TestConnector(DEFAULT_DATABASE_NAME);
+    Database database(connector, this->testCreator, false);
 
     // When
     database.connect();
@@ -119,23 +66,11 @@ void QORMDatabaseTest::optimizeShouldSuccess() {
     database.optimize();
 }
 
-void QORMDatabaseTest::backupShouldSuccessAndCreateFile() {
-
-    // Given
-    Database database(DEFAULT_DATABASE_NAME, this->testCreator, false, false);
-
-    // When
-    database.connect();
-
-    // Then
-    QVERIFY(database.backup(DEFAULT_BACKUP_FILE_NAME));
-    QVERIFY(QFile::exists(DEFAULT_BACKUP_FILE_NAME));
-}
-
 void QORMDatabaseTest::prepareExecuteShouldFailWithInvalidQuery() {
 
     // Given
-    Database database(DEFAULT_DATABASE_NAME, this->testCreator, false, false);
+    auto const &connector = TestConnector(DEFAULT_DATABASE_NAME);
+    Database database(connector, this->testCreator, false);
 
     // When
     database.connect();
@@ -150,7 +85,8 @@ void QORMDatabaseTest::prepareExecuteShouldFailWithInvalidQuery() {
 void QORMDatabaseTest::executeShouldSuccessWithTextQuery() {
 
     // Given
-    Database database(DEFAULT_DATABASE_NAME, this->testCreator, false, false);
+    auto const &connector = TestConnector(DEFAULT_DATABASE_NAME);
+    Database database(connector, this->testCreator, false);
 
     // When
     database.connect();
@@ -162,7 +98,8 @@ void QORMDatabaseTest::executeShouldSuccessWithTextQuery() {
 void QORMDatabaseTest::executeShouldSuccessWithBuiltQuery() {
 
     // Given
-    Database database(DEFAULT_DATABASE_NAME, this->testCreator, false, false);
+    auto const &connector = TestConnector(DEFAULT_DATABASE_NAME);
+    Database database(connector, this->testCreator, false);
 
     // When
     database.connect();
@@ -174,7 +111,8 @@ void QORMDatabaseTest::executeShouldSuccessWithBuiltQuery() {
 void QORMDatabaseTest::existsShouldReturnTrue() {
 
     // Given
-    Database database(DEFAULT_DATABASE_NAME, this->testCreator, false, false);
+    auto const &connector = TestConnector(DEFAULT_DATABASE_NAME);
+    Database database(connector, this->testCreator, false);
 
     // When
     database.connect();
@@ -187,7 +125,8 @@ void QORMDatabaseTest::existsShouldReturnTrue() {
 void QORMDatabaseTest::existsShouldReturnFalse() {
 
     // Given
-    Database database(DEFAULT_DATABASE_NAME, this->testCreator, false, false);
+    auto const &connector = TestConnector(DEFAULT_DATABASE_NAME);
+    Database database(connector, this->testCreator, false);
 
     // When
     database.connect();
@@ -199,7 +138,8 @@ void QORMDatabaseTest::existsShouldReturnFalse() {
 void QORMDatabaseTest::insertAndRetrieveKeyAsIntShouldSuccess() {
 
     // Given
-    Database database(DEFAULT_DATABASE_NAME, this->testCreator, false, false);
+    auto const &connector = TestConnector(DEFAULT_DATABASE_NAME);
+    Database database(connector, this->testCreator, false);
 
     // When
     database.connect();
@@ -212,7 +152,8 @@ void QORMDatabaseTest::insertAndRetrieveKeyAsIntShouldSuccess() {
 void QORMDatabaseTest::insertAndRetrieveKeyAsIntShouldFail() {
 
     // Given
-    Database database(DEFAULT_DATABASE_NAME, this->testCreator, false, false);
+    auto const &connector = TestConnector(DEFAULT_DATABASE_NAME);
+    Database database(connector, this->testCreator, false);
 
     // When
     database.connect();
@@ -227,7 +168,8 @@ void QORMDatabaseTest::insertAndRetrieveKeyAsIntShouldFail() {
 void QORMDatabaseTest::entityShouldSuccess() {
 
     // Given
-    Database database(DEFAULT_DATABASE_NAME, this->testCreator, false, false);
+    auto const &connector = TestConnector(DEFAULT_DATABASE_NAME);
+    Database database(connector, this->testCreator, false);
     TestEntity testEntity(DEFAULT_VALUE);
     bool convertible = false;
 
@@ -249,7 +191,8 @@ void QORMDatabaseTest::entityShouldSuccess() {
 void QORMDatabaseTest::entityShouldThrowWhenNothingFound() {
 
     // Given
-    Database database(DEFAULT_DATABASE_NAME, this->testCreator, false, false);
+    auto const &connector = TestConnector(DEFAULT_DATABASE_NAME);
+    Database database(connector, this->testCreator, false);
     TestEntity testEntity(DEFAULT_VALUE);
 
     // When
@@ -270,7 +213,8 @@ void QORMDatabaseTest::entityShouldThrowWhenNothingFound() {
 void QORMDatabaseTest::entitiesShouldReturnNonEmptyList() {
 
     // Given
-    Database database(DEFAULT_DATABASE_NAME, this->testCreator, false, false);
+    auto const &connector = TestConnector(DEFAULT_DATABASE_NAME);
+    Database database(connector, this->testCreator, false);
     TestEntity testEntity(DEFAULT_VALUE);
     bool convertible = false;
 
@@ -293,7 +237,8 @@ void QORMDatabaseTest::entitiesShouldReturnNonEmptyList() {
 void QORMDatabaseTest::entitiesShouldReturnEmptyList() {
 
     // Given
-    Database database(DEFAULT_DATABASE_NAME, this->testCreator, false, false);
+    auto const &connector = TestConnector(DEFAULT_DATABASE_NAME);
+    Database database(connector, this->testCreator, false);
 
     // When
     database.connect();
@@ -306,7 +251,8 @@ void QORMDatabaseTest::entitiesShouldReturnEmptyList() {
 void QORMDatabaseTest::resultShouldReturnDefaultValueIfNoResult() {
 
     // Given
-    Database database(DEFAULT_DATABASE_NAME, this->testCreator, false, false);
+    auto const &connector = TestConnector(DEFAULT_DATABASE_NAME);
+    Database database(connector, this->testCreator, false);
 
     // When
     database.connect();
@@ -324,7 +270,8 @@ void QORMDatabaseTest::resultShouldReturnDefaultValueIfNoResult() {
 void QORMDatabaseTest::resultShouldReturnQueryValue() {
 
     // Given
-    Database database(DEFAULT_DATABASE_NAME, this->testCreator, false, false);
+    auto const &connector = TestConnector(DEFAULT_DATABASE_NAME);
+    Database database(connector, this->testCreator, false);
 
     // When
     database.connect();
@@ -340,8 +287,11 @@ void QORMDatabaseTest::resultShouldReturnQueryValue() {
     QCOMPARE(result, 1);
 }
 
+void QORMDatabaseTest::init() {
+    QFile::remove(DEFAULT_DATABASE_NAME);
+}
+
 void QORMDatabaseTest::cleanup() {
-    QFile::remove("test_" + DEFAULT_DATABASE_NAME + ".db");
-    QFile::remove(DEFAULT_DATABASE_NAME + ".db");
-    QFile::remove(DEFAULT_BACKUP_FILE_NAME);
+    QFile::remove(DEFAULT_DATABASE_NAME);
+    QSqlDatabase::removeDatabase(DEFAULT_DATABASE_NAME);
 }

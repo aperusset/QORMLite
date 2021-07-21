@@ -11,17 +11,14 @@ auto QORM::isInitialized(const QString &name) -> bool {
     return pool.count(name);
 }
 
-void QORM::initialize(const QString &name, const Creator &creator,
-                      bool verbose, bool test) {
+void QORM::initialize(const Connector &connector, const Creator &creator, bool verbose) {
     const QMutexLocker lock(&poolMutex);
-    if (isInitialized(name)) {
+    if (isInitialized(connector.getName())) {
         throw std::string("This database is already initialized");
     }
-    qDebug(
-        "Initializing database %s in %s mode.",
-        qUtf8Printable(name), test ? "test" : "production");
+    qDebug("Initializing database %s.", qUtf8Printable(connector.getName()));
     pool.insert(std::make_pair(
-        name, new Database(name, creator, verbose, test)));
+        connector.getName(), new Database(connector, creator, verbose)));
 }
 
 auto QORM::get(const QString &name) -> Database& {
