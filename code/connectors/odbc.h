@@ -15,9 +15,9 @@ class ODBC : public Connector {
 
     auto getDriverDefinition() const -> QString;
     auto getConnectionString() const -> QString;
-    auto databaseName() const -> QString;
-    auto driverName() const -> QString;
-    auto backup(const QString &fileName) const -> bool;
+    auto databaseName() const -> QString override;
+    auto driverName() const -> QString override;
+    auto backup(const QString &fileName) const -> bool override;
 };
 
 inline auto ODBC::getDriverDefinition() const -> QString {

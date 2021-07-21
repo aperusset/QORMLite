@@ -13,7 +13,7 @@ class Connector {
     const QString name;
 
  public:
-    Connector(QString name);
+    explicit Connector(QString name);
     Connector(const Connector&) = delete;
     Connector(Connector&&) = delete;
     Connector& operator=(const Connector&) = delete;
