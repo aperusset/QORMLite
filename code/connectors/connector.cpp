@@ -43,12 +43,12 @@ auto QORM::Connector::isConnected() const -> bool {
 
 void QORM::Connector::connect() const {
     if (!this->isConnected()) {
-        auto database = contains(this->name) ? this->getDatabase() :
-                QSqlDatabase::addDatabase(this->driverName(), this->name);
+        auto database = QSqlDatabase::addDatabase(this->driverName(),
+                                                  this->name);
         this->preConnect();
         if (!database.open()) {
             throw std::string("Failed to open database with name : ") +
-                    getName().toStdString() +
+                    this->name.toStdString() +
                     " | Error message : " +
                     database.lastError().text().toStdString();
         }

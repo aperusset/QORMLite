@@ -7,16 +7,18 @@
 namespace QORM {
 
 class SQLite : public Connector {
-    const bool test;
     const bool foreignKeysActivated;
+    const bool test;
 
     static const QString TEST_PREFIX;
     static const QString FILE_EXTENSION;
+    static const QString SEQUENCE_TABLE;
 
  public:
-    SQLite(const QString &name, bool test, bool foreignKeysActivated = true);
-    auto isTest() const -> bool;
+    explicit SQLite(const QString &name, bool foreignKeysActivated = true,
+                    bool test = false);
     auto areForeignKeysActivated() const -> bool;
+    auto isTest() const -> bool;
     void disconnect() const override;
     void preConnect() const override;
     void postConnect() const override;
@@ -26,12 +28,12 @@ class SQLite : public Connector {
     auto backup(const QString &fileName) const -> bool override;
 };
 
-inline auto SQLite::isTest() const -> bool {
-    return this->test;
-}
-
 inline auto SQLite::areForeignKeysActivated() const -> bool {
     return this->foreignKeysActivated;
+}
+
+inline auto SQLite::isTest() const -> bool {
+    return this->test;
 }
 
 inline auto QORM::SQLite::driverName() const -> QString {

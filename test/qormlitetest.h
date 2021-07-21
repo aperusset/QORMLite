@@ -3,6 +3,7 @@
 
 #include <QtTest/QtTest>
 #include "fixture/testcreator.h"
+#include "fixture/testconnector.h"
 
 class QORMLiteTest : public QObject {
 
@@ -11,6 +12,7 @@ class QORMLiteTest : public QObject {
     static const QString DEFAULT_DATABASE_NAME;
 
     FakeCreator creator;
+    TestConnector *connector = nullptr;
 
 private slots:
     static void isInitializedShouldReturnFalse();
@@ -21,6 +23,8 @@ private slots:
     void destroyShouldSuccess();
     void destroyAllShouldSuccess();
 
+    void initTestCase();
+    void cleanupTestCase();
     static void cleanup();
 };
 

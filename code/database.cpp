@@ -82,9 +82,7 @@ auto QORM::Database::connect() -> bool {
 
 void QORM::Database::disconnect() {
     const QMutexLocker lock(&databaseMutex);
-    if (this->isConnected()) {
-        connector.disconnect();
-    }
+    connector.disconnect();
 }
 
 void QORM::Database::optimize() const {

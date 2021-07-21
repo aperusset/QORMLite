@@ -31,7 +31,7 @@ class Connector {
     virtual auto tables() const -> std::list<QString>;
     virtual auto views() const -> std::list<QString>;
     virtual auto databaseName() const -> QString {
-        return this->getName();
+        return this->name;
     }
     virtual auto driverName() const -> QString = 0;
     virtual auto backup(const QString &fileName) const -> bool = 0;

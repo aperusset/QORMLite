@@ -13,7 +13,7 @@ void SQLiteTest::initShouldFailIfNameIsEmpty() {
 
     // Given / When / Then
     QVERIFY_EXCEPTION_THROWN(
-        SQLite sqLite("", false),
+        SQLite sqLite("", true, false),
         std::string
     );
 }
@@ -21,7 +21,7 @@ void SQLiteTest::initShouldFailIfNameIsEmpty() {
 void SQLiteTest::initShouldAddFileExtensionToName() {
 
     // Given
-    auto const &sqlite = SQLite(DEFAULT_DATABASE_NAME, false);
+    auto const &sqlite = SQLite(DEFAULT_DATABASE_NAME, true, false);
 
     // When / Then
     QVERIFY(!sqlite.isTest());
@@ -34,7 +34,7 @@ void SQLiteTest::initShouldAddFileExtensionToName() {
 void SQLiteTest::initShouldAddTestPrefixAndFileExtensionToName() {
 
     // Given
-    auto const &sqlite = SQLite(DEFAULT_DATABASE_NAME, true);
+    auto const &sqlite = SQLite(DEFAULT_DATABASE_NAME, true, true);
 
     // When / Then
     QVERIFY(sqlite.isTest());
@@ -47,7 +47,7 @@ void SQLiteTest::initShouldAddTestPrefixAndFileExtensionToName() {
 void SQLiteTest::initShouldDeleteDatabaseFile() {
 
     // Given
-    auto const &sqlite = SQLite("test_" + DEFAULT_DATABASE_NAME, false);
+    auto const &sqlite = SQLite("test_" + DEFAULT_DATABASE_NAME, true, false);
 
     // When
     sqlite.connect();
@@ -55,7 +55,7 @@ void SQLiteTest::initShouldDeleteDatabaseFile() {
 
     // Then
     QVERIFY(QFile::exists(sqlite.getName()));
-    auto const &sqliteTest = SQLite(DEFAULT_DATABASE_NAME, true);
+    auto const &sqliteTest = SQLite(DEFAULT_DATABASE_NAME, true, true);
     QCOMPARE(
         sqliteTest.getName(),
         sqlite.getName()
@@ -66,7 +66,7 @@ void SQLiteTest::initShouldDeleteDatabaseFile() {
 void SQLiteTest::driverNameShouldBeCompliant() {
 
     // Given
-    auto const &sqlite = SQLite(DEFAULT_DATABASE_NAME, false);
+    auto const &sqlite = SQLite(DEFAULT_DATABASE_NAME, true, false);
 
     // When / Then
     QCOMPARE(sqlite.driverName(), "QSQLITE");
@@ -75,7 +75,7 @@ void SQLiteTest::driverNameShouldBeCompliant() {
 void SQLiteTest::connectShouldFailWithInvalidDatabaseName() {
 
     // Given
-    auto const &sqlite = SQLite("data/base.db", false);
+    auto const &sqlite = SQLite("data/base.db", true, false);
 
     // When / Then
     QVERIFY_EXCEPTION_THROWN(
@@ -109,7 +109,7 @@ void SQLiteTest::connectShouldEnableRegexpButNotForeignKeys() {
 void SQLiteTest::connectShouldEnableRegexpAndForeignKeys() {
 
     // Given
-    auto const &sqlite = SQLite("test_" + DEFAULT_DATABASE_NAME, false);
+    auto const &sqlite = SQLite("test_" + DEFAULT_DATABASE_NAME, true, false);
 
     // When
     sqlite.connect();
@@ -131,7 +131,7 @@ void SQLiteTest::connectShouldEnableRegexpAndForeignKeys() {
 void SQLiteTest::disconnectShouldNotDeleteDatabaseFile() {
 
     // Given
-    auto const &sqlite = SQLite(DEFAULT_DATABASE_NAME, false);
+    auto const &sqlite = SQLite(DEFAULT_DATABASE_NAME, true, false);
 
     // When
     sqlite.connect();
@@ -144,7 +144,7 @@ void SQLiteTest::disconnectShouldNotDeleteDatabaseFile() {
 void SQLiteTest::disconnectShouldDeleteDatabaseFile() {
 
     // Given
-    auto const &sqlite = SQLite(DEFAULT_DATABASE_NAME, true);
+    auto const &sqlite = SQLite(DEFAULT_DATABASE_NAME, true, true);
 
     // When
     sqlite.connect();
@@ -157,7 +157,7 @@ void SQLiteTest::disconnectShouldDeleteDatabaseFile() {
 void SQLiteTest::tablesShouldReturnWithoutSequence() {
 
     // Given
-    auto const &sqlite = SQLite(DEFAULT_DATABASE_NAME, true);
+    auto const &sqlite = SQLite(DEFAULT_DATABASE_NAME, true, true);
     auto const field = QORM::Field::notNull("field", QORM::Type("integer"));
     auto const primaryKey = QORM::PrimaryKey(field);
     auto const table = QORM::Table("test_table", primaryKey);
@@ -176,7 +176,7 @@ void SQLiteTest::tablesShouldReturnWithoutSequence() {
 void SQLiteTest::backupShouldSuccessAndCreateFile() {
 
     // Given
-    auto const &sqlite = SQLite(DEFAULT_DATABASE_NAME, false);
+    auto const &sqlite = SQLite(DEFAULT_DATABASE_NAME, true, false);
 
     // When
     sqlite.connect();

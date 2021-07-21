@@ -5,8 +5,8 @@
 
 auto QORM::Creator::isCreated(const Database &database,
                               const std::list<QString> &existingTables,
-                              const std::list<QString> &existingViews) const
-    -> bool {
+                              const std::list<QString> &existingViews)
+    const -> bool {
     return database.isConnected() &&
            existingTables.size() == this->tables().size() &&
            existingViews.size() == this->views().size();

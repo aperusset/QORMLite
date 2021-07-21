@@ -16,11 +16,12 @@ void deleteIfTestMode(const QString &fileName, bool test) {
 
 const QString QORM::SQLite::TEST_PREFIX = "test_";
 const QString QORM::SQLite::FILE_EXTENSION = ".db";
+const QString QORM::SQLite::SEQUENCE_TABLE = "sqlite_sequence";
 
-QORM::SQLite::SQLite(const QString &name, bool test,
-                     bool foreignKeysActivated) :
+QORM::SQLite::SQLite(const QString &name, bool foreignKeysActivated,
+                     bool test) :
     Connector((test ? TEST_PREFIX : "") + name + FILE_EXTENSION),
-    test(test), foreignKeysActivated(foreignKeysActivated) {
+    foreignKeysActivated(foreignKeysActivated), test(test) {
     if (name.isEmpty()) {
         throw std::string("Database must have a name");
     }
@@ -54,7 +55,7 @@ void QORM::SQLite::optimize() const {
 
 auto QORM::SQLite::tables() const -> std::list<QString> {
     auto tables = Connector::tables();
-    tables.remove("sqlite_sequence");
+    tables.remove(SEQUENCE_TABLE);
     return tables;
 }
 
