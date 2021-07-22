@@ -1,17 +1,16 @@
-#ifndef SELECTIONTEST_H
-#define SELECTIONTEST_H
+#ifndef TEST_OPERATIONS_QUERY_SELECTIONTEST_H_
+#define TEST_OPERATIONS_QUERY_SELECTIONTEST_H_
 
 #include <QtTest/QtTest>
 
 class SelectionTest : public QObject {
-
     Q_OBJECT
 
     static const QString DEFAULT_FIELD_NAME;
     static const QString DEFAULT_RENAMED_TO;
     static const QString DEFAULT_FORMAT;
 
-private slots:
+ private slots:
     static void generate();
     static void generateRenamed();
     static void equals();
@@ -26,4 +25,4 @@ private slots:
     static void upper();
 };
 
-#endif // SELECTIONTEST_H
+#endif  // TEST_OPERATIONS_QUERY_SELECTIONTEST_H_

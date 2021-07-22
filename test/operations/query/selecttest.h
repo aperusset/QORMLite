@@ -1,16 +1,15 @@
-#ifndef SELECTTEST_H
-#define SELECTTEST_H
+#ifndef TEST_OPERATIONS_QUERY_SELECTTEST_H_
+#define TEST_OPERATIONS_QUERY_SELECTTEST_H_
 
 #include <QtTest/QtTest>
 
 class SelectTest : public QObject {
-
     Q_OBJECT
 
     static const QString DEFAULT_TABLE_NAME;
     static const QString DEFAULT_FIELD_NAME;
 
-private slots:
+ private slots:
     static void selectAll();
     static void selectOneField();
     static void selectMultipleFields();
@@ -29,4 +28,4 @@ private slots:
     static void lastInsertedId();
 };
 
-#endif // SELECTTEST_H
+#endif  // TEST_OPERATIONS_QUERY_SELECTTEST_H_

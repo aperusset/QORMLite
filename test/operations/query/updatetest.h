@@ -1,19 +1,18 @@
-#ifndef UPDATETEST_H
-#define UPDATETEST_H
+#ifndef TEST_OPERATIONS_QUERY_UPDATETEST_H_
+#define TEST_OPERATIONS_QUERY_UPDATETEST_H_
 
 #include <QtTest/QtTest>
 
 class UpdateTest : public QObject {
-
     Q_OBJECT
 
     static const QString DEFAULT_TABLE_NAME;
     static const QString DEFAULT_FIELD_NAME;
 
-private slots:
+ private slots:
     static void withoutAssignementsShouldFail();
     static void generateWithoutConditions();
     static void generateWithConditions();
 };
 
-#endif // UPDATETEST_H
+#endif  // TEST_OPERATIONS_QUERY_UPDATETEST_H_

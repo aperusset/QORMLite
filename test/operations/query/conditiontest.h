@@ -1,17 +1,16 @@
-#ifndef CONDITIONTEST_H
-#define CONDITIONTEST_H
+#ifndef TEST_OPERATIONS_QUERY_CONDITIONTEST_H_
+#define TEST_OPERATIONS_QUERY_CONDITIONTEST_H_
 
 #include <QtTest/QtTest>
 
 class ConditionTest : public QObject {
-
     Q_OBJECT
 
     static const QString DEFAULT_TABLE_NAME;
     static const QString DEFAULT_FIELD_NAME;
     static const QVariant DEFAULT_VALUE;
 
-private slots:
+ private slots:
     static void withoutOperatorShouldFail();
     static void withoutLeftOperandAndNestedConditionShouldFail();
     static void parameterShouldReturnRightField();
@@ -39,4 +38,4 @@ private slots:
     static void recursiveNotParametrized();
 };
 
-#endif // CONDITIONTEST_H
+#endif  // TEST_OPERATIONS_QUERY_CONDITIONTEST_H_

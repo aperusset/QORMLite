@@ -1,10 +1,10 @@
 #include "utilstest.h"
-#include "entitytest.h"
-#include "observertest.h"
-#include "cachetest.h"
-#include "databasetest.h"
-#include "creatortest.h"
-#include "qormlitetest.h"
+#include "./entitytest.h"
+#include "./observertest.h"
+#include "./cachetest.h"
+#include "./databasetest.h"
+#include "./creatortest.h"
+#include "./qormlitetest.h"
 #include "operations/model/typetest.h"
 #include "operations/model/fieldtest.h"
 #include "operations/model/primarykeytest.h"
@@ -26,7 +26,6 @@
 #include "connectors/odbctest.h"
 
 auto main(int argc, char *argv[]) -> int {
-
     auto tests = std::list<std::shared_ptr<QObject>>{
         std::make_shared<UtilsTest>(),
         std::make_shared<EntityTest>(),
@@ -57,7 +56,6 @@ auto main(int argc, char *argv[]) -> int {
     };
 
     try {
-
         for (auto &test : tests) {
             if (QTest::qExec(test.get(), argc, argv)) {
                 return EXIT_FAILURE;
