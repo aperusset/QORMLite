@@ -1,23 +1,22 @@
-#ifndef QORMCREATORTEST_H
-#define QORMCREATORTEST_H
+#ifndef TEST_CREATORTEST_H_
+#define TEST_CREATORTEST_H_
 
 #include <QtTest/QtTest>
 #include "fixture/maindatabasetest.h"
 #include "fixture/testcreator.h"
 
-class QORMCreatorTest : public MainDatabaseTest {
-
+class CreatorTest : public MainDatabaseTest {
     Q_OBJECT
 
     TestCreator testCreator;
     FakeCreator fakeCreator;
 
-public:
+ public:
     auto databaseName() const -> QString override {
         return "creatordatabase";
     }
 
-private slots:
+ private slots:
     void isCreatedShouldReturnFalseIfNotConnected();
     void isCreatedShouldReturnFalseIfTablesNotCreated();
     void isCreatedShouldReturnFalseIfViewsNotCreated();
@@ -29,4 +28,4 @@ private slots:
     void createAllAndPopulateShouldSuccess();
 };
 
-#endif // QORMCREATORTEST_H
+#endif  // QORMCREATORTEST_H_

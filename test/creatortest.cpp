@@ -1,73 +1,73 @@
-#include "qormcreatortest.h"
-#include "database.h"
+#include "creatortest.h"
+#include <string>
+#include "./database.h"
 #include "operations/model/primarykey.h"
 #include "operations/model/type/integer.h"
 #include "operations/query/select.h"
 #include "operations/query/insert.h"
 #include "fixture/testconnector.h"
 
-using namespace QORM;
-
-void QORMCreatorTest::isCreatedShouldReturnFalseIfNotConnected() {
-
+void CreatorTest::isCreatedShouldReturnFalseIfNotConnected() {
     // Given
     auto const &connector = TestConnector(this->databaseName());
     QORM::Database database(connector, testCreator, false);
 
     // When / Then
-    QVERIFY(!testCreator.isCreated(database, { TestCreator::TEST_TABLE }, { TestCreator::TEST_VIEW }));
+    QVERIFY(!testCreator.isCreated(database,
+                { TestCreator::TEST_TABLE }, { TestCreator::TEST_VIEW }));
 }
 
-void QORMCreatorTest::isCreatedShouldReturnFalseIfTablesNotCreated() {
-
-    // Given
-    auto const &connector = TestConnector(this->databaseName());
-    QORM::Database database(connector, testCreator, false);
-    database.connect();
-
-    // When / Then
-    QVERIFY(!testCreator.isCreated(database, { TestCreator::TEST_TABLE, "another_table" }, { TestCreator::TEST_VIEW }));
-}
-
-void QORMCreatorTest::isCreatedShouldReturnFalseIfViewsNotCreated() {
-
+void CreatorTest::isCreatedShouldReturnFalseIfTablesNotCreated() {
     // Given
     auto const &connector = TestConnector(this->databaseName());
     QORM::Database database(connector, testCreator, false);
     database.connect();
 
     // When / Then
-    QVERIFY(!testCreator.isCreated(database, { TestCreator::TEST_TABLE }, { TestCreator::TEST_VIEW, "another_view" }));
+    QVERIFY(!testCreator.isCreated(database,
+                { TestCreator::TEST_TABLE, "another_table" },
+                { TestCreator::TEST_VIEW }));
 }
 
-void QORMCreatorTest::isCreatedShouldReturnTrue() {
-
+void CreatorTest::isCreatedShouldReturnFalseIfViewsNotCreated() {
     // Given
     auto const &connector = TestConnector(this->databaseName());
     QORM::Database database(connector, testCreator, false);
     database.connect();
 
     // When / Then
-    QVERIFY(testCreator.isCreated(database, { TestCreator::TEST_TABLE }, { TestCreator::TEST_VIEW }));
+    QVERIFY(!testCreator.isCreated(database,
+                { TestCreator::TEST_TABLE },
+                { TestCreator::TEST_VIEW, "another_view" }));
 }
 
-void QORMCreatorTest::createTableShouldSuccess() {
+void CreatorTest::isCreatedShouldReturnTrue() {
+    // Given
+    auto const &connector = TestConnector(this->databaseName());
+    QORM::Database database(connector, testCreator, false);
+    database.connect();
 
+    // When / Then
+    QVERIFY(testCreator.isCreated(database,
+                { TestCreator::TEST_TABLE }, { TestCreator::TEST_VIEW }));
+}
+
+void CreatorTest::createTableShouldSuccess() {
     // Given
     auto const &connector = TestConnector(this->databaseName());
     QORM::Database database(connector, fakeCreator, false);
-    auto const primaryKey = PrimaryKey(Field::notNull(TestCreator::TEST_FIELD, Integer()));
+    auto const primaryKey = QORM::PrimaryKey(
+                QORM::Field::notNull(TestCreator::TEST_FIELD, QORM::Integer()));
     database.connect();
 
     // When
     TestCreator::createTable(database, TestCreator::TEST_TABLE, primaryKey);
 
     // Then
-    QVERIFY(database.execute(Select(TestCreator::TEST_TABLE)).isSelect());
+    QVERIFY(database.execute(QORM::Select(TestCreator::TEST_TABLE)).isSelect());
 }
 
-void QORMCreatorTest::createViewShouldSuccess() {
-
+void CreatorTest::createViewShouldSuccess() {
     // Given
     auto const &connector = TestConnector(this->databaseName());
     QORM::Database database(connector, fakeCreator, false);
@@ -75,14 +75,14 @@ void QORMCreatorTest::createViewShouldSuccess() {
     testCreator.createTables(database);
 
     // When
-    TestCreator::createView(database, TestCreator::TEST_VIEW, Select(TestCreator::TEST_TABLE));
+    TestCreator::createView(database, TestCreator::TEST_VIEW,
+                            QORM::Select(TestCreator::TEST_TABLE));
 
     // Then
-    QVERIFY(database.execute(Select(TestCreator::TEST_VIEW)).isSelect());
+    QVERIFY(database.execute(QORM::Select(TestCreator::TEST_VIEW)).isSelect());
 }
 
-void QORMCreatorTest::createViewShouldFailIfTableNotExists() {
-
+void CreatorTest::createViewShouldFailIfTableNotExists() {
     // Given
     auto const &connector = TestConnector(this->databaseName());
     QORM::Database database(connector, fakeCreator, false);
@@ -90,13 +90,12 @@ void QORMCreatorTest::createViewShouldFailIfTableNotExists() {
 
     // When / Then
     QVERIFY_EXCEPTION_THROWN(
-        testCreator.createView(database, TestCreator::TEST_VIEW, Select(TestCreator::TEST_TABLE)),
-        std::string
-    );
+        testCreator.createView(database, TestCreator::TEST_VIEW,
+                               QORM::Select(TestCreator::TEST_TABLE)),
+        std::string);
 }
 
-void QORMCreatorTest::insertShouldSuccess() {
-
+void CreatorTest::insertShouldSuccess() {
     // Given
     auto const &connector = TestConnector(this->databaseName());
     QORM::Database database(connector, fakeCreator, false);
@@ -104,14 +103,13 @@ void QORMCreatorTest::insertShouldSuccess() {
     testCreator.createTables(database);
 
     // When
-    TestCreator::insert(database, Insert(TestCreator::TEST_TABLE));
+    TestCreator::insert(database, QORM::Insert(TestCreator::TEST_TABLE));
 
     // Then
-    QVERIFY(database.execute(Select(TestCreator::TEST_TABLE)).next());
+    QVERIFY(database.execute(QORM::Select(TestCreator::TEST_TABLE)).next());
 }
 
-void QORMCreatorTest::createAllAndPopulateShouldSuccess() {
-
+void CreatorTest::createAllAndPopulateShouldSuccess() {
     // Given
     auto const &connector = TestConnector(this->databaseName());
     QORM::Database database(connector, fakeCreator, false);
@@ -119,9 +117,9 @@ void QORMCreatorTest::createAllAndPopulateShouldSuccess() {
 
     // When
     testCreator.createAllAndPopulate(database);
-    TestCreator::insert(database, Insert(TestCreator::TEST_TABLE));
+    TestCreator::insert(database, QORM::Insert(TestCreator::TEST_TABLE));
 
     // Then
-    QVERIFY(database.execute(Select(TestCreator::TEST_TABLE)).next());
-    QVERIFY(database.execute(Select(TestCreator::TEST_VIEW)).next());
+    QVERIFY(database.execute(QORM::Select(TestCreator::TEST_TABLE)).next());
+    QVERIFY(database.execute(QORM::Select(TestCreator::TEST_VIEW)).next());
 }

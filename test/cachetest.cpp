@@ -1,7 +1,8 @@
-#include "qormcachetest.h"
+#include "cachetest.h"
+#include <string>
+#include <utility>
 
-void QORMCacheTest::insert() {
-
+void CacheTest::insert() {
     // Given
     auto entity1 = aTestEntity();
     auto const key1 = entity1->getKey();
@@ -20,17 +21,12 @@ void QORMCacheTest::insert() {
     QCOMPARE(2U, cache.size());
 }
 
-void QORMCacheTest::insertShouldFail() {
-
+void CacheTest::insertShouldFail() {
     // Given / When / Then
-    QVERIFY_EXCEPTION_THROWN(
-        cache.insert(0, nullptr),
-        std::string
-    );
+    QVERIFY_EXCEPTION_THROWN(cache.insert(0, nullptr), std::string);
 }
 
-void QORMCacheTest::contains() {
-
+void CacheTest::contains() {
     // Given
     auto entity1 = aTestEntity();
     auto const key1 = entity1->getKey();
@@ -44,8 +40,7 @@ void QORMCacheTest::contains() {
     QVERIFY(!cache.contains(key2));
 }
 
-void QORMCacheTest::getShouldSuccess() {
-
+void CacheTest::getShouldSuccess() {
     // Given
     auto entity = aTestEntity();
     auto const key = entity->getKey();
@@ -57,20 +52,15 @@ void QORMCacheTest::getShouldSuccess() {
     QCOMPARE(key, cache.get(key).getKey());
 }
 
-void QORMCacheTest::getShouldFail() {
-
+void CacheTest::getShouldFail() {
     // Given
     auto entity = aTestEntity();
 
     // When / Then
-    QVERIFY_EXCEPTION_THROWN(
-        cache.get(entity->getKey()),
-        std::string
-    );
+    QVERIFY_EXCEPTION_THROWN(cache.get(entity->getKey()), std::string);
 }
 
-void QORMCacheTest::getOrCreate() {
-
+void CacheTest::getOrCreate() {
     // Given
     auto const key = 43;
 
@@ -79,16 +69,14 @@ void QORMCacheTest::getOrCreate() {
         key, [this, &key]() -> TestEntity& {
             this->cache.insert(key, aTestEntity(key));
             return this->cache.get(key);
-        }
-    );
+        });
 
     // Then
     QVERIFY(cache.contains(key));
     QCOMPARE(key, retrievedEntity.getKey());
 }
 
-void QORMCacheTest::remove() {
-
+void CacheTest::remove() {
     // Given
     auto entity1 = aTestEntity();
     auto const key1 = entity1->getKey();

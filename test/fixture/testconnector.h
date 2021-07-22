@@ -1,15 +1,14 @@
-#ifndef TESTCONNECTOR_H
-#define TESTCONNECTOR_H
+#ifndef TEST_FIXTURE_TESTCONNECTOR_H_
+#define TEST_FIXTURE_TESTCONNECTOR_H_
 
 #include "connectors/connector.h"
 
 class TestConnector : public QORM::Connector {
-
     static bool preConnectCalled;
     static bool postConnectCalled;
     static bool optimizeCalled;
 
-public:
+ public:
     explicit TestConnector(const QString &name) : Connector(name) {}
 
     void preConnect() const override {
@@ -51,4 +50,4 @@ public:
     }
 };
 
-#endif // TESTCONNECTOR_H
+#endif  // TEST_FIXTURE_TESTCONNECTOR_H_

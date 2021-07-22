@@ -1,14 +1,13 @@
-#ifndef SQLITETEST_H
-#define SQLITETEST_H
+#ifndef TEST_CONNECTORS_SQLITETEST_H_
+#define TEST_CONNECTORS_SQLITETEST_H_
 
-#include "fixture/maindatabasetest.h"
 #include <QtTest/QtTest>
+#include "fixture/maindatabasetest.h"
 
 class SQLiteTest : public MainDatabaseTest {
-
     Q_OBJECT
 
-public:
+ public:
     auto databaseName() const -> QString override {
         return "sqlitedatabase";
     }
@@ -17,7 +16,7 @@ public:
         return "sqlitedatabase.backup";
     }
 
-private slots:
+ private slots:
     void initShouldFailIfNameIsEmpty();
     void initShouldAddFileExtensionToName();
     void initShouldAddTestPrefixAndFileExtensionToName();
@@ -32,4 +31,4 @@ private slots:
     void backupShouldSuccessAndCreateFile();
 };
 
-#endif // SQLITETEST_H
+#endif  // TEST_CONNECTORS_SQLITETEST_H_

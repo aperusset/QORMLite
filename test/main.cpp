@@ -1,9 +1,9 @@
-#include "qormutilstest.h"
-#include "qormentitytest.h"
-#include "qormobservertest.h"
-#include "qormcachetest.h"
-#include "qormdatabasetest.h"
-#include "qormcreatortest.h"
+#include "utilstest.h"
+#include "entitytest.h"
+#include "observertest.h"
+#include "cachetest.h"
+#include "databasetest.h"
+#include "creatortest.h"
 #include "qormlitetest.h"
 #include "operations/model/typetest.h"
 #include "operations/model/fieldtest.h"
@@ -28,10 +28,10 @@
 auto main(int argc, char *argv[]) -> int {
 
     auto tests = std::list<std::shared_ptr<QObject>>{
-        std::make_shared<QORMUtilsTest>(),
-        std::make_shared<QORMEntityTest>(),
-        std::make_shared<QORMObserverTest>(),
-        std::make_shared<QORMCacheTest>(),
+        std::make_shared<UtilsTest>(),
+        std::make_shared<EntityTest>(),
+        std::make_shared<ObserverTest>(),
+        std::make_shared<CacheTest>(),
         std::make_shared<TypeTest>(),
         std::make_shared<FieldTest>(),
         std::make_shared<PrimaryKeyTest>(),
@@ -51,8 +51,8 @@ auto main(int argc, char *argv[]) -> int {
         std::make_shared<ConnectorTest>(),
         std::make_shared<SQLiteTest>(),
         std::make_shared<ODBCTest>(),
-        std::make_shared<QORMDatabaseTest>(),
-        std::make_shared<QORMCreatorTest>(),
+        std::make_shared<DatabaseTest>(),
+        std::make_shared<CreatorTest>(),
         std::make_shared<QORMLiteTest>()
     };
 

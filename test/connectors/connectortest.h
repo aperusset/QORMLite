@@ -1,19 +1,18 @@
-#ifndef CONNECTORTEST_H
-#define CONNECTORTEST_H
+#ifndef TEST_CONNECTORS_CONNECTORTEST_H_
+#define TEST_CONNECTORS_CONNECTORTEST_H_
 
-#include "fixture/maindatabasetest.h"
 #include <QtTest/QtTest>
+#include "fixture/maindatabasetest.h"
 
 class ConnectorTest : public MainDatabaseTest {
-
     Q_OBJECT
 
-public:
+ public:
     auto databaseName() const -> QString override {
         return "connectordatabase";
     }
 
-private slots:
+ private slots:
     void initShouldFailIfNameIsEmpty();
     void initShouldFailIfIfNameAlreadyUsed();
     void initShouldSuccessWithValidName();
@@ -26,4 +25,4 @@ private slots:
     void shouldReturnListOfAvailableViews();
 };
 
-#endif // CONNECTORTEST_H
+#endif  // TEST_CONNECTORS_CONNECTORTEST_H_

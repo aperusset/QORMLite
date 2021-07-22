@@ -1,23 +1,22 @@
-#ifndef QORMOBSERVERTEST_H
-#define QORMOBSERVERTEST_H
+#ifndef TEST_OBSERVERTEST_H_
+#define TEST_OBSERVERTEST_H_
 
 #include <QtTest/QtTest>
 #include "fixture/testentity.h"
 #include "fixture/testobserver.h"
 
-class QORMObserverTest : public QObject {
-
+class ObserverTest : public QObject {
     Q_OBJECT
 
     TestEntity entity;
     TestObserver observer;
 
-public:
-    QORMObserverTest() : entity(DEFAULT_ENTITY_KEY) {
+ public:
+    ObserverTest() : entity(DEFAULT_ENTITY_KEY) {
         entity.attach(observer);
     }
 
-private slots:
+ private slots:
     void cleanup() {
         this->observer.reset();
     }
@@ -26,4 +25,4 @@ private slots:
     void onDelete();
 };
 
-#endif // QORMOBSERVERTEST_H
+#endif  // TEST_OBSERVERTEST_H_

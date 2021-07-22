@@ -1,5 +1,5 @@
-#ifndef QORMLITETEST_H
-#define QORMLITETEST_H
+#ifndef TEST_QORMLITETEST_H_
+#define TEST_QORMLITETEST_H_
 
 #include <QtTest/QtTest>
 #include "fixture/maindatabasetest.h"
@@ -7,18 +7,17 @@
 #include "fixture/testconnector.h"
 
 class QORMLiteTest : public MainDatabaseTest {
-
     Q_OBJECT
 
     FakeCreator creator;
     TestConnector *connector = nullptr;
 
-public:
+ public:
     auto databaseName() const -> QString override {
         return "qormdatabase";
     }
 
-private slots:
+ private slots:
     void isInitializedShouldReturnFalse();
     void initializeShouldSuccessAndIsInitializedShouldReturnTrue();
     void initializeShouldFailIfDatabaseAlreadyExists();
@@ -32,4 +31,4 @@ private slots:
     void cleanup();
 };
 
-#endif // QORMLITETEST_H
+#endif  // TEST_QORMLITETEST_H_

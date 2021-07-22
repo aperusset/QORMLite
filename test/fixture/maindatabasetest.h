@@ -1,15 +1,14 @@
-#ifndef MAINDATABASETEST_H
-#define MAINDATABASETEST_H
+#ifndef TEST_FIXTURE_MAINDATABASETEST_H_
+#define TEST_FIXTURE_MAINDATABASETEST_H_
 
-#include <QtTest/QtTest>
 #include <QSqlDatabase>
+#include <QtTest/QtTest>
 
 class MainDatabaseTest : public QObject {
-
     Q_OBJECT
 
     void deleteAllDatabases() {
-        for(auto &connection : QSqlDatabase::connectionNames()) {
+        for (auto &connection : QSqlDatabase::connectionNames()) {
             QSqlDatabase::database(connection, false).close();
             QSqlDatabase::removeDatabase(connection);
             QFile::remove(connection);
@@ -21,13 +20,13 @@ class MainDatabaseTest : public QObject {
         }
     }
 
-public:
+ public:
     virtual auto databaseName() const -> QString = 0;
     virtual auto databaseBackupName() const -> QString {
         return QString();
     };
 
-private slots:
+ private slots:
 
     void init() {
         this->deleteAllDatabases();
@@ -38,4 +37,4 @@ private slots:
     }
 };
 
-#endif // MAINDATABASETEST_H
+#endif  // TEST_FIXTURE_MAINDATABASETEST_H_

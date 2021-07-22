@@ -1,19 +1,17 @@
 #include "connectortest.h"
+#include <string>
 #include "fixture/testconnector.h"
 #include "operations/model/table.h"
 #include "operations/model/view.h"
 
 void ConnectorTest::initShouldFailIfNameIsEmpty() {
-
     // Given / When / Then
     QVERIFY_EXCEPTION_THROWN(
         TestConnector testConnector(""),
-        std::string
-    );
+        std::string);
 }
 
 void ConnectorTest::initShouldFailIfIfNameAlreadyUsed() {
-
     // Given
     auto const &testConnector = TestConnector(this->databaseName());
     testConnector.connect();
@@ -21,45 +19,34 @@ void ConnectorTest::initShouldFailIfIfNameAlreadyUsed() {
     // When / Then
     QVERIFY_EXCEPTION_THROWN(
         TestConnector testConnector(this->databaseName()),
-        std::string
-    );
+        std::string);
     QVERIFY(testConnector.isConnected());
 }
 
 void ConnectorTest::initShouldSuccessWithValidName() {
-
     // Given / When / Then
     TestConnector testConnector(this->databaseName());
     QVERIFY(!testConnector.isConnected());
 }
 
 void ConnectorTest::getDatabaseNameShouldReturnName() {
-
     // Given
     TestConnector testConnector(this->databaseName());
 
-    // When / Thenauto const &testConnector = TestConnector(DEFAULT_DATABASE_NAME);
-    QCOMPARE(
-        testConnector.databaseName(),
-        testConnector.getName()
-    );
+    // When / Then
+    QCOMPARE(testConnector.databaseName(), testConnector.getName());
     QVERIFY(!testConnector.isConnected());
 }
 
 void ConnectorTest::getDatabaseShouldFailIfDatabaseClosed() {
-
     // Given
     auto const &testConnector = TestConnector(this->databaseName());
 
     // When / Then
-    QVERIFY_EXCEPTION_THROWN(
-        testConnector.getDatabase(),
-        std::string
-    );
+    QVERIFY_EXCEPTION_THROWN(testConnector.getDatabase(), std::string);
 }
 
 void ConnectorTest::connectShouldSuccessPreOpenPostAndOptimize() {
-
     // Given
     auto const &testConnector = TestConnector(this->databaseName());
 
@@ -70,17 +57,13 @@ void ConnectorTest::connectShouldSuccessPreOpenPostAndOptimize() {
     // Then
     QVERIFY(testConnector.isConnected());
     QVERIFY(database.isOpen());
-    QCOMPARE(
-        database.databaseName(),
-        this->databaseName()
-    );
+    QCOMPARE(database.databaseName(), this->databaseName());
     QVERIFY(testConnector.isPreConnectCalled());
     QVERIFY(testConnector.isPostConnectCalled());
     QVERIFY(testConnector.isOptimizeCalled());
 }
 
 void ConnectorTest::disconnectShouldSuccessWithOpenedDatabase() {
-
     // Given
     auto const &testConnector = TestConnector(this->databaseName());
 
@@ -93,7 +76,6 @@ void ConnectorTest::disconnectShouldSuccessWithOpenedDatabase() {
 }
 
 void ConnectorTest::disconnectShouldSuccessWithClosedDatabase() {
-
     // Given
     auto const &testConnector = TestConnector(this->databaseName());
 
@@ -107,7 +89,6 @@ void ConnectorTest::disconnectShouldSuccessWithClosedDatabase() {
 }
 
 void ConnectorTest::shouldReturnListOfAvailableTables() {
-
     // Given
     auto const &testConnector = TestConnector(this->databaseName());
     auto const field = QORM::Field::notNull("field", QORM::Type("integer"));
@@ -125,7 +106,6 @@ void ConnectorTest::shouldReturnListOfAvailableTables() {
 }
 
 void ConnectorTest::shouldReturnListOfAvailableViews() {
-
     // Given
     auto const &testConnector = TestConnector(this->databaseName());
     auto const field = QORM::Field::notNull("field", QORM::Type("integer"));

@@ -1,17 +1,16 @@
-#ifndef ODBCTEST_H
-#define ODBCTEST_H
+#ifndef TEST_CONNECTORS_ODBCTEST_H_
+#define TEST_CONNECTORS_ODBCTEST_H_
 
-#include "fixture/maindatabasetest.h"
 #include <QtTest/QtTest>
+#include "fixture/maindatabasetest.h"
 
 class ODBCTest : public MainDatabaseTest {
-
     Q_OBJECT
 
     static const QString DEFAULT_DRIVER_DEFINITION;
     static const QString DEFAULT_CONNECTION_STRING;
 
-public:
+ public:
     auto databaseName() const -> QString override {
         return "odbcdatabase";
     }
@@ -20,7 +19,7 @@ public:
         return "odbcdatabase.backup";
     }
 
-private slots:
+ private slots:
     void initShouldFailWithEmptyName();
     void initShouldFailWithEmptyDriverDefinition();
     void initShouldFailWithEmptyConnectionString();
@@ -30,4 +29,4 @@ private slots:
     void backupShouldFail();
 };
 
-#endif // ODBCTEST_H
+#endif  // TEST_CONNECTORS_ODBCTEST_H_
