@@ -1,15 +1,14 @@
 #include "primarykeytest.h"
+#include <string>
 #include "operations/model/primarykey.h"
 #include "operations/model/field.h"
 #include "operations/model/type/type.h"
 
-using namespace QORM;
-
 void PrimaryKeyTest::getSingleField() {
-
     // Given
-    auto const field = Field("name", Type("type"), false, QString());
-    auto const primaryKey = PrimaryKey(field);
+    auto const field = QORM::Field("name", QORM::Type("type"), false,
+                                   QString());
+    auto const primaryKey = QORM::PrimaryKey(field);
 
     // When
     auto const fields = primaryKey.getFields();
@@ -19,10 +18,10 @@ void PrimaryKeyTest::getSingleField() {
 }
 
 void PrimaryKeyTest::getMultipleFields() {
-
     // Given
-    auto const field = Field("name", Type("type"), false, QString());
-    auto const primaryKey = PrimaryKey({field, field});
+    auto const field = QORM::Field("name", QORM::Type("type"), false,
+                                   QString());
+    auto const primaryKey = QORM::PrimaryKey({field, field});
 
     // When
     auto const fields = primaryKey.getFields();
@@ -33,10 +32,10 @@ void PrimaryKeyTest::getMultipleFields() {
 }
 
 void PrimaryKeyTest::isAutoIncrement() {
-
     // Given
-    auto const primaryKey = PrimaryKey(Field("name", Type("type"), false, QString()));
-
+    auto const primaryKey = QORM::PrimaryKey(QORM::Field("name",
+                                             QORM::Type("type"), false,
+                                             QString()));
     // When
     auto const isAutoIncrement = primaryKey.isAutoIncrement();
 
@@ -45,10 +44,10 @@ void PrimaryKeyTest::isAutoIncrement() {
 }
 
 void PrimaryKeyTest::isNotAutoIncrement() {
-
     // Given
-    auto const primaryKey = PrimaryKey(Field("name", Type("type"), false, QString()), false);
-
+    auto const primaryKey = QORM::PrimaryKey(QORM::Field("name",
+                                             QORM::Type("type"), false,
+                                             QString()), false);
     // When
     auto const isAutoIncrement = primaryKey.isAutoIncrement();
 
@@ -57,11 +56,10 @@ void PrimaryKeyTest::isNotAutoIncrement() {
 }
 
 void PrimaryKeyTest::generateSingleField() {
-
     // Given
-    auto const type = Type("type");
-    auto const field = Field("name", type, false, QString());
-    auto const primaryKey = PrimaryKey(field, false);
+    auto const type = QORM::Type("type");
+    auto const field = QORM::Field("name", type, false, QString());
+    auto const primaryKey = QORM::PrimaryKey(field, false);
 
     // When
     auto const generated = primaryKey.generate();
@@ -71,12 +69,11 @@ void PrimaryKeyTest::generateSingleField() {
 }
 
 void PrimaryKeyTest::generateSingleFieldAutoIncrement() {
-
     // Given
-    auto const type = Type("type");
-    auto const field = Field("name", type, false, QString());
+    auto const type = QORM::Type("type");
+    auto const field = QORM::Field("name", type, false, QString());
     auto const generatedField = field.generate();
-    auto const primaryKey = PrimaryKey(field);
+    auto const primaryKey = QORM::PrimaryKey(field);
 
     // When
     auto const generated = primaryKey.generate();
@@ -86,11 +83,10 @@ void PrimaryKeyTest::generateSingleFieldAutoIncrement() {
 }
 
 void PrimaryKeyTest::generateMultipleFields() {
-
     // Given
-    auto const type = Type("type");
-    auto const field = Field("name", type, false, QString());
-    auto const primaryKey = PrimaryKey({field, field});
+    auto const type = QORM::Type("type");
+    auto const field = QORM::Field("name", type, false, QString());
+    auto const primaryKey = QORM::PrimaryKey({field, field});
 
     // When
     auto const generated = primaryKey.generate();
@@ -100,10 +96,6 @@ void PrimaryKeyTest::generateMultipleFields() {
 }
 
 void PrimaryKeyTest::noFieldsShouldFail() {
-
     // When / Then
-    QVERIFY_EXCEPTION_THROWN(
-        PrimaryKey({}),
-        std::string
-    );
+    QVERIFY_EXCEPTION_THROWN(QORM::PrimaryKey({}), std::string);
 }

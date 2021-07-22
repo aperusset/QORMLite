@@ -1,15 +1,14 @@
-#ifndef REFERENCETEST_H
-#define REFERENCETEST_H
+#ifndef TEST_OPERATIONS_MODEL_REFERENCETEST_H_
+#define TEST_OPERATIONS_MODEL_REFERENCETEST_H_
 
 #include <QtTest/QtTest>
 
 class ReferenceTest : public QObject {
-
     Q_OBJECT
 
-private slots:
+ private slots:
     static void getFrom();
     static void getTo();
 };
 
-#endif // REFERENCETEST_H
+#endif  // TEST_OPERATIONS_MODEL_REFERENCETEST_H_

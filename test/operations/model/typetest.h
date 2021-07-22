@@ -1,13 +1,12 @@
-#ifndef TYPETEST_H
-#define TYPETEST_H
+#ifndef TEST_OPERATIONS_MODEL_TYPETEST_H_
+#define TEST_OPERATIONS_MODEL_TYPETEST_H_
 
 #include <QtTest/QtTest>
 
 class TypeTest : public QObject {
-
     Q_OBJECT
 
-private slots:
+ private slots:
     static void generate();
     static void generateQString();
     static void integerGenerate();
@@ -18,4 +17,4 @@ private slots:
     static void nowIsCompliant();
 };
 
-#endif // TYPETEST_H
+#endif  // TEST_OPERATIONS_MODEL_TYPETEST_H_

@@ -1,18 +1,17 @@
-#ifndef FIELDTEST_H
-#define FIELDTEST_H
+#ifndef TEST_OPERATIONS_MODEL_FIELDTEST_H_
+#define TEST_OPERATIONS_MODEL_FIELDTEST_H_
 
 #include <QtTest/QtTest>
 #include "operations/model/type/type.h"
 
 class FieldTest : public QObject {
+    Q_OBJECT
 
     static const QString DEFAULT_NAME;
     static const QORM::Type DEFAULT_TYPE;
     static const QString DEFAULT_VALUE;
 
-    Q_OBJECT
-
-private slots:
+ private slots:
     static void generateNotNullWithoutDefaultValue();
     static void generateNotNullWithDefaultValue();
     static void generateNullableWithoutDefaultValue();
@@ -21,4 +20,4 @@ private slots:
     static void notEquals();
 };
 
-#endif // FIELDTEST_H
+#endif  // TEST_OPERATIONS_MODEL_FIELDTEST_H_
