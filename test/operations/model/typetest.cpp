@@ -5,12 +5,9 @@
 #include "operations/model/type/decimal.h"
 #include "operations/model/type/varchar.h"
 
-using namespace QORM;
-
 void TypeTest::generate() {
-
     // Given
-    auto const type = Type("typeName");
+    auto const type = QORM::Type("typeName");
 
     // When
     auto const generated = type.generate();
@@ -20,9 +17,8 @@ void TypeTest::generate() {
 }
 
 void TypeTest::generateQString() {
-
     // Given
-    auto const type = Type("typeName");
+    auto const type = QORM::Type("typeName");
 
     // When
     const QString generated = type;
@@ -32,49 +28,45 @@ void TypeTest::generateQString() {
 }
 
 void TypeTest::integerGenerate() {
-
     // When
-    auto const generated = Integer().generate();
+    auto const generated = QORM::Integer().generate();
 
     // Then
     QCOMPARE("integer", generated);
 }
 
 void TypeTest::decimalGenerate() {
-
     // When
-    auto const generated = Decimal().generate();
+    auto const generated = QORM::Decimal().generate();
 
     // Then
-    QCOMPARE("decimal(" + QString::number(Decimal::DEFAULT_DIGITS) + "," + QString::number(Decimal::DEFAULT_DECIMALS) + ")", generated);
+    QCOMPARE("decimal(" + QString::number(QORM::Decimal::DEFAULT_DIGITS) + "," +
+             QString::number(QORM::Decimal::DEFAULT_DECIMALS) + ")", generated);
 }
 
 void TypeTest::varcharGenerate() {
-
     // When
-    auto const generated = Varchar().generate();
+    auto const generated = QORM::Varchar().generate();
 
     // Then
-    QCOMPARE("varchar(" + QString::number(Varchar::DEFAULT_SIZE) + ")", generated);
+    QCOMPARE("varchar(" + QString::number(QORM::Varchar::DEFAULT_SIZE) + ")",
+             generated);
 }
 
 void TypeTest::emptyIsCompliant() {
-
     // Given / When / then
-    QCOMPARE("''", Varchar::EMPTY);
+    QCOMPARE("''", QORM::Varchar::EMPTY);
 }
 
 void TypeTest::dateGenerate() {
-
     // When
-    auto const generated = Date().generate();
+    auto const generated = QORM::Date().generate();
 
     // Then
     QCOMPARE("date", generated);
 }
 
 void TypeTest::nowIsCompliant() {
-
     // Given / When / then
-    QCOMPARE("date('now')", Date::NOW);
+    QCOMPARE("date('now')", QORM::Date::NOW);
 }

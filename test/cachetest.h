@@ -1,17 +1,16 @@
-#ifndef QORMCACHETEST_H
-#define QORMCACHETEST_H
+#ifndef TEST_CACHETEST_H_
+#define TEST_CACHETEST_H_
 
 #include <QtTest/QtTest>
 #include "cache.h"
 #include "fixture/testentity.h"
 
-class QORMCacheTest : public QObject {
-
+class CacheTest : public QObject {
     Q_OBJECT
 
     QORM::Cache<int, TestEntity> cache;
 
-private slots:
+ private slots:
     void cleanup() {
         this->cache.clear();
     }
@@ -25,4 +24,4 @@ private slots:
     void remove();
 };
 
-#endif // QORMCACHETEST_H
+#endif  // TEST_CACHETEST_H_

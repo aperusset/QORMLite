@@ -1,28 +1,25 @@
-#ifndef QORMDATABASETEST_H
-#define QORMDATABASETEST_H
+#ifndef TEST_DATABASETEST_H_
+#define TEST_DATABASETEST_H_
 
 #include <QtTest/QtTest>
+#include "fixture/maindatabasetest.h"
 #include "fixture/testcreator.h"
 
-class QORMDatabaseTest : public QObject {
-
+class DatabaseTest : public MainDatabaseTest {
     Q_OBJECT
-
-    static const QString DEFAULT_DATABASE_NAME;
-    static const QString DEFAULT_BACKUP_FILE_NAME;
 
     TestCreator testCreator;
 
-private slots:
-    void connectShouldFailWithInvalidDatabase();
-    void connectShouldCreateDatabaseAndReturnTrue();
-    void connectShouldCreatePrefixedDatabaseAndReturnTrue();
-    void connectShouldNotCreateDatabaseAndReturnFalse();
+ public:
+    auto databaseName() const -> QString override {
+        return "database";
+    }
+
+ private slots:
+    void connectShouldReturnTrue();
     void subsequentConnectShouldReturnFalse();
-    void disconnectShouldNotDeleteDatabase();
-    void disconnectShouldDeleteDatabaseInTestMode();
+    void disconnectShouldSuccess();
     void optimizeShouldSuccess();
-    void backupShouldSuccessAndCreateFile();
     void prepareExecuteShouldFailWithInvalidQuery();
     void executeShouldSuccessWithTextQuery();
     void executeShouldSuccessWithBuiltQuery();
@@ -36,8 +33,6 @@ private slots:
     void entitiesShouldReturnEmptyList();
     void resultShouldReturnDefaultValueIfNoResult();
     void resultShouldReturnQueryValue();
-
-    static void cleanup();
 };
 
-#endif // QORMDATABASETEST_H
+#endif  // TEST_DATABASETEST_H_

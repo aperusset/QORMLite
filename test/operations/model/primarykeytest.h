@@ -1,13 +1,12 @@
-#ifndef PRIMARYKEYTEST_H
-#define PRIMARYKEYTEST_H
+#ifndef TEST_OPERATIONS_MODEL_PRIMARYKEYTEST_H_
+#define TEST_OPERATIONS_MODEL_PRIMARYKEYTEST_H_
 
 #include <QtTest/QtTest>
 
 class PrimaryKeyTest : public QObject {
-
     Q_OBJECT
 
-private slots:
+ private slots:
     static void getSingleField();
     static void getMultipleFields();
     static void isAutoIncrement();
@@ -18,4 +17,4 @@ private slots:
     static void noFieldsShouldFail();
 };
 
-#endif // PRIMARYKEYTEST_H
+#endif  // TEST_OPERATIONS_MODEL_PRIMARYKEYTEST_H_

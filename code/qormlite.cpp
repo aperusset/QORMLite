@@ -7,26 +7,43 @@
 QMutex poolMutex;
 std::map<QString, QORM::Database*> pool;
 
-auto QORM::isInitialized(const QString &name) -> bool {
+namespace {
+
+auto initialized(const QString &name) -> bool {
     return pool.count(name);
 }
 
-void QORM::initialize(const QString &name, const Creator &creator,
-                      bool verbose, bool test) {
-    const QMutexLocker lock(&poolMutex);
-    if (isInitialized(name)) {
+void initializeChecks(const QORM::Connector &connector) {
+    if (initialized(connector.getName())) {
         throw std::string("This database is already initialized");
     }
-    qDebug(
-        "Initializing database %s in %s mode.",
-        qUtf8Printable(name), test ? "test" : "production");
+    qDebug("Initializing database %s.", qUtf8Printable(connector.getName()));
+}
+
+}  // namespace
+
+auto QORM::isInitialized(const QString &name) -> bool {
+    return initialized(name);
+}
+
+void QORM::initialize(const Connector &connector, bool verbose) {
+    const QMutexLocker lock(&poolMutex);
+    initializeChecks(connector);
     pool.insert(std::make_pair(
-        name, new Database(name, creator, verbose, test)));
+        connector.getName(), new Database(connector, verbose)));
+}
+
+void QORM::initialize(const Connector &connector, const Creator &creator,
+                      bool verbose) {
+    const QMutexLocker lock(&poolMutex);
+    initializeChecks(connector);
+    pool.insert(std::make_pair(
+        connector.getName(), new Database(connector, creator, verbose)));
 }
 
 auto QORM::get(const QString &name) -> Database& {
     const QMutexLocker lock(&poolMutex);
-    if (!isInitialized(name)) {
+    if (!initialized(name)) {
         throw std::string("You must initialize the database before using it");
     }
     return *pool[name];
@@ -34,7 +51,7 @@ auto QORM::get(const QString &name) -> Database& {
 
 void QORM::destroy(const QString &name) {
     const QMutexLocker lock(&poolMutex);
-    if (isInitialized(name)) {
+    if (initialized(name)) {
         delete pool[name];
         pool.erase(name);
     }

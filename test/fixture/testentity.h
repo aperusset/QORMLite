@@ -1,12 +1,11 @@
-#ifndef TESTENTITY_H
-#define TESTENTITY_H
+#ifndef TEST_FIXTURE_TESTENTITY_H_
+#define TEST_FIXTURE_TESTENTITY_H_
 
-#include "entity.h"
 #include <memory>
+#include "entity.h"
 
 class TestEntity : public QORM::Entity<> {
-
-public:
+ public:
     explicit TestEntity(const int key);
 
     auto exists() const -> bool override;
@@ -15,6 +14,6 @@ public:
 };
 
 const int DEFAULT_ENTITY_KEY = 42;
-auto aTestEntity(const int key = DEFAULT_ENTITY_KEY) -> std::unique_ptr<TestEntity>;
+auto aTestEntity(int key = DEFAULT_ENTITY_KEY) -> std::unique_ptr<TestEntity>;
 
-#endif // TESTENTITY_H
+#endif  // TEST_FIXTURE_TESTENTITY_H_

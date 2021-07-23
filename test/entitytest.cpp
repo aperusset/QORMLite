@@ -1,8 +1,7 @@
-#include "qormentitytest.h"
+#include "entitytest.h"
 #include "fixture/testentity.h"
 
-void QORMEntityTest::getKey() {
-
+void EntityTest::getKey() {
     // Given
     TestEntity entity(DEFAULT_ENTITY_KEY);
 
@@ -13,8 +12,7 @@ void QORMEntityTest::getKey() {
     QCOMPARE(DEFAULT_ENTITY_KEY, key);
 }
 
-void QORMEntityTest::setKey() {
-
+void EntityTest::setKey() {
     // Given
     TestEntity entity(0);
 
@@ -25,8 +23,7 @@ void QORMEntityTest::setKey() {
     QCOMPARE(DEFAULT_ENTITY_KEY, entity.getKey());
 }
 
-void QORMEntityTest::attached() {
-
+void EntityTest::attached() {
     // Given
     TestEntity entity(DEFAULT_ENTITY_KEY);
 
@@ -38,8 +35,7 @@ void QORMEntityTest::attached() {
     QVERIFY(entity.isAttached(this->observer));
 }
 
-void QORMEntityTest::notAttached() {
-
+void EntityTest::notAttached() {
     // Given
     TestEntity entity(DEFAULT_ENTITY_KEY);
 
@@ -48,8 +44,7 @@ void QORMEntityTest::notAttached() {
     QVERIFY(!entity.isAttached(this->observer));
 }
 
-void QORMEntityTest::detach() {
-
+void EntityTest::detach() {
     // Given
     TestEntity entity(DEFAULT_ENTITY_KEY);
 

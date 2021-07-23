@@ -1,36 +1,24 @@
 #include "database.h"
 #include <algorithm>
 
-namespace  {
-
-auto getDatabase(const QString &name) -> QSqlDatabase {
-    return QSqlDatabase::database(name, false);
-}
-
-void deleteIfTestMode(const QString &name, bool test) {
-    auto const fileName = getDatabase(name).databaseName();
-    if (test && QFile::exists(fileName)) {
-        QFile::remove(fileName);
-    }
-}
-
-}  // namespace
-
-const QString QORM::Database::TEST_PREFIX = "test_";
-const QString QORM::Database::FILE_EXTENSION = ".db";
-
-QORM::Database::Database(const QString &name, const QORM::Creator &creator,
-                           bool verbose, bool test) :
+QORM::Database::Database(const QORM::Connector &connector, bool verbose) :
     databaseMutex(QMutex::RecursionMode::Recursive),
-    name((test ? TEST_PREFIX : "") + name + FILE_EXTENSION), creator(creator),
-    verbose(verbose), test(test) {}
+    connector(connector), creator(nullptr), verbose(verbose) {
+}
+
+
+QORM::Database::Database(const QORM::Connector &connector,
+                         const QORM::Creator &creator, bool verbose) :
+    databaseMutex(QMutex::RecursionMode::Recursive),
+    connector(connector), creator(&creator), verbose(verbose) {
+}
 
 QORM::Database::~Database() {
     this->disconnect();
 }
 
 auto QORM::Database::prepare(const QString &query) const -> QSqlQuery {
-    QSqlQuery sqlQuery(getDatabase(this->name));
+    QSqlQuery sqlQuery(connector.getDatabase());
     if (!sqlQuery.prepare(query + ";")) {
         throw std::string("Preparing error : ") +
                 sqlQuery.lastError().text().toStdString() +
@@ -65,57 +53,45 @@ auto QORM::Database::execute(QSqlQuery query) const -> QSqlQuery {
     return query;
 }
 
+auto QORM::Database::getName() const -> QString {
+    return this->connector.getName();
+}
+
 auto QORM::Database::isConnected() const -> bool {
-    return getDatabase(this->name).isOpen();
+    return connector.isConnected();
 }
 
 auto QORM::Database::connect() -> bool {
     const QMutexLocker lock(&databaseMutex);
     if (!this->isConnected()) {
-        deleteIfTestMode(this->name, this->test);
-        auto database = QSqlDatabase::addDatabase("QSQLITE", this->name);
-        database.setDatabaseName(this->name);
-        auto const callCreator = !QFile::exists(database.databaseName());
-        if (database.open()) {
-            if (callCreator) {
+        this->connector.connect();
+        if (this->creator != nullptr) {
+            auto const shouldBeCreated = !this->creator->isCreated(*this,
+                this->connector.tables(), this->connector.views());
+            if (shouldBeCreated) {
                 qDebug(
                     "Create database with name %s",
-                    qUtf8Printable(database.databaseName()));
-                this->creator.createAllAndPopulate(*this);
+                    qUtf8Printable(connector.getName()));
+                this->creator->createAllAndPopulate(*this);
             }
-            // activate foreign keys constraints
-            this->execute("pragma foreign_keys = on");
-            return callCreator;
+            return shouldBeCreated;
         }
-        throw std::string("Failed to open database with name : ") +
-                database.databaseName().toStdString() +
-                " | Error message : " +
-                database.lastError().text().toStdString();
     }
     return false;
 }
 
 void QORM::Database::disconnect() {
     const QMutexLocker lock(&databaseMutex);
-    if (this->isConnected()) {
-        getDatabase(this->name).close();
-        deleteIfTestMode(this->name, this->test);
-        QSqlDatabase::removeDatabase(this->name);
-    }
+    connector.disconnect();
 }
 
 void QORM::Database::optimize() const {
-    this->execute("vacuum");
-    this->execute("reindex");
+    this->connector.optimize();
 }
 
 auto QORM::Database::backup(const QString &fileName) -> bool {
     const QMutexLocker lock(&databaseMutex);
-    this->optimize();
-    this->disconnect();
-    auto const success = QFile::copy(this->name, fileName);
-    this->connect();
-    return success;
+    return connector.backup(fileName);
 }
 
 auto QORM::Database::exists(const QString &table,

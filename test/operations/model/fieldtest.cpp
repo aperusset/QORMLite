@@ -2,16 +2,13 @@
 #include "operations/model/field.h"
 #include "operations/model/type/integer.h"
 
-using namespace QORM;
-
 const QString FieldTest::DEFAULT_NAME = "defaultName";
-const Type FieldTest::DEFAULT_TYPE = Integer();
+const QORM::Type FieldTest::DEFAULT_TYPE = QORM::Integer();
 const QString FieldTest::DEFAULT_VALUE = "'defaultValue'";
 
 void FieldTest::generateNotNullWithoutDefaultValue() {
-
     // Given
-    auto const field = Field::notNull(DEFAULT_NAME, DEFAULT_TYPE);
+    auto const field = QORM::Field::notNull(DEFAULT_NAME, DEFAULT_TYPE);
 
     // When
     auto const generated = field.generate();
@@ -21,16 +18,13 @@ void FieldTest::generateNotNullWithoutDefaultValue() {
     QCOMPARE(field.getType().generate(), DEFAULT_TYPE.generate());
     QVERIFY(!field.isNullable());
     QVERIFY(field.getDefaultValue().isNull());
-    QCOMPARE(generated,
-        DEFAULT_NAME + " integer not null"
-    );
+    QCOMPARE(generated, DEFAULT_NAME + " integer not null");
 }
 
 void FieldTest::generateNotNullWithDefaultValue() {
-
     // Given
-    auto const field = Field::notNullWithDefault(DEFAULT_NAME, DEFAULT_TYPE, DEFAULT_VALUE);
-
+    auto const field = QORM::Field::notNullWithDefault(DEFAULT_NAME,
+                                                DEFAULT_TYPE, DEFAULT_VALUE);
     // When
     auto const generated = field.generate();
 
@@ -40,14 +34,12 @@ void FieldTest::generateNotNullWithDefaultValue() {
     QVERIFY(!field.isNullable());
     QCOMPARE(field.getDefaultValue(), DEFAULT_VALUE);
     QCOMPARE(generated,
-        DEFAULT_NAME + " integer not null default (" + DEFAULT_VALUE + ")"
-    );
+        DEFAULT_NAME + " integer not null default (" + DEFAULT_VALUE + ")");
 }
 
 void FieldTest::generateNullableWithoutDefaultValue() {
-
     // Given
-    auto const field = Field::null(DEFAULT_NAME, DEFAULT_TYPE);
+    auto const field = QORM::Field::null(DEFAULT_NAME, DEFAULT_TYPE);
 
     // When
     auto const generated = field.generate();
@@ -57,16 +49,13 @@ void FieldTest::generateNullableWithoutDefaultValue() {
     QCOMPARE(field.getType().generate(), DEFAULT_TYPE.generate());
     QVERIFY(field.isNullable());
     QVERIFY(field.getDefaultValue().isNull());
-    QCOMPARE(generated,
-        DEFAULT_NAME + " integer null"
-    );
+    QCOMPARE(generated, DEFAULT_NAME + " integer null");
 }
 
 void FieldTest::generateNullableWithDefaultValue() {
-
     // Given
-    auto const field = Field::nullWithDefault(DEFAULT_NAME, DEFAULT_TYPE, DEFAULT_VALUE);
-
+    auto const field = QORM::Field::nullWithDefault(DEFAULT_NAME, DEFAULT_TYPE,
+                                                    DEFAULT_VALUE);
     // When
     auto const generated = field.generate();
 
@@ -76,16 +65,14 @@ void FieldTest::generateNullableWithDefaultValue() {
     QVERIFY(field.isNullable());
     QCOMPARE(field.getDefaultValue(), DEFAULT_VALUE);
     QCOMPARE(generated,
-        DEFAULT_NAME + " integer null default (" + DEFAULT_VALUE + ")"
-    );
+        DEFAULT_NAME + " integer null default (" + DEFAULT_VALUE + ")");
 }
 
 void FieldTest::equals() {
-
     // Given
-    auto const field1 = Field::notNull(DEFAULT_NAME, DEFAULT_TYPE);
-    auto const field2 = Field::nullWithDefault(DEFAULT_NAME, DEFAULT_TYPE, DEFAULT_VALUE);
-
+    auto const field1 = QORM::Field::notNull(DEFAULT_NAME, DEFAULT_TYPE);
+    auto const field2 = QORM::Field::nullWithDefault(DEFAULT_NAME, DEFAULT_TYPE,
+                                                     DEFAULT_VALUE);
     // When
     auto const equals = field1 == field2;
 
@@ -94,10 +81,9 @@ void FieldTest::equals() {
 }
 
 void FieldTest::notEquals() {
-
     // Given
-    auto const field1 = Field::notNull(DEFAULT_NAME, DEFAULT_TYPE);
-    auto const field2 = Field::notNull("otherName", DEFAULT_TYPE);
+    auto const field1 = QORM::Field::notNull(DEFAULT_NAME, DEFAULT_TYPE);
+    auto const field2 = QORM::Field::notNull("otherName", DEFAULT_TYPE);
 
     // When
     auto const notEquals = field1 != field2;

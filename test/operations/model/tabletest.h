@@ -1,18 +1,17 @@
-#ifndef TABLETEST_H
-#define TABLETEST_H
+#ifndef TEST_OPERATIONS_MODEL_TABLETEST_H_
+#define TEST_OPERATIONS_MODEL_TABLETEST_H_
 
 #include <QtTest/QtTest>
 #include "operations/model/field.h"
 
 class TableTest : public QObject {
-
     Q_OBJECT
 
     static const QString DEFAULT_TABLE_NAME;
     static const QORM::Field DEFAULT_FIELD_1;
     static const QORM::Field DEFAULT_FIELD_2;
 
-private slots:
+ private slots:
     static void autoIncrementedPrimaryKeyWithoutFields();
     static void autoIncrementedPrimaryKeyWithFields();
     static void autoIncrementedPrimaryKeyWithDuplicatedFields();
@@ -23,4 +22,4 @@ private slots:
     static void multipleForeignKeys();
 };
 
-#endif // TABLETEST_H
+#endif  // TEST_OPERATIONS_MODEL_TABLETEST_H_

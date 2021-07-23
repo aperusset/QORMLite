@@ -1,7 +1,6 @@
-#include "qormobservertest.h"
+#include "observertest.h"
 
-void QORMObserverTest::onChange() {
-
+void ObserverTest::onChange() {
     // When
     entity.notifyChange();
 
@@ -11,8 +10,7 @@ void QORMObserverTest::onChange() {
     QCOMPARE(entity.getKey(), observer.getChangedKey());
 }
 
-void QORMObserverTest::onDelete() {
-
+void ObserverTest::onDelete() {
     // When
     entity.notifyDelete();
 

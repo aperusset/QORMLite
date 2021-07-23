@@ -1,15 +1,16 @@
-#ifndef TESTCREATOR_H
-#define TESTCREATOR_H
+#ifndef TEST_FIXTURE_TESTCREATOR_H_
+#define TEST_FIXTURE_TESTCREATOR_H_
 
+#include <list>
 #include "creator.h"
 
 class TestCreator : public QORM::Creator {
-
-public:
-    explicit TestCreator() {};
+ public:
     void createTables(const QORM::Database&) const override;
     void createViews(const QORM::Database&) const override;
-    void populate(const QORM::Database&) const override {};
+    void populate(const QORM::Database&) const override {}
+    auto tables() const -> std::list<QString> override;
+    auto views() const -> std::list<QString> override;
 
     static const QString TEST_TABLE;
     static const QString TEST_VIEW;
@@ -17,12 +18,12 @@ public:
 };
 
 class FakeCreator : public QORM::Creator {
-
-public:
-    explicit FakeCreator() {};
+ public:
     void createTables(const QORM::Database&) const override {}
     void createViews(const QORM::Database&) const override {}
     void populate(const QORM::Database&) const override {}
+    auto tables() const -> std::list<QString> override { return {}; };
+    auto views() const -> std::list<QString> override { return {}; };
 };
 
-#endif // TESTCREATOR_H
+#endif  // TEST_FIXTURE_TESTCREATOR_H_

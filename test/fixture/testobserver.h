@@ -1,10 +1,9 @@
-#ifndef QORMTESTOBSERVER_H
-#define QORMTESTOBSERVER_H
+#ifndef TEST_FIXTURE_TESTOBSERVER_H_
+#define TEST_FIXTURE_TESTOBSERVER_H_
 
 #include "observer.h"
 
 class TestObserver : public QORM::Observer<>  {
-
     static const int INVALID_KEY = -1;
 
     bool changeNotified;
@@ -12,7 +11,7 @@ class TestObserver : public QORM::Observer<>  {
     int changedKey;
     int deletedKey;
 
-public:
+ public:
     TestObserver();
 
     void onChange(const int &key) override;
@@ -25,4 +24,4 @@ public:
     void reset();
 };
 
-#endif // QORMTESTOBSERVER_H
+#endif  // TEST_FIXTURE_TESTOBSERVER_H_

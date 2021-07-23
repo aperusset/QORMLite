@@ -9,6 +9,7 @@
 #include "./creator.h"
 #include "./entity.h"
 #include "./utils.h"
+#include "connectors/connector.h"
 #include "operations/query.h"
 #include "operations/query/delete.h"
 #include "operations/query/insert.h"
@@ -20,21 +21,17 @@ namespace QORM {
 class Database {
     QMutex databaseMutex;
 
-    const QString name;
-    const QORM::Creator &creator;
+    const QORM::Connector &connector;
+    const QORM::Creator* const creator;
     const bool verbose;
-    const bool test;
 
     auto prepare(const QString&) const -> QSqlQuery;
     auto prepare(const Query&) const -> QSqlQuery;
     auto execute(QSqlQuery) const -> QSqlQuery;
 
-    static const QString TEST_PREFIX;
-    static const QString FILE_EXTENSION;
-
  public:
-    Database(const QString &name, const QORM::Creator&, bool verbose,
-                 bool test);
+    Database(const QORM::Connector&, bool verbose);
+    Database(const QORM::Connector&, const QORM::Creator&, bool verbose);
     ~Database();
     Database(const Database&) = delete;
     Database(Database&&) = delete;
@@ -43,7 +40,6 @@ class Database {
 
     auto getName() const -> QString;
     auto isVerbose() const -> bool;
-    auto isTest() const -> bool;
     auto isConnected() const -> bool;
 
     /**
@@ -105,16 +101,8 @@ class Database {
     }
 };
 
-inline auto Database::getName() const -> QString {
-    return this->name;
-}
-
 inline auto Database::isVerbose() const -> bool {
     return this->verbose;
-}
-
-inline auto Database::isTest() const -> bool {
-    return this->test;
 }
 
 }  // namespace QORM

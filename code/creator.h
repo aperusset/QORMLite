@@ -22,10 +22,14 @@ class Creator {
     Creator& operator=(Creator&&) = delete;
     virtual ~Creator() {}
 
+    auto isCreated(const Database&, const std::list<QString> &existingTables,
+                   const std::list<QString> &existingViews) const -> bool;
     void createAllAndPopulate(const Database&) const;
     virtual void createTables(const Database&) const = 0;
     virtual void createViews(const Database&) const = 0;
     virtual void populate(const Database&) const = 0;
+    virtual auto tables() const -> std::list<QString> = 0;
+    virtual auto views() const -> std::list<QString> = 0;
 
     static void createTable(const Database&, const QString&,
                             const PrimaryKey&, const std::list<Field>& = {},

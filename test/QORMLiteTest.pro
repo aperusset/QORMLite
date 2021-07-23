@@ -15,10 +15,19 @@ INCLUDEPATH += $$PWD/../code
 DEPENDPATH += $$PWD/../code
 
 SOURCES +=  \
+  cachetest.cpp \
+  connectors/connectortest.cpp \
+  connectors/odbctest.cpp \
+  connectors/sqlitetest.cpp \
+  creatortest.cpp \
+  databasetest.cpp \
+  entitytest.cpp \
+  fixture/testconnector.cpp \
   fixture/testcreator.cpp \
   fixture/testentity.cpp \
   fixture/testobserver.cpp \
   main.cpp \
+  observertest.cpp \
   operations/model/fieldtest.cpp \
   operations/model/foreignkeytest.cpp \
   operations/model/primarykeytest.cpp \
@@ -35,18 +44,23 @@ SOURCES +=  \
   operations/query/selectiontest.cpp \
   operations/query/selecttest.cpp \
   operations/query/updatetest.cpp \
-  qormcachetest.cpp \
-  qormcreatortest.cpp \
-  qormdatabasetest.cpp \
-  qormentitytest.cpp \
   qormlitetest.cpp \
-  qormobservertest.cpp \
-  qormutilstest.cpp
+  utilstest.cpp
 
 HEADERS += \
+  cachetest.h \
+  connectors/connectortest.h \
+  connectors/odbctest.h \
+  connectors/sqlitetest.h \
+  creatortest.h \
+  databasetest.h \
+  entitytest.h \
+  fixture/maindatabasetest.h \
+  fixture/testconnector.h \
   fixture/testcreator.h \
   fixture/testentity.h \
   fixture/testobserver.h \
+  observertest.h \
   operations/model/fieldtest.h \
   operations/model/foreignkeytest.h \
   operations/model/primarykeytest.h \
@@ -63,10 +77,5 @@ HEADERS += \
   operations/query/selectiontest.h \
   operations/query/selecttest.h \
   operations/query/updatetest.h \
-  qormcachetest.h \
-  qormcreatortest.h \
-  qormdatabasetest.h \
-  qormentitytest.h \
   qormlitetest.h \
-  qormobservertest.h \
-  qormutilstest.h
+  utilstest.h

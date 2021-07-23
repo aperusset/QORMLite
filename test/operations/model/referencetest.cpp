@@ -3,15 +3,12 @@
 #include "operations/model/type/type.h"
 #include "operations/model/field.h"
 
-using namespace QORM;
-
 void ReferenceTest::getFrom() {
-
     // Given
-    auto const type = Type("type");
-    auto const field1 = Field("field1", type, false, QString());
-    auto const field2 = Field("field2", type, false, QString());
-    auto const reference = Reference(field1, field2);
+    auto const type = QORM::Type("type");
+    auto const field1 = QORM::Field("field1", type, false, QString());
+    auto const field2 = QORM::Field("field2", type, false, QString());
+    auto const reference = QORM::Reference(field1, field2);
 
     // When
     auto const &from = reference.getFrom();
@@ -21,12 +18,11 @@ void ReferenceTest::getFrom() {
 }
 
 void ReferenceTest::getTo() {
-
     // Given
-    auto const type = Type("type");
-    auto const field1 = Field("field1", type, false, QString());
-    auto const field2 = Field("field2", type, false, QString());
-    auto const reference = Reference(field1, field2);
+    auto const type = QORM::Type("type");
+    auto const field1 = QORM::Field("field1", type, false, QString());
+    auto const field2 = QORM::Field("field2", type, false, QString());
+    auto const reference = QORM::Reference(field1, field2);
 
     // When
     auto const &to = reference.getTo();

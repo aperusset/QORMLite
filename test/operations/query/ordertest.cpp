@@ -2,38 +2,30 @@
 #include "operations/query/order/asc.h"
 #include "operations/query/order/desc.h"
 
-using namespace QORM;
-
 const QString OrderTest::DEFAULT_FIELD_NAME = "fieldName";
 
 void OrderTest::generateAsc() {
-
     // Given
-    auto const order = Asc(DEFAULT_FIELD_NAME);
+    auto const order = QORM::Asc(DEFAULT_FIELD_NAME);
 
     // When
     auto const generated = order.generate();
 
-    // THEN
+    // Then
     QCOMPARE(order.getFieldName(), DEFAULT_FIELD_NAME);
-    QCOMPARE(order.getOrdering(), Ordering::Asc);
-    QCOMPARE(generated,
-        DEFAULT_FIELD_NAME + " asc"
-    );
+    QCOMPARE(order.getOrdering(), QORM::Ordering::Asc);
+    QCOMPARE(generated, DEFAULT_FIELD_NAME + " asc");
 }
 
 void OrderTest::generateDesc() {
-
     // Given
-    auto const order = Desc(DEFAULT_FIELD_NAME);
+    auto const order = QORM::Desc(DEFAULT_FIELD_NAME);
 
     // When
     auto const generated = order.generate();
 
-    // THEN
+    // Then
     QCOMPARE(order.getFieldName(), DEFAULT_FIELD_NAME);
-    QCOMPARE(order.getOrdering(), Ordering::Desc);
-    QCOMPARE(generated,
-        DEFAULT_FIELD_NAME + " desc"
-    );
+    QCOMPARE(order.getOrdering(), QORM::Ordering::Desc);
+    QCOMPARE(generated, DEFAULT_FIELD_NAME + " desc");
 }
