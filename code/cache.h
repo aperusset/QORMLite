@@ -20,14 +20,20 @@ class Cache {
     std::map<Key, std::unique_ptr<Entity>> entities;
 
  public:
-    auto insert(Key key, std::unique_ptr<Entity> &&entity) -> Entity& {
+    Cache() {}
+    Cache(const Cache&) = delete;
+    Cache(Cache&&) = delete;
+    Cache& operator=(const Cache&) = delete;
+    Cache& operator=(Cache&&) = delete;
+    virtual ~Cache() {}
+
+    auto insert(const Key &key, std::unique_ptr<Entity> &&entity) -> Entity& {
         if (entity == nullptr) {
             throw std::string("Cannot store a null entity with key ")
                     .append(std::to_string(key));
         }
         if (!this->contains(key)) {
-            entities.insert(std::make_pair(
-                std::move(key),
+            entities.insert(std::make_pair(key,
                 std::forward<std::unique_ptr<Entity>>(entity)));
         }
         return this->get(key);
@@ -48,7 +54,7 @@ class Cache {
     }
 
     auto getOrCreate(const Key &key,
-                     const std::function<Entity&()> &creator) -> Entity& {
+                     const std::function<Entity&()> &creator) const -> Entity& {
         return this->contains(key) ? this->get(key) : creator();
     }
 

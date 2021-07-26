@@ -95,5 +95,6 @@ HEADERS += \
   operations/query/tablequery.h \
   operations/query/update.h \
   qormlite.h \
+  repository.h \
   utils.h
 
