@@ -26,13 +26,13 @@ class MainDatabaseTest : public QObject {
         return QString();
     };
 
- private slots:
+ public slots:
 
-    void init() {
+    virtual void init() {
         this->deleteAllDatabases();
     }
 
-    void cleanup() {
+    virtual void cleanup() {
         this->deleteAllDatabases();
     }
 };

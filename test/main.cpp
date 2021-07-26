@@ -5,6 +5,7 @@
 #include "./databasetest.h"
 #include "./creatortest.h"
 #include "./qormlitetest.h"
+#include "./repositorytest.h"
 #include "operations/model/typetest.h"
 #include "operations/model/fieldtest.h"
 #include "operations/model/primarykeytest.h"
@@ -52,7 +53,8 @@ auto main(int argc, char *argv[]) -> int {
         std::make_shared<ODBCTest>(),
         std::make_shared<DatabaseTest>(),
         std::make_shared<CreatorTest>(),
-        std::make_shared<QORMLiteTest>()
+        std::make_shared<QORMLiteTest>(),
+        std::make_shared<RepositoryTest>()
     };
 
     try {

@@ -2,7 +2,7 @@ include(../QORMLiteParent.pri)
 
 TEMPLATE = app
 
-CONFIG += qt console warn_on depend_includepath testcase
+CONFIG += qt console warn_on depend_includepath testcase no_testcase_installs
 CONFIG -= app_bundle
 
 QT += testlib
@@ -26,6 +26,7 @@ SOURCES +=  \
   fixture/testcreator.cpp \
   fixture/testentity.cpp \
   fixture/testobserver.cpp \
+  fixture/testrepository.cpp \
   main.cpp \
   observertest.cpp \
   operations/model/fieldtest.cpp \
@@ -45,6 +46,7 @@ SOURCES +=  \
   operations/query/selecttest.cpp \
   operations/query/updatetest.cpp \
   qormlitetest.cpp \
+  repositorytest.cpp \
   utilstest.cpp
 
 HEADERS += \
@@ -60,6 +62,7 @@ HEADERS += \
   fixture/testcreator.h \
   fixture/testentity.h \
   fixture/testobserver.h \
+  fixture/testrepository.h \
   observertest.h \
   operations/model/fieldtest.h \
   operations/model/foreignkeytest.h \
@@ -78,4 +81,5 @@ HEADERS += \
   operations/query/selecttest.h \
   operations/query/updatetest.h \
   qormlitetest.h \
+  repositorytest.h \
   utilstest.h
