@@ -4,6 +4,7 @@
 #include <list>
 #include "./repository.h"
 #include "./testentity.h"
+#include "operations/query/assignment.h"
 
 class TestRepository : public QORM::Repository<int, TestEntity> {
     static bool isInserted;
@@ -19,7 +20,8 @@ class TestRepository : public QORM::Repository<int, TestEntity> {
     auto buildKey(const QSqlRecord &record) const -> int override;
     auto build(const QSqlRecord &record) const -> TestEntity* override;
     auto insert(TestEntity&) const -> int override;
-    void update(const TestEntity&) const override;
+    auto assignements(const TestEntity&)
+        const -> std::list<QORM::Assignment> override;
 
     static auto hasBeenInserted() -> bool;
     static auto hasBeenUpdated() -> bool;

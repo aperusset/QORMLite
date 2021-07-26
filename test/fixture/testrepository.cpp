@@ -40,11 +40,10 @@ auto TestRepository::insert(TestEntity &testEntity) const -> int {
     return key;
 }
 
-void TestRepository::update(const TestEntity &testEntity) const {
+auto TestRepository::assignements(const TestEntity &testEntity)
+    const -> std::list<QORM::Assignment> {
     isUpdated = true;
-    this->getDatabase().execute(QORM::Update(this->tableName(),
-            {QORM::Assignment(TestCreator::TEST_FIELD, testEntity.getKey())},
-            QORM::Equals::field(this->keyField(), testEntity.getKey())));
+    return  {QORM::Assignment(TestCreator::TEST_FIELD, testEntity.getKey())};
 }
 
 auto TestRepository::hasBeenInserted() -> bool {

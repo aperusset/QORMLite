@@ -9,6 +9,7 @@
 #include "./database.h"
 #include "./cache.h"
 #include "operations/query/select.h"
+#include "operations/query/update.h"
 #include "operations/query/delete.h"
 #include "operations/query/condition/equals.h"
 #include "operations/query/selection/count.h"
@@ -85,15 +86,20 @@ class Repository {
     }
 
     virtual auto save(Entity* const entity) const -> Key {
-        auto const ormEntity = static_cast<const QORM::Entity<Key>*>(entity);
-        if (this->existsByKey(ormEntity->getKey())) {
-            this->update(*entity);
+        if (this->existsByKey(entity->getKey())) {
+            auto const assignementsToDo = this->assignements(*entity);
+            if (!assignementsToDo.empty()) {
+                database.execute(QORM::Update(this->tableName(),
+                                              assignementsToDo,
+                     {QORM::Equals::field(this->keyField(),
+                                          entity->getKey())}));
+            }
         } else {
             this->cache.insert(this->insert(*entity),
                                std::unique_ptr<Entity>(entity));
         }
-        ormEntity->notifyChange();
-        return ormEntity->getKey();
+        entity->notifyChange();
+        return entity->getKey();
     }
 
     virtual void erase(const Key &key) const {
@@ -101,7 +107,7 @@ class Repository {
             auto const &entity = this->getByKey(key);
             database.execute(QORM::Delete(this->tableName(),
                 QORM::Equals::field(this->keyField(), key)));
-            static_cast<const QORM::Entity<Key>&>(entity).notifyDelete();
+            entity.notifyDelete();
             this->cache.remove(key);
         }
     }
@@ -112,7 +118,10 @@ class Repository {
     virtual auto buildKey(const QSqlRecord &record) const -> Key = 0;
     virtual auto build(const QSqlRecord &record) const -> Entity* = 0;
     virtual auto insert(Entity&) const -> Key = 0;
-    virtual void update(const Entity&) const = 0;
+    virtual auto assignements(const Entity&)
+        const -> std::list<QORM::Assignment> {
+            return {};
+        }
 };
 
 }  // namespace QORM
