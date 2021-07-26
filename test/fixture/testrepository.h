@@ -4,6 +4,7 @@
 #include <list>
 #include "./repository.h"
 #include "./testentity.h"
+#include "operations/query/condition/condition.h"
 #include "operations/query/assignment.h"
 
 class TestRepository : public QORM::Repository<int, TestEntity> {
@@ -15,7 +16,7 @@ class TestRepository : public QORM::Repository<int, TestEntity> {
                    QORM::Cache<int, TestEntity> &cache);
 
     auto tableName() const -> QString override;
-    auto keyField() const -> QString override;
+    auto keyCondition(const int&) const -> QORM::Condition override;
     auto fields() const -> std::list<QString> override;
     auto buildKey(const QSqlRecord &record) const -> int override;
     auto build(const QSqlRecord &record) const -> TestEntity* override;

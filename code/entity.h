@@ -4,7 +4,6 @@
 #include <algorithm>
 #include <set>
 #include "./observer.h"
-#include "operations/query/condition/condition.h"
 
 namespace QORM {
 

@@ -11,7 +11,7 @@
 #include "operations/query/select.h"
 #include "operations/query/update.h"
 #include "operations/query/delete.h"
-#include "operations/query/condition/equals.h"
+#include "operations/query/condition/condition.h"
 #include "operations/query/selection/count.h"
 
 namespace QORM {
@@ -49,7 +49,7 @@ class Repository {
         return this->cache.getOrCreate(key, [=]() -> Entity& {
             return database.entity<Entity>(
                 Select(this->tableName(), this->fields())
-                    .where({Equals::field(this->keyField(), key)}),
+                        .where({this->keyCondition(key)}),
                 entityCreator);
         });
     }
@@ -70,7 +70,7 @@ class Repository {
     virtual auto count(const std::list<Condition> &conditions) const -> size_t {
         auto const total = "total";
         return database.result<size_t>(
-            Select(this->tableName(), {Count(this->keyField(), total)})
+            Select(this->tableName(), {Count("*", total)})
                     .where(conditions), 0,
             [&total](const QSqlRecord &record) -> size_t {
                 return record.value(total).toUInt();
@@ -78,7 +78,7 @@ class Repository {
     }
 
     virtual auto existsByKey(const Key &key) const -> bool {
-        return this->exists({Equals::field(this->keyField(), key)});
+        return this->exists({this->keyCondition(key)});
     }
 
     virtual auto exists(const std::list<Condition> &conditions) const -> bool {
@@ -90,9 +90,8 @@ class Repository {
             auto const assignementsToDo = this->assignements(*entity);
             if (!assignementsToDo.empty()) {
                 database.execute(QORM::Update(this->tableName(),
-                                              assignementsToDo,
-                     {QORM::Equals::field(this->keyField(),
-                                          entity->getKey())}));
+                                    assignementsToDo,
+                                    this->keyCondition(entity->getKey())));
             }
         } else {
             this->cache.insert(this->insert(*entity),
@@ -106,14 +105,14 @@ class Repository {
         if (this->existsByKey(key)) {
             auto const &entity = this->getByKey(key);
             database.execute(QORM::Delete(this->tableName(),
-                QORM::Equals::field(this->keyField(), key)));
+                                          this->keyCondition(key)));
             entity.notifyDelete();
             this->cache.remove(key);
         }
     }
 
     virtual auto tableName() const -> QString = 0;
-    virtual auto keyField() const -> QString = 0;
+    virtual auto keyCondition(const Key&) const -> Condition = 0;
     virtual auto fields() const -> std::list<QString> = 0;
     virtual auto buildKey(const QSqlRecord &record) const -> Key = 0;
     virtual auto build(const QSqlRecord &record) const -> Entity* = 0;
