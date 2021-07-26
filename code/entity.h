@@ -53,18 +53,6 @@ class Entity {
                 observer->onDelete(this->key);
             });
     }
-
-    virtual auto save() -> bool {
-        this->notifyChange();
-        return true;
-    };
-
-    virtual auto erase() -> bool {
-        this->notifyDelete();
-        return true;
-    };
-
-    virtual auto exists() const -> bool = 0;
 };
 
 }  // namespace QORM

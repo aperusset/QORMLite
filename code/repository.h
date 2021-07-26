@@ -9,6 +9,7 @@
 #include "./database.h"
 #include "./cache.h"
 #include "operations/query/select.h"
+#include "operations/query/delete.h"
 #include "operations/query/condition/equals.h"
 #include "operations/query/selection/count.h"
 
@@ -38,6 +39,10 @@ class Repository {
     Repository& operator=(const Repository&) = delete;
     Repository& operator=(Repository&&) = delete;
     virtual ~Repository() {}
+
+    auto getDatabase() const -> const Database& {
+        return this->database;
+    }
 
     auto getByKey(const Key &key) const -> Entity& {
         return this->cache.getOrCreate(key, [=]() -> Entity& {
@@ -79,11 +84,35 @@ class Repository {
         return this->count(conditions) > 0;
     }
 
+    virtual auto save(Entity* const entity) const -> Key {
+        auto const ormEntity = static_cast<const QORM::Entity<Key>*>(entity);
+        if (this->existsByKey(ormEntity->getKey())) {
+            this->update(*entity);
+        } else {
+            this->cache.insert(this->insert(*entity),
+                               std::unique_ptr<Entity>(entity));
+        }
+        ormEntity->notifyChange();
+        return ormEntity->getKey();
+    }
+
+    virtual void erase(const Key &key) const {
+        if (this->existsByKey(key)) {
+            auto const &entity = this->getByKey(key);
+            database.execute(QORM::Delete(this->tableName(),
+                QORM::Equals::field(this->keyField(), key)));
+            static_cast<const QORM::Entity<Key>&>(entity).notifyDelete();
+            this->cache.remove(key);
+        }
+    }
+
     virtual auto tableName() const -> QString = 0;
     virtual auto keyField() const -> QString = 0;
     virtual auto fields() const -> std::list<QString> = 0;
     virtual auto buildKey(const QSqlRecord &record) const -> Key = 0;
     virtual auto build(const QSqlRecord &record) const -> Entity* = 0;
+    virtual auto insert(Entity&) const -> Key = 0;
+    virtual void update(const Entity&) const = 0;
 };
 
 }  // namespace QORM

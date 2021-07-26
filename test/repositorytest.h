@@ -29,6 +29,10 @@ class RepositoryTest : public MainDatabaseTest {
     void existsByKeyShouldReturnFalse();
     void existsShouldReturnTrue();
     void existsShouldReturnFalse();
+    void saveShouldInsertAndNotify();
+    void saveShouldUpdateAndNotify();
+    void eraseShouldDoNothinIfNotExists();
+    void eraseShouldDeleteAndNotify();
 
     void init() override {
         MainDatabaseTest::init();
