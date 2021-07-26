@@ -2,18 +2,6 @@
 
 TestEntity::TestEntity(const int key) : Entity(key) {}
 
-auto TestEntity::exists() const -> bool {
-    return true;
-}
-
-auto TestEntity::save() -> bool {
-    return true;
-}
-
-auto TestEntity::erase() -> bool {
-    return true;
-}
-
 auto aTestEntity(int key) -> std::unique_ptr<TestEntity> {
     return std::unique_ptr<TestEntity>( new TestEntity(key) );
 }

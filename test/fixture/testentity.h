@@ -7,10 +7,6 @@
 class TestEntity : public QORM::Entity<> {
  public:
     explicit TestEntity(const int key);
-
-    auto exists() const -> bool override;
-    auto save() -> bool override;
-    auto erase() -> bool override;
 };
 
 const int DEFAULT_ENTITY_KEY = 42;

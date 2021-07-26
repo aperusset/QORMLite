@@ -2,6 +2,7 @@
 #include <string>
 #include "fixture/testconnector.h"
 #include "fixture/testrepository.h"
+#include "fixture/testobserver.h"
 #include "operations/query/select.h"
 #include "operations/query/condition/in.h"
 
@@ -26,8 +27,7 @@ void RepositoryTest::getByKeyShouldReturnEntity() {
 
     // When
     database.connect();
-    auto const lastInsertedKey = database.insertAndRetrieveKey(
-                QORM::Insert(TestCreator::TEST_TABLE));
+    auto const lastInsertedKey = testRepository.save(new TestEntity(-1));
     auto const &entity = testRepository.getByKey(lastInsertedKey);
 
     // When / Then
@@ -42,9 +42,9 @@ void RepositoryTest::getAllShouldReturnAllExistingEntities() {
 
     // When
     database.connect();
-    database.execute(QORM::Insert(TestCreator::TEST_TABLE));
-    database.execute(QORM::Insert(TestCreator::TEST_TABLE));
-    database.execute(QORM::Insert(TestCreator::TEST_TABLE));
+    testRepository.save(new TestEntity(-1));
+    testRepository.save(new TestEntity(-1));
+    testRepository.save(new TestEntity(-1));
 
     // Then
     QCOMPARE(3U, testRepository.getAll().size());
@@ -58,11 +58,9 @@ void RepositoryTest::getAllShouldReturnEntitiesAccordingToSelect() {
 
     // When
     database.connect();
-    auto const id1 = database.insertAndRetrieveKey(
-                QORM::Insert(TestCreator::TEST_TABLE));
-    database.execute(QORM::Insert(TestCreator::TEST_TABLE));
-    auto const id3 = database.insertAndRetrieveKey(
-                QORM::Insert(TestCreator::TEST_TABLE));
+    auto const id1 = testRepository.save(new TestEntity(-1));
+    testRepository.save(new TestEntity(-1));
+    auto const id3 = testRepository.save(new TestEntity(-1));
 
     // Then
     QCOMPARE(2U, testRepository.getAll(
@@ -78,9 +76,9 @@ void RepositoryTest::countShouldCountAllEntities() {
 
     // When
     database.connect();
-    database.execute(QORM::Insert(TestCreator::TEST_TABLE));
-    database.execute(QORM::Insert(TestCreator::TEST_TABLE));
-    database.execute(QORM::Insert(TestCreator::TEST_TABLE));
+    testRepository.save(new TestEntity(-1));
+    testRepository.save(new TestEntity(-1));
+    testRepository.save(new TestEntity(-1));
 
     // Then
     QCOMPARE(3U, testRepository.count());
@@ -94,11 +92,9 @@ void RepositoryTest::countShouldCountEntitiesAccordingToConditions() {
 
     // When
     database.connect();
-    auto const id1 = database.insertAndRetrieveKey(
-                QORM::Insert(TestCreator::TEST_TABLE));
-    database.execute(QORM::Insert(TestCreator::TEST_TABLE));
-    auto const id3 = database.insertAndRetrieveKey(
-                QORM::Insert(TestCreator::TEST_TABLE));
+    auto const id1 = testRepository.save(new TestEntity(-1));
+    testRepository.save(new TestEntity(-1));
+    auto const id3 = testRepository.save(new TestEntity(-1));;
 
     // Then
     QCOMPARE(2U,
@@ -113,8 +109,7 @@ void RepositoryTest::existsByKeyShouldReturnTrue() {
 
     // When
     database.connect();
-    auto const lastInsertedKey = database.insertAndRetrieveKey(
-                QORM::Insert(TestCreator::TEST_TABLE));
+    auto const lastInsertedKey = testRepository.save(new TestEntity(-1));
 
     // Then
     QVERIFY(testRepository.existsByKey(lastInsertedKey));
@@ -141,8 +136,7 @@ void RepositoryTest::existsShouldReturnTrue() {
 
     // When
     database.connect();
-    auto const lastInsertedKey = database.insertAndRetrieveKey(
-                QORM::Insert(TestCreator::TEST_TABLE));
+    auto const lastInsertedKey = testRepository.save(new TestEntity(-1));
 
     // Then
     QVERIFY(testRepository.exists(
@@ -161,4 +155,87 @@ void RepositoryTest::existsShouldReturnFalse() {
     // Then
     QVERIFY(!testRepository.exists(
         {QORM::Equals::field(TestCreator::TEST_FIELD, 0)}));
+}
+
+void RepositoryTest::saveShouldInsertAndNotify() {
+    // Given
+    auto const &connector = TestConnector(this->databaseName());
+    QORM::Database database(connector, this->testCreator, false);
+    auto const &testRepository = TestRepository(database, this->cache);
+    auto * const newTestEntity = new TestEntity(-1);
+    auto testObserver = TestObserver();
+    newTestEntity->attach(testObserver);
+
+    // When
+    database.connect();
+    auto const lastInsertedKey = testRepository.save(newTestEntity);
+
+    // Then
+    QVERIFY(testRepository.existsByKey(lastInsertedKey));
+    QVERIFY(testRepository.hasBeenInserted());
+    QVERIFY(!testRepository.hasBeenUpdated());
+    QVERIFY(testObserver.isChangeNotified());
+    QVERIFY(!testObserver.isDeleteNotified());
+    QCOMPARE(lastInsertedKey, testObserver.getChangedKey());
+}
+
+void RepositoryTest::saveShouldUpdateAndNotify() {
+    // Given
+    auto const &connector = TestConnector(this->databaseName());
+    QORM::Database database(connector, this->testCreator, false);
+    auto const &testRepository = TestRepository(database, this->cache);
+    auto * const newTestEntity = new TestEntity(-1);
+    auto testObserver = TestObserver();
+    newTestEntity->attach(testObserver);
+
+    // When
+    database.connect();
+    auto const lastInsertedKey = testRepository.save(newTestEntity);
+    testRepository.save(newTestEntity);
+
+    // Then
+    QVERIFY(testRepository.existsByKey(lastInsertedKey));
+    QVERIFY(testRepository.hasBeenInserted());
+    QVERIFY(testRepository.hasBeenUpdated());
+    QVERIFY(testObserver.isChangeNotified());
+    QVERIFY(!testObserver.isDeleteNotified());
+    QCOMPARE(lastInsertedKey, testObserver.getChangedKey());
+}
+
+void RepositoryTest::eraseShouldDoNothinIfNotExists() {
+    // Given
+    auto const &connector = TestConnector(this->databaseName());
+    QORM::Database database(connector, this->testCreator, false);
+    auto const &testRepository = TestRepository(database, this->cache);
+
+    // When
+    database.connect();
+    testRepository.erase(0);
+
+    // Then
+    QVERIFY(!testRepository.hasBeenInserted());
+    QVERIFY(!testRepository.hasBeenUpdated());
+}
+
+void RepositoryTest::eraseShouldDeleteAndNotify() {
+    // Given
+    auto const &connector = TestConnector(this->databaseName());
+    QORM::Database database(connector, this->testCreator, false);
+    auto const &testRepository = TestRepository(database, this->cache);
+    auto * const newTestEntity = new TestEntity(-1);
+    auto testObserver = TestObserver();
+    newTestEntity->attach(testObserver);
+
+    // When
+    database.connect();
+    auto const lastInsertedKey = testRepository.save(newTestEntity);
+    testRepository.erase(newTestEntity->getKey());
+
+    // Then
+    QVERIFY(!testRepository.existsByKey(lastInsertedKey));
+    QVERIFY(testRepository.hasBeenInserted());
+    QVERIFY(!testRepository.hasBeenUpdated());
+    QVERIFY(testObserver.isChangeNotified());
+    QVERIFY(testObserver.isDeleteNotified());
+    QCOMPARE(lastInsertedKey, testObserver.getDeletedKey());
 }
