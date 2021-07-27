@@ -1,4 +1,8 @@
-# QORMLite
+# [QORMLite](https://github.com/aperusset/QORMLite) [![Tweet](https://img.shields.io/twitter/url/http/shields.io.svg?style=social)](https://twitter.com/intent/tweet?text=Facilitate%20querying%20databases%20with%20QT%20Framework%20and%20C%2B%2B%20%21&url=https://github.com/aperusset/QORMLite)
+
+![Master version](https://img.shields.io/badge/master--version-2.0-yellow)
+![QT Version](https://img.shields.io/badge/QT-5.5.12-brightgreen) ![C++ Version](https://img.shields.io/badge/c%2B%2B-11-brightgreen) ![License](https://img.shields.io/badge/license-GPL--3.0-blue) ![Price](https://img.shields.io/badge/price-free-blue)
+
 A lite ORM for QT Framework.
 
 ### Build, compatibility and conventions
