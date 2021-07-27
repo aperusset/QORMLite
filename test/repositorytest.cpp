@@ -5,6 +5,7 @@
 #include "fixture/testobserver.h"
 #include "operations/query/select.h"
 #include "operations/query/condition/in.h"
+#include "operations/query/condition/equals.h"
 
 void RepositoryTest::getByKeyShouldFail() {
     // Given
