@@ -1,6 +1,7 @@
 #include "testrepository.h"
 #include "./testcreator.h"
 #include "operations/query/update.h"
+#include "operations/query/condition/equals.h"
 
 bool TestRepository::isInserted = false;
 bool TestRepository::isUpdated = false;
@@ -16,8 +17,8 @@ auto TestRepository::tableName() const -> QString {
     return TestCreator::TEST_TABLE;
 }
 
-auto TestRepository::keyField() const -> QString {
-    return TestCreator::TEST_FIELD;
+auto TestRepository::keyCondition(const int &key) const -> QORM::Condition {
+    return QORM::Equals::field(TestCreator::TEST_FIELD, key);
 }
 
 auto TestRepository::fields() const -> std::list<QString> {
