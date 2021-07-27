@@ -50,3 +50,61 @@ DEPENDPATH += $$PWD/{pathToQORMLite}/QORMLite/code
 Replace `{version}` by the version of QORMLite you want to use and `{pathToQORMLite}` by the path to the QORMLite subdirs project directory **from the build directory of your project.**
 
 Make sure that you've built the QORMLite library in debug/release mode before building your project with code dependency to QORMLite.
+
+All of the QORMLite classes are contained in `QORM` namespace.
+
+## [Connector](https://github.com/aperusset/QORMLite/blob/master/code/connectors/connector.h)
+
+A connector is responsible to initiate a connection to a database and manage its life-cycle. The needed information to initiate all types of connection are :
+* [QT driver name](https://doc.qt.io/qt-5/sql-driver.html) -> provided by the pure virtual method `driverName()`.
+* A name to uniquely identify the connection -> provided in abstract `Connector` class constructor as single `QString` parameter.
+
+Currently, only [ODBC](#odbc) and [SQLite 3](#sqlite-3) database are managed. This is planned to implement [MySQL](https://github.com/aperusset/QORMLite/issues/34) and [PostgreSQL](https://github.com/aperusset/QORMLite/issues/35) connectors.
+
+All methods in this class are `virtual` and could also be overridden in child classes.
+
+`preConnect` allows to execute some actions before the database connection is opened.
+
+`postConnect` allows to execute some actions after the database connection is opened.
+
+`tables` is designed to return all the database's user tables.
+
+`views` is designed to return all the database's user views.
+
+Implementations of `Connector` abstract class must also provide a `backup` method which must effectively backup (or dump) the entire database into file that the name is provided as parameter.
+
+#### ODBC
+
+ODBC (acronym of Open Database Connectivity) connector allows to connect to any database that support this kind of connection. The user of this connector must provide, additionally to the database name, a complete driver definition and the connection string.
+
+On Windows there is usually a built-in ODBC driver that support most of the connection types (Access, SQL Server, ...).
+
+On Unix, it is necessary to install [unixODBC](http://www.unixodbc.org/) and then [build reconfigured QT ODBC driver](https://doc.qt.io/qt-5/sql-driver.html#how-to-build-the-odbc-plugin-on-unix-and-macos).
+
+The backup functionality for this connector is currently not implemented (throw an exception if you try to call `backup` method).
+
+**Example : Microsoft Access** (works only on Windows except if you buy [easysoft driver](https://www.easysoft.com/products/data_access/odbc-access-driver/index.html#section=tab-1)) :
+* Driver definition = `Microsoft Access Driver (*.mdb, *.accdb)`
+* Connection string = `DSN='';DBQ=\\path\\to\\database\\file.mdb;`
+
+#### SQLite 3
+
+## Creator
+
+## Database initialization
+
+## Entity
+
+## Observer
+
+## Cache
+
+## Repository
+
+## Utilities
+
+## Available operations
+
+#### Model
+
+#### Query
