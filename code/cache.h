@@ -5,7 +5,6 @@
 #include <map>
 #include <memory>
 #include <string>
-#include <sstream>
 #include <type_traits>
 #include <utility>
 #include "./entity.h"
