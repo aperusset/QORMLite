@@ -57,14 +57,15 @@ class Database {
 
     template<typename Key = int>
     auto insertAndRetrieveKey(const Insert &insert,
-        const std::function<Key(const QVariant&)> &keyExtractor =
-            [](const QVariant &result) -> int {
+        const std::function<Key(const QSqlQuery&)> &keyExtractor =
+            [](const QSqlQuery &query) -> int {
+                auto const &result = query.lastInsertId();
                 if (!result.isValid() || !result.canConvert<int>()) {
                     throw std::string("Failed to get last inserted ID as int");
                 }
                 return result.toInt();
             }) const -> Key {
-        return keyExtractor(this->execute(insert).lastInsertId());
+        return keyExtractor(this->execute(insert));
     }
 
     template<class Entity>
