@@ -1,9 +1,9 @@
-# [QORMLite](https://github.com/aperusset/QORMLite) [![Tweet](https://img.shields.io/twitter/url/http/shields.io.svg?style=social)](https://twitter.com/intent/tweet?text=Facilitate%20querying%20databases%20with%20QT%20Framework%20and%20C%2B%2B%20%21&url=https://github.com/aperusset/QORMLite)
+# QORMLite [![Tweet](https://img.shields.io/twitter/url/http/shields.io.svg?style=social)](https://twitter.com/intent/tweet?text=Facilitate%20querying%20databases%20with%20QT%20Framework%20and%20C%2B%2B%20%21&url=https://github.com/aperusset/QORMLite)
 
 ![Master version](https://img.shields.io/badge/master--version-2.0-yellow)
 ![QT Version](https://img.shields.io/badge/QT-5.5.12-brightgreen) ![C++ Version](https://img.shields.io/badge/c%2B%2B-11-brightgreen) ![License](https://img.shields.io/badge/license-GPL--3.0-blue) ![Price](https://img.shields.io/badge/price-free-blue)
 
-A lite ORM for QT Framework.
+A lite ORM (Object Relational Mapping) for QT Framework.
 
 ### Build, compatibility and conventions
 QORMLite is built with QT Desktop 5.15.2 and C++11. The build has been tested on Windows 10 and Ubuntu 20.04LTS, but not on Mac OS (any version).
@@ -63,23 +63,23 @@ A connector is responsible to initiate a connection to a database and manage its
 * [QT driver name](https://doc.qt.io/qt-5/sql-driver.html) -> provided by the pure virtual method `driverName()`.
 * A name to uniquely identify the connection -> provided in abstract `Connector` class constructor as single `QString` parameter.
 
-Currently, only [ODBC](#odbc) and [SQLite 3](#sqlite-3) database are managed. This is planned to implement [MySQL](https://github.com/aperusset/QORMLite/issues/34) and [PostgreSQL](https://github.com/aperusset/QORMLite/issues/35) connectors.
+Currently, only [ODBC](#odbc) and [SQLite 3](#sqlite-3) database are managed. [MySQL](https://github.com/aperusset/QORMLite/issues/34) and [PostgreSQL](https://github.com/aperusset/QORMLite/issues/35) connectors implementation is planned.
 
 All methods in this class are `virtual` and could also be overridden in child classes.
 
-`preConnect` allows to execute some actions before the database connection is opened.
+`preConnect` allows to execute some actions before the database connection is opened. Called by `connect`.
 
-`postConnect` allows to execute some actions after the database connection is opened.
+`postConnect` allows to execute some actions after the database connection is opened. Called by `connect`.
 
-`tables` is designed to return all the database's user tables.
+`tables` returns all the database's user tables.
 
-`views` is designed to return all the database's user views.
+`views` returns all the database's user views.
 
-Implementations of `Connector` abstract class must also provide a `backup` method which must effectively backup (or dump) the entire database into file that the name is provided as parameter.
+Implementations of `Connector` abstract class must also provide a `backup` method which effectively backup (or dump) the entire database into a file. The file name is provided as method parameter.
 
-#### ODBC
+#### [ODBC](https://github.com/aperusset/QORMLite/blob/documentation/code/connectors/odbc.h)
 
-ODBC (acronym of Open Database Connectivity) connector allows to connect to any database that support this kind of connection. The user of this connector must provide, additionally to the database name, a complete driver definition and the connection string.
+ODBC (Open Database Connectivity) connector allows to connect to any database that support this kind of connection. The user of this connector must provide, additionally to the database name, a complete driver definition and the connection string.
 
 On Windows there is usually a built-in ODBC driver that support most of the connection types (Access, SQL Server, ...).
 
@@ -91,7 +91,19 @@ The backup functionality for this connector is currently not implemented (throw 
 * Driver definition = `Microsoft Access Driver (*.mdb, *.accdb)`
 * Connection string = `DSN='';DBQ=\\path\\to\\database\\file.mdb;`
 
-#### SQLite 3
+#### [SQLite 3](https://github.com/aperusset/QORMLite/blob/documentation/code/connectors/sqlite.h)
+
+First note : it is not planned to implement a driver for SQLite 2 (QSQLITE2) as it is obsolete since prior QT's version than the one used to build this library.
+
+Second note : it is not currently possible to connect to password protected SQLite database. A nice feature for new-comer ?
+
+Third note : By default, SQLite doesn't activate foreign keys constraint.
+
+The SQLite connector take only a name as mandatory constructor parameter. It is also possible to deactivate the foreign keys constraint by specifying `false` as second constructor parameter. Foreign keys constraints are activated by default by the connector with a `postConnect` operation.
+
+This connector provides test functionalities. By "test", it means that you can create a database for test purpose with `true` as third constructor parameter. The connector will also create a temporary database by calling `connect` and will destroy (erase from disk) it by calling `disconnect`. This is particularly useful and used in the unit tests of this library.
+
+Last but not least, the connector will activate automatically [SQLite regexp option](https://doc.qt.io/qt-5/qsqldatabase.html#setConnectOptions) in a `preConnect` operation.
 
 ## Creator
 
