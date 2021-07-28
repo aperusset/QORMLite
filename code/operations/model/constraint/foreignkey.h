@@ -1,13 +1,13 @@
-#ifndef OPERATIONS_MODEL_FOREIGNKEY_H_
-#define OPERATIONS_MODEL_FOREIGNKEY_H_
+#ifndef OPERATIONS_MODEL_CONSTRAINT_FOREIGNKEY_H_
+#define OPERATIONS_MODEL_CONSTRAINT_FOREIGNKEY_H_
 
 #include <list>
-#include "operations/operation.h"
-#include "operations/model/reference.h"
+#include "./constraint.h"
+#include "./reference.h"
 
 namespace QORM {
 
-class ForeignKey : public Operation {
+class ForeignKey : public Constraint {
     const std::list<Reference> references;
     const QString targetTable;
     const OnAction onAction;
@@ -17,7 +17,7 @@ class ForeignKey : public Operation {
     auto getReferences() const -> std::list<Reference>;
     auto getTargetTable() const -> QString;
     auto getOnAction() const -> OnAction;
-    auto generate() const -> QString override;
+    auto generateConstraint() const -> QString override;
 };
 
 inline auto ForeignKey::getReferences() const -> std::list<Reference> {
@@ -34,4 +34,4 @@ inline auto ForeignKey::getOnAction() const -> OnAction {
 
 }  // namespace QORM
 
-#endif  // OPERATIONS_MODEL_FOREIGNKEY_H_
+#endif  // OPERATIONS_MODEL_CONSTRAINT_FOREIGNKEY_H_

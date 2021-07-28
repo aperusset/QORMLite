@@ -4,8 +4,9 @@
 #include <list>
 #include "operations/query.h"
 #include "operations/model/field.h"
-#include "operations/model/primarykey.h"
-#include "operations/model/foreignkey.h"
+#include "operations/model/constraint/primarykey.h"
+#include "operations/model/constraint/foreignkey.h"
+#include "operations/model/constraint/unique.h"
 
 namespace QORM {
 
@@ -14,10 +15,12 @@ class Table : public Query {
     const PrimaryKey primaryKey;
     const std::list<Field> fields;
     const std::list<ForeignKey> foreignKeys;
+    const std::list<Unique> uniques;
 
  public:
     Table(QString tableName, PrimaryKey,
-          std::list<Field> = {}, std::list<ForeignKey> = {});
+          std::list<Field> = {}, std::list<ForeignKey> = {},
+          std::list<Unique> =  {});
     auto getTableName() const -> QString;
     auto getPrimaryKey() const -> PrimaryKey;
     auto getFields() const -> std::list<Field>;

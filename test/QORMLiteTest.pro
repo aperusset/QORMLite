@@ -29,10 +29,11 @@ SOURCES +=  \
   fixture/testrepository.cpp \
   main.cpp \
   observertest.cpp \
+  operations/model/constraint/uniquetest.cpp \
   operations/model/fieldtest.cpp \
-  operations/model/foreignkeytest.cpp \
-  operations/model/primarykeytest.cpp \
-  operations/model/referencetest.cpp \
+  operations/model/constraint/foreignkeytest.cpp \
+  operations/model/constraint/primarykeytest.cpp \
+  operations/model/constraint/referencetest.cpp \
   operations/model/tabletest.cpp \
   operations/model/typetest.cpp \
   operations/model/viewtest.cpp \
@@ -64,10 +65,11 @@ HEADERS += \
   fixture/testobserver.h \
   fixture/testrepository.h \
   observertest.h \
+  operations/model/constraint/uniquetest.h \
   operations/model/fieldtest.h \
-  operations/model/foreignkeytest.h \
-  operations/model/primarykeytest.h \
-  operations/model/referencetest.h \
+  operations/model/constraint/foreignkeytest.h \
+  operations/model/constraint/primarykeytest.h \
+  operations/model/constraint/referencetest.h \
   operations/model/tabletest.h \
   operations/model/typetest.h \
   operations/model/viewtest.h \
