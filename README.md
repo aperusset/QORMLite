@@ -1,16 +1,30 @@
+<style>
+</style>
+
 # QORMLite [![Tweet](https://img.shields.io/twitter/url/http/shields.io.svg?style=social)](https://twitter.com/intent/tweet?text=Facilitate%20querying%20databases%20with%20QT%20Framework%20and%20C%2B%2B%20%21&url=https://github.com/aperusset/QORMLite)
 
-![Master version](https://img.shields.io/badge/master--version-2.0-yellow)
-![QT Version](https://img.shields.io/badge/QT-5.5.12-brightgreen) ![C++ Version](https://img.shields.io/badge/c%2B%2B-11-brightgreen) ![License](https://img.shields.io/badge/license-GPL--3.0-blue) ![Price](https://img.shields.io/badge/price-free-blue)
+[![Stable version](https://img.shields.io/badge/version-2.0-yellow)]()
+[![QT Version](https://img.shields.io/badge/QT-5.15.2-brightgreen)](https://www.qt.io/blog/qt-5.15.2-released)
+[![C++ Version](https://img.shields.io/badge/c%2B%2B-11-brightgreen)](https://en.wikipedia.org/wiki/C%2B%2B11)
+[![License](https://img.shields.io/badge/license-GPL--3.0-blue)](https://en.wikipedia.org/wiki/GNU_General_Public_License)
+[![Price](https://img.shields.io/badge/price-free-blue)]()
 
 A lite ORM (Object Relational Mapping) for QT Framework.
 
-### Build, compatibility and conventions
-QORMLite is built with QT Desktop 5.15.2 and C++11. The build has been tested on Windows 10 and Ubuntu 20.04LTS, but not on Mac OS (any version).
+### Compatibility and conventions
+QORMLite is built with QT Desktop 5.15.2 and C++11. The build has been tested on Windows 10 and Ubuntu 20.04 LTS, but not on Mac OS (any version).
 
 It is planned to upgrade step by step to [C++14](https://github.com/aperusset/QORMLite/issues/1), then [C++17](https://github.com/aperusset/QORMLite/issues/9) and finally [C++20](https://github.com/aperusset/QORMLite/issues/10). It's also planned to upgrade to [QT 6](https://github.com/aperusset/QORMLite/issues/11). Feel free to comment any of these opened issues (piece of code to upgrade or to improve, ...).
 
 The code is continuously checked with [CppCheck](http://cppcheck.sourceforge.net/) and [CPPLint](https://github.com/cpplint/cpplint). If you want to contribute, please follow as much as possible the guidelines and fixes suggested by these tools.
+
+<div style="display: flex; justify-content: space-evenly; align-items:center;">
+ <img src="./logos/qt.svg" height="40px">
+ <img src="./logos/c++.svg" height="40px">
+ <img src="./logos/cppcheck.png" height="18px">
+ <img src="./logos/windows.svg" height="40px">
+ <img src="./logos/ubuntu.svg" height="40px">
+</div>
 
 ### Configure, build and test
 First, please install QT with the official online installer (currently [4.1.1](https://download.qt.io/official_releases/qt-installer-framework/4.1.1/)).
@@ -34,17 +48,14 @@ QORMLITE_VERSION = {version}
 
 win32:CONFIG(release, debug|release) {
 LIBS += -L$$PWD/{pathToQORMLite}/QORMLite/lib/release/$$QORMLITE_VERSION -lQORMLite
-DESTDIR = $$OUT_PWD/../lib/release/$$VERSION
 }
 
 win32:CONFIG(debug, debug|release) {
 LIBS += -L$$PWD/{pathToQORMLite}/QORMLite/lib/debug/$$QORMLITE_VERSION -lQORMLite
-DESTDIR = $$OUT_PWD/../lib/debug/$$VERSION
 }
 
 unix {
 LIBS += -L$$PWD/{pathToQORMLite}/QORMLite/lib/$$QORMLITE_VERSION -lQORMLite
-DESTDIR = $$OUT_PWD/../lib/$$VERSION
 }
 
 INCLUDEPATH += $$PWD/{pathToQORMLite}/QORMLite/code
@@ -57,7 +68,7 @@ Make sure that you've built the QORMLite library in debug/release mode before bu
 
 All of the QORMLite classes are contained in `QORM` namespace.
 
-## [Connector](https://github.com/aperusset/QORMLite/blob/master/code/connectors/connector.h)
+## <div style="display: flex; align-items:center;"><img src="./logos/connector.svg" height="18px">&nbsp;[Connector](https://github.com/aperusset/QORMLite/blob/master/code/connectors/connector.h)</div>
 
 A connector is responsible to initiate a connection to a database and manage its life-cycle. The needed information to initiate all types of connection are :
 * [QT driver name](https://doc.qt.io/qt-5/sql-driver.html) -> provided by the pure virtual method `driverName()`.
@@ -77,7 +88,7 @@ All methods in this class are `virtual` and could also be overridden in child cl
 
 Implementations of `Connector` abstract class must also provide a `backup` method which effectively backup (or dump) the entire database into a file. The file name is provided as method parameter.
 
-#### [ODBC](https://github.com/aperusset/QORMLite/blob/documentation/code/connectors/odbc.h)
+#### <div style="display: flex; align-items:center;"><img src="./logos/odbc.png" height="18px">&nbsp;&nbsp;[ODBC](https://github.com/aperusset/QORMLite/blob/documentation/code/connectors/odbc.h)</div>
 
 ODBC (Open Database Connectivity) connector allows to connect to any database that support this kind of connection. The user of this connector must provide, additionally to the database name, a complete driver definition and the connection string.
 
@@ -91,7 +102,7 @@ The backup functionality for this connector is currently not implemented (throw 
 * Driver definition = `Microsoft Access Driver (*.mdb, *.accdb)`
 * Connection string = `DSN='';DBQ=\\path\\to\\database\\file.mdb;`
 
-#### [SQLite 3](https://github.com/aperusset/QORMLite/blob/documentation/code/connectors/sqlite.h)
+#### <div style="display: flex; align-items:center;"><img src="./logos/sqlite.svg" height="18px">&nbsp;[SQLite 3](https://github.com/aperusset/QORMLite/blob/documentation/code/connectors/sqlite.h)</div>
 
 First note : it is not planned to implement a driver for SQLite 2 (QSQLITE2) as it is obsolete since prior QT's version than the one used to build this library.
 
