@@ -16,11 +16,15 @@ It is planned to upgrade step by step to [C++14](https://github.com/aperusset/QO
 The code is continuously checked with [CppCheck](http://cppcheck.sourceforge.net/) and [CPPLint](https://github.com/cpplint/cpplint). If you want to contribute, please follow as much as possible the guidelines and fixes suggested by these tools.
 
 <div align="center">
- <img src="./logos/qt.svg" style="margin:20px;" height="40px">
- <img src="./logos/c++.svg" style="margin:20px;"height="40px">
- <img src="./logos/cppcheck.png" style="margin:20px;"height="18px">
- <img src="./logos/windows.svg" style="margin:20px;"height="40px">
- <img src="./logos/ubuntu.svg" style="margin:20px;"height="40px">
+ <img src="./logos/qt.svg" height="40px">
+ &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+ <img src="./logos/c++.svg" height="40px">
+ &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+ <img src="./logos/cppcheck.png" height="18px">
+ &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+ <img src="./logos/windows.svg" height="40px">
+ &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+ <img src="./logos/ubuntu.svg" height="40px">
 </div>
 
 ### Configure, build and test
