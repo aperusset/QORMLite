@@ -15,7 +15,7 @@ It is planned to upgrade step by step to [C++14](https://github.com/aperusset/QO
 
 The code is continuously checked with [CppCheck](http://cppcheck.sourceforge.net/) and [CPPLint](https://github.com/cpplint/cpplint). If you want to contribute, please follow as much as possible the guidelines and fixes suggested by these tools.
 
-<div align="center">
+<div align="center" style="display: flex; align-items:center;">
  <img src="./logos/qt.svg" height="40px">
  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
  <img src="./logos/c++.svg" height="40px">
