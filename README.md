@@ -1,6 +1,3 @@
-<style>
-</style>
-
 # QORMLite [![Tweet](https://img.shields.io/twitter/url/http/shields.io.svg?style=social)](https://twitter.com/intent/tweet?text=Facilitate%20querying%20databases%20with%20QT%20Framework%20and%20C%2B%2B%20%21&url=https://github.com/aperusset/QORMLite)
 
 [![Stable version](https://img.shields.io/badge/version-2.0-yellow)]()
@@ -18,12 +15,12 @@ It is planned to upgrade step by step to [C++14](https://github.com/aperusset/QO
 
 The code is continuously checked with [CppCheck](http://cppcheck.sourceforge.net/) and [CPPLint](https://github.com/cpplint/cpplint). If you want to contribute, please follow as much as possible the guidelines and fixes suggested by these tools.
 
-<div style="display: flex; justify-content: space-evenly; align-items:center;">
- <img src="./logos/qt.svg" height="40px">
- <img src="./logos/c++.svg" height="40px">
- <img src="./logos/cppcheck.png" height="18px">
- <img src="./logos/windows.svg" height="40px">
- <img src="./logos/ubuntu.svg" height="40px">
+<div align="center">
+ <img src="./logos/qt.svg" style="margin:20px;" height="40px">
+ <img src="./logos/c++.svg" style="margin:20px;"height="40px">
+ <img src="./logos/cppcheck.png" style="margin:20px;"height="18px">
+ <img src="./logos/windows.svg" style="margin:20px;"height="40px">
+ <img src="./logos/ubuntu.svg" style="margin:20px;"height="40px">
 </div>
 
 ### Configure, build and test
