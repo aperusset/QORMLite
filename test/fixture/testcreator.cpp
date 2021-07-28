@@ -1,7 +1,7 @@
 #include "testcreator.h"
 #include "./database.h"
 #include "operations/model/table.h"
-#include "operations/model/primarykey.h"
+#include "operations/model/constraint/primarykey.h"
 #include "operations/model/type/integer.h"
 #include "operations/model/field.h"
 #include "operations/model/view.h"

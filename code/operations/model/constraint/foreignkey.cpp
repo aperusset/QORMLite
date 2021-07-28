@@ -1,10 +1,11 @@
-#include "operations/model/foreignkey.h"
+#include "foreignkey.h"
 #include <QStringList>
 #include <utility>
 #include <string>
 
 QORM::ForeignKey::ForeignKey(std::list<Reference> references,
                              QString targetTable, const OnAction &onAction) :
+    Constraint(targetTable.toLower() + "_fk"),
     references(std::move(references)), targetTable(std::move(targetTable)),
     onAction(onAction) {
     if (this->references.empty()) {
@@ -12,15 +13,14 @@ QORM::ForeignKey::ForeignKey(std::list<Reference> references,
     }
 }
 
-auto QORM::ForeignKey::generate() const -> QString {
-    QString foreignKey = "constraint [" + targetTable.toLower() + "_fk] ";
+auto QORM::ForeignKey::generateConstraint() const -> QString {
     QStringList fromFieldNames;
     QStringList toFieldNames;
-    for (auto const &reference : references) {
+    for (auto const &reference : this->references) {
         fromFieldNames << reference.getFrom().getName();
         toFieldNames << reference.getTo().getName();
     }
-    foreignKey += "foreign key (" + fromFieldNames.join(", ") + ") " +
+    QString foreignKey = "foreign key (" + fromFieldNames.join(", ") + ") " +
                   "references [" + targetTable + "](" +
                   toFieldNames.join(", ") + ") " + "on delete ";
     switch (this->onAction) {

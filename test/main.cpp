@@ -8,9 +8,10 @@
 #include "./repositorytest.h"
 #include "operations/model/typetest.h"
 #include "operations/model/fieldtest.h"
-#include "operations/model/primarykeytest.h"
-#include "operations/model/referencetest.h"
-#include "operations/model/foreignkeytest.h"
+#include "operations/model/constraint/primarykeytest.h"
+#include "operations/model/constraint/referencetest.h"
+#include "operations/model/constraint/foreignkeytest.h"
+#include "operations/model/constraint/uniquetest.h"
 #include "operations/query/ordertest.h"
 #include "operations/query/assignmenttest.h"
 #include "operations/query/selectiontest.h"
@@ -37,6 +38,7 @@ auto main(int argc, char *argv[]) -> int {
         std::make_shared<PrimaryKeyTest>(),
         std::make_shared<ReferenceTest>(),
         std::make_shared<ForeignKeyTest>(),
+        std::make_shared<UniqueTest>(),
         std::make_shared<OrderTest>(),
         std::make_shared<AssignmentTest>(),
         std::make_shared<SelectionTest>(),

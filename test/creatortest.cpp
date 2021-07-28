@@ -1,7 +1,7 @@
 #include "creatortest.h"
 #include <string>
 #include "./database.h"
-#include "operations/model/primarykey.h"
+#include "operations/model/constraint/primarykey.h"
 #include "operations/model/type/integer.h"
 #include "operations/query/select.h"
 #include "operations/query/insert.h"

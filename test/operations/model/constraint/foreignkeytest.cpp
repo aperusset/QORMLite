@@ -1,7 +1,7 @@
 #include "foreignkeytest.h"
 #include <string>
-#include "operations/model/reference.h"
-#include "operations/model/foreignkey.h"
+#include "operations/model/constraint/reference.h"
+#include "operations/model/constraint/foreignkey.h"
 #include "operations/model/type/type.h"
 #include "operations/model/type/integer.h"
 
@@ -27,7 +27,7 @@ void ForeignKeyTest::generateCascade() {
     auto const generated = foreignKey.generate();
 
     // Then
-    QCOMPARE(generated, QString("constraint [targettable_fk] foreign ") +
+    QCOMPARE(generated, QString("constraint targettable_fk foreign ") +
              "key (field1) references [targetTable](field2) on delete cascade");
 }
 
@@ -44,7 +44,7 @@ void ForeignKeyTest::generateRestrict() {
     auto const generated = foreignKey.generate();
 
     // Then
-    QCOMPARE(generated, QString("constraint [targettable_fk] foreign key") +
+    QCOMPARE(generated, QString("constraint targettable_fk foreign key") +
              " (field1) references [targetTable](field2) on delete restrict");
 }
 
@@ -61,7 +61,7 @@ void ForeignKeyTest::generateSetNull() {
     auto const generated = foreignKey.generate();
 
     // Then
-    QCOMPARE(generated, QString("constraint [targettable_fk] foreign key") +
+    QCOMPARE(generated, QString("constraint targettable_fk foreign key") +
              " (field1) references [targetTable](field2) on delete set null");
 }
 
@@ -78,7 +78,7 @@ void ForeignKeyTest::generateSetDefault() {
     auto const generated = foreignKey.generate();
 
     // Then
-    QCOMPARE(generated, QString("constraint [targettable_fk] foreign key") +
+    QCOMPARE(generated, QString("constraint targettable_fk foreign key") +
             " (field1) references [targetTable](field2) on delete set default");
 }
 
@@ -96,7 +96,7 @@ void ForeignKeyTest::generateMultipleFields() {
     auto const generated = foreignKey.generate();
 
     // Then
-    QCOMPARE(generated, QString("constraint [targettable_fk] foreign key") +
+    QCOMPARE(generated, QString("constraint targettable_fk foreign key") +
             " (field1, field2) references [targetTable](field2, field1) on" +
              " delete cascade");
 }
