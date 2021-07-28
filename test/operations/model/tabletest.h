@@ -20,6 +20,8 @@ class TableTest : public QObject {
     static void primaryKeyWithDuplicatedFields();
     static void singleForeignKey();
     static void multipleForeignKeys();
+    static void singleUnique();
+    static void multipleUniques();
 };
 
 #endif  // TEST_OPERATIONS_MODEL_TABLETEST_H_

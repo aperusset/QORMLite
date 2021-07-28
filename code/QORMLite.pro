@@ -15,9 +15,11 @@ SOURCES += \
   connectors/sqlite.cpp \
   creator.cpp \
   database.cpp \
+  operations/model/constraint/constraint.cpp \
+  operations/model/constraint/unique.cpp \
+  operations/model/constraint/foreignkey.cpp \
+  operations/model/constraint/primarykey.cpp \
   operations/model/field.cpp \
-  operations/model/foreignkey.cpp \
-  operations/model/primarykey.cpp \
   operations/model/table.cpp \
   operations/model/type/date.cpp \
   operations/model/type/type.cpp \
@@ -48,10 +50,12 @@ HEADERS += \
   database.h \
   entity.h \
   observer.h \
+  operations/model/constraint/constraint.h \
+  operations/model/constraint/unique.h \
+  operations/model/constraint/foreignkey.h \
+  operations/model/constraint/primarykey.h \
+  operations/model/constraint/reference.h \
   operations/model/field.h \
-  operations/model/foreignkey.h \
-  operations/model/primarykey.h \
-  operations/model/reference.h \
   operations/model/table.h \
   operations/model/type/date.h \
   operations/model/type/decimal.h \

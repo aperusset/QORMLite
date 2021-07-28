@@ -5,9 +5,11 @@
 #include "utils.h"
 
 QORM::Table::Table(QString tableName, PrimaryKey primaryKey,
-                   std::list<Field> fields, std::list<ForeignKey> foreignKeys) :
+                   std::list<Field> fields, std::list<ForeignKey> foreignKeys,
+                   std::list<Unique> uniques) :
     tableName(std::move(tableName)), primaryKey(std::move(primaryKey)),
-    fields(std::move(fields)), foreignKeys(std::move(foreignKeys)) {}
+    fields(std::move(fields)), foreignKeys(std::move(foreignKeys)),
+    uniques(std::move(uniques)) {}
 
 auto QORM::Table::generate() const -> QString {
     auto const pKeyFields = this->primaryKey.getFields();
@@ -37,6 +39,13 @@ auto QORM::Table::generate() const -> QString {
             std::back_inserter(generatedForeignKeys),
             std::bind(&ForeignKey::generate, std::placeholders::_1));
         creation += ", " + generatedForeignKeys.join(", ");
+    }
+    if (!this->uniques.empty()) {
+        QStringList generatedUniques;
+        std::transform(this->uniques.begin(), this->uniques.end(),
+            std::back_inserter(generatedUniques),
+            std::bind(&Unique::generate, std::placeholders::_1));
+        creation += ", " + generatedUniques.join(", ");
     }
     return (creation += ")").simplified();
 }

@@ -4,8 +4,8 @@
 #include <QString>
 #include <list>
 #include "operations/model/field.h"
-#include "operations/model/foreignkey.h"
-#include "operations/model/primarykey.h"
+#include "operations/model/constraint/foreignkey.h"
+#include "operations/model/constraint/primarykey.h"
 #include "operations/query/insert.h"
 #include "operations/query/select.h"
 
