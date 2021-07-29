@@ -29,8 +29,12 @@ SOURCES += \
   operations/query/assignment.cpp \
   operations/query/condition/condition.cpp \
   operations/query/condition/equals.cpp \
+  operations/query/condition/greater.cpp \
+  operations/query/condition/greaterorequals.cpp \
   operations/query/condition/in.cpp \
   operations/query/condition/notequals.cpp \
+  operations/query/condition/smaller.cpp \
+  operations/query/condition/smallerorequals.cpp \
   operations/query/delete.cpp \
   operations/query/insert.cpp \
   operations/query/join/join.cpp \
@@ -70,12 +74,16 @@ HEADERS += \
   operations/query/condition/and.h \
   operations/query/condition/condition.h \
   operations/query/condition/equals.h \
+  operations/query/condition/greater.h \
+  operations/query/condition/greaterorequals.h \
   operations/query/condition/in.h \
   operations/query/condition/isnotnull.h \
   operations/query/condition/isnull.h \
   operations/query/condition/like.h \
   operations/query/condition/notequals.h \
   operations/query/condition/or.h \
+  operations/query/condition/smaller.h \
+  operations/query/condition/smallerorequals.h \
   operations/query/delete.h \
   operations/query/insert.h \
   operations/query/join/crossjoin.h \
