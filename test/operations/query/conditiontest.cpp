@@ -7,6 +7,10 @@
 #include "operations/query/condition/like.h"
 #include "operations/query/condition/equals.h"
 #include "operations/query/condition/notequals.h"
+#include "operations/query/condition/greater.h"
+#include "operations/query/condition/greaterorequals.h"
+#include "operations/query/condition/smaller.h"
+#include "operations/query/condition/smallerorequals.h"
 #include "operations/query/condition/in.h"
 #include "operations/query/condition/and.h"
 #include "operations/query/condition/or.h"
@@ -211,6 +215,250 @@ void ConditionTest::notEqualsSelections() {
     QVERIFY(notEquals.getNestedConditions().empty());
     QVERIFY(notEquals.getValue().isNull());
     QVERIFY(notEquals.getParametrizedConditions().empty());
+}
+
+void ConditionTest::greaterField() {
+    // Given
+    auto const greater = QORM::Greater::field(DEFAULT_FIELD_NAME,
+                                              DEFAULT_VALUE);
+
+    // When
+    auto const generated = greater.generate();
+
+    // Then
+    QCOMPARE(generated, DEFAULT_FIELD_NAME + " > " +
+                        QORM::Utils::parametrize(DEFAULT_FIELD_NAME));
+    QVERIFY(greater.getNestedConditions().empty());
+    QCOMPARE(greater.getValue().toInt(), DEFAULT_VALUE.toInt());
+    QCOMPARE(greater.getParametrizedConditions().size(), 1U);
+}
+
+void ConditionTest::greaterFields() {
+    // Given
+    auto const greater = QORM::Greater::fields(DEFAULT_FIELD_NAME,
+                                               DEFAULT_FIELD_NAME);
+    // When
+    auto const generated = greater.generate();
+
+    // Then
+    QCOMPARE(generated, DEFAULT_FIELD_NAME + " > " + DEFAULT_FIELD_NAME);
+    QVERIFY(greater.getNestedConditions().empty());
+    QVERIFY(greater.getValue().isNull());
+    QVERIFY(greater.getParametrizedConditions().empty());
+}
+
+void ConditionTest::greaterSelection() {
+    // Given
+    auto const sum = QORM::Sum(DEFAULT_FIELD_NAME, QString());
+    auto const greater = QORM::Greater::selection(sum, DEFAULT_VALUE);
+
+    // When
+    auto const generated = greater.generate();
+
+    // Then
+    QCOMPARE(generated,
+        sum.generate() + " > " + QORM::Utils::parametrize(sum.generate()));
+    QVERIFY(greater.getNestedConditions().empty());
+    QCOMPARE(greater.getValue().toInt(), DEFAULT_VALUE.toInt());
+    QCOMPARE(greater.getParametrizedConditions().size(), 1U);
+}
+
+void ConditionTest::greaterSelections() {
+    // Given
+    auto const sum = QORM::Sum(DEFAULT_FIELD_NAME, QString());
+    auto const greater = QORM::Greater::selections(sum, sum);
+
+    // When
+    auto const generated = greater.generate();
+
+    // Then
+    QCOMPARE(generated, sum.generate() + " > " + sum.generate());
+    QVERIFY(greater.getNestedConditions().empty());
+    QVERIFY(greater.getValue().isNull());
+    QVERIFY(greater.getParametrizedConditions().empty());
+}
+
+void ConditionTest::greaterOrEqualsField() {
+    // Given
+    auto const greaterOrEquals = QORM::GreaterOrEquals::field(
+                DEFAULT_FIELD_NAME, DEFAULT_VALUE);
+
+    // When
+    auto const generated = greaterOrEquals.generate();
+
+    // Then
+    QCOMPARE(generated, DEFAULT_FIELD_NAME + " >= " +
+                        QORM::Utils::parametrize(DEFAULT_FIELD_NAME));
+    QVERIFY(greaterOrEquals.getNestedConditions().empty());
+    QCOMPARE(greaterOrEquals.getValue().toInt(), DEFAULT_VALUE.toInt());
+    QCOMPARE(greaterOrEquals.getParametrizedConditions().size(), 1U);
+}
+
+void ConditionTest::greaterOrEqualsFields() {
+    // Given
+    auto const greaterOrEquals = QORM::GreaterOrEquals::fields(
+                DEFAULT_FIELD_NAME, DEFAULT_FIELD_NAME);
+    // When
+    auto const generated = greaterOrEquals.generate();
+
+    // Then
+    QCOMPARE(generated, DEFAULT_FIELD_NAME + " >= " + DEFAULT_FIELD_NAME);
+    QVERIFY(greaterOrEquals.getNestedConditions().empty());
+    QVERIFY(greaterOrEquals.getValue().isNull());
+    QVERIFY(greaterOrEquals.getParametrizedConditions().empty());
+}
+
+void ConditionTest::greaterOrEqualsSelection() {
+    // Given
+    auto const sum = QORM::Sum(DEFAULT_FIELD_NAME, QString());
+    auto const greaterOrEquals = QORM::GreaterOrEquals::selection(sum,
+                                    DEFAULT_VALUE);
+    // When
+    auto const generated = greaterOrEquals.generate();
+
+    // Then
+    QCOMPARE(generated,
+        sum.generate() + " >= " + QORM::Utils::parametrize(sum.generate()));
+    QVERIFY(greaterOrEquals.getNestedConditions().empty());
+    QCOMPARE(greaterOrEquals.getValue().toInt(), DEFAULT_VALUE.toInt());
+    QCOMPARE(greaterOrEquals.getParametrizedConditions().size(), 1U);
+}
+
+void ConditionTest::greaterOrEqualsSelections() {
+    // Given
+    auto const sum = QORM::Sum(DEFAULT_FIELD_NAME, QString());
+    auto const greaterOrEquals = QORM::GreaterOrEquals::selections(sum, sum);
+
+    // When
+    auto const generated = greaterOrEquals.generate();
+
+    // Then
+    QCOMPARE(generated, sum.generate() + " >= " + sum.generate());
+    QVERIFY(greaterOrEquals.getNestedConditions().empty());
+    QVERIFY(greaterOrEquals.getValue().isNull());
+    QVERIFY(greaterOrEquals.getParametrizedConditions().empty());
+}
+
+void ConditionTest::smallerField() {
+    // Given
+    auto const smaller = QORM::Smaller::field(DEFAULT_FIELD_NAME,
+                                              DEFAULT_VALUE);
+
+    // When
+    auto const generated = smaller.generate();
+
+    // Then
+    QCOMPARE(generated, DEFAULT_FIELD_NAME + " < " +
+                        QORM::Utils::parametrize(DEFAULT_FIELD_NAME));
+    QVERIFY(smaller.getNestedConditions().empty());
+    QCOMPARE(smaller.getValue().toInt(), DEFAULT_VALUE.toInt());
+    QCOMPARE(smaller.getParametrizedConditions().size(), 1U);
+}
+
+void ConditionTest::smallerFields() {
+    // Given
+    auto const smaller = QORM::Smaller::fields(DEFAULT_FIELD_NAME,
+                                               DEFAULT_FIELD_NAME);
+    // When
+    auto const generated = smaller.generate();
+
+    // Then
+    QCOMPARE(generated, DEFAULT_FIELD_NAME + " < " + DEFAULT_FIELD_NAME);
+    QVERIFY(smaller.getNestedConditions().empty());
+    QVERIFY(smaller.getValue().isNull());
+    QVERIFY(smaller.getParametrizedConditions().empty());
+}
+
+void ConditionTest::smallerSelection() {
+    // Given
+    auto const sum = QORM::Sum(DEFAULT_FIELD_NAME, QString());
+    auto const smaller = QORM::Smaller::selection(sum, DEFAULT_VALUE);
+
+    // When
+    auto const generated = smaller.generate();
+
+    // Then
+    QCOMPARE(generated,
+        sum.generate() + " < " + QORM::Utils::parametrize(sum.generate()));
+    QVERIFY(smaller.getNestedConditions().empty());
+    QCOMPARE(smaller.getValue().toInt(), DEFAULT_VALUE.toInt());
+    QCOMPARE(smaller.getParametrizedConditions().size(), 1U);
+}
+
+void ConditionTest::smallerSelections() {
+    // Given
+    auto const sum = QORM::Sum(DEFAULT_FIELD_NAME, QString());
+    auto const smaller = QORM::Smaller::selections(sum, sum);
+
+    // When
+    auto const generated = smaller.generate();
+
+    // Then
+    QCOMPARE(generated, sum.generate() + " < " + sum.generate());
+    QVERIFY(smaller.getNestedConditions().empty());
+    QVERIFY(smaller.getValue().isNull());
+    QVERIFY(smaller.getParametrizedConditions().empty());
+}
+
+void ConditionTest::smallerOrEqualsField() {
+    // Given
+    auto const smallerOrEquals = QORM::SmallerOrEquals::field(
+                DEFAULT_FIELD_NAME, DEFAULT_VALUE);
+
+    // When
+    auto const generated = smallerOrEquals.generate();
+
+    // Then
+    QCOMPARE(generated, DEFAULT_FIELD_NAME + " <= " +
+                        QORM::Utils::parametrize(DEFAULT_FIELD_NAME));
+    QVERIFY(smallerOrEquals.getNestedConditions().empty());
+    QCOMPARE(smallerOrEquals.getValue().toInt(), DEFAULT_VALUE.toInt());
+    QCOMPARE(smallerOrEquals.getParametrizedConditions().size(), 1U);
+}
+
+void ConditionTest::smallerOrEqualsFields() {
+    // Given
+    auto const smallerOrEquals = QORM::SmallerOrEquals::fields(
+                DEFAULT_FIELD_NAME, DEFAULT_FIELD_NAME);
+    // When
+    auto const generated = smallerOrEquals.generate();
+
+    // Then
+    QCOMPARE(generated, DEFAULT_FIELD_NAME + " <= " + DEFAULT_FIELD_NAME);
+    QVERIFY(smallerOrEquals.getNestedConditions().empty());
+    QVERIFY(smallerOrEquals.getValue().isNull());
+    QVERIFY(smallerOrEquals.getParametrizedConditions().empty());
+}
+
+void ConditionTest::smallerOrEqualsSelection() {
+    // Given
+    auto const sum = QORM::Sum(DEFAULT_FIELD_NAME, QString());
+    auto const smallerOrEquals = QORM::SmallerOrEquals::selection(sum,
+                                    DEFAULT_VALUE);
+    // When
+    auto const generated = smallerOrEquals.generate();
+
+    // Then
+    QCOMPARE(generated,
+        sum.generate() + " <= " + QORM::Utils::parametrize(sum.generate()));
+    QVERIFY(smallerOrEquals.getNestedConditions().empty());
+    QCOMPARE(smallerOrEquals.getValue().toInt(), DEFAULT_VALUE.toInt());
+    QCOMPARE(smallerOrEquals.getParametrizedConditions().size(), 1U);
+}
+
+void ConditionTest::smallerOrEqualsSelections() {
+    // Given
+    auto const sum = QORM::Sum(DEFAULT_FIELD_NAME, QString());
+    auto const smallerOrEquals = QORM::SmallerOrEquals::selections(sum, sum);
+
+    // When
+    auto const generated = smallerOrEquals.generate();
+
+    // Then
+    QCOMPARE(generated, sum.generate() + " <= " + sum.generate());
+    QVERIFY(smallerOrEquals.getNestedConditions().empty());
+    QVERIFY(smallerOrEquals.getValue().isNull());
+    QVERIFY(smallerOrEquals.getParametrizedConditions().empty());
 }
 
 void ConditionTest::inWithSelect() {
