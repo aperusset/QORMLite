@@ -91,7 +91,7 @@ auto QORM::Select::generate() const -> QString {
     std::transform(this->orders.begin(), this->orders.end(),
                    std::back_inserter(generatedOrders),
         [this, &generatedSelections](const Order &order) -> QString {
-            if (!QORM::Utils::contains(this->selections, Selection(" * ")) &&
+            if (!QORM::Utils::contains(this->selections, Selection(QString{" * "})) &&
                 !QORM::Utils::contains(
                         this->selections,
                         Selection(order.getFieldName()))) {

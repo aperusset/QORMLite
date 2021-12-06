@@ -10,6 +10,7 @@ class Bindable {
  public:
     virtual auto getParameter() const -> QString = 0;
     virtual auto getValue() const -> QVariant = 0;
+    virtual auto isParametrized() const -> bool = 0;
 };
 
 }  // namespace QORM
