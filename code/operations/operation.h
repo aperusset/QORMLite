@@ -14,7 +14,6 @@ class Operation {
     Operation& operator=(Operation&&) = delete;
     virtual ~Operation() {}
 
-    operator QString() const { return this->generate(); }
     virtual auto generate() const -> QString = 0;
 
     // Prevent heap allocation for database operations

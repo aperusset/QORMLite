@@ -21,7 +21,7 @@ void TypeTest::generateQString() {
     auto const type = QORM::Type("typeName");
 
     // When
-    const QString generated = type;
+    const QString generated = type.generate();
 
     // Then
     QCOMPARE(type.getName(), generated);

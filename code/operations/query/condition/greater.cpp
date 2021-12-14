@@ -12,10 +12,10 @@ auto QORM::Greater::fields(const QString &left,
 
 auto QORM::Greater::selection(const Selection &selection,
                               const QVariant &value) -> Condition {
-    return Condition(" > ", {}, selection, QString(), value);
+    return Condition(" > ", {}, selection.generate(), QString(), value);
 }
 
 auto QORM::Greater::selections(const Selection &right,
                                const Selection &left) -> Condition {
-    return Condition(" > ", {}, right, left, QVariant());
+    return Condition(" > ", {}, right.generate(), left.generate(), QVariant());
 }

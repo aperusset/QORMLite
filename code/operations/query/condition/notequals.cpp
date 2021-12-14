@@ -12,10 +12,10 @@ auto QORM::NotEquals::fields(const QString &left,
 
 auto QORM::NotEquals::selection(const Selection &selection,
                                 const QVariant &value) -> Condition {
-    return Condition(" <> ", {}, selection, QString(), value);
+    return Condition(" <> ", {}, selection.generate(), QString(), value);
 }
 
 auto QORM::NotEquals::selections(const Selection &right,
                                  const Selection &left) -> Condition {
-    return Condition(" <> ", {}, right, left, QVariant());
+    return Condition(" <> ", {}, right.generate(), left.generate(), QVariant());
 }

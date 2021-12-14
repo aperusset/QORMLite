@@ -24,9 +24,23 @@ QORM::Select::Select(const QString &tableName) : Select(tableName, {" * "}) {}
 
 QORM::Select::Select(const QString &tableName,
                      const std::list<QString> &fields) :
-    TableQuery(tableName) {
+    Select(tableName, {}, fields) {}
+
+QORM::Select::Select(const QString &tableName,
+                     const std::list<Selection> &selections) :
+    Select(tableName, selections, {}) {}
+
+QORM::Select::Select(const QString &tableName,
+                     const std::list<Selection> selections,
+                     const std::list<QString> &fields) :
+    TableQuery(tableName), selections(std::move(selections)) {
     for (auto const &field : fields) {
         this->selections.emplace_back(Selection(field));
+    }
+    for (auto const &selection: this->selections) {
+        if (selection.isParametrized()) {
+            this->addBindable(selection);
+        }
     }
 }
 
