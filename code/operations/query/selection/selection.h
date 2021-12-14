@@ -19,7 +19,6 @@ class Selection : public Operation, public Bindable {
     auto getRenamedTo() const -> QString;
     auto getParameter() const -> QString override;
     auto getValue() const -> QVariant override;
-    auto isParametrized() const -> bool override;
     auto generate() const -> QString override;
     auto operator == (const Selection&) const -> bool;
     auto operator != (const Selection&) const -> bool;
@@ -39,10 +38,6 @@ inline auto Selection::getParameter() const -> QString {
 
 inline auto Selection::getValue() const -> QVariant {
     return this->value;
-}
-
-inline auto Selection::isParametrized() const -> bool {
-    return this->value.isValid();
 }
 
 }  // namespace QORM

@@ -24,14 +24,14 @@ QORM::Condition::Condition(QString op, std::list<Condition> nestedConditions,
 }
 
 auto QORM::Condition::isParametrized() const -> bool {
-    return value.isValid() || std::any_of(
+    return QORM::Bindable::isParametrized() || std::any_of(
         nestedConditions.begin(), nestedConditions.end(),
         std::bind(&Condition::isParametrized, std::placeholders::_1));
 }
 
 auto QORM::Condition::getParametrizedConditions()
 const -> std::list<Condition> {
-    if (value.isValid()) {
+    if (QORM::Bindable::isParametrized()) {
         return {*this};
     }
     std::list<Condition> parametrizedConditions;
