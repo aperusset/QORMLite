@@ -6,6 +6,8 @@
 #include "operations/query/selection/selection.h"
 #include "operations/query/bindable.h"
 
+// TODO : should we have constructors with <Selection> ?
+
 namespace QORM {
 
 class Condition : public Operation, public Bindable {
