@@ -40,6 +40,7 @@ SOURCES += \
   operations/query/join/join.cpp \
   operations/query/order/order.cpp \
   operations/query/select.cpp \
+  operations/query/selection/coalesce.cpp \
   operations/query/selection/selection.cpp \
   operations/query/update.cpp \
   qormlite.cpp \
@@ -96,6 +97,7 @@ HEADERS += \
   operations/query/order/order.h \
   operations/query/select.h \
   operations/query/selection/avg.h \
+  operations/query/selection/coalesce.h \
   operations/query/selection/count.h \
   operations/query/selection/dateformatter.h \
   operations/query/selection/lower.h \

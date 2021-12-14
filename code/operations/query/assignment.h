@@ -16,6 +16,7 @@ class Assignment : public Operation, public Bindable {
     auto getFieldName() const -> QString;
     auto getParameter() const -> QString override;
     auto getValue() const -> QVariant override;
+    auto isParametrized() const -> bool override;
     auto generate() const -> QString override;
 };
 
@@ -29,6 +30,10 @@ inline auto Assignment::getParameter() const -> QString {
 
 inline auto Assignment::getValue() const -> QVariant {
     return this->value;
+}
+
+inline auto Assignment::isParametrized() const -> bool {
+    return this->value.isValid();
 }
 
 }  // namespace QORM

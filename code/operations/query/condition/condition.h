@@ -8,16 +8,12 @@
 
 namespace QORM {
 
-class Select;
-
 class Condition : public Operation, public Bindable {
     const QString op;
     const std::list<Condition> nestedConditions;
     const QString leftField;
     const QString rightField;
     const QVariant value;
-
-    auto isParametrized() const -> bool;
 
  public:
     Condition(QString op, std::list<Condition> nestedConditions,
@@ -28,6 +24,7 @@ class Condition : public Operation, public Bindable {
     auto getRightField() const -> QString;
     auto getParameter() const -> QString override;
     auto getValue() const -> QVariant override;
+    auto isParametrized() const -> bool override;
     auto getParametrizedConditions() const -> std::list<Condition>;
     auto generate() const -> QString override;
 };

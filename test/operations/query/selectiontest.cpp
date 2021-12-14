@@ -56,7 +56,7 @@ void SelectionTest::equals() {
 void SelectionTest::notEquals() {
     // Given
     auto const selection1 = QORM::Selection(DEFAULT_FIELD_NAME);
-    auto const selection2 = QORM::Selection("anotherName");
+    auto const selection2 = QORM::Selection(QString{"anotherName"});
 
     // When
     auto const equals = selection1 == selection2;
