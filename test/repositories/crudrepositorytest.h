@@ -1,5 +1,5 @@
-#ifndef TEST_REPOSITORIES_REPOSITORYTEST_H_
-#define TEST_REPOSITORIES_REPOSITORYTEST_H_
+#ifndef TEST_REPOSITORIES_CRUDREPOSITORYTEST_H_
+#define TEST_REPOSITORIES_CRUDREPOSITORYTEST_H_
 
 #include <QtTest/QtTest>
 #include "fixture/maindatabasetest.h"
@@ -40,4 +40,4 @@ class CRUDRepositoryTest : public MainDatabaseTest {
     }
 };
 
-#endif  // TEST_REPOSITORIES_REPOSITORYTEST_H_
+#endif  // TEST_REPOSITORIES_CRUDREPOSITORYTEST_H_
