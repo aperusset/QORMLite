@@ -1,23 +1,17 @@
-#ifndef REPOSITORY_H_
-#define REPOSITORY_H_
+#ifndef REPOSITORIES_READONLYREPOSITORY_H
+#define REPOSITORIES_READONLYREPOSITORY_H
 
-#include <QSqlRecord>
-#include <QString>
 #include <list>
 #include <memory>
 #include "./entity.h"
 #include "./database.h"
 #include "./cache.h"
-#include "operations/query/select.h"
-#include "operations/query/update.h"
-#include "operations/query/delete.h"
-#include "operations/query/condition/condition.h"
 #include "operations/query/selection/count.h"
 
 namespace QORM {
 
 template<typename Key, class Entity>
-class Repository {
+class ReadOnlyRepository {
     static_assert(
         std::is_base_of<QORM::Entity<Key>, Entity>::value,
         "Entity must extend QORM::Entity");
@@ -33,16 +27,21 @@ class Repository {
         };
 
  public:
-    explicit Repository(const Database &database, Cache<Key, Entity> &cache) :
+    explicit ReadOnlyRepository(const Database &database,
+                                Cache<Key, Entity> &cache) :
         database(database), cache(cache) {}
-    Repository(const Repository&) = delete;
-    Repository(Repository&&) = delete;
-    Repository& operator=(const Repository&) = delete;
-    Repository& operator=(Repository&&) = delete;
-    virtual ~Repository() {}
+    ReadOnlyRepository(const ReadOnlyRepository&) = delete;
+    ReadOnlyRepository(ReadOnlyRepository&&) = delete;
+    ReadOnlyRepository& operator=(const ReadOnlyRepository&) = delete;
+    ReadOnlyRepository& operator=(ReadOnlyRepository&&) = delete;
+    virtual ~ReadOnlyRepository() {}
 
     auto getDatabase() const -> const Database& {
         return this->database;
+    }
+
+    auto getCache() const -> Cache<Key, Entity>& {
+        return this->cache;
     }
 
     auto getByKey(const Key &key) const -> Entity& {
@@ -85,44 +84,13 @@ class Repository {
         return this->count(conditions) > 0;
     }
 
-    virtual auto save(Entity* const entity) const -> Key {
-        if (this->existsByKey(entity->getKey())) {
-            auto const assignementsToDo = this->assignements(*entity);
-            if (!assignementsToDo.empty()) {
-                database.execute(QORM::Update(this->tableName(),
-                                    assignementsToDo,
-                                    this->keyCondition(entity->getKey())));
-            }
-        } else {
-            this->cache.insert(this->insert(*entity),
-                               std::unique_ptr<Entity>(entity));
-        }
-        entity->notifyChange();
-        return entity->getKey();
-    }
-
-    virtual void erase(const Key &key) const {
-        if (this->existsByKey(key)) {
-            auto const &entity = this->getByKey(key);
-            database.execute(QORM::Delete(this->tableName(),
-                                          this->keyCondition(key)));
-            entity.notifyDelete();
-            this->cache.remove(key);
-        }
-    }
-
     virtual auto tableName() const -> QString = 0;
     virtual auto keyCondition(const Key&) const -> Condition = 0;
     virtual auto fields() const -> std::list<QString> = 0;
     virtual auto buildKey(const QSqlRecord &record) const -> Key = 0;
     virtual auto build(const QSqlRecord &record) const -> Entity* = 0;
-    virtual auto insert(Entity&) const -> Key = 0;
-    virtual auto assignements(const Entity&)
-        const -> std::list<QORM::Assignment> {
-            return {};
-        }
 };
 
 }  // namespace QORM
 
-#endif  // REPOSITORY_H_
+#endif  // REPOSITORIES_READONLYREPOSITORY_H

@@ -1,11 +1,13 @@
-#include "utilstest.h"
+#include "./utilstest.h"
 #include "./entitytest.h"
 #include "./observertest.h"
 #include "./cachetest.h"
 #include "./databasetest.h"
 #include "./creatortest.h"
 #include "./qormlitetest.h"
-#include "./repositorytest.h"
+#include "connectors/connectortest.h"
+#include "connectors/sqlitetest.h"
+#include "connectors/odbctest.h"
 #include "operations/model/typetest.h"
 #include "operations/model/fieldtest.h"
 #include "operations/model/constraint/primarykeytest.h"
@@ -23,9 +25,7 @@
 #include "operations/query/inserttest.h"
 #include "operations/query/updatetest.h"
 #include "operations/query/deletetest.h"
-#include "connectors/connectortest.h"
-#include "connectors/sqlitetest.h"
-#include "connectors/odbctest.h"
+#include "repositories/crudrepositorytest.h"
 
 auto main(int argc, char *argv[]) -> int {
     auto tests = std::list<std::shared_ptr<QObject>>{
@@ -56,7 +56,7 @@ auto main(int argc, char *argv[]) -> int {
         std::make_shared<DatabaseTest>(),
         std::make_shared<CreatorTest>(),
         std::make_shared<QORMLiteTest>(),
-        std::make_shared<RepositoryTest>()
+        std::make_shared<CRUDRepositoryTest>()
     };
 
     try {

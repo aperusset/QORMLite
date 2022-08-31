@@ -1,19 +1,19 @@
-#ifndef TEST_FIXTURE_TESTREPOSITORY_H_
-#define TEST_FIXTURE_TESTREPOSITORY_H_
+#ifndef TEST_FIXTURE_TESTCRUDREPOSITORY_H_
+#define TEST_FIXTURE_TESTCRUDREPOSITORY_H_
 
 #include <list>
-#include "./repository.h"
 #include "./testentity.h"
 #include "operations/query/condition/condition.h"
 #include "operations/query/assignment.h"
+#include "repositories/crudrepository.h"
 
-class TestRepository : public QORM::Repository<int, TestEntity> {
+class TestCRUDRepository : public QORM::CRUDRepository<int, TestEntity> {
     static bool isInserted;
     static bool isUpdated;
 
  public:
-    TestRepository(const QORM::Database &database,
-                   QORM::Cache<int, TestEntity> &cache);
+    TestCRUDRepository(const QORM::Database &database,
+                       QORM::Cache<int, TestEntity> &cache);
 
     auto tableName() const -> QString override;
     auto keyCondition(const int&) const -> QORM::Condition override;
@@ -28,4 +28,4 @@ class TestRepository : public QORM::Repository<int, TestEntity> {
     static auto hasBeenUpdated() -> bool;
 };
 
-#endif  // TEST_FIXTURE_TESTREPOSITORY_H_
+#endif  // TEST_FIXTURE_TESTCRUDREPOSITORY_H_
