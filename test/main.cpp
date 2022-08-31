@@ -5,7 +5,9 @@
 #include "./databasetest.h"
 #include "./creatortest.h"
 #include "./qormlitetest.h"
-#include "repositories/crudrepositorytest.h"
+#include "connectors/connectortest.h"
+#include "connectors/sqlitetest.h"
+#include "connectors/odbctest.h"
 #include "operations/model/typetest.h"
 #include "operations/model/fieldtest.h"
 #include "operations/model/constraint/primarykeytest.h"
@@ -23,9 +25,7 @@
 #include "operations/query/inserttest.h"
 #include "operations/query/updatetest.h"
 #include "operations/query/deletetest.h"
-#include "connectors/connectortest.h"
-#include "connectors/sqlitetest.h"
-#include "connectors/odbctest.h"
+#include "repositories/crudrepositorytest.h"
 
 auto main(int argc, char *argv[]) -> int {
     auto tests = std::list<std::shared_ptr<QObject>>{

@@ -7,7 +7,7 @@ bool TestCRUDRepository::isInserted = false;
 bool TestCRUDRepository::isUpdated = false;
 
 TestCRUDRepository::TestCRUDRepository(const QORM::Database &database,
-                               QORM::Cache<int, TestEntity> &cache) :
+                                       QORM::Cache<int, TestEntity> &cache) :
     QORM::CRUDRepository<int, TestEntity>(database, cache) {
     isInserted = false;
     isUpdated = false;

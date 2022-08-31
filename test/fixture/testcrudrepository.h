@@ -13,7 +13,7 @@ class TestCRUDRepository : public QORM::CRUDRepository<int, TestEntity> {
 
  public:
     TestCRUDRepository(const QORM::Database &database,
-                   QORM::Cache<int, TestEntity> &cache);
+                       QORM::Cache<int, TestEntity> &cache);
 
     auto tableName() const -> QString override;
     auto keyCondition(const int&) const -> QORM::Condition override;

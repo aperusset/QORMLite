@@ -46,8 +46,8 @@ SOURCES +=  \
   operations/query/selectiontest.cpp \
   operations/query/selecttest.cpp \
   operations/query/updatetest.cpp \
-  qormlitetest.cpp \
   repositories/crudrepositorytest.cpp \
+  qormlitetest.cpp \
   utilstest.cpp
 
 HEADERS += \
@@ -82,6 +82,6 @@ HEADERS += \
   operations/query/selectiontest.h \
   operations/query/selecttest.h \
   operations/query/updatetest.h \
-  qormlitetest.h \
   repositories/crudrepositorytest.h \
+  qormlitetest.h \
   utilstest.h
