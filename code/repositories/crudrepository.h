@@ -18,6 +18,10 @@ class CRUDRepository : public ReadOnlyRepository<Key, Entity> {
     explicit CRUDRepository(const Database &database,
                             Cache<Key, Entity> &cache) :
         ReadOnlyRepository<Key, Entity> (database, cache) {}
+    CRUDRepository(const CRUDRepository&) = delete;
+    CRUDRepository(CRUDRepository&&) = delete;
+    CRUDRepository& operator=(const CRUDRepository&) = delete;
+    CRUDRepository& operator=(CRUDRepository&&) = delete;
 
     virtual auto save(Entity* const entity) const -> Key {
         if (this->existsByKey(entity->getKey())) {
