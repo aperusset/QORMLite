@@ -24,9 +24,9 @@ SOURCES +=  \
   entitytest.cpp \
   fixture/testconnector.cpp \
   fixture/testcreator.cpp \
+  fixture/testcrudrepository.cpp \
   fixture/testentity.cpp \
   fixture/testobserver.cpp \
-  fixture/testrepository.cpp \
   main.cpp \
   observertest.cpp \
   operations/model/constraint/uniquetest.cpp \
@@ -47,7 +47,7 @@ SOURCES +=  \
   operations/query/selecttest.cpp \
   operations/query/updatetest.cpp \
   qormlitetest.cpp \
-  repositorytest.cpp \
+  repositories/crudrepositorytest.cpp \
   utilstest.cpp
 
 HEADERS += \
@@ -61,9 +61,9 @@ HEADERS += \
   fixture/maindatabasetest.h \
   fixture/testconnector.h \
   fixture/testcreator.h \
+  fixture/testcrudrepository.h \
   fixture/testentity.h \
   fixture/testobserver.h \
-  fixture/testrepository.h \
   observertest.h \
   operations/model/constraint/uniquetest.h \
   operations/model/fieldtest.h \
@@ -83,5 +83,5 @@ HEADERS += \
   operations/query/selecttest.h \
   operations/query/updatetest.h \
   qormlitetest.h \
-  repositorytest.h \
+  repositories/crudrepositorytest.h \
   utilstest.h

@@ -106,7 +106,8 @@ HEADERS += \
   operations/query/selection/upper.h \
   operations/query/tablequery.h \
   operations/query/update.h \
+  repositories/crudrepository.h \
+  repositories/readonlyrepository.h \
   qormlite.h \
-  repository.h \
   utils.h
 

@@ -1,17 +1,17 @@
-#include "repositorytest.h"
+#include "crudrepositorytest.h"
 #include <string>
 #include "fixture/testconnector.h"
-#include "fixture/testrepository.h"
+#include "fixture/testcrudrepository.h"
 #include "fixture/testobserver.h"
 #include "operations/query/select.h"
 #include "operations/query/condition/in.h"
 #include "operations/query/condition/equals.h"
 
-void RepositoryTest::getByKeyShouldFail() {
+void CRUDRepositoryTest::getByKeyShouldFail() {
     // Given
     auto const &connector = TestConnector(this->databaseName());
     QORM::Database database(connector, this->testCreator, false);
-    auto const &testRepository = TestRepository(database, this->cache);
+    auto const &testRepository = TestCRUDRepository(database, this->cache);
 
     // When
     database.connect();
@@ -20,11 +20,11 @@ void RepositoryTest::getByKeyShouldFail() {
     QVERIFY_EXCEPTION_THROWN(testRepository.getByKey(0), std::string);
 }
 
-void RepositoryTest::getByKeyShouldReturnEntity() {
+void CRUDRepositoryTest::getByKeyShouldReturnEntity() {
     // Given
     auto const &connector = TestConnector(this->databaseName());
     QORM::Database database(connector, this->testCreator, false);
-    auto const &testRepository = TestRepository(database, this->cache);
+    auto const &testRepository = TestCRUDRepository(database, this->cache);
 
     // When
     database.connect();
@@ -35,11 +35,11 @@ void RepositoryTest::getByKeyShouldReturnEntity() {
     QCOMPARE(entity.getKey(), lastInsertedKey);
 }
 
-void RepositoryTest::getAllShouldReturnAllExistingEntities() {
+void CRUDRepositoryTest::getAllShouldReturnAllExistingEntities() {
     // Given
     auto const &connector = TestConnector(this->databaseName());
     QORM::Database database(connector, this->testCreator, false);
-    auto const &testRepository = TestRepository(database, this->cache);
+    auto const &testRepository = TestCRUDRepository(database, this->cache);
 
     // When
     database.connect();
@@ -51,11 +51,11 @@ void RepositoryTest::getAllShouldReturnAllExistingEntities() {
     QCOMPARE(3U, testRepository.getAll().size());
 }
 
-void RepositoryTest::getAllShouldReturnEntitiesAccordingToSelect() {
+void CRUDRepositoryTest::getAllShouldReturnEntitiesAccordingToSelect() {
     // Given
     auto const &connector = TestConnector(this->databaseName());
     QORM::Database database(connector, this->testCreator, false);
-    auto const &testRepository = TestRepository(database, this->cache);
+    auto const &testRepository = TestCRUDRepository(database, this->cache);
 
     // When
     database.connect();
@@ -69,11 +69,11 @@ void RepositoryTest::getAllShouldReturnEntitiesAccordingToSelect() {
             .where({QORM::In(TestCreator::TEST_FIELD, {id1, id3})})).size());
 }
 
-void RepositoryTest::countShouldCountAllEntities() {
+void CRUDRepositoryTest::countShouldCountAllEntities() {
     // Given
     auto const &connector = TestConnector(this->databaseName());
     QORM::Database database(connector, this->testCreator, false);
-    auto const &testRepository = TestRepository(database, this->cache);
+    auto const &testRepository = TestCRUDRepository(database, this->cache);
 
     // When
     database.connect();
@@ -85,11 +85,11 @@ void RepositoryTest::countShouldCountAllEntities() {
     QCOMPARE(3U, testRepository.count());
 }
 
-void RepositoryTest::countShouldCountEntitiesAccordingToConditions() {
+void CRUDRepositoryTest::countShouldCountEntitiesAccordingToConditions() {
     // Given
     auto const &connector = TestConnector(this->databaseName());
     QORM::Database database(connector, this->testCreator, false);
-    auto const &testRepository = TestRepository(database, this->cache);
+    auto const &testRepository = TestCRUDRepository(database, this->cache);
 
     // When
     database.connect();
@@ -102,11 +102,11 @@ void RepositoryTest::countShouldCountEntitiesAccordingToConditions() {
         testRepository.count({QORM::In(TestCreator::TEST_FIELD, {id1, id3})}));
 }
 
-void RepositoryTest::existsByKeyShouldReturnTrue() {
+void CRUDRepositoryTest::existsByKeyShouldReturnTrue() {
     // Given
     auto const &connector = TestConnector(this->databaseName());
     QORM::Database database(connector, this->testCreator, false);
-    auto const &testRepository = TestRepository(database, this->cache);
+    auto const &testRepository = TestCRUDRepository(database, this->cache);
 
     // When
     database.connect();
@@ -116,11 +116,11 @@ void RepositoryTest::existsByKeyShouldReturnTrue() {
     QVERIFY(testRepository.existsByKey(lastInsertedKey));
 }
 
-void RepositoryTest::existsByKeyShouldReturnFalse() {
+void CRUDRepositoryTest::existsByKeyShouldReturnFalse() {
     // Given
     auto const &connector = TestConnector(this->databaseName());
     QORM::Database database(connector, this->testCreator, false);
-    auto const &testRepository = TestRepository(database, this->cache);
+    auto const &testRepository = TestCRUDRepository(database, this->cache);
 
     // When
     database.connect();
@@ -129,11 +129,11 @@ void RepositoryTest::existsByKeyShouldReturnFalse() {
     QVERIFY(!testRepository.existsByKey(0));
 }
 
-void RepositoryTest::existsShouldReturnTrue() {
+void CRUDRepositoryTest::existsShouldReturnTrue() {
     // Given
     auto const &connector = TestConnector(this->databaseName());
     QORM::Database database(connector, this->testCreator, false);
-    auto const &testRepository = TestRepository(database, this->cache);
+    auto const &testRepository = TestCRUDRepository(database, this->cache);
 
     // When
     database.connect();
@@ -144,11 +144,11 @@ void RepositoryTest::existsShouldReturnTrue() {
         {QORM::Equals::field(TestCreator::TEST_FIELD, lastInsertedKey)}));
 }
 
-void RepositoryTest::existsShouldReturnFalse() {
+void CRUDRepositoryTest::existsShouldReturnFalse() {
     // Given
     auto const &connector = TestConnector(this->databaseName());
     QORM::Database database(connector, this->testCreator, false);
-    auto const &testRepository = TestRepository(database, this->cache);
+    auto const &testRepository = TestCRUDRepository(database, this->cache);
 
     // When
     database.connect();
@@ -158,11 +158,11 @@ void RepositoryTest::existsShouldReturnFalse() {
         {QORM::Equals::field(TestCreator::TEST_FIELD, 0)}));
 }
 
-void RepositoryTest::saveShouldInsertAndNotify() {
+void CRUDRepositoryTest::saveShouldInsertAndNotify() {
     // Given
     auto const &connector = TestConnector(this->databaseName());
     QORM::Database database(connector, this->testCreator, false);
-    auto const &testRepository = TestRepository(database, this->cache);
+    auto const &testRepository = TestCRUDRepository(database, this->cache);
     auto * const newTestEntity = new TestEntity(-1);
     auto testObserver = TestObserver();
     newTestEntity->attach(testObserver);
@@ -180,11 +180,11 @@ void RepositoryTest::saveShouldInsertAndNotify() {
     QCOMPARE(lastInsertedKey, testObserver.getChangedKey());
 }
 
-void RepositoryTest::saveShouldUpdateAndNotify() {
+void CRUDRepositoryTest::saveShouldUpdateAndNotify() {
     // Given
     auto const &connector = TestConnector(this->databaseName());
     QORM::Database database(connector, this->testCreator, false);
-    auto const &testRepository = TestRepository(database, this->cache);
+    auto const &testRepository = TestCRUDRepository(database, this->cache);
     auto * const newTestEntity = new TestEntity(-1);
     auto testObserver = TestObserver();
     newTestEntity->attach(testObserver);
@@ -203,11 +203,11 @@ void RepositoryTest::saveShouldUpdateAndNotify() {
     QCOMPARE(lastInsertedKey, testObserver.getChangedKey());
 }
 
-void RepositoryTest::eraseShouldDoNothinIfNotExists() {
+void CRUDRepositoryTest::eraseShouldDoNothinIfNotExists() {
     // Given
     auto const &connector = TestConnector(this->databaseName());
     QORM::Database database(connector, this->testCreator, false);
-    auto const &testRepository = TestRepository(database, this->cache);
+    auto const &testRepository = TestCRUDRepository(database, this->cache);
 
     // When
     database.connect();
@@ -218,11 +218,11 @@ void RepositoryTest::eraseShouldDoNothinIfNotExists() {
     QVERIFY(!testRepository.hasBeenUpdated());
 }
 
-void RepositoryTest::eraseShouldDeleteAndNotify() {
+void CRUDRepositoryTest::eraseShouldDeleteAndNotify() {
     // Given
     auto const &connector = TestConnector(this->databaseName());
     QORM::Database database(connector, this->testCreator, false);
-    auto const &testRepository = TestRepository(database, this->cache);
+    auto const &testRepository = TestCRUDRepository(database, this->cache);
     auto * const newTestEntity = new TestEntity(-1);
     auto testObserver = TestObserver();
     newTestEntity->attach(testObserver);

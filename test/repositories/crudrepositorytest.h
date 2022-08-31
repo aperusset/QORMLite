@@ -1,5 +1,5 @@
-#ifndef TEST_REPOSITORYTEST_H_
-#define TEST_REPOSITORYTEST_H_
+#ifndef TEST_REPOSITORIES_REPOSITORYTEST_H_
+#define TEST_REPOSITORIES_REPOSITORYTEST_H_
 
 #include <QtTest/QtTest>
 #include "fixture/maindatabasetest.h"
@@ -7,7 +7,7 @@
 #include "fixture/testentity.h"
 #include "./cache.h"
 
-class RepositoryTest : public MainDatabaseTest {
+class CRUDRepositoryTest : public MainDatabaseTest {
     Q_OBJECT
 
     TestCreator testCreator;
@@ -40,4 +40,4 @@ class RepositoryTest : public MainDatabaseTest {
     }
 };
 
-#endif  // TEST_REPOSITORYTEST_H_
+#endif  // TEST_REPOSITORIES_REPOSITORYTEST_H_
