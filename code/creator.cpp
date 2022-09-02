@@ -22,8 +22,9 @@ void QORM::Creator::createTable(const Database &database,
                                 const QString &name,
                                 const PrimaryKey &primaryKey,
                                 const std::list<Field> &fields,
-                                const std::list<ForeignKey> &foreignKeys) {
-    database.execute(Table(name, primaryKey, fields, foreignKeys));
+                                const std::list<ForeignKey> &foreignKeys,
+                                const std::list<Unique> &uniques) {
+    database.execute(Table(name, primaryKey, fields, foreignKeys, uniques));
 }
 
 void QORM::Creator::createView(const Database &database,
