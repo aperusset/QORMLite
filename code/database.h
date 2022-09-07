@@ -6,7 +6,6 @@
 #include <QtSql>
 #include <list>
 #include <string>
-#include "./creator.h"
 #include "./entity.h"
 #include "./utils.h"
 #include "connectors/connector.h"
@@ -15,6 +14,7 @@
 #include "operations/query/insert.h"
 #include "operations/query/select.h"
 #include "operations/query/update.h"
+#include "schema/creator.h"
 
 namespace QORM {
 

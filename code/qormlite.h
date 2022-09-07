@@ -2,8 +2,8 @@
 #define QORMLITE_H_
 
 #include <QString>
-#include "./connectors/connector.h"
-#include "./creator.h"
+#include "connectors/connector.h"
+#include "schema/creator.h"
 #include "./database.h"
 
 namespace QORM {

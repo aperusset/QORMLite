@@ -3,7 +3,6 @@
 #include "./observertest.h"
 #include "./cachetest.h"
 #include "./databasetest.h"
-#include "./creatortest.h"
 #include "./qormlitetest.h"
 #include "connectors/connectortest.h"
 #include "connectors/sqlitetest.h"
@@ -26,6 +25,7 @@
 #include "operations/query/updatetest.h"
 #include "operations/query/deletetest.h"
 #include "repositories/crudrepositorytest.h"
+#include "schema/creatortest.h"
 
 auto main(int argc, char *argv[]) -> int {
     auto tests = std::list<std::shared_ptr<QObject>>{

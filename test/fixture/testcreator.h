@@ -2,7 +2,7 @@
 #define TEST_FIXTURE_TESTCREATOR_H_
 
 #include <list>
-#include "creator.h"
+#include "schema/creator.h"
 
 class TestCreator : public QORM::Creator {
  public:
