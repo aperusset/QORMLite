@@ -564,7 +564,7 @@ void ConditionTest::orMultipleCondition() {
     QVERIFY(orCondition.getParametrizedConditions().empty());
 }
 
-void ConditionTest::notConditionSingle() {
+void ConditionTest::notSingleCondition() {
     // Given
     auto const equals = QORM::Equals::fields(DEFAULT_FIELD_NAME,
                                              DEFAULT_FIELD_NAME);
@@ -576,7 +576,7 @@ void ConditionTest::notConditionSingle() {
     QCOMPARE(generated, "not " + equals.generate());
 }
 
-void ConditionTest::notConditionMultiple() {
+void ConditionTest::notMultipleCondition() {
     // Given
     auto const equals = QORM::Equals::fields(DEFAULT_FIELD_NAME,
                                              DEFAULT_FIELD_NAME);
