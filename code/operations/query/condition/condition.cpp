@@ -50,7 +50,8 @@ auto QORM::Condition::generate() const -> QString {
         return (this->leftField + this->op + this->rightField).simplified();
     }
     if (this->nestedConditions.size() == 1) {  // recursivity stop condition
-        return this->op + this->nestedConditions.front().generate();
+        return (this->op +
+                this->nestedConditions.front().generate()).simplified();
     }
     QStringList conditions;
     for (auto const &condition : this->nestedConditions) {

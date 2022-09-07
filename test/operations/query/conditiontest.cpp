@@ -13,6 +13,7 @@
 #include "operations/query/condition/smallerorequals.h"
 #include "operations/query/condition/in.h"
 #include "operations/query/condition/and.h"
+#include "operations/query/condition/not.h"
 #include "operations/query/condition/or.h"
 #include "operations/query/selection/sum.h"
 #include "operations/query/select.h"
@@ -561,6 +562,18 @@ void ConditionTest::orMultipleCondition() {
     QVERIFY(orCondition.getLeftField().isNull());
     QVERIFY(orCondition.getValue().isNull());
     QVERIFY(orCondition.getParametrizedConditions().empty());
+}
+
+void ConditionTest::notCondition() {
+    // Given
+    auto const equals = QORM::Equals::fields(DEFAULT_FIELD_NAME,
+                                             DEFAULT_FIELD_NAME);
+    auto const notCondition = QORM::Not(equals);
+
+    // When
+    auto const generated = notCondition.generate();
+
+    QCOMPARE(generated, "not " + equals.generate());
 }
 
 void ConditionTest::recursiveParametrized() {
