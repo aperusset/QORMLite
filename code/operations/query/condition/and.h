@@ -13,7 +13,7 @@ class And : public Condition {
  public:
     explicit And(const std::list<Condition> &conditions) :
         Condition(" and ", conditions, QString(), QString(), QVariant()) {
-        if (this->getNestedConditions().size() < 2) {
+        if (conditions.size() < 2) {
             throw std::string("And must wrap at least 2 conditions");
         }
     }
