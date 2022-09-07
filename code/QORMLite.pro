@@ -80,6 +80,7 @@ HEADERS += \
   operations/query/condition/isnotnull.h \
   operations/query/condition/isnull.h \
   operations/query/condition/like.h \
+  operations/query/condition/not.h \
   operations/query/condition/notequals.h \
   operations/query/condition/or.h \
   operations/query/condition/smaller.h \

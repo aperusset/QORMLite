@@ -509,22 +509,12 @@ void ConditionTest::inWithStrings() {
     QCOMPARE(generated, DEFAULT_FIELD_NAME + " in ('test1', 'test2', 'test3')");
 }
 
-void ConditionTest::andSingleCondition() {
+void ConditionTest::andSingleConditionShouldFail() {
     // Given
     auto const equals = QORM::Equals::fields(DEFAULT_FIELD_NAME,
                                              DEFAULT_FIELD_NAME);
-    auto const andCondition = QORM::And({equals});
-
-    // When
-    auto const generated = andCondition.generate();
-
-    // Then
-    QCOMPARE(generated, equals.generate());
-    QCOMPARE(andCondition.getNestedConditions().size(), 1U);
-    QVERIFY(andCondition.getRightField().isNull());
-    QVERIFY(andCondition.getLeftField().isNull());
-    QVERIFY(andCondition.getValue().isNull());
-    QVERIFY(andCondition.getParametrizedConditions().empty());
+    // When / Then
+    QVERIFY_EXCEPTION_THROWN(QORM::And({equals}), std::string);
 }
 
 void ConditionTest::andMultipleConditions() {
@@ -546,22 +536,12 @@ void ConditionTest::andMultipleConditions() {
     QVERIFY(andCondition.getParametrizedConditions().empty());
 }
 
-void ConditionTest::orSingleCondition() {
+void ConditionTest::orSingleConditionShouldFail() {
     // Given
     auto const equals = QORM::Equals::fields(DEFAULT_FIELD_NAME,
                                              DEFAULT_FIELD_NAME);
-    auto const orCondition = QORM::Or({equals});
-
-    // When
-    auto const generated = orCondition.generate();
-
-    // Then
-    QCOMPARE(generated, equals.generate());
-    QCOMPARE(orCondition.getNestedConditions().size(), 1U);
-    QVERIFY(orCondition.getRightField().isNull());
-    QVERIFY(orCondition.getLeftField().isNull());
-    QVERIFY(orCondition.getValue().isNull());
-    QVERIFY(orCondition.getParametrizedConditions().empty());
+    // When / Then
+    QVERIFY_EXCEPTION_THROWN(QORM::Or({equals}), std::string);
 }
 
 void ConditionTest::orMultipleCondition() {

@@ -106,6 +106,7 @@ auto QORM::Select::generate() const -> QString {
              return acc + " " + join.generate();
          });
     if (!this->conditions.empty()) {
+        // TODO(aperusset) should not wrap everything into and if only one
         select += " where " + And(this->conditions).generate();
     }
     if (!this->groupedBy.empty()) {
