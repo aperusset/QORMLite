@@ -30,6 +30,9 @@ class Condition : public Operation, public Bindable {
     auto getValue() const -> QVariant override;
     auto getParametrizedConditions() const -> std::list<Condition>;
     auto generate() const -> QString override;
+
+    static auto generateMultiple(const QString& keyWord,
+                                 const std::list<Condition>&) -> QString;
 };
 
 inline auto Condition::getNestedConditions() const -> std::list<Condition> {

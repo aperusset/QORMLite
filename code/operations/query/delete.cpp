@@ -18,14 +18,6 @@ QORM::Delete::Delete(const QString &tableName,
 }
 
 auto QORM::Delete::generate() const -> QString {
-    QString del = "delete from " + this->getTableName();
-    if (!this->conditions.empty()) {
-        del += " where ";
-        if (this->conditions.size() == 1) {
-            del += this->conditions.front().generate();
-        } else {
-            del += And(this->conditions).generate();
-        }
-    }
-    return del.simplified();
+    return ("delete from " + this->getTableName() +
+        Condition::generateMultiple(" where ", this->conditions)).simplified();
 }

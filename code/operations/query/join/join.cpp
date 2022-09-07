@@ -28,14 +28,6 @@ auto QORM::Join::generate() const -> QString {
             query += "cross join ";
             break;
     }
-    query += this->table;
-    if (!this->conditions.empty()) {
-        query += " on ";
-        if (this->conditions.size() == 1) {
-            query += this->conditions.front().generate();
-        } else {
-            query += And(this->conditions).generate();
-        }
-    }
-    return query.simplified();
+    return (query + this->table + Condition::generateMultiple(" on ",
+                                                this->conditions)).simplified();
 }
