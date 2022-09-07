@@ -564,7 +564,7 @@ void ConditionTest::orMultipleCondition() {
     QVERIFY(orCondition.getParametrizedConditions().empty());
 }
 
-void ConditionTest::notCondition() {
+void ConditionTest::notConditionSingle() {
     // Given
     auto const equals = QORM::Equals::fields(DEFAULT_FIELD_NAME,
                                              DEFAULT_FIELD_NAME);
@@ -574,6 +574,19 @@ void ConditionTest::notCondition() {
     auto const generated = notCondition.generate();
 
     QCOMPARE(generated, "not " + equals.generate());
+}
+
+void ConditionTest::notConditionMultiple() {
+    // Given
+    auto const equals = QORM::Equals::fields(DEFAULT_FIELD_NAME,
+                                             DEFAULT_FIELD_NAME);
+    auto const notCondition = QORM::Not(QORM::And({equals, equals}));
+
+    // When
+    auto const generated = notCondition.generate();
+
+    QCOMPARE(generated, "not (" + equals.generate() + " and " +
+             equals.generate() + ")");
 }
 
 void ConditionTest::recursiveParametrized() {

@@ -3,6 +3,7 @@
 
 #include <QString>
 #include <QVariant>
+#include <list>
 #include "operations/query/condition/condition.h"
 
 namespace QORM {

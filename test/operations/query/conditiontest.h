@@ -50,7 +50,8 @@ class ConditionTest : public QObject {
     static void andMultipleConditions();
     static void orSingleConditionShouldFail();
     static void orMultipleCondition();
-    static void notCondition();
+    static void notConditionSingle();
+    static void notConditionMultiple();
     static void recursiveParametrized();
     static void recursiveNotParametrized();
 };
