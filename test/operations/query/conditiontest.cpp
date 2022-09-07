@@ -569,8 +569,8 @@ void ConditionTest::recursiveParametrized() {
                                              DEFAULT_FIELD_NAME);
     auto const equalsParameter = QORM::Equals::field(DEFAULT_FIELD_NAME,
                                                      DEFAULT_VALUE);
-    auto const condition = QORM::And({QORM::Or(
-            {equals, QORM::And({equals, equalsParameter, equalsParameter})})});
+    auto const condition = QORM::Or(
+            {equals, QORM::And({equals, equalsParameter, equalsParameter})});
 
     // When
     auto const generated = condition.generate();
@@ -579,7 +579,7 @@ void ConditionTest::recursiveParametrized() {
     QCOMPARE(generated, "(" + equals.generate() + " or (" + equals.generate() +
                         " and " + equalsParameter.generate() + " and " +
                         equalsParameter.generate() + "))");
-    QCOMPARE(condition.getNestedConditions().size(), 1U);
+    QCOMPARE(condition.getNestedConditions().size(), 2U);
     QVERIFY(condition.getRightField().isNull());
     QVERIFY(condition.getLeftField().isNull());
     QVERIFY(condition.getValue().isNull());
@@ -590,8 +590,7 @@ void ConditionTest::recursiveNotParametrized() {
     // Given
     auto const equals = QORM::Equals::fields(DEFAULT_FIELD_NAME,
                                              DEFAULT_FIELD_NAME);
-    auto const condition = QORM::And({QORM::Or(
-            {equals, QORM::And({equals, equals})})});
+    auto const condition = QORM::Or({equals, QORM::And({equals, equals})});
 
     // When
     auto const generated = condition.generate();
@@ -599,7 +598,7 @@ void ConditionTest::recursiveNotParametrized() {
     // Then
     QCOMPARE(generated, "(" + equals.generate() + " or (" + equals.generate() +
                         " and " + equals.generate() + "))");
-    QCOMPARE(condition.getNestedConditions().size(), 1U);
+    QCOMPARE(condition.getNestedConditions().size(), 2U);
     QVERIFY(condition.getRightField().isNull());
     QVERIFY(condition.getLeftField().isNull());
     QVERIFY(condition.getValue().isNull());

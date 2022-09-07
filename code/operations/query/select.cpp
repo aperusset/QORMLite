@@ -106,8 +106,12 @@ auto QORM::Select::generate() const -> QString {
              return acc + " " + join.generate();
          });
     if (!this->conditions.empty()) {
-        // TODO(aperusset) should not wrap everything into and if only one
-        select += " where " + And(this->conditions).generate();
+        select += " where ";
+        if (this->conditions.size() == 1) {
+            select += this->conditions.front().generate();
+        } else {
+            select += And(this->conditions).generate();
+        }
     }
     if (!this->groupedBy.empty()) {
         select += " group by " +  QStringList(this->groupedBy.begin(),
@@ -115,7 +119,12 @@ auto QORM::Select::generate() const -> QString {
                 .join(", ");
     }
     if (!this->havings.empty()) {
-        select += " having " + And(this->havings).generate();
+        select += " having ";
+        if (this->havings.size() == 1) {
+            select += this->havings.front().generate();
+        } else {
+            select += And(this->havings).generate();
+        }
     }
     select += generatedOrders.isEmpty() ? "" : " order by " +
                                           generatedOrders.join(", ");

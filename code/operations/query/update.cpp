@@ -39,7 +39,12 @@ auto QORM::Update::generate() const -> QString {
     }
     update += assignements.join(",");
     if (!this->conditions.empty()) {
-        update += " where " + And(this->conditions).generate();
+        update += " where ";
+        if (this->conditions.size() == 1) {
+            update += this->conditions.front().generate();
+        } else {
+            update += And(this->conditions).generate();
+        }
     }
     return update.simplified();
 }

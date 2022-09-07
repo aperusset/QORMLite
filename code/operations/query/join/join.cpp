@@ -30,7 +30,12 @@ auto QORM::Join::generate() const -> QString {
     }
     query += this->table;
     if (!this->conditions.empty()) {
-        query += " on " + And(this->conditions).generate();
+        query += " on ";
+        if (this->conditions.size() == 1) {
+            query += this->conditions.front().generate();
+        } else {
+            query += And(this->conditions).generate();
+        }
     }
     return query.simplified();
 }
