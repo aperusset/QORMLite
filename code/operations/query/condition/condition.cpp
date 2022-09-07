@@ -2,6 +2,7 @@
 #include <utility>
 #include <string>
 #include "operations/query/select.h"
+#include "operations/query/condition/and.h"
 #include "utils.h"
 
 QORM::Condition::Condition(QString op, std::list<Condition> nestedConditions,
@@ -48,12 +49,28 @@ auto QORM::Condition::generate() const -> QString {
     if (this->nestedConditions.empty()) {
         return (this->leftField + this->op + this->rightField).simplified();
     }
-    if (this->nestedConditions.size() == 1) {
-        return this->nestedConditions.front().generate();
+    if (this->nestedConditions.size() == 1) {  // recursivity stop condition
+        return (this->op +
+                this->nestedConditions.front().generate()).simplified();
     }
     QStringList conditions;
     for (auto const &condition : this->nestedConditions) {
         conditions << condition.generate();
     }
     return "(" + conditions.join(this->op).simplified() + ")";
+}
+
+auto QORM::Condition::generateMultiple(const QString& keyWord,
+                                       const std::list<Condition> &conditions)
+-> QString {
+    QString generatedConditions = "";
+    if (!conditions.empty()) {
+        generatedConditions += keyWord;
+        if (conditions.size() == 1) {
+            generatedConditions += conditions.front().generate();
+        } else {
+            generatedConditions += And(conditions).generate();
+        }
+    }
+    return generatedConditions;
 }

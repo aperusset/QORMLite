@@ -13,6 +13,7 @@
 #include "operations/query/condition/smallerorequals.h"
 #include "operations/query/condition/in.h"
 #include "operations/query/condition/and.h"
+#include "operations/query/condition/not.h"
 #include "operations/query/condition/or.h"
 #include "operations/query/selection/sum.h"
 #include "operations/query/select.h"
@@ -509,22 +510,12 @@ void ConditionTest::inWithStrings() {
     QCOMPARE(generated, DEFAULT_FIELD_NAME + " in ('test1', 'test2', 'test3')");
 }
 
-void ConditionTest::andSingleCondition() {
+void ConditionTest::andSingleConditionShouldFail() {
     // Given
     auto const equals = QORM::Equals::fields(DEFAULT_FIELD_NAME,
                                              DEFAULT_FIELD_NAME);
-    auto const andCondition = QORM::And({equals});
-
-    // When
-    auto const generated = andCondition.generate();
-
-    // Then
-    QCOMPARE(generated, equals.generate());
-    QCOMPARE(andCondition.getNestedConditions().size(), 1U);
-    QVERIFY(andCondition.getRightField().isNull());
-    QVERIFY(andCondition.getLeftField().isNull());
-    QVERIFY(andCondition.getValue().isNull());
-    QVERIFY(andCondition.getParametrizedConditions().empty());
+    // When / Then
+    QVERIFY_EXCEPTION_THROWN(QORM::And({equals}), std::string);
 }
 
 void ConditionTest::andMultipleConditions() {
@@ -546,22 +537,12 @@ void ConditionTest::andMultipleConditions() {
     QVERIFY(andCondition.getParametrizedConditions().empty());
 }
 
-void ConditionTest::orSingleCondition() {
+void ConditionTest::orSingleConditionShouldFail() {
     // Given
     auto const equals = QORM::Equals::fields(DEFAULT_FIELD_NAME,
                                              DEFAULT_FIELD_NAME);
-    auto const orCondition = QORM::Or({equals});
-
-    // When
-    auto const generated = orCondition.generate();
-
-    // Then
-    QCOMPARE(generated, equals.generate());
-    QCOMPARE(orCondition.getNestedConditions().size(), 1U);
-    QVERIFY(orCondition.getRightField().isNull());
-    QVERIFY(orCondition.getLeftField().isNull());
-    QVERIFY(orCondition.getValue().isNull());
-    QVERIFY(orCondition.getParametrizedConditions().empty());
+    // When / Then
+    QVERIFY_EXCEPTION_THROWN(QORM::Or({equals}), std::string);
 }
 
 void ConditionTest::orMultipleCondition() {
@@ -583,14 +564,39 @@ void ConditionTest::orMultipleCondition() {
     QVERIFY(orCondition.getParametrizedConditions().empty());
 }
 
+void ConditionTest::notSingleCondition() {
+    // Given
+    auto const equals = QORM::Equals::fields(DEFAULT_FIELD_NAME,
+                                             DEFAULT_FIELD_NAME);
+    auto const notCondition = QORM::Not(equals);
+
+    // When
+    auto const generated = notCondition.generate();
+
+    QCOMPARE(generated, "not " + equals.generate());
+}
+
+void ConditionTest::notMultipleCondition() {
+    // Given
+    auto const equals = QORM::Equals::fields(DEFAULT_FIELD_NAME,
+                                             DEFAULT_FIELD_NAME);
+    auto const notCondition = QORM::Not(QORM::And({equals, equals}));
+
+    // When
+    auto const generated = notCondition.generate();
+
+    QCOMPARE(generated, "not (" + equals.generate() + " and " +
+             equals.generate() + ")");
+}
+
 void ConditionTest::recursiveParametrized() {
     // Given
     auto const equals = QORM::Equals::fields(DEFAULT_FIELD_NAME,
                                              DEFAULT_FIELD_NAME);
     auto const equalsParameter = QORM::Equals::field(DEFAULT_FIELD_NAME,
                                                      DEFAULT_VALUE);
-    auto const condition = QORM::And({QORM::Or(
-            {equals, QORM::And({equals, equalsParameter, equalsParameter})})});
+    auto const condition = QORM::Or(
+            {equals, QORM::And({equals, equalsParameter, equalsParameter})});
 
     // When
     auto const generated = condition.generate();
@@ -599,7 +605,7 @@ void ConditionTest::recursiveParametrized() {
     QCOMPARE(generated, "(" + equals.generate() + " or (" + equals.generate() +
                         " and " + equalsParameter.generate() + " and " +
                         equalsParameter.generate() + "))");
-    QCOMPARE(condition.getNestedConditions().size(), 1U);
+    QCOMPARE(condition.getNestedConditions().size(), 2U);
     QVERIFY(condition.getRightField().isNull());
     QVERIFY(condition.getLeftField().isNull());
     QVERIFY(condition.getValue().isNull());
@@ -610,8 +616,7 @@ void ConditionTest::recursiveNotParametrized() {
     // Given
     auto const equals = QORM::Equals::fields(DEFAULT_FIELD_NAME,
                                              DEFAULT_FIELD_NAME);
-    auto const condition = QORM::And({QORM::Or(
-            {equals, QORM::And({equals, equals})})});
+    auto const condition = QORM::Or({equals, QORM::And({equals, equals})});
 
     // When
     auto const generated = condition.generate();
@@ -619,7 +624,7 @@ void ConditionTest::recursiveNotParametrized() {
     // Then
     QCOMPARE(generated, "(" + equals.generate() + " or (" + equals.generate() +
                         " and " + equals.generate() + "))");
-    QCOMPARE(condition.getNestedConditions().size(), 1U);
+    QCOMPARE(condition.getNestedConditions().size(), 2U);
     QVERIFY(condition.getRightField().isNull());
     QVERIFY(condition.getLeftField().isNull());
     QVERIFY(condition.getValue().isNull());

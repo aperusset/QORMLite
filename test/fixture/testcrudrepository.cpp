@@ -44,7 +44,7 @@ auto TestCRUDRepository::insert(TestEntity &testEntity) const -> int {
 auto TestCRUDRepository::assignements(const TestEntity &testEntity)
     const -> std::list<QORM::Assignment> {
     isUpdated = true;
-    return  {QORM::Assignment(TestCreator::TEST_FIELD, testEntity.getKey())};
+    return {QORM::Assignment(TestCreator::TEST_FIELD, testEntity.getKey())};
 }
 
 auto TestCRUDRepository::hasBeenInserted() -> bool {

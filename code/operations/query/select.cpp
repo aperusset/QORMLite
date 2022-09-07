@@ -105,17 +105,13 @@ auto QORM::Select::generate() const -> QString {
          [](const QString &acc, const Join &join) -> QString {
              return acc + " " + join.generate();
          });
-    if (!this->conditions.empty()) {
-        select += " where " + And(this->conditions).generate();
-    }
+    select += Condition::generateMultiple(" where ", this->conditions);
     if (!this->groupedBy.empty()) {
         select += " group by " +  QStringList(this->groupedBy.begin(),
                                               this->groupedBy.end())
                 .join(", ");
     }
-    if (!this->havings.empty()) {
-        select += " having " + And(this->havings).generate();
-    }
+    select += Condition::generateMultiple(" having ", this->havings);
     select += generatedOrders.isEmpty() ? "" : " order by " +
                                           generatedOrders.join(", ");
     if (this->maxResults.isValid()) {

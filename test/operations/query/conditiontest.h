@@ -46,10 +46,12 @@ class ConditionTest : public QObject {
     static void inWithEmptyStringsShouldFail();
     static void inWithIntegers();
     static void inWithStrings();
-    static void andSingleCondition();
+    static void andSingleConditionShouldFail();
     static void andMultipleConditions();
-    static void orSingleCondition();
+    static void orSingleConditionShouldFail();
     static void orMultipleCondition();
+    static void notSingleCondition();
+    static void notMultipleCondition();
     static void recursiveParametrized();
     static void recursiveNotParametrized();
 };
