@@ -71,6 +71,16 @@ namespace Utils {
     auto null(QVariant::Type type) -> QVariant;
 
     /**
+     * @brief Qualify a field name with a table, a view, or everything else. The
+     * qualifier and the field name are concatenated with a dot ".".
+     * @param qualifier the qualifier
+     * @param fieldName the field name
+     * @return the qualified field name
+     */
+    auto qualifyFieldName(const QString &qualifier,
+                          const QString &fieldName) -> QString;
+
+    /**
      * @brief Define if a STL list contains or not an element.
      * @return true : contains, false : does not contain
      */

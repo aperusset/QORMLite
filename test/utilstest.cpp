@@ -90,6 +90,19 @@ void UtilsTest::nullString() {
     QVERIFY(nullValue.isValid());
 }
 
+void UtilsTest::qualifyFieldName() {
+    // Given
+    auto const qualifier = "qualifier";
+    auto const fieldName = "field-name";
+    auto const expectedResult = QString(qualifier) + "." + fieldName;
+
+    // When
+    auto const result = QORM::Utils::qualifyFieldName(qualifier, fieldName);
+
+    // Then
+    QCOMPARE(result, expectedResult);
+}
+
 void UtilsTest::containsShouldReturnTrue() {
     // Given
     const std::list<int> values{0, 1};
