@@ -17,6 +17,11 @@ class Operation {
     operator QString() const { return this->generate(); }
     virtual auto generate() const -> QString = 0;
 
+    static auto qualifyFieldName(const QString &qualifier,
+                                 const QString &fieldName) -> QString {
+        return qualifier + "." + fieldName;
+    }
+
     // Prevent heap allocation for database operations
     static void* operator new(size_t) = delete;
     static void* operator new[](size_t) = delete;
