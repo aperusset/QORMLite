@@ -7,6 +7,7 @@
 #include "./entity.h"
 #include "./database.h"
 #include "./cache.h"
+#include "operations/operation.h"
 #include "operations/query/selection/count.h"
 
 namespace QORM {
@@ -45,18 +46,14 @@ class ReadOnlyRepository {
         return this->cache;
     }
 
-    auto prefixField(const QString &field) const -> QString {
-        return this->tableName() + "." + field;
-    }
-
-    auto prefixedFields() const -> std::list<QString> {
+    auto qualifiedFields() const -> std::list<QString> {
         auto const tableFields = this->fields();
-        auto prefixedFields = std::list<QString>();
+        auto qualifiedFields = std::list<QString>();
         std::transform(tableFields.begin(), tableFields.end(),
-            std::back_inserter(prefixedFields),
-            std::bind(&ReadOnlyRepository::prefixField, this,
+            std::back_inserter(qualifiedFields),
+            std::bind(&Operation::qualifyFieldName, this->tableName(),
                       std::placeholders::_1));
-        return prefixedFields;
+        return qualifiedFields;
     }
 
     auto getByKey(const Key &key) const -> Entity& {

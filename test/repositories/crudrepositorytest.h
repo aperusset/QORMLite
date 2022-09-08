@@ -19,8 +19,7 @@ class CRUDRepositoryTest : public MainDatabaseTest {
     }
 
  private slots:
-    void prefixFieldShouldPrefix();
-    void prefixedFieldsShouldPrefixAllField();
+    void qualifiedFieldsShouldQualifyAllFields();
     void getByKeyShouldFail();
     void getByKeyShouldReturnEntity();
     void getAllShouldReturnAllExistingEntities();
