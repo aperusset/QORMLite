@@ -7,6 +7,41 @@
 #include "operations/query/condition/in.h"
 #include "operations/query/condition/equals.h"
 
+void CRUDRepositoryTest::prefixFieldShouldPrefix() {
+    // Given
+    auto const &connector = TestConnector(this->databaseName());
+    QORM::Database database(connector, this->testCreator, false);
+    auto const &testCRUDRepository = TestCRUDRepository(database, this->cache);
+    auto const field = "fieldname";
+    auto const expectedPrefix = testCRUDRepository.tableName() + ".";
+
+    // When
+    auto const prefixedField = testCRUDRepository.prefixField(field);
+
+    // Then
+    QCOMPARE(prefixedField, expectedPrefix + field);
+}
+
+void CRUDRepositoryTest::prefixedFieldsShouldPrefixAllField() {
+    // Given
+    auto const &connector = TestConnector(this->databaseName());
+    QORM::Database database(connector, this->testCreator, false);
+    auto const &testCRUDRepository = TestCRUDRepository(database, this->cache);
+    auto const expectedPrefix = testCRUDRepository.tableName() + ".";
+
+    // When
+    auto const prefixedFields = testCRUDRepository.prefixedFields();
+
+    // Then
+    for (auto const &field : testCRUDRepository.fields()) {
+        QVERIFY2(
+            std::find(prefixedFields.begin(),
+                      prefixedFields.end(),
+                      expectedPrefix + field) != prefixedFields.end(),
+            qPrintable("Prefixed fields does not contains : " + field));
+    }
+}
+
 void CRUDRepositoryTest::getByKeyShouldFail() {
     // Given
     auto const &connector = TestConnector(this->databaseName());
