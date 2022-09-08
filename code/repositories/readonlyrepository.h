@@ -4,10 +4,10 @@
 #include <algorithm>
 #include <list>
 #include <memory>
-#include "./entity.h"
-#include "./database.h"
 #include "./cache.h"
-#include "operations/operation.h"
+#include "./database.h"
+#include "./entity.h"
+#include "./utils.h"
 #include "operations/query/selection/count.h"
 
 namespace QORM {
@@ -51,7 +51,7 @@ class ReadOnlyRepository {
         auto qualifiedFields = std::list<QString>();
         std::transform(tableFields.begin(), tableFields.end(),
             std::back_inserter(qualifiedFields),
-            std::bind(&Operation::qualifyFieldName, this->tableName(),
+            std::bind(&Utils::qualifyFieldName, this->tableName(),
                       std::placeholders::_1));
         return qualifiedFields;
     }

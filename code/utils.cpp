@@ -43,3 +43,8 @@ auto QORM::Utils::dateToYear(const QString &fieldName,
 auto QORM::Utils::null(QVariant::Type type) -> QVariant {
     return QVariant(type);
 }
+
+auto QORM::Utils::qualifyFieldName(const QString &qualifier,
+                                   const QString &fieldName) -> QString {
+    return qualifier + "." + fieldName;
+}

@@ -1,5 +1,6 @@
 #include "crudrepositorytest.h"
 #include <string>
+#include "./utils.h"
 #include "fixture/testconnector.h"
 #include "fixture/testcrudrepository.h"
 #include "fixture/testobserver.h"
@@ -12,17 +13,17 @@ void CRUDRepositoryTest::qualifiedFieldsShouldQualifyAllFields() {
     auto const &connector = TestConnector(this->databaseName());
     QORM::Database database(connector, this->testCreator, false);
     auto const &testCRUDRepository = TestCRUDRepository(database, this->cache);
-    auto const expectedPrefix = testCRUDRepository.tableName() + ".";
 
     // When
     auto const qualifiedFields = testCRUDRepository.qualifiedFields();
 
     // Then
     for (auto const &field : testCRUDRepository.fields()) {
+        auto const expectedQualifiedFieldName = QORM::Utils::qualifyFieldName(
+                    testCRUDRepository.tableName(), field);
         QVERIFY2(
-            std::find(qualifiedFields.begin(),
-                      qualifiedFields.end(),
-                      expectedPrefix + field) != qualifiedFields.end(),
+            std::find(qualifiedFields.begin(), qualifiedFields.end(),
+                      expectedQualifiedFieldName) != qualifiedFields.end(),
             qPrintable("Qualified fields does not contains : " + field));
     }
 }

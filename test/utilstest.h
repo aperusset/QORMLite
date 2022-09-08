@@ -15,6 +15,7 @@ class UtilsTest : public QObject {
     static void dateToYear();
     static void nullInt();
     static void nullString();
+    static void qualifyFieldName();
     static void containsShouldReturnTrue();
     static void containsShouldReturnFalse();
     static void joinToStringShouldJoinWithSeparator();
