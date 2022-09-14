@@ -1,7 +1,17 @@
 #include "creator.h"
+#include <utility>
 #include "./database.h"
 #include "operations/model/table.h"
 #include "operations/model/view.h"
+
+QORM::Creator::Creator(
+        std::list<std::reference_wrapper<const Creator>> requiredCreators) :
+        requiredCreators(std::move(requiredCreators)) {
+}
+
+void QORM::Creator::addRequiredCreator(const Creator &requiredCreator) {
+    this->requiredCreators.emplace_back(std::ref(requiredCreator));
+}
 
 auto QORM::Creator::isCreated(const Database &database,
                               const std::list<QString> &existingTables,
@@ -13,6 +23,9 @@ auto QORM::Creator::isCreated(const Database &database,
 }
 
 void QORM::Creator::createAllAndPopulate(const Database &database) const {
+    for (auto const &requiredCreator : this->requiredCreators) {
+        requiredCreator.get().createAllAndPopulate(database);
+    }
     this->createTables(database);
     this->createViews(database);
     this->populate(database);
