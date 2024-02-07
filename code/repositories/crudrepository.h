@@ -20,16 +20,18 @@ class CRUDRepository : public ReadOnlyRepository<Key, Entity> {
         ReadOnlyRepository<Key, Entity> (database, cache) {}
 
     virtual auto save(Entity* const entity) const -> Key {
+        auto const assignementsToDo = this->assignements(*entity);
         if (this->existsByKey(entity->getKey())) {
-            auto const assignementsToDo = this->assignements(*entity);
             if (!assignementsToDo.empty()) {
                 this->getDatabase().execute(QORM::Update(this->tableName(),
                                     assignementsToDo,
                                     this->keyCondition(entity->getKey())));
             }
         } else {
-            this->getCache().insert(this->insert(*entity),
-                                    std::unique_ptr<Entity>(entity));
+            auto const key = this->getDatabase().insertAndRetrieveKey(
+                QORM::Insert(this->tableName(), assignementsToDo));
+            entity->setKey(key);
+            this->getCache().insert(key, std::unique_ptr<Entity>(entity));
         }
         entity->notifyChange();
         return entity->getKey();
@@ -45,7 +47,6 @@ class CRUDRepository : public ReadOnlyRepository<Key, Entity> {
         }
     }
 
-    virtual auto insert(Entity&) const -> Key = 0;
     virtual auto assignements(const Entity&)
         const -> std::list<QORM::Assignment> {
             return {};

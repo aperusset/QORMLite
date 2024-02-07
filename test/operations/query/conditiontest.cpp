@@ -474,6 +474,19 @@ void ConditionTest::inWithSelect() {
     QCOMPARE(generated, DEFAULT_FIELD_NAME + " in (" + select.generate() + ")");
 }
 
+void ConditionTest::notInWithSelect() {
+    // Given
+    auto const select = QORM::Select(DEFAULT_TABLE_NAME);
+    auto const notIn = QORM::In(DEFAULT_FIELD_NAME, select, false);
+
+    // When
+    auto const generated = notIn.generate();
+
+    // Then
+    QCOMPARE(generated,
+             DEFAULT_FIELD_NAME + " not in (" + select.generate() + ")");
+}
+
 void ConditionTest::inWithEmptyIntegersShouldFail() {
     // Given / When / Then
     QVERIFY_EXCEPTION_THROWN(
@@ -499,6 +512,17 @@ void ConditionTest::inWithIntegers() {
     QCOMPARE(generated, DEFAULT_FIELD_NAME + " in (0, 1, 2)");
 }
 
+void ConditionTest::notInWithIntegers() {
+    // Given
+    auto const notIn = QORM::In(DEFAULT_FIELD_NAME, {0, 1, 2}, false);
+
+    // When
+    auto const generated = notIn.generate();
+
+    // Then
+    QCOMPARE(generated, DEFAULT_FIELD_NAME + " not in (0, 1, 2)");
+}
+
 void ConditionTest::inWithStrings() {
     // Given
     auto const in = QORM::In(DEFAULT_FIELD_NAME, {"test1", "test2", "test3"});
@@ -508,6 +532,19 @@ void ConditionTest::inWithStrings() {
 
     // Then
     QCOMPARE(generated, DEFAULT_FIELD_NAME + " in ('test1', 'test2', 'test3')");
+}
+
+void ConditionTest::notInWithStrings() {
+    // Given
+    auto const notIn = QORM::In(DEFAULT_FIELD_NAME, {"test1", "test2", "test3"},
+                                false);
+
+    // When
+    auto const generated = notIn.generate();
+
+    // Then
+    QCOMPARE(generated,
+             DEFAULT_FIELD_NAME + " not in ('test1', 'test2', 'test3')");
 }
 
 void ConditionTest::andSingleConditionShouldFail() {

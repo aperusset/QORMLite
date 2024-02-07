@@ -42,10 +42,13 @@ class ConditionTest : public QObject {
     static void smallerOrEqualsSelection();
     static void smallerOrEqualsSelections();
     static void inWithSelect();
+    static void notInWithSelect();
     static void inWithEmptyIntegersShouldFail();
     static void inWithEmptyStringsShouldFail();
     static void inWithIntegers();
+    static void notInWithIntegers();
     static void inWithStrings();
+    static void notInWithStrings();
     static void andSingleConditionShouldFail();
     static void andMultipleConditions();
     static void orSingleConditionShouldFail();
