@@ -33,18 +33,10 @@ auto TestCRUDRepository::build(const QSqlRecord &record) const -> TestEntity* {
     return new TestEntity(this->buildKey(record));
 }
 
-auto TestCRUDRepository::insert(TestEntity &testEntity) const -> int {
-    isInserted = true;
-    auto const key = this->getDatabase().insertAndRetrieveKey(
-                            QORM::Insert(TestCreator::TEST_TABLE));
-    testEntity.setKey(key);
-    return key;
-}
-
-auto TestCRUDRepository::assignements(const TestEntity &testEntity)
-    const -> std::list<QORM::Assignment> {
-    isUpdated = true;
-    return {QORM::Assignment(TestCreator::TEST_FIELD, testEntity.getKey())};
+auto TestCRUDRepository::save(TestEntity* const testEntity) const -> int {
+    isInserted = isInserted || !this->existsByKey(testEntity->getKey());
+    isUpdated = this->existsByKey(testEntity->getKey());
+    return CRUDRepository::save(testEntity);
 }
 
 auto TestCRUDRepository::hasBeenInserted() -> bool {
