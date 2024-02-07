@@ -10,9 +10,11 @@ namespace QORM {
 
 class In : public Condition {
  public:
-    explicit In(const QString &field, const Select&);
-    explicit In(const QString &field, const std::list<QString>&);
-    explicit In(const QString &field, const std::list<int>&);
+    explicit In(const QString &field, const Select&, bool include = true);
+    explicit In(const QString &field, const std::list<QString>&,
+                bool include = true);
+    explicit In(const QString &field, const std::list<int>&,
+                bool include = true);
 };
 
 }  // namespace QORM

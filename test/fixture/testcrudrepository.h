@@ -15,14 +15,12 @@ class TestCRUDRepository : public QORM::CRUDRepository<int, TestEntity> {
     TestCRUDRepository(const QORM::Database &database,
                        QORM::Cache<int, TestEntity> &cache);
 
+    auto save(TestEntity* const) const -> int override;
     auto tableName() const -> QString override;
     auto keyCondition(const int&) const -> QORM::Condition override;
     auto fields() const -> std::list<QString> override;
     auto buildKey(const QSqlRecord &record) const -> int override;
     auto build(const QSqlRecord &record) const -> TestEntity* override;
-    auto insert(TestEntity&) const -> int override;
-    auto assignements(const TestEntity&)
-        const -> std::list<QORM::Assignment> override;
 
     static auto hasBeenInserted() -> bool;
     static auto hasBeenUpdated() -> bool;

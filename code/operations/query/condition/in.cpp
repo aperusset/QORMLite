@@ -2,11 +2,21 @@
 #include <string>
 #include "utils.h"
 
-QORM::In::In(const QString &field, const Select &select) :
-    Condition(" in ", {}, field, "(" + select.generate() + ")", QVariant()) {}
+namespace {
 
-QORM::In::In(const QString &field, const std::list<QString> &elements) :
-    Condition(" in ", {}, field,
+auto buildOperator(bool include) -> QString {
+    return QString(!include ? " not" : "") + " in ";
+}
+
+}  // namespace
+
+QORM::In::In(const QString &field, const Select &select, bool include) :
+    Condition(buildOperator(include), {}, field, "(" + select.generate() + ")",
+              QVariant()) {}
+
+QORM::In::In(const QString &field, const std::list<QString> &elements,
+             bool include) :
+    Condition(buildOperator(include), {}, field,
               "(" + QORM::Utils::joinToString<QString>(elements, ", ",
                     [](const QString &element) -> QString {
                         return "'" + element + "'";
@@ -16,8 +26,9 @@ QORM::In::In(const QString &field, const std::list<QString> &elements) :
     }
 }
 
-QORM::In::In(const QString &field, const std::list<int> &elements) :
-    Condition(" in ", {}, field,
+QORM::In::In(const QString &field, const std::list<int> &elements,
+             bool include) :
+    Condition(buildOperator(include), {}, field,
               "(" + QORM::Utils::joinToString<int>(elements, ", ",
                     [](const int &element) -> QString {
                         return QString::number(element);

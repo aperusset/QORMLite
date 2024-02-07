@@ -69,7 +69,7 @@ void CRUDRepositoryTest::getAllShouldReturnAllExistingEntities() {
     testCRUDRepository.save(new TestEntity(-1));
 
     // Then
-    QCOMPARE(3U, testCRUDRepository.getAll().size());
+    QCOMPARE(testCRUDRepository.getAll().size(), 3U);
 }
 
 void CRUDRepositoryTest::getAllShouldReturnEntitiesAccordingToSelect() {
@@ -103,7 +103,7 @@ void CRUDRepositoryTest::countShouldCountAllEntities() {
     testCRUDRepository.save(new TestEntity(-1));
 
     // Then
-    QCOMPARE(3U, testCRUDRepository.count());
+    QCOMPARE(testCRUDRepository.count(), 3U);
 }
 
 void CRUDRepositoryTest::countShouldCountEntitiesAccordingToConditions() {
