@@ -1,13 +1,14 @@
 #ifndef UTILS_H_
 #define UTILS_H_
 
+#include <QDate>
+#include <QSqlRecord>
 #include <QString>
 #include <QStringList>
 #include <QVariant>
-#include <QDate>
-#include <QSqlRecord>
-#include <list>
 #include <algorithm>
+#include <list>
+#include <string>
 #include "operations/query/selection/selection.h"
 
 namespace QORM {
@@ -190,6 +191,69 @@ namespace Utils {
     auto getDoubleOrDefault(const QSqlRecord &record, const QString &fieldName,
                             double defaultValue) -> double;
 
+    /**
+     * @brief Return a value wrapped in a QVariant if valid, based on a given
+     * predicate, or return a null QVariant.
+     * @param value the value to validate and wrap
+     * @param predicate a function to determine if the value is valid or not
+     * @return the wrapped value (or null QVariant)
+     */
+    template <typename T>
+    auto validOrNull(const T &value,
+            const std::function<bool(const T&)> &predicate) -> QVariant {
+        return predicate(value) ? QVariant::fromValue(value) : null();
+    }
+
+    /**
+     * @brief Return a value wrapped in a QVariant if valid, based on a given
+     * predicate, or throw the given error message.
+     * @param value the value to validate and wrap
+     * @param predicate a function to determine if the value is valid or not
+     * @return the wrapped value
+     * @throw std::string if the value is not valid
+     */
+    template <typename T>
+    auto validOrThrow(const T &value, const std::string &errorMessage,
+            const std::function<bool(const T&)> &predicate) -> QVariant {
+        if (predicate(value)) {
+            return QVariant::fromValue(value);
+        }
+        throw errorMessage;
+    }
+
+    /**
+     * @brief Return a trimmed QString wrapped in a QVariant or a null QVariant
+     * if the QString is blank.
+     * @param value the value to validate and wrap
+     * @return the wrapped value (or null QVariant)
+     */
+    auto notBlankOrNull(const QString &value) -> QVariant;
+
+    /**
+     * @brief Return a trimmed QString wrapped in a QVariant or throw an
+     * exception if the QString is blank.
+     * @param value the value to validate and wrap
+     * @return the wrapped value (or null QVariant)
+     * @throw std::string if the QString is blank
+     */
+    auto notBlankOrThrow(const QString &value) -> QVariant;
+
+    /**
+     * @brief Return a QDateTime wrapped in a QVariant or a null QVariant if the
+     * QDateTime is not valid.
+     * @param value the value to validate and wrap
+     * @return the wrapped value (or null QVariant)
+     */
+    auto validOrNull(const QDateTime &value) -> QVariant;
+
+    /**
+     * @brief Return a QDateTime wrapped in a QVariant or throw an exception if
+     * the QDateTime is invalid.
+     * @param value the value to validate and wrap
+     * @return the wrapped value (or null QVariant)
+     * @throw std::string if the QDateTime is invalid
+     */
+    auto validOrThrow(const QDateTime &value) -> QVariant;
 
 }  // namespace Utils
 
