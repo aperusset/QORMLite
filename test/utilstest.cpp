@@ -1,7 +1,11 @@
 #include "utilstest.h"
+#include <QSqlField>
+#include <QSqlRecord>
 #include <list>
 #include "./utils.h"
 #include "operations/query/selection/selection.h"
+
+const QString UtilsTest::FIELD_NAME = "field-name";
 
 void UtilsTest::formatSQLiteDate() {
     // Given
@@ -134,4 +138,173 @@ void UtilsTest::joinToStringShouldJoinWithSeparator() {
 
     // Then
     QCOMPARE(joined, "0-1-2");
+}
+
+void UtilsTest::getOrDefaultShouldReturnValue() {
+    // Given
+    auto field = QSqlField(FIELD_NAME, QVariant::Type::String);
+    auto const value = QString("value");
+    field.setValue(QVariant::fromValue(value));
+    auto record = QSqlRecord();
+    record.append(field);
+
+    // When
+    auto rValue = QORM::Utils::getOrDefault<QString>(record, FIELD_NAME, "",
+                        [](const QVariant &variant) -> QString {
+                            return variant.toString();
+                        });
+    // Then
+    QCOMPARE(rValue, value);
+}
+
+void UtilsTest::getOrDefaultShouldReturnDefault() {
+    // Given
+    auto field = QSqlField(FIELD_NAME, QVariant::Type::String);
+    auto const defaultValue = QString("default");
+    auto record = QSqlRecord();
+    record.append(field);
+
+    // When
+    auto rValue = QORM::Utils::getOrDefault<QString>(record, FIELD_NAME,
+                        defaultValue, [](const QVariant &variant) -> QString {
+                            return variant.toString();
+                        });
+    // Then
+    QCOMPARE(rValue, defaultValue);
+}
+
+void UtilsTest::getOrDefaultShouldReturnDefaultIfNotExists() {
+    // Given
+    auto const defaultValue = QString("default");
+
+    // When
+    auto rValue = QORM::Utils::getOrDefault<QString>(QSqlRecord(), FIELD_NAME,
+                        defaultValue, [](const QVariant &variant) -> QString {
+                            return variant.toString();
+                        });
+    // Then
+    QCOMPARE(rValue, defaultValue);
+}
+
+void UtilsTest::getOrNullShouldReturnPointer() {
+    // Given
+    auto field = QSqlField(FIELD_NAME, QVariant::Type::Int);
+    int32_t value = 42;
+    field.setValue(QVariant::fromValue(value));
+    auto record = QSqlRecord();
+    record.append(field);
+
+    // When
+    auto *pointer = QORM::Utils::getOrNull<int32_t>(record, FIELD_NAME,
+                        [&value](const QVariant&) -> int32_t* {
+                            return &value;
+                        });
+    // Then
+    QCOMPARE(*pointer, value);
+}
+
+void UtilsTest::getOrNullShouldReturnNullptr() {
+    // Given
+    auto field = QSqlField(FIELD_NAME, QVariant::Type::Int);
+    int32_t value = 42;
+    auto record = QSqlRecord();
+    record.append(field);
+
+    // When
+    auto *pointer = QORM::Utils::getOrNull<int32_t>(record, FIELD_NAME,
+                        [&value](const QVariant&) -> int32_t* {
+                            return &value;
+                        });
+    // Then
+    QCOMPARE(pointer, nullptr);
+}
+
+void UtilsTest::getBoolOrDefaultShouldReturnValue() {
+    // Given
+    auto field = QSqlField(FIELD_NAME, QVariant::Type::Bool);
+    auto const value = true;
+    field.setValue(QVariant::fromValue(value));
+    auto record = QSqlRecord();
+    record.append(field);
+
+    // When
+    auto rValue = QORM::Utils::getBoolOrDefault(record, FIELD_NAME, false);
+
+    // Then
+    QCOMPARE(rValue, value);
+}
+
+void UtilsTest::getStringOrDefaultShouldReturnValue() {
+    // Given
+    auto field = QSqlField(FIELD_NAME, QVariant::Type::String);
+    auto const value = QString("value");
+    field.setValue(QVariant::fromValue(value));
+    auto record = QSqlRecord();
+    record.append(field);
+
+    // When
+    auto rValue = QORM::Utils::getStringOrDefault(record, FIELD_NAME,
+                                                  "default");
+    // Then
+    QCOMPARE(rValue, value);
+}
+
+void UtilsTest::getDateTimeOrDefaultShouldReturnValue() {
+    // Given
+    auto field = QSqlField(FIELD_NAME, QVariant::Type::DateTime);
+    auto const value = QDateTime::currentDateTime();
+    field.setValue(QVariant::fromValue(value));
+    auto record = QSqlRecord();
+    record.append(field);
+
+    // When
+    auto rValue = QORM::Utils::getDateTimeOrDefault(record, FIELD_NAME,
+                                                    value.addMonths(1));
+    // Then
+    QCOMPARE(rValue, value);
+}
+
+void UtilsTest::getUIntOrDefaultShouldReturnValue() {
+    // Given
+    auto field = QSqlField(FIELD_NAME, QVariant::Type::Int);
+    auto const value = 42U;
+    field.setValue(QVariant::fromValue(value));
+    auto record = QSqlRecord();
+    record.append(field);
+
+    // When
+    auto rValue = QORM::Utils::getUIntOrDefault(record, FIELD_NAME, 100U);
+
+    // Then
+    QCOMPARE(rValue, value);
+}
+
+void UtilsTest::getIntOrDefaultShouldReturnValue() {
+    // Given
+    auto field = QSqlField(FIELD_NAME, QVariant::Type::Int);
+    auto const value = 42;
+    field.setValue(QVariant::fromValue(value));
+    auto record = QSqlRecord();
+    record.append(field);
+
+    // When
+    auto rValue = QORM::Utils::getIntOrDefault(record, FIELD_NAME, 100);
+
+    // Then
+    QCOMPARE(rValue, value);
+}
+
+void UtilsTest::getDoubleOrDefaultShouldReturnValue() {
+    // Given
+    auto field = QSqlField(FIELD_NAME, QVariant::Type::Double);
+    auto const value = 42.0;
+    field.setValue(QVariant::fromValue(value));
+    auto record = QSqlRecord();
+    record.append(field);
+
+    // When
+    auto rValue = QORM::Utils::getDoubleOrDefault(record, FIELD_NAME, 100.0);
+
+    // Then
+    QCOMPARE(rValue, value);
 }
