@@ -107,22 +107,6 @@ namespace Utils {
     }
 
     /**
-     * @brief Extract a pointer to T value from a QSqlRecord or nullptr
-     * @param record the record from which to extract the pointer
-     * @param extractor the function that transform from QVariant to T*
-     * @return extracted pointer to T or nulltpr
-     */
-    template<typename T>
-    auto getOrNull(const QSqlRecord &record, const QString &fieldName,
-                   const std::function<T*(const QVariant&)> &extractor) -> T* {
-        if (record.isNull(fieldName)) {
-            return nullptr;
-        } else {
-            return extractor(record.value(fieldName));
-        }
-    }
-
-    /**
      * @brief Extract a T value from a QSqlRecord or, if null, a default value
      * @param record the record from which to extract the value
      * @param defaultValue the default T value
@@ -138,6 +122,18 @@ namespace Utils {
         } else {
             return extractor(record.value(fieldName));
         }
+    }
+
+    /**
+     * @brief Extract a pointer to T value from a QSqlRecord or nullptr
+     * @param record the record from which to extract the pointer
+     * @param extractor the function that transform from QVariant to T*
+     * @return extracted pointer to T or nulltpr
+     */
+    template<typename T>
+    auto getOrNull(const QSqlRecord &record, const QString &fieldName,
+                   const std::function<T*(const QVariant&)> &extractor) -> T* {
+        return getOrDefault<T*>(record, fieldName, nullptr, extractor);
     }
 
     /**

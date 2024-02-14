@@ -21,12 +21,11 @@ class UtilsTest : public QObject {
     static void containsShouldReturnTrue();
     static void containsShouldReturnFalse();
     static void joinToStringShouldJoinWithSeparator();
-    static void getOrNullShouldReturnPointer();
-    static void getOrNullShouldReturnNullptr();
-    static void getOrNullShouldReturnNullptrIfNotExists();
     static void getOrDefaultShouldReturnValue();
     static void getOrDefaultShouldReturnDefault();
     static void getOrDefaultShouldReturnDefaultIfNotExists();
+    static void getOrNullShouldReturnPointer();
+    static void getOrNullShouldReturnNullptr();
     static void getBoolOrDefaultShouldReturnValue();
     static void getStringOrDefaultShouldReturnValue();
     static void getDateTimeOrDefaultShouldReturnValue();

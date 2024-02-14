@@ -140,52 +140,6 @@ void UtilsTest::joinToStringShouldJoinWithSeparator() {
     QCOMPARE(joined, "0-1-2");
 }
 
-void UtilsTest::getOrNullShouldReturnPointer() {
-    // Given
-    auto field = QSqlField(FIELD_NAME, QVariant::Type::Int);
-    int32_t value = 42;
-    field.setValue(QVariant::fromValue(value));
-    auto record = QSqlRecord();
-    record.append(field);
-
-    // When
-    auto *pointer = QORM::Utils::getOrNull<int32_t>(record, FIELD_NAME,
-                        [&value](const QVariant&) -> int32_t* {
-                            return &value;
-                        });
-    // Then
-    QCOMPARE(*pointer, value);
-}
-
-void UtilsTest::getOrNullShouldReturnNullptr() {
-    // Given
-    auto field = QSqlField(FIELD_NAME, QVariant::Type::Int);
-    int32_t value = 42;
-    auto record = QSqlRecord();
-    record.append(field);
-
-    // When
-    auto *pointer = QORM::Utils::getOrNull<int32_t>(record, FIELD_NAME,
-                        [&value](const QVariant&) -> int32_t* {
-                            return &value;
-                        });
-    // Then
-    QCOMPARE(pointer, nullptr);
-}
-
-void UtilsTest::getOrNullShouldReturnNullptrIfNotExists() {
-    // Given
-    int32_t value = 42;
-
-    // When
-    auto *pointer = QORM::Utils::getOrNull<int32_t>(QSqlRecord(), FIELD_NAME,
-                        [&value](const QVariant&) -> int32_t* {
-                            return &value;
-                        });
-    // Then
-    QCOMPARE(pointer, nullptr);
-}
-
 void UtilsTest::getOrDefaultShouldReturnValue() {
     // Given
     auto field = QSqlField(FIELD_NAME, QVariant::Type::String);
@@ -230,6 +184,39 @@ void UtilsTest::getOrDefaultShouldReturnDefaultIfNotExists() {
                         });
     // Then
     QCOMPARE(rValue, defaultValue);
+}
+
+void UtilsTest::getOrNullShouldReturnPointer() {
+    // Given
+    auto field = QSqlField(FIELD_NAME, QVariant::Type::Int);
+    int32_t value = 42;
+    field.setValue(QVariant::fromValue(value));
+    auto record = QSqlRecord();
+    record.append(field);
+
+    // When
+    auto *pointer = QORM::Utils::getOrNull<int32_t>(record, FIELD_NAME,
+                        [&value](const QVariant&) -> int32_t* {
+                            return &value;
+                        });
+    // Then
+    QCOMPARE(*pointer, value);
+}
+
+void UtilsTest::getOrNullShouldReturnNullptr() {
+    // Given
+    auto field = QSqlField(FIELD_NAME, QVariant::Type::Int);
+    int32_t value = 42;
+    auto record = QSqlRecord();
+    record.append(field);
+
+    // When
+    auto *pointer = QORM::Utils::getOrNull<int32_t>(record, FIELD_NAME,
+                        [&value](const QVariant&) -> int32_t* {
+                            return &value;
+                        });
+    // Then
+    QCOMPARE(pointer, nullptr);
 }
 
 void UtilsTest::getBoolOrDefaultShouldReturnValue() {
