@@ -40,8 +40,8 @@ auto QORM::Utils::dateToYear(const QString &fieldName,
     return formatSQLDate("%Y", fieldName, renameTo);
 }
 
-auto QORM::Utils::null(QVariant::Type type) -> QVariant {
-    return QVariant(type);
+auto QORM::Utils::null() -> QVariant {
+    return QVariant();
 }
 
 auto QORM::Utils::qualifyFieldName(const QString &qualifier,
