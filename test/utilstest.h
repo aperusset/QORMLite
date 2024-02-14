@@ -31,6 +31,18 @@ class UtilsTest : public QObject {
     static void getUIntOrDefaultShouldReturnValue();
     static void getIntOrDefaultShouldReturnValue();
     static void getDoubleOrDefaultShouldReturnValue();
+    static void validOrNullShouldReturnValue();
+    static void validOrNullShouldReturnNull();
+    static void validOrThrowShouldReturnValue();
+    static void validOrThrowShouldThrow();
+    static void notBlankOrNullShouldReturnNull();
+    static void notBlankOrNullShouldReturnTrimmedValue();
+    static void notBlankOrThrowShouldThrow();
+    static void notBlankOrThrowShouldReturnTrimmedValue();
+    static void validOrNullDateTimeShouldReturnNull();
+    static void validOrNullDateTimeShouldReturnValue();
+    static void validOrThrowDateTimeShouldThrow();
+    static void validOrThrowDateTimeShouldReturnValue();
 };
 
 #endif  // TEST_UTILSTEST_H_

@@ -97,3 +97,25 @@ auto QORM::Utils::getDoubleOrDefault(const QSqlRecord &record,
                                   return variant.toDouble();
                                 });
 }
+
+auto const validString = [](const QString &value) {
+    return !value.isEmpty();
+};
+
+auto QORM::Utils::notBlankOrNull(const QString &value) -> QVariant {
+    return validOrNull<QString>(value.trimmed(), validString);
+}
+
+auto QORM::Utils::notBlankOrThrow(const QString &value) -> QVariant {
+    return validOrThrow<QString>(value.trimmed(),
+                                 "A not blank string is expected", validString);
+}
+
+auto QORM::Utils::validOrNull(const QDateTime &value) -> QVariant {
+    return validOrNull<QDateTime>(value, &QDateTime::isValid);
+}
+
+auto QORM::Utils::validOrThrow(const QDateTime &value) -> QVariant {
+    return validOrThrow<QDateTime>(value, "A valid date time is expected",
+                                   &QDateTime::isValid);
+}
