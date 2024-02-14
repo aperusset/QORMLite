@@ -15,8 +15,7 @@ class UtilsTest : public QObject {
     static void dateToDay();
     static void dateToMonth();
     static void dateToYear();
-    static void nullInt();
-    static void nullString();
+    static void null();
     static void qualifyFieldName();
     static void containsShouldReturnTrue();
     static void containsShouldReturnFalse();

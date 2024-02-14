@@ -66,10 +66,9 @@ namespace Utils {
 
     /**
      * @brief Generate a null SQL value for specified type
-     * @param type the type of the null value
      * @return the null value
      */
-    auto null(QVariant::Type type) -> QVariant;
+    auto null() -> QVariant;
 
     /**
      * @brief Qualify a field name with a table, a view, or everything else. The
