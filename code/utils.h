@@ -5,6 +5,7 @@
 #include <QStringList>
 #include <QVariant>
 #include <QDate>
+#include <QSqlRecord>
 #include <list>
 #include <algorithm>
 #include "operations/query/selection/selection.h"
@@ -104,6 +105,96 @@ namespace Utils {
                        std::back_inserter(transformed), transformer);
         return transformed.join(separator);
     }
+
+    /**
+     * @brief Extract a pointer to T value from a QSqlRecord or nullptr
+     * @param record the record from which to extract the pointer
+     * @param extractor the function that transform from QVariant to T*
+     * @return extracted pointer to T or nulltpr
+     */
+    template<typename T>
+    auto getOrNull(const QSqlRecord &record, const QString &fieldName,
+                   const std::function<T*(const QVariant&)> &extractor) -> T* {
+        if (record.isNull(fieldName)) {
+            return nullptr;
+        } else {
+            return extractor(record.value(fieldName));
+        }
+    }
+
+    /**
+     * @brief Extract a T value from a QSqlRecord or, if null, a default value
+     * @param record the record from which to extract the value
+     * @param defaultValue the default T value
+     * @param extractor the function that transform from QVariant to T
+     * @return extracted T value
+     */
+    template<typename T>
+    auto getOrDefault(const QSqlRecord &record, const QString &fieldName,
+                      const T &defaultValue,
+                      const std::function<T(const QVariant&)> &extractor) -> T {
+        if (record.isNull(fieldName)) {
+            return defaultValue;
+        } else {
+            return extractor(record.value(fieldName));
+        }
+    }
+
+    /**
+     * @brief Extract a bool from a QSqlRecord or, if null, a default value
+     * @param record the record from which to extract the bool value
+     * @param defaultValue the default bool value
+     * @return extracted bool value
+     */
+    auto getBoolOrDefault(const QSqlRecord &record, const QString &fieldName,
+                          bool defaultValue) -> bool;
+
+    /**
+     * @brief Extract a QString from a QSqlRecord or, if null, a default value
+     * @param record the record from which to extract the QString value
+     * @param defaultValue the default QString value
+     * @return extracted QString value
+     */
+    auto getStringOrDefault(const QSqlRecord &record, const QString &fieldName,
+                            const QString &defaultValue) -> QString;
+
+    /**
+     * @brief Extract a QDateTime from a QSqlRecord or, if null, a default value
+     * @param record the record from which to extract the QDateTime value
+     * @param defaultValue the default QDateTime value
+     * @return extracted QDateTime value
+     */
+    auto getDateTimeOrDefault(const QSqlRecord &record,
+                              const QString &fieldName,
+                              const QDateTime &defaultValue) -> QDateTime;
+
+    /**
+     * @brief Extract a uint32_t from a QSqlRecord or, if null, a default value
+     * @param record the record from which to extract the uint32_t value
+     * @param defaultValue the default uint32_t value
+     * @return extracted uint32_t value
+     */
+    auto getUIntOrDefault(const QSqlRecord &record, const QString &fieldName,
+                          uint32_t defaultValue) -> uint32_t;
+
+    /**
+     * @brief Extract a int32_t from a QSqlRecord or, if null, a default value
+     * @param record the record from which to extract the int32_t value
+     * @param defaultValue the default int32_t value
+     * @return extracted int32_t value
+     */
+    auto getIntOrDefault(const QSqlRecord &record, const QString &fieldName,
+                         int32_t defaultValue) -> int32_t;
+
+    /**
+     * @brief Extract a double from a QSqlRecord or, if null, a default value
+     * @param record the record from which to extract the double value
+     * @param defaultValue the default double value
+     * @return extracted double value
+     */
+    auto getDoubleOrDefault(const QSqlRecord &record, const QString &fieldName,
+                            double defaultValue) -> double;
+
 
 }  // namespace Utils
 
