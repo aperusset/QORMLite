@@ -28,7 +28,7 @@ class QORMLiteTest : public MainDatabaseTest {
 
     void initTestCase();
     void cleanupTestCase();
-    void cleanup();
+    void cleanup() override;
 };
 
 #endif  // TEST_QORMLITETEST_H_

@@ -2,6 +2,7 @@
 #include <QSqlField>
 #include <QSqlRecord>
 #include <list>
+#include <string>
 #include "./utils.h"
 #include "operations/query/selection/selection.h"
 
@@ -81,7 +82,7 @@ void UtilsTest::null() {
 
     // When / Then
     QVERIFY(nullValue.isNull());
-    QVERIFY(nullValue.isValid());
+    QVERIFY(!nullValue.isValid());
 }
 
 
@@ -298,4 +299,144 @@ void UtilsTest::getDoubleOrDefaultShouldReturnValue() {
 
     // Then
     QCOMPARE(rValue, value);
+}
+
+void UtilsTest::validOrNullShouldReturnValue() {
+    // Given
+    auto const value = 42U;
+
+    // When
+    auto const rValue = QORM::Utils::validOrNull<uint32_t>(value,
+                                                           [](const uint32_t) {
+                                                               return true;
+                                                           });
+    // Then
+    QVERIFY(rValue.isValid());
+    QVERIFY(!rValue.isNull());
+    QCOMPARE(rValue.toUInt(), value);
+}
+
+void UtilsTest::validOrNullShouldReturnNull() {
+    // Given / When
+    auto rValue = QORM::Utils::validOrNull<uint32_t>(42U, [](const uint32_t) {
+        return false;
+    });
+
+    // Then
+    QVERIFY(!rValue.isValid());
+    QVERIFY(rValue.isNull());
+}
+
+void UtilsTest::validOrThrowShouldReturnValue() {
+    // Given
+    auto const value = 42U;
+
+    // When
+    auto const rValue = QORM::Utils::validOrThrow<uint32_t>(value, "message",
+                                                      [](const uint32_t) {
+                                                          return true;
+                                                      });
+    // Then
+    QVERIFY(rValue.isValid());
+    QVERIFY(!rValue.isNull());
+    QCOMPARE(rValue.toUInt(), value);
+}
+
+void UtilsTest::validOrThrowShouldThrow() {
+    // Given
+    auto const errorMessage = std::string("error-message");
+
+    // When / Then
+    QVERIFY_EXCEPTION_THROWN(
+        QORM::Utils::validOrThrow<uint32_t>(42U, errorMessage,
+                                            [](const uint32_t) {
+                                                return false;
+                                            }), std::string);
+}
+
+void UtilsTest::notBlankOrNullShouldReturnNull() {
+    // Given
+    auto const value = QString("   ");
+
+    // When
+    auto const rValue = QORM::Utils::notBlankOrNull(value);
+
+    // Then
+    QVERIFY(rValue.isNull());
+    QVERIFY(!rValue.isValid());
+}
+
+void UtilsTest::notBlankOrNullShouldReturnTrimmedValue() {
+    // Given
+    auto const value = QString(" test  value  ");
+
+    // When
+    auto const rValue = QORM::Utils::notBlankOrNull(value);
+
+    // Then
+    QVERIFY(!rValue.isNull());
+    QVERIFY(rValue.isValid());
+    QCOMPARE(rValue.toString(), value.trimmed());
+}
+
+void UtilsTest::notBlankOrThrowShouldThrow() {
+    // Given / When / Then
+    QVERIFY_EXCEPTION_THROWN(QORM::Utils::notBlankOrThrow("   "), std::string);
+}
+
+void UtilsTest::notBlankOrThrowShouldReturnTrimmedValue() {
+    // Given
+    auto const value = QString(" test  value  ");
+
+    // When
+    auto const rValue = QORM::Utils::notBlankOrThrow(value);
+
+    // Then
+    QVERIFY(!rValue.isNull());
+    QVERIFY(rValue.isValid());
+    QCOMPARE(rValue.toString(), value.trimmed());
+}
+
+void UtilsTest::validOrNullDateTimeShouldReturnNull() {
+    // Given
+    auto const value = QDateTime();
+
+    // When
+    auto const rValue = QORM::Utils::validOrNull(value);
+
+    // Then
+    QVERIFY(rValue.isNull());
+    QVERIFY(!rValue.isValid());
+}
+
+void UtilsTest::validOrNullDateTimeShouldReturnValue() {
+    // Given
+    auto const value = QDateTime::currentDateTime();
+
+    // When
+    auto const rValue = QORM::Utils::validOrNull(value);
+
+    // Then
+    QVERIFY(!rValue.isNull());
+    QVERIFY(rValue.isValid());
+    QCOMPARE(rValue.toDateTime(), value);
+}
+
+void UtilsTest::validOrThrowDateTimeShouldThrow() {
+    // Given / When / Then
+    QVERIFY_EXCEPTION_THROWN(QORM::Utils::validOrThrow(QDateTime()),
+                             std::string);
+}
+
+void UtilsTest::validOrThrowDateTimeShouldReturnValue() {
+    // Given
+    auto const value = QDateTime::currentDateTime();
+
+    // When
+    auto const rValue = QORM::Utils::validOrThrow(value);
+
+    // Then
+    QVERIFY(!rValue.isNull());
+    QVERIFY(rValue.isValid());
+    QCOMPARE(rValue.toDateTime(), value);
 }
