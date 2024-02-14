@@ -48,3 +48,52 @@ auto QORM::Utils::qualifyFieldName(const QString &qualifier,
                                    const QString &fieldName) -> QString {
     return qualifier + "." + fieldName;
 }
+
+auto QORM::Utils::getBoolOrDefault(const QSqlRecord &record,
+                                   const QString &fieldName,
+                                   bool defaultValue) -> bool {
+    return getOrDefault<bool>(record, fieldName, defaultValue,
+                              &QVariant::toBool);
+}
+
+auto QORM::Utils::getStringOrDefault(const QSqlRecord &record,
+                                     const QString &fieldName,
+                                     const QString &defaultValue) -> QString {
+    return getOrDefault<QString>(record, fieldName, defaultValue,
+                                 &QVariant::toString);
+}
+
+auto QORM::Utils::getDateTimeOrDefault(const QSqlRecord &record,
+                                       const QString &fieldName,
+                                       const QDateTime &defaultValue)
+    -> QDateTime {
+    return getOrDefault<QDateTime>(record, fieldName, defaultValue,
+                                   &QVariant::toDateTime);
+}
+
+auto QORM::Utils::getUIntOrDefault(const QSqlRecord &record,
+                                   const QString &fieldName,
+                                   uint32_t defaultValue) -> uint32_t {
+    return getOrDefault<uint32_t>(record, fieldName, defaultValue,
+                                  [](const QVariant &variant) -> uint32_t {
+                                    return variant.toUInt();
+                                  });
+}
+
+auto QORM::Utils::getIntOrDefault(const QSqlRecord &record,
+                                  const QString &fieldName,
+                                  int32_t defaultValue) -> int32_t {
+    return getOrDefault<int32_t>(record, fieldName, defaultValue,
+                                 [](const QVariant &variant) -> int32_t {
+                                   return variant.toInt();
+                                 });
+}
+
+auto QORM::Utils::getDoubleOrDefault(const QSqlRecord &record,
+                                     const QString &fieldName,
+                                     double defaultValue) -> double {
+    return getOrDefault<double>(record, fieldName, defaultValue,
+                                [](const QVariant &variant) -> double {
+                                  return variant.toDouble();
+                                });
+}
