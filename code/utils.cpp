@@ -63,6 +63,13 @@ auto QORM::Utils::getStringOrDefault(const QSqlRecord &record,
                                  &QVariant::toString);
 }
 
+auto QORM::Utils::getDateOrDefault(const QSqlRecord &record,
+                                   const QString &fieldName,
+                                   const QDate &defaultValue) -> QDate {
+    return getOrDefault<QDate>(record, fieldName, defaultValue,
+                               &QVariant::toDate);
+}
+
 auto QORM::Utils::getDateTimeOrDefault(const QSqlRecord &record,
                                        const QString &fieldName,
                                        const QDateTime &defaultValue)
@@ -109,6 +116,18 @@ auto QORM::Utils::notBlankOrNull(const QString &value) -> QVariant {
 auto QORM::Utils::notBlankOrThrow(const QString &value) -> QVariant {
     return validOrThrow<QString>(value.trimmed(),
                                  "A not blank string is expected", validString);
+}
+
+auto const validDate = [](const QDate &value) {
+    return value.isValid();
+};
+
+auto QORM::Utils::validOrNull(const QDate &value) -> QVariant {
+    return validOrNull<QDate>(value, validDate);
+}
+
+auto QORM::Utils::validOrThrow(const QDate &value) -> QVariant {
+    return validOrThrow<QDate>(value, "A valid date is expected", validDate);
 }
 
 auto QORM::Utils::validOrNull(const QDateTime &value) -> QVariant {

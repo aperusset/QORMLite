@@ -241,6 +241,21 @@ void UtilsTest::getStringOrDefaultShouldReturnValue() {
     QCOMPARE(rValue, value);
 }
 
+void UtilsTest::getDateOrDefaultShouldReturnValue() {
+    // Given
+    auto field = QSqlField(FIELD_NAME, QVariant::Type::Date);
+    auto const value = QDate::currentDate();
+    field.setValue(QVariant::fromValue(value));
+    auto record = QSqlRecord();
+    record.append(field);
+
+    // When
+    auto rValue = QORM::Utils::getDateOrDefault(record, FIELD_NAME,
+                                                value.addMonths(1));
+    // Then
+    QCOMPARE(rValue, value);
+}
+
 void UtilsTest::getDateTimeOrDefaultShouldReturnValue() {
     // Given
     auto field = QSqlField(FIELD_NAME, QVariant::Type::DateTime);
@@ -420,6 +435,25 @@ void UtilsTest::validOrNullDateTimeShouldReturnValue() {
     QVERIFY(!rValue.isNull());
     QVERIFY(rValue.isValid());
     QCOMPARE(rValue.toDateTime(), value);
+}
+
+void UtilsTest::validOrThrowDateShouldThrow() {
+    // Given / When / Then
+    QVERIFY_EXCEPTION_THROWN(QORM::Utils::validOrThrow(QDate()),
+                             std::string);
+}
+
+void UtilsTest::validOrThrowDateShouldReturnValue() {
+    // Given
+    auto const value = QDate::currentDate();
+
+    // When
+    auto const rValue = QORM::Utils::validOrThrow(value);
+
+    // Then
+    QVERIFY(!rValue.isNull());
+    QVERIFY(rValue.isValid());
+    QCOMPARE(rValue.toDate(), value);
 }
 
 void UtilsTest::validOrThrowDateTimeShouldThrow() {
