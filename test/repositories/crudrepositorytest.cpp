@@ -38,7 +38,7 @@ void CRUDRepositoryTest::getByKeyShouldFail() {
     database.connect();
 
     // When / Then
-    QVERIFY_EXCEPTION_THROWN(testCRUDRepository.getByKey(0), std::string);
+    QVERIFY_EXCEPTION_THROWN(testCRUDRepository.get(0), std::string);
 }
 
 void CRUDRepositoryTest::getByKeyShouldReturnEntity() {
@@ -50,7 +50,39 @@ void CRUDRepositoryTest::getByKeyShouldReturnEntity() {
     // When
     database.connect();
     auto const lastInsertedKey = testCRUDRepository.save(new TestEntity(-1));
-    auto const &entity = testCRUDRepository.getByKey(lastInsertedKey);
+    auto const &entity = testCRUDRepository.get(lastInsertedKey);
+
+    // When / Then
+    QCOMPARE(entity.getKey(), lastInsertedKey);
+}
+
+void CRUDRepositoryTest::getShouldFail() {
+    // Given
+    auto const &connector = TestConnector(this->databaseName());
+    QORM::Database database(connector, this->testCreator, false);
+    auto const &testCRUDRepository = TestCRUDRepository(database, this->cache);
+
+    // When
+    database.connect();
+
+    // When / Then
+    QVERIFY_EXCEPTION_THROWN(
+        testCRUDRepository.get(
+            {QORM::Equals::field(TestCreator::TEST_FIELD, 0)}),
+        std::string);
+}
+
+void CRUDRepositoryTest::getShouldReturnEntity() {
+    // Given
+    auto const &connector = TestConnector(this->databaseName());
+    QORM::Database database(connector, this->testCreator, false);
+    auto const &testCRUDRepository = TestCRUDRepository(database, this->cache);
+
+    // When
+    database.connect();
+    auto const lastInsertedKey = testCRUDRepository.save(new TestEntity(-1));
+    auto const &entity = testCRUDRepository.get(
+        {QORM::Equals::field(TestCreator::TEST_FIELD, lastInsertedKey)});
 
     // When / Then
     QCOMPARE(entity.getKey(), lastInsertedKey);
@@ -72,7 +104,24 @@ void CRUDRepositoryTest::getAllShouldReturnAllExistingEntities() {
     QCOMPARE(testCRUDRepository.getAll().size(), 3U);
 }
 
-void CRUDRepositoryTest::getAllShouldReturnEntitiesAccordingToSelect() {
+void CRUDRepositoryTest::getAllShouldReturnEntitiesAccordingToConditions() {
+    // Given
+    auto const &connector = TestConnector(this->databaseName());
+    QORM::Database database(connector, this->testCreator, false);
+    auto const &testCRUDRepository = TestCRUDRepository(database, this->cache);
+
+    // When
+    database.connect();
+    auto const id1 = testCRUDRepository.save(new TestEntity(-1));
+    testCRUDRepository.save(new TestEntity(-1));
+    testCRUDRepository.save(new TestEntity(-1));
+
+    // Then
+    QCOMPARE(1U, testCRUDRepository.getAll(
+        {QORM::Equals::field(TestCreator::TEST_FIELD, id1)}).size());
+}
+
+void CRUDRepositoryTest::selectShouldReturnExpectedEntities() {
     // Given
     auto const &connector = TestConnector(this->databaseName());
     QORM::Database database(connector, this->testCreator, false);
@@ -85,7 +134,7 @@ void CRUDRepositoryTest::getAllShouldReturnEntitiesAccordingToSelect() {
     auto const id3 = testCRUDRepository.save(new TestEntity(-1));
 
     // Then
-    QCOMPARE(2U, testCRUDRepository.getAll(
+    QCOMPARE(2U, testCRUDRepository.select(
         QORM::Select(TestCreator::TEST_TABLE, {TestCreator::TEST_FIELD})
             .where({QORM::In(TestCreator::TEST_FIELD, {id1, id3})})).size());
 }
@@ -134,7 +183,7 @@ void CRUDRepositoryTest::existsByKeyShouldReturnTrue() {
     auto const lastInsertedKey = testCRUDRepository.save(new TestEntity(-1));
 
     // Then
-    QVERIFY(testCRUDRepository.existsByKey(lastInsertedKey));
+    QVERIFY(testCRUDRepository.exists(lastInsertedKey));
 }
 
 void CRUDRepositoryTest::existsByKeyShouldReturnFalse() {
@@ -147,7 +196,7 @@ void CRUDRepositoryTest::existsByKeyShouldReturnFalse() {
     database.connect();
 
     // Then
-    QVERIFY(!testCRUDRepository.existsByKey(0));
+    QVERIFY(!testCRUDRepository.exists(0));
 }
 
 void CRUDRepositoryTest::existsShouldReturnTrue() {
@@ -193,7 +242,7 @@ void CRUDRepositoryTest::saveShouldInsertAndNotify() {
     auto const lastInsertedKey = testCRUDRepository.save(newTestEntity);
 
     // Then
-    QVERIFY(testCRUDRepository.existsByKey(lastInsertedKey));
+    QVERIFY(testCRUDRepository.exists(lastInsertedKey));
     QVERIFY(testCRUDRepository.hasBeenInserted());
     QVERIFY(!testCRUDRepository.hasBeenUpdated());
     QVERIFY(testObserver.isChangeNotified());
@@ -216,7 +265,7 @@ void CRUDRepositoryTest::saveShouldUpdateAndNotify() {
     testCRUDRepository.save(newTestEntity);
 
     // Then
-    QVERIFY(testCRUDRepository.existsByKey(lastInsertedKey));
+    QVERIFY(testCRUDRepository.exists(lastInsertedKey));
     QVERIFY(testCRUDRepository.hasBeenInserted());
     QVERIFY(testCRUDRepository.hasBeenUpdated());
     QVERIFY(testObserver.isChangeNotified());
@@ -254,7 +303,7 @@ void CRUDRepositoryTest::eraseShouldDeleteAndNotify() {
     testCRUDRepository.erase(newTestEntity->getKey());
 
     // Then
-    QVERIFY(!testCRUDRepository.existsByKey(lastInsertedKey));
+    QVERIFY(!testCRUDRepository.exists(lastInsertedKey));
     QVERIFY(testCRUDRepository.hasBeenInserted());
     QVERIFY(!testCRUDRepository.hasBeenUpdated());
     QVERIFY(testObserver.isChangeNotified());

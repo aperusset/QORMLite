@@ -4,6 +4,7 @@
 #include <algorithm>
 #include <list>
 #include <memory>
+#include <string>
 #include "./cache.h"
 #include "./database.h"
 #include "./entity.h"
@@ -17,11 +18,12 @@ class ReadOnlyRepository {
     static_assert(
         std::is_base_of<QORM::Entity<Key>, Entity>::value,
         "Entity must extend QORM::Entity");
+    using EntityCreator = std::function<Entity&(const QSqlRecord&)>;
 
     const Database &database;
     Cache<Key, Entity> &cache;
 
-    const std::function<Entity&(const QSqlRecord&)> entityCreator =
+    const EntityCreator entityCreator =
         [=](const QSqlRecord &record) -> Entity& {
             return cache.insert(
                 this->buildKey(record),
@@ -46,6 +48,10 @@ class ReadOnlyRepository {
         return this->cache;
     }
 
+    auto getEntityCreator() const -> const EntityCreator {
+        return this->entityCreator;
+    }
+
     auto qualifiedFields() const -> std::list<QString> {
         auto const tableFields = this->fields();
         auto qualifiedFields = std::list<QString>();
@@ -56,7 +62,7 @@ class ReadOnlyRepository {
         return qualifiedFields;
     }
 
-    auto getByKey(const Key &key) const -> Entity& {
+    auto get(const Key &key) const -> Entity& {
         return this->cache.getOrCreate(key, [=]() -> Entity& {
             return database.entity<Entity>(
                 Select(this->tableName(), this->fields())
@@ -65,11 +71,26 @@ class ReadOnlyRepository {
         });
     }
 
-    auto getAll() const -> std::list<std::reference_wrapper<Entity>> {
-        return this->getAll(Select(this->tableName(), this->fields()));
+    auto get(const std::list<Condition> &conditions) const -> Entity& {
+        auto const entities = this->getAll(conditions);
+        if (entities.empty()) {
+            throw std::string("No entity match the given conditions");
+        }
+        return entities.front().get();
     }
 
-    auto getAll(const Select &select)
+    auto getAll() const -> std::list<std::reference_wrapper<Entity>> {
+        return this->getAll({});
+    }
+
+    auto getAll(const std::list<Condition> &conditions)
+        const -> std::list<std::reference_wrapper<Entity>> {
+        return this->select(
+            Select(this->tableName(), this->fields())
+                .where(conditions));
+    }
+
+    auto select(const Select &select)
         const -> std::list<std::reference_wrapper<Entity>> {
         return database.entities<Entity>(select, entityCreator);
     }
@@ -88,7 +109,7 @@ class ReadOnlyRepository {
             });
     }
 
-    virtual auto existsByKey(const Key &key) const -> bool {
+    virtual auto exists(const Key &key) const -> bool {
         return this->exists({this->keyCondition(key)});
     }
 

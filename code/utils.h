@@ -2,6 +2,7 @@
 #define UTILS_H_
 
 #include <QDate>
+#include <QDateTime>
 #include <QSqlRecord>
 #include <QString>
 #include <QStringList>
@@ -155,6 +156,15 @@ namespace Utils {
                             const QString &defaultValue) -> QString;
 
     /**
+     * @brief Extract a QDate from a QSqlRecord or, if null, a default value
+     * @param record the record from which to extract the QDate value
+     * @param defaultValue the default QDate value
+     * @return extracted QDate value
+     */
+    auto getDateOrDefault(const QSqlRecord &record, const QString &fieldName,
+                          const QDate &defaultValue) -> QDate;
+
+    /**
      * @brief Extract a QDateTime from a QSqlRecord or, if null, a default value
      * @param record the record from which to extract the QDateTime value
      * @param defaultValue the default QDateTime value
@@ -237,6 +247,23 @@ namespace Utils {
      * @throw std::string if the QString is blank
      */
     auto notBlankOrThrow(const QString &value) -> QVariant;
+
+    /**
+     * @brief Return a QDate wrapped in a QVariant or a null QVariant if the
+     * QDate is not valid.
+     * @param value the value to validate and wrap
+     * @return the wrapped value (or null QVariant)
+     */
+    auto validOrNull(const QDate &value) -> QVariant;
+
+    /**
+     * @brief Return a QDate wrapped in a QVariant or throw an exception if
+     * the QDate is invalid.
+     * @param value the value to validate and wrap
+     * @return the wrapped value (or null QVariant)
+     * @throw std::string if the QDate is invalid
+     */
+    auto validOrThrow(const QDate &value) -> QVariant;
 
     /**
      * @brief Return a QDateTime wrapped in a QVariant or a null QVariant if the
