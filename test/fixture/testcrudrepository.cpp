@@ -34,8 +34,8 @@ auto TestCRUDRepository::build(const QSqlRecord &record) const -> TestEntity* {
 }
 
 auto TestCRUDRepository::save(TestEntity* const testEntity) const -> int {
-    isInserted = isInserted || !this->existsByKey(testEntity->getKey());
-    isUpdated = this->existsByKey(testEntity->getKey());
+    isInserted = isInserted || !this->exists(testEntity->getKey());
+    isUpdated = this->exists(testEntity->getKey());
     return CRUDRepository::save(testEntity);
 }
 

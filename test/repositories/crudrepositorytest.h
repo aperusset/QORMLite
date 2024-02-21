@@ -22,8 +22,11 @@ class CRUDRepositoryTest : public MainDatabaseTest {
     void qualifiedFieldsShouldQualifyAllFields();
     void getByKeyShouldFail();
     void getByKeyShouldReturnEntity();
+    void getShouldFail();
+    void getShouldReturnEntity();
     void getAllShouldReturnAllExistingEntities();
-    void getAllShouldReturnEntitiesAccordingToSelect();
+    void getAllShouldReturnEntitiesAccordingToConditions();
+    void selectShouldReturnExpectedEntities();
     void countShouldCountAllEntities();
     void countShouldCountEntitiesAccordingToConditions();
     void existsByKeyShouldReturnTrue();

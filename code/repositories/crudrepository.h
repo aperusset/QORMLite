@@ -21,7 +21,7 @@ class CRUDRepository : public ReadOnlyRepository<Key, Entity> {
 
     virtual auto save(Entity* const entity) const -> Key {
         auto const assignementsToDo = this->assignements(*entity);
-        if (this->existsByKey(entity->getKey())) {
+        if (this->exists(entity->getKey())) {
             if (!assignementsToDo.empty()) {
                 this->getDatabase().execute(QORM::Update(this->tableName(),
                                     assignementsToDo,
@@ -38,8 +38,8 @@ class CRUDRepository : public ReadOnlyRepository<Key, Entity> {
     }
 
     virtual void erase(const Key &key) const {
-        if (this->existsByKey(key)) {
-            auto const &entity = this->getByKey(key);
+        if (this->exists(key)) {
+            auto const &entity = this->get(key);
             this->getDatabase().execute(QORM::Delete(this->tableName(),
                                         this->keyCondition(key)));
             entity.notifyDelete();
