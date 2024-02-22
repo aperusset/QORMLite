@@ -37,6 +37,8 @@ class CRUDRepositoryTest : public MainDatabaseTest {
     void saveShouldUpdateAndNotify();
     void eraseShouldDoNothinIfNotExists();
     void eraseShouldDeleteAndNotify();
+    void assertFieldValidityShouldThrow();
+    void assertFieldValidityShouldNotThrow();
 
     void init() override {
         MainDatabaseTest::init();
