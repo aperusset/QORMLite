@@ -117,6 +117,14 @@ class ReadOnlyRepository {
         return this->count(conditions) > 0;
     }
 
+    void assertFieldValidity(const QString &field) const {
+        if (!QORM::Utils::contains(this->fields(), field) &&
+            !QORM::Utils::contains(this->qualifiedFields(), field)) {
+            throw field.toStdString() + " field is not part of " +
+                  this->tableName().toStdString() + " table";
+        }
+    }
+
     virtual auto tableName() const -> QString = 0;
     virtual auto keyCondition(const Key&) const -> Condition = 0;
     virtual auto fields() const -> std::list<QString> = 0;
