@@ -310,3 +310,32 @@ void CRUDRepositoryTest::eraseShouldDeleteAndNotify() {
     QVERIFY(testObserver.isDeleteNotified());
     QCOMPARE(lastInsertedKey, testObserver.getDeletedKey());
 }
+
+void CRUDRepositoryTest::assertFieldValidityShouldThrow() {
+    // Given
+    auto const &connector = TestConnector(this->databaseName());
+    QORM::Database database(connector, this->testCreator, false);
+    auto const &testCRUDRepository = TestCRUDRepository(database, this->cache);
+
+    // When / Then
+    QVERIFY_EXCEPTION_THROWN(
+        testCRUDRepository.assertFieldValidity("invalid"),
+        std::string);
+
+    QVERIFY_EXCEPTION_THROWN(testCRUDRepository.assertFieldValidity(
+        QORM::Utils::qualifyFieldName(testCRUDRepository.tableName(),
+                                      "invalid")), std::string);
+}
+
+void CRUDRepositoryTest::assertFieldValidityShouldNotThrow() {
+    // Given
+    auto const &connector = TestConnector(this->databaseName());
+    QORM::Database database(connector, this->testCreator, false);
+    auto const &testCRUDRepository = TestCRUDRepository(database, this->cache);
+
+    // When / Then
+    testCRUDRepository.assertFieldValidity(TestCreator::TEST_FIELD);
+    testCRUDRepository.assertFieldValidity(
+        QORM::Utils::qualifyFieldName(testCRUDRepository.tableName(),
+                                      TestCreator::TEST_FIELD));
+}
