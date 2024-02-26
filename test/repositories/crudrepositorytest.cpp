@@ -243,11 +243,8 @@ void CRUDRepositoryTest::saveShouldInsertAndNotify() {
 
     // Then
     QVERIFY(testCRUDRepository.exists(lastInsertedKey));
-    QVERIFY(testCRUDRepository.hasBeenInserted());
-    QVERIFY(!testCRUDRepository.hasBeenUpdated());
-    QVERIFY(testObserver.isChangeNotified());
-    QVERIFY(!testObserver.isDeleteNotified());
-    QCOMPARE(lastInsertedKey, testObserver.getChangedKey());
+    QVERIFY(testObserver.wasChanged(lastInsertedKey));
+    QVERIFY(!testObserver.wasDeleted(lastInsertedKey));
 }
 
 void CRUDRepositoryTest::saveShouldUpdateAndNotify() {
@@ -266,26 +263,43 @@ void CRUDRepositoryTest::saveShouldUpdateAndNotify() {
 
     // Then
     QVERIFY(testCRUDRepository.exists(lastInsertedKey));
-    QVERIFY(testCRUDRepository.hasBeenInserted());
-    QVERIFY(testCRUDRepository.hasBeenUpdated());
-    QVERIFY(testObserver.isChangeNotified());
-    QVERIFY(!testObserver.isDeleteNotified());
-    QCOMPARE(lastInsertedKey, testObserver.getChangedKey());
+    QVERIFY(testObserver.wasChanged(lastInsertedKey));
+    QVERIFY(!testObserver.wasDeleted(lastInsertedKey));
 }
 
-void CRUDRepositoryTest::eraseShouldDoNothinIfNotExists() {
+void CRUDRepositoryTest::saveAllShouldInsertAndNotify() {
+    // Given
+    auto const &connector = TestConnector(this->databaseName());
+    QORM::Database database(connector, this->testCreator, false);
+    auto const &testCRUDRepository = TestCRUDRepository(database, this->cache);
+    auto * const newTestEntity1 = new TestEntity(-1);
+    auto * const newTestEntity2 = new TestEntity(-1);
+    auto testObserver = TestObserver();
+    newTestEntity1->attach(testObserver);
+    newTestEntity2->attach(testObserver);
+
+    // When
+    database.connect();
+    testCRUDRepository.saveAll({newTestEntity1, newTestEntity2});
+
+    // Then
+    QVERIFY(testCRUDRepository.exists(newTestEntity1->getKey()));
+    QVERIFY(testCRUDRepository.exists(newTestEntity2->getKey()));
+    QVERIFY(testObserver.wasChanged(newTestEntity1->getKey()));
+    QVERIFY(testObserver.wasChanged(newTestEntity2->getKey()));
+    QVERIFY(!testObserver.wasDeleted(newTestEntity1->getKey()));
+    QVERIFY(!testObserver.wasDeleted(newTestEntity2->getKey()));
+}
+
+void CRUDRepositoryTest::eraseShouldNotFailIfNotExists() {
     // Given
     auto const &connector = TestConnector(this->databaseName());
     QORM::Database database(connector, this->testCreator, false);
     auto const &testCRUDRepository = TestCRUDRepository(database, this->cache);
 
-    // When
+    // When / Then
     database.connect();
     testCRUDRepository.erase(0);
-
-    // Then
-    QVERIFY(!testCRUDRepository.hasBeenInserted());
-    QVERIFY(!testCRUDRepository.hasBeenUpdated());
 }
 
 void CRUDRepositoryTest::eraseShouldDeleteAndNotify() {
@@ -304,11 +318,34 @@ void CRUDRepositoryTest::eraseShouldDeleteAndNotify() {
 
     // Then
     QVERIFY(!testCRUDRepository.exists(lastInsertedKey));
-    QVERIFY(testCRUDRepository.hasBeenInserted());
-    QVERIFY(!testCRUDRepository.hasBeenUpdated());
-    QVERIFY(testObserver.isChangeNotified());
-    QVERIFY(testObserver.isDeleteNotified());
-    QCOMPARE(lastInsertedKey, testObserver.getDeletedKey());
+    QVERIFY(testObserver.wasChanged(lastInsertedKey));
+    QVERIFY(testObserver.wasDeleted(lastInsertedKey));
+}
+
+void CRUDRepositoryTest::eraseAllShouldDeleteAndNotify() {
+    // Given
+    auto const &connector = TestConnector(this->databaseName());
+    QORM::Database database(connector, this->testCreator, false);
+    auto const &testCRUDRepository = TestCRUDRepository(database, this->cache);
+    auto * const newTestEntity1 = new TestEntity(-1);
+    auto * const newTestEntity2 = new TestEntity(-1);
+    auto testObserver = TestObserver();
+    newTestEntity1->attach(testObserver);
+    newTestEntity2->attach(testObserver);
+
+    // When
+    database.connect();
+    auto const key1 = testCRUDRepository.save(newTestEntity1);
+    auto const key2 = testCRUDRepository.save(newTestEntity2);
+    testCRUDRepository.eraseAll();
+
+    // Then
+    QVERIFY(!testCRUDRepository.exists(key1));
+    QVERIFY(!testCRUDRepository.exists(key2));
+    QVERIFY(testObserver.wasChanged(key1));
+    QVERIFY(testObserver.wasChanged(key2));
+    QVERIFY(testObserver.wasDeleted(key1));
+    QVERIFY(testObserver.wasDeleted(key2));
 }
 
 void CRUDRepositoryTest::assertFieldValidityShouldThrow() {

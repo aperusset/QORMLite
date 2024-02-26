@@ -3,15 +3,9 @@
 #include "operations/query/update.h"
 #include "operations/query/condition/equals.h"
 
-bool TestCRUDRepository::isInserted = false;
-bool TestCRUDRepository::isUpdated = false;
-
 TestCRUDRepository::TestCRUDRepository(const QORM::Database &database,
                                        QORM::Cache<int, TestEntity> &cache) :
-    QORM::CRUDRepository<int, TestEntity>(database, cache) {
-    isInserted = false;
-    isUpdated = false;
-}
+    QORM::CRUDRepository<int, TestEntity>(database, cache) {}
 
 auto TestCRUDRepository::tableName() const -> QString {
     return TestCreator::TEST_TABLE;
@@ -31,18 +25,4 @@ auto TestCRUDRepository::buildKey(const QSqlRecord &record) const -> int {
 
 auto TestCRUDRepository::build(const QSqlRecord &record) const -> TestEntity* {
     return new TestEntity(this->buildKey(record));
-}
-
-auto TestCRUDRepository::save(TestEntity* const testEntity) const -> int {
-    isInserted = isInserted || !this->exists(testEntity->getKey());
-    isUpdated = this->exists(testEntity->getKey());
-    return CRUDRepository::save(testEntity);
-}
-
-auto TestCRUDRepository::hasBeenInserted() -> bool {
-    return isInserted;
-}
-
-auto TestCRUDRepository::hasBeenUpdated() -> bool {
-    return isUpdated;
 }

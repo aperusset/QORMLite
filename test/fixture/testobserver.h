@@ -1,15 +1,14 @@
 #ifndef TEST_FIXTURE_TESTOBSERVER_H_
 #define TEST_FIXTURE_TESTOBSERVER_H_
 
+#include <list>
 #include "observer.h"
 
 class TestObserver : public QORM::Observer<>  {
     static const int INVALID_KEY = -1;
 
-    bool changeNotified;
-    bool deleteNotified;
-    int changedKey;
-    int deletedKey;
+    std::list<int> changedKeys;
+    std::list<int> deletedKeys;
 
  public:
     TestObserver();
@@ -17,10 +16,8 @@ class TestObserver : public QORM::Observer<>  {
     void onChange(const int &key) override;
     void onDelete(const int &key) override;
 
-    auto isChangeNotified() const -> bool;
-    auto isDeleteNotified() const -> bool;
-    auto getChangedKey() const -> int;
-    auto getDeletedKey() const -> int;
+    auto wasChanged(const int key) const -> bool;
+    auto wasDeleted(const int key) const -> bool;
     void reset();
 };
 

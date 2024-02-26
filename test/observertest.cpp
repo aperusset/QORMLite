@@ -5,9 +5,8 @@ void ObserverTest::onChange() {
     entity.notifyChange();
 
     // Then
-    QVERIFY(observer.isChangeNotified());
-    QVERIFY(!observer.isDeleteNotified());
-    QCOMPARE(entity.getKey(), observer.getChangedKey());
+    QVERIFY(observer.wasChanged(entity.getKey()));
+    QVERIFY(!observer.wasDeleted(entity.getKey()));
 }
 
 void ObserverTest::onDelete() {
@@ -15,7 +14,6 @@ void ObserverTest::onDelete() {
     entity.notifyDelete();
 
     // Then
-    QVERIFY(!observer.isChangeNotified());
-    QVERIFY(observer.isDeleteNotified());
-    QCOMPARE(entity.getKey(), observer.getDeletedKey());
+    QVERIFY(!observer.wasChanged(entity.getKey()));
+    QVERIFY(observer.wasDeleted(entity.getKey()));
 }
