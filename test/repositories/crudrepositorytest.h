@@ -35,8 +35,10 @@ class CRUDRepositoryTest : public MainDatabaseTest {
     void existsShouldReturnFalse();
     void saveShouldInsertAndNotify();
     void saveShouldUpdateAndNotify();
-    void eraseShouldDoNothinIfNotExists();
+    void saveAllShouldInsertAndNotify();
+    void eraseShouldNotFailIfNotExists();
     void eraseShouldDeleteAndNotify();
+    void eraseAllShouldDeleteAndNotify();
     void assertFieldValidityShouldThrow();
     void assertFieldValidityShouldNotThrow();
 

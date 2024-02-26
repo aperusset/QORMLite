@@ -37,6 +37,12 @@ class CRUDRepository : public ReadOnlyRepository<Key, Entity> {
         return entity->getKey();
     }
 
+    virtual void saveAll(const std::list<Entity*> &entities) const {
+        for (auto const entity : entities) {
+            this->save(entity);
+        }
+    }
+
     virtual void erase(const Key &key) const {
         if (this->exists(key)) {
             auto const &entity = this->get(key);
@@ -44,6 +50,17 @@ class CRUDRepository : public ReadOnlyRepository<Key, Entity> {
                                         this->keyCondition(key)));
             entity.notifyDelete();
             this->getCache().remove(key);
+        }
+    }
+
+    virtual void eraseAll() const {
+        auto const allEntities = this->getAll();
+        if (!allEntities.empty()) {
+            this->getDatabase().execute(QORM::Delete(this->tableName()));
+            for (auto const entity : allEntities) {
+                entity.get().notifyDelete();
+            }
+            this->getCache().clear();
         }
     }
 
