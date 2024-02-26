@@ -44,8 +44,8 @@ auto QORM::Database::execute(QSqlQuery query) const -> QSqlQuery {
     if (this->verbose) {
         qDebug("%s", qUtf8Printable(query.lastQuery()));
     }
-    query.exec();
-    if (query.lastError().isValid()) {
+    auto const success = query.exec();
+    if (!success && query.lastError().isValid()) {
         throw std::string("Query error : ") +
                 query.lastQuery().toStdString() + " (" +
                 query.lastError().driverText().toStdString() + ")";
