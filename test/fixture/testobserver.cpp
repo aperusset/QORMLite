@@ -1,38 +1,25 @@
 #include "testobserver.h"
+#include "./utils.h"
 
-TestObserver::TestObserver() :
-    changeNotified(false), deleteNotified(false),
-    changedKey(INVALID_KEY), deletedKey(INVALID_KEY) {}
+TestObserver::TestObserver() {}
 
 void TestObserver::onChange(const int &key) {
-    this->changeNotified = true;
-    this->changedKey = key;
+    this->changedKeys.push_back(key);
 }
 
 void TestObserver::onDelete(const int &key) {
-    this->deleteNotified = true;
-    this->deletedKey = key;
+    this->deletedKeys.push_back(key);
 }
 
-auto TestObserver::isChangeNotified() const -> bool {
-    return this->changeNotified;
+auto TestObserver::wasChanged(const int key) const -> bool {
+    return QORM::Utils::contains(this->changedKeys, key);
 }
 
-auto TestObserver::isDeleteNotified() const -> bool {
-    return this->deleteNotified;
-}
-
-auto TestObserver::getChangedKey() const -> int {
-    return this->changedKey;
-}
-
-auto TestObserver::getDeletedKey() const -> int {
-    return this->deletedKey;
+auto TestObserver::wasDeleted(const int key) const -> bool {
+    return QORM::Utils::contains(this->deletedKeys, key);
 }
 
 void TestObserver::reset() {
-    this->changeNotified = false;
-    this->deleteNotified = false;
-    this->changedKey = INVALID_KEY;
-    this->deletedKey = INVALID_KEY;
+    this->changedKeys.clear();
+    this->deletedKeys.clear();
 }
