@@ -110,7 +110,8 @@ class ReadOnlyRepository {
     }
 
     virtual auto exists(const Key &key) const -> bool {
-        return this->exists({this->keyCondition(key)});
+        return this->cache.contains(key) ||
+               this->exists({this->keyCondition(key)});
     }
 
     virtual auto exists(const std::list<Condition> &conditions) const -> bool {
