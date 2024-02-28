@@ -79,15 +79,18 @@ class ReadOnlyRepository {
         return entities.front().get();
     }
 
-    auto getAll() const -> std::list<std::reference_wrapper<Entity>> {
-        return this->getAll({});
+    auto getAll(const std::list<Order> &orders = {})
+        const -> std::list<std::reference_wrapper<Entity>> {
+        return this->getAll({}, orders);
     }
 
-    auto getAll(const std::list<Condition> &conditions)
+    auto getAll(const std::list<Condition> &conditions,
+                const std::list<Order> &orders = {})
         const -> std::list<std::reference_wrapper<Entity>> {
         return this->select(
             Select(this->tableName(), this->fields())
-                .where(conditions));
+                .where(conditions)
+                .orderBy(orders));
     }
 
     auto select(const Select &select)
