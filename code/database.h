@@ -85,9 +85,9 @@ class Database {
                   const std::function<Entity&(const QSqlRecord&)> &extractor)
     const -> std::list<std::reference_wrapper<Entity>> {
         std::list<std::reference_wrapper<Entity>> entities;
-        auto results = this->execute(select);
-        while (results.next()) {
-            entities.push_back(extractor(results.record()));
+        auto qSqlQuery = this->execute(select);
+        while (qSqlQuery.next()) {
+            entities.push_back(extractor(qSqlQuery.record()));
         }
         return entities;
     }
@@ -97,8 +97,23 @@ class Database {
                 const Result &defaultValue,
                 const std::function<Result(const QSqlRecord&)> &extractor)
     const -> Result {
-        auto result = this->execute(select);
-        return result.next() ? extractor(result.record()) : defaultValue;
+        auto const allResults = results(select, extractor);
+        if (allResults.empty()) {
+            return defaultValue;
+        }
+        return allResults.front();
+    }
+
+    template<typename Result>
+    auto results(const Select &select,
+                 const std::function<Result(const QSqlRecord&)> &extractor)
+    const -> std::list<Result> {
+        std::list<Result> values;
+        auto qSqlQuery = this->execute(select);
+        while (qSqlQuery.next()) {
+            values.push_back(extractor(qSqlQuery.record()));
+        }
+        return values;
     }
 };
 

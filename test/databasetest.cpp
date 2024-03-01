@@ -268,3 +268,39 @@ void DatabaseTest::resultShouldReturnQueryValue() {
     // Then
     QCOMPARE(result, 1);
 }
+
+void DatabaseTest::resultsShouldReturnNonEmptyList() {
+    // Given
+    auto const &connector = TestConnector(this->databaseName());
+    QORM::Database database(connector, this->testCreator, false);
+
+    // When
+    database.connect();
+    database.execute(QORM::Insert(TestCreator::TEST_TABLE));
+    database.execute(QORM::Insert(TestCreator::TEST_TABLE));
+    auto const results = database.results<int>(
+        QORM::Select(TestCreator::TEST_TABLE, {TestCreator::TEST_FIELD}),
+            [](const QSqlRecord &record) -> int {
+                return record.value(TestCreator::TEST_FIELD).toInt();
+            });
+
+    // Then
+    QCOMPARE(results.size(), 2);
+}
+
+void DatabaseTest::resultsShouldReturnEmptyList() {
+    // Given
+    auto const &connector = TestConnector(this->databaseName());
+    QORM::Database database(connector, this->testCreator, false);
+
+    // When
+    database.connect();
+    auto const results = database.results<int>(
+        QORM::Select(TestCreator::TEST_TABLE, {TestCreator::TEST_FIELD}),
+            [](const QSqlRecord &record) -> int {
+                return record.value("sum").toInt();
+            });
+
+    // Then
+    QVERIFY(results.empty());
+}
