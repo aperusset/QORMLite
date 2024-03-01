@@ -108,12 +108,12 @@ class Database {
     auto results(const Select &select,
                  const std::function<Result(const QSqlRecord&)> &extractor)
     const -> std::list<Result> {
-        std::list<Result> values;
+        std::list<Result> results;
         auto qSqlQuery = this->execute(select);
         while (qSqlQuery.next()) {
-            values.push_back(extractor(qSqlQuery.record()));
+            results.push_back(extractor(qSqlQuery.record()));
         }
-        return values;
+        return results;
     }
 };
 
