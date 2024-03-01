@@ -298,7 +298,7 @@ void DatabaseTest::resultsShouldReturnEmptyList() {
     auto const results = database.results<int>(
         QORM::Select(TestCreator::TEST_TABLE, {TestCreator::TEST_FIELD}),
             [](const QSqlRecord &record) -> int {
-                return record.value("sum").toInt();
+                return record.value(TestCreator::TEST_FIELD).toInt();
             });
 
     // Then
