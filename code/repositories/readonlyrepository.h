@@ -21,31 +21,34 @@ class ReadOnlyRepository {
     using EntityCreator = std::function<Entity&(const QSqlRecord&)>;
 
     const Database &database;
-    Cache<Key, Entity> &cache;
+    Cache<Key, Entity>* const cache;
 
     const EntityCreator entityCreator =
         [=](const QSqlRecord &record) -> Entity& {
-            return cache.insert(
+            return cache->insert(
                 this->buildKey(record),
                 std::unique_ptr<Entity>(this->build(record)));
         };
 
  public:
     explicit ReadOnlyRepository(const Database &database,
-                                Cache<Key, Entity> &cache) :
-        database(database), cache(cache) {}
+                                Cache<Key, Entity>* const cache = nullptr) :
+        database(database),
+        cache(cache == nullptr ? new QORM::Cache<Key, Entity>() : cache) {}
     ReadOnlyRepository(const ReadOnlyRepository&) = delete;
     ReadOnlyRepository(ReadOnlyRepository&&) = delete;
     ReadOnlyRepository& operator=(const ReadOnlyRepository&) = delete;
     ReadOnlyRepository& operator=(ReadOnlyRepository&&) = delete;
-    virtual ~ReadOnlyRepository() {}
+    virtual ~ReadOnlyRepository() {
+        delete this->cache;
+    }
 
     auto getDatabase() const -> const Database& {
         return this->database;
     }
 
     auto getCache() const -> Cache<Key, Entity>& {
-        return this->cache;
+        return *this->cache;
     }
 
     auto getEntityCreator() const -> const EntityCreator {
@@ -63,7 +66,7 @@ class ReadOnlyRepository {
     }
 
     auto get(const Key &key) const -> Entity& {
-        return this->cache.getOrCreate(key, [=]() -> Entity& {
+        return this->cache->getOrCreate(key, [=]() -> Entity& {
             return database.entity<Entity>(
                 Select(this->tableName(), this->fields())
                         .where({this->keyCondition(key)}),
@@ -113,7 +116,7 @@ class ReadOnlyRepository {
     }
 
     virtual auto exists(const Key &key) const -> bool {
-        return this->cache.contains(key) ||
+        return this->cache->contains(key) ||
                this->exists({this->keyCondition(key)});
     }
 

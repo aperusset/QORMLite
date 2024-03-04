@@ -3,9 +3,8 @@
 #include "operations/query/update.h"
 #include "operations/query/condition/equals.h"
 
-TestCRUDRepository::TestCRUDRepository(const QORM::Database &database,
-                                       QORM::Cache<int, TestEntity> &cache) :
-    QORM::CRUDRepository<int, TestEntity>(database, cache) {}
+TestCRUDRepository::TestCRUDRepository(const QORM::Database &database) :
+    QORM::CRUDRepository<int, TestEntity>(database) {}
 
 auto TestCRUDRepository::tableName() const -> QString {
     return TestCreator::TEST_TABLE;

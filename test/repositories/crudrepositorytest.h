@@ -11,7 +11,6 @@ class CRUDRepositoryTest : public MainDatabaseTest {
     Q_OBJECT
 
     TestCreator testCreator;
-    QORM::Cache<int, TestEntity> cache;
 
  public:
     auto databaseName() const -> QString override {
@@ -44,7 +43,6 @@ class CRUDRepositoryTest : public MainDatabaseTest {
 
     void init() override {
         MainDatabaseTest::init();
-        this->cache.clear();
     }
 };
 
