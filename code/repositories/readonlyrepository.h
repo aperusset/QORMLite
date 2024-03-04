@@ -21,7 +21,7 @@ class ReadOnlyRepository {
     using EntityCreator = std::function<Entity&(const QSqlRecord&)>;
 
     const Database &database;
-    Cache<Key, Entity>* const cache;
+    const std::unique_ptr<Cache<Key, Entity>> cache;
 
     const EntityCreator entityCreator =
         [=](const QSqlRecord &record) -> Entity& {
@@ -34,21 +34,20 @@ class ReadOnlyRepository {
     explicit ReadOnlyRepository(const Database &database,
                                 Cache<Key, Entity>* const cache = nullptr) :
         database(database),
-        cache(cache == nullptr ? new QORM::Cache<Key, Entity>() : cache) {}
+        cache(std::unique_ptr<Cache<Key, Entity>>(
+                cache == nullptr ? new Cache<Key, Entity>() : cache)) {}
     ReadOnlyRepository(const ReadOnlyRepository&) = delete;
     ReadOnlyRepository(ReadOnlyRepository&&) = delete;
     ReadOnlyRepository& operator=(const ReadOnlyRepository&) = delete;
     ReadOnlyRepository& operator=(ReadOnlyRepository&&) = delete;
-    virtual ~ReadOnlyRepository() {
-        delete this->cache;
-    }
+    virtual ~ReadOnlyRepository() {}
 
     auto getDatabase() const -> const Database& {
         return this->database;
     }
 
     auto getCache() const -> Cache<Key, Entity>& {
-        return *this->cache;
+        return *this->cache.get();
     }
 
     auto getEntityCreator() const -> const EntityCreator {
