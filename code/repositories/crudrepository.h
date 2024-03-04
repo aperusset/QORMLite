@@ -16,7 +16,7 @@ template<typename Key, class Entity>
 class CRUDRepository : public ReadOnlyRepository<Key, Entity> {
  public:
     explicit CRUDRepository(const Database &database,
-                            Cache<Key, Entity> &cache) :
+                            Cache<Key, Entity>* const cache = nullptr) :
         ReadOnlyRepository<Key, Entity> (database, cache) {}
 
     virtual auto save(Entity* const entity) const -> Key {
