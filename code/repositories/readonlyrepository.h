@@ -25,7 +25,7 @@ class ReadOnlyRepository {
 
     const EntityCreator entityCreator =
         [=](const QSqlRecord &record) -> Entity& {
-            return cache->insert(
+            return cache.get()->insert(
                 this->buildKey(record),
                 std::unique_ptr<Entity>(this->build(record)));
         };
@@ -65,7 +65,7 @@ class ReadOnlyRepository {
     }
 
     auto get(const Key &key) const -> Entity& {
-        return this->cache->getOrCreate(key, [=]() -> Entity& {
+        return this->cache.get()->getOrCreate(key, [=]() -> Entity& {
             return database.entity<Entity>(
                 Select(this->tableName(), this->fields())
                         .where({this->keyCondition(key)}),
@@ -115,7 +115,7 @@ class ReadOnlyRepository {
     }
 
     virtual auto exists(const Key &key) const -> bool {
-        return this->cache->contains(key) ||
+        return this->cache.get()->contains(key) ||
                this->exists({this->keyCondition(key)});
     }
 
