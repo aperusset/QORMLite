@@ -32,7 +32,7 @@ class Entity {
         return observers.find(&observer) != observers.end();
     }
 
-    auto getTypeIndex() const -> std::type_index {
+    auto getTypeIndex() const -> const std::type_index {
         return std::type_index(typeid(*this));
     }
 
