@@ -56,3 +56,12 @@ void EntityTest::detach() {
     QVERIFY(entity.getObservers().empty());
     QVERIFY(!entity.isAttached(this->observer));
 }
+
+void EntityTest::getTypeIndex() {
+    // Given
+    TestEntity entity(DEFAULT_ENTITY_KEY);
+
+    // Qhen / Then
+    QCOMPARE(entity.getTypeIndex(), std::type_index(typeid(entity)));
+    QCOMPARE(entity.getTypeIndex(), std::type_index(typeid(TestEntity)));
+}
