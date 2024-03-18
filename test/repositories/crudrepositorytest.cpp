@@ -243,8 +243,10 @@ void CRUDRepositoryTest::saveShouldInsertAndNotify() {
 
     // Then
     QVERIFY(testCRUDRepository.exists(lastInsertedKey));
-    QVERIFY(testObserver.wasChanged(lastInsertedKey));
-    QVERIFY(!testObserver.wasDeleted(lastInsertedKey));
+    QVERIFY(testObserver.wasChanged(lastInsertedKey,
+                                    newTestEntity->getTypeIndex()));
+    QVERIFY(!testObserver.wasDeleted(lastInsertedKey,
+                                     newTestEntity->getTypeIndex()));
 }
 
 void CRUDRepositoryTest::saveShouldUpdateAndNotify() {
@@ -263,8 +265,10 @@ void CRUDRepositoryTest::saveShouldUpdateAndNotify() {
 
     // Then
     QVERIFY(testCRUDRepository.exists(lastInsertedKey));
-    QVERIFY(testObserver.wasChanged(lastInsertedKey));
-    QVERIFY(!testObserver.wasDeleted(lastInsertedKey));
+    QVERIFY(testObserver.wasChanged(lastInsertedKey,
+                                    newTestEntity->getTypeIndex()));
+    QVERIFY(!testObserver.wasDeleted(lastInsertedKey,
+                                     newTestEntity->getTypeIndex()));
 }
 
 void CRUDRepositoryTest::saveAllShouldInsertAndNotify() {
@@ -285,10 +289,14 @@ void CRUDRepositoryTest::saveAllShouldInsertAndNotify() {
     // Then
     QVERIFY(testCRUDRepository.exists(newTestEntity1->getKey()));
     QVERIFY(testCRUDRepository.exists(newTestEntity2->getKey()));
-    QVERIFY(testObserver.wasChanged(newTestEntity1->getKey()));
-    QVERIFY(testObserver.wasChanged(newTestEntity2->getKey()));
-    QVERIFY(!testObserver.wasDeleted(newTestEntity1->getKey()));
-    QVERIFY(!testObserver.wasDeleted(newTestEntity2->getKey()));
+    QVERIFY(testObserver.wasChanged(newTestEntity1->getKey(),
+                                    newTestEntity1->getTypeIndex()));
+    QVERIFY(testObserver.wasChanged(newTestEntity2->getKey(),
+                                    newTestEntity2->getTypeIndex()));
+    QVERIFY(!testObserver.wasDeleted(newTestEntity1->getKey(),
+                                     newTestEntity1->getTypeIndex()));
+    QVERIFY(!testObserver.wasDeleted(newTestEntity2->getKey(),
+                                     newTestEntity2->getTypeIndex()));
 }
 
 void CRUDRepositoryTest::eraseShouldNotFailIfNotExists() {
@@ -310,6 +318,7 @@ void CRUDRepositoryTest::eraseShouldDeleteAndNotify() {
     auto * const newTestEntity = new TestEntity(-1);
     auto testObserver = TestObserver();
     newTestEntity->attach(testObserver);
+    auto const newTestEntityTypeIndex = newTestEntity->getTypeIndex();
 
     // When
     database.connect();
@@ -318,8 +327,8 @@ void CRUDRepositoryTest::eraseShouldDeleteAndNotify() {
 
     // Then
     QVERIFY(!testCRUDRepository.exists(lastInsertedKey));
-    QVERIFY(testObserver.wasChanged(lastInsertedKey));
-    QVERIFY(testObserver.wasDeleted(lastInsertedKey));
+    QVERIFY(testObserver.wasChanged(lastInsertedKey, newTestEntityTypeIndex));
+    QVERIFY(testObserver.wasDeleted(lastInsertedKey, newTestEntityTypeIndex));
 }
 
 void CRUDRepositoryTest::eraseAllShouldDeleteAndNotify() {
@@ -332,6 +341,8 @@ void CRUDRepositoryTest::eraseAllShouldDeleteAndNotify() {
     auto testObserver = TestObserver();
     newTestEntity1->attach(testObserver);
     newTestEntity2->attach(testObserver);
+    auto const newTestEntity1TypeIndex = newTestEntity1->getTypeIndex();
+    auto const newTestEntity2TypeIndex = newTestEntity2->getTypeIndex();
 
     // When
     database.connect();
@@ -342,10 +353,10 @@ void CRUDRepositoryTest::eraseAllShouldDeleteAndNotify() {
     // Then
     QVERIFY(!testCRUDRepository.exists(key1));
     QVERIFY(!testCRUDRepository.exists(key2));
-    QVERIFY(testObserver.wasChanged(key1));
-    QVERIFY(testObserver.wasChanged(key2));
-    QVERIFY(testObserver.wasDeleted(key1));
-    QVERIFY(testObserver.wasDeleted(key2));
+    QVERIFY(testObserver.wasChanged(key1, newTestEntity1TypeIndex));
+    QVERIFY(testObserver.wasChanged(key2, newTestEntity2TypeIndex));
+    QVERIFY(testObserver.wasDeleted(key1, newTestEntity1TypeIndex));
+    QVERIFY(testObserver.wasDeleted(key2, newTestEntity2TypeIndex));
 }
 
 void CRUDRepositoryTest::assertFieldValidityShouldThrow() {

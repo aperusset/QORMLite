@@ -3,6 +3,7 @@
 
 #include <algorithm>
 #include <set>
+#include <typeindex>
 #include "./observer.h"
 
 namespace QORM {
@@ -31,6 +32,10 @@ class Entity {
         return observers.find(&observer) != observers.end();
     }
 
+    auto getTypeIndex() const -> std::type_index {
+        return std::type_index(typeid(*this));
+    }
+
     virtual void attach(Observer<Key> &observer) {
         observers.insert(&observer);
     }
@@ -42,14 +47,14 @@ class Entity {
     virtual void notifyChange() const {
         std::for_each(observers.begin(), observers.end(),
             [this](Observer<Key> *observer) {
-                observer->onChange(this->key);
+                observer->onChange(this->key, getTypeIndex());
             });
     }
 
     virtual void notifyDelete() const {
         std::for_each(observers.begin(), observers.end(),
             [this](Observer<Key> *observer) {
-                observer->onDelete(this->key);
+                observer->onDelete(this->key, getTypeIndex());
             });
     }
 };
