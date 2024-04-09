@@ -9,12 +9,12 @@ void UniqueTest::shouldFailWithEmptyName() {
                                    QString());
 
     // When / Then
-    QVERIFY_EXCEPTION_THROWN(QORM::Unique("", {field}), std::string);
+    QVERIFY_EXCEPTION_THROWN(QORM::Unique("", {field}), std::invalid_argument);
 }
 
 void UniqueTest::shouldFailWithoutFields() {
     // When / Then
-    QVERIFY_EXCEPTION_THROWN(QORM::Unique("name", {}), std::string);
+    QVERIFY_EXCEPTION_THROWN(QORM::Unique("name", {}), std::invalid_argument);
 }
 
 void UniqueTest::generateShouldSuccessWithoutName() {

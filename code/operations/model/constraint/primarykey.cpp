@@ -3,14 +3,14 @@
 #include <utility>
 #include <string>
 
-QORM::PrimaryKey::PrimaryKey(Field field, const bool autoIncrement) :
+QORM::PrimaryKey::PrimaryKey(Field field, bool autoIncrement) :
     Constraint(QString()), fields({std::move(field)}),
     autoIncrement(autoIncrement) {}
 
 QORM::PrimaryKey::PrimaryKey(std::list<Field> fields) : Constraint(QString()),
     fields(std::move(fields)), autoIncrement(false) {
     if (this->fields.empty()) {
-        throw std::string("Cannot generate a primary key without any field.");
+        throw std::invalid_argument("A primary key must have field(s).");
     }
 }
 
@@ -23,5 +23,6 @@ auto QORM::PrimaryKey::generateConstraint() const -> QString {
     for (auto const &field : this->fields) {
         constraintFields << field.getName();
     }
-    return ("primary key (" + constraintFields.join(", ") + ")").simplified();
+    return (QStringLiteral("primary key (") + constraintFields.join(", ") +
+            QStringLiteral(")")).simplified();
 }

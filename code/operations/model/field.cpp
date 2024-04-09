@@ -1,10 +1,11 @@
 #include "operations/model/field.h"
 #include <utility>
 
-QORM::Field::Field(QString name, Type type, const bool nullable,
-             QString defaultValue) :
+QORM::Field::Field(QString name, Type type, bool nullable,
+                   QString defaultValue) :
     name(std::move(name)), type(std::move(type)), nullable(nullable),
-    defaultValue(std::move(defaultValue)) {}
+    defaultValue(std::move(defaultValue)) {
+}
 
 auto QORM::Field::generate() const -> QString {
     return (

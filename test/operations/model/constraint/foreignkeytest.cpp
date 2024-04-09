@@ -11,7 +11,7 @@ void ForeignKeyTest::emptyReferencesListShouldFail() {
     // When / Then
     QVERIFY_EXCEPTION_THROWN(
         QORM::ForeignKey({}, "targetTable", QORM::OnAction::Cascade),
-        std::string);
+        std::invalid_argument);
 }
 
 void ForeignKeyTest::generateCascade() {
