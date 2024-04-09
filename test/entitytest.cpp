@@ -28,11 +28,13 @@ void EntityTest::attached() {
     TestEntity entity(DEFAULT_ENTITY_KEY);
 
     // When
-    entity.attach(this->observer);
+    entity.attach(&this->observer);
+    entity.attach(nullptr);
 
     // Then
     QCOMPARE(entity.getObservers().size(), 1U);
-    QVERIFY(entity.isAttached(this->observer));
+    QVERIFY(entity.isAttached(&this->observer));
+    QVERIFY(!entity.isAttached(nullptr));
 }
 
 void EntityTest::notAttached() {
@@ -41,7 +43,8 @@ void EntityTest::notAttached() {
 
     // Then
     QVERIFY(entity.getObservers().empty());
-    QVERIFY(!entity.isAttached(this->observer));
+    QVERIFY(!entity.isAttached(&this->observer));
+    QVERIFY(!entity.isAttached(nullptr));
 }
 
 void EntityTest::detach() {
@@ -49,12 +52,13 @@ void EntityTest::detach() {
     TestEntity entity(DEFAULT_ENTITY_KEY);
 
     // When
-    entity.attach(this->observer);
-    entity.detach(this->observer);
+    entity.attach(&this->observer);
+    entity.detach(&this->observer);
+    entity.detach(nullptr);
 
     // Then
     QVERIFY(entity.getObservers().empty());
-    QVERIFY(!entity.isAttached(this->observer));
+    QVERIFY(!entity.isAttached(&this->observer));
 }
 
 void EntityTest::getTypeIndex() {
