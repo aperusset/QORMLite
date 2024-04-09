@@ -43,7 +43,9 @@ class Entity {
     }
 
     virtual void detach(Observer<Key> *observer) {
-        observers.erase(observer);
+        if (observer != nullptr) {
+            observers.erase(observer);
+        }
     }
 
     virtual void notifyChange() const {
