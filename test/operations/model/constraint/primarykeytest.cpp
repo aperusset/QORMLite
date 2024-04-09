@@ -97,5 +97,5 @@ void PrimaryKeyTest::generateMultipleFields() {
 
 void PrimaryKeyTest::noFieldsShouldFail() {
     // When / Then
-    QVERIFY_EXCEPTION_THROWN(QORM::PrimaryKey({}), std::string);
+    QVERIFY_EXCEPTION_THROWN(QORM::PrimaryKey({}), std::invalid_argument);
 }

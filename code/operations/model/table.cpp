@@ -9,7 +9,11 @@ QORM::Table::Table(QString tableName, PrimaryKey primaryKey,
                    std::list<Unique> uniques) :
     tableName(std::move(tableName)), primaryKey(std::move(primaryKey)),
     fields(std::move(fields)), foreignKeys(std::move(foreignKeys)),
-    uniques(std::move(uniques)) {}
+    uniques(std::move(uniques)) {
+    if (this->tableName.trimmed().isEmpty()) {
+        throw std::invalid_argument("Table name must not be blank.");
+    }
+}
 
 auto QORM::Table::generate() const -> QString {
     auto const pKeyFields = this->primaryKey.getFields();
