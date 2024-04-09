@@ -8,17 +8,17 @@
 namespace QORM {
 
 class Insert : public TableQuery {
-    const std::list<Assignment> assignements;
+    const std::list<Assignment> assignments;
 
  public:
     explicit Insert(const QString &tableName);
     Insert(const QString &tableName, std::list<Assignment>);
-    auto getAssignements() const -> std::list<Assignment>;
+    auto getAssignments() const -> std::list<Assignment>;
     auto generate() const -> QString override;
 };
 
-inline auto Insert::getAssignements() const -> std::list<Assignment> {
-    return this->assignements;
+inline auto Insert::getAssignments() const -> std::list<Assignment> {
+    return this->assignments;
 }
 
 }  // namespace QORM

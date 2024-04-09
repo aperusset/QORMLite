@@ -285,7 +285,7 @@ void DatabaseTest::resultsShouldReturnNonEmptyList() {
             });
 
     // Then
-    QCOMPARE(results.size(), 2);
+    QCOMPARE(results.size(), 2U);
 }
 
 void DatabaseTest::resultsShouldReturnEmptyList() {

@@ -85,15 +85,14 @@ void ConditionTest::like() {
     auto const like = QORM::Like(DEFAULT_FIELD_NAME, likePattern);
 
     // When
-    auto const expectedLikePattern = QString("'") + likePattern + "'";
     auto const generated = like.generate();
 
     // Then
-    QCOMPARE(generated, DEFAULT_FIELD_NAME + " like " + expectedLikePattern);
+    QCOMPARE(generated, DEFAULT_FIELD_NAME + " like " +
+                        QORM::Utils::parametrize(DEFAULT_FIELD_NAME));
     QVERIFY(like.getNestedConditions().empty());
-    QCOMPARE(like.getRightField(), expectedLikePattern);
-    QVERIFY(like.getValue().isNull());
-    QVERIFY(like.getParametrizedConditions().empty());
+    QCOMPARE(like.getValue().toString(), likePattern);
+    QCOMPARE(like.getParametrizedConditions().size(), 1U);
 }
 
 void ConditionTest::equalsField() {
@@ -579,7 +578,7 @@ void ConditionTest::orSingleConditionShouldFail() {
     auto const equals = QORM::Equals::fields(DEFAULT_FIELD_NAME,
                                              DEFAULT_FIELD_NAME);
     // When / Then
-    QVERIFY_EXCEPTION_THROWN(QORM::Or({equals}), std::string);
+    QVERIFY_EXCEPTION_THROWN(QORM::Or({equals}), std::invalid_argument);
 }
 
 void ConditionTest::orMultipleCondition() {

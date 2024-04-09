@@ -10,7 +10,7 @@ namespace QORM {
 class Like : public Condition {
  public:
     Like(const QString &field, const QString &likePattern) :
-        Condition(" like ", {}, field, "'" + likePattern + "'", QVariant()) {}
+        Condition(" like ", {}, field, QString(), likePattern) {}
 };
 
 }  // namespace QORM
