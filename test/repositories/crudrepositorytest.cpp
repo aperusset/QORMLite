@@ -235,7 +235,7 @@ void CRUDRepositoryTest::saveShouldInsertAndNotify() {
     auto const &testCRUDRepository = TestCRUDRepository(database);
     auto * const newTestEntity = new TestEntity(-1);
     auto testObserver = TestObserver();
-    newTestEntity->attach(testObserver);
+    newTestEntity->attach(&testObserver);
 
     // When
     database.connect();
@@ -256,7 +256,7 @@ void CRUDRepositoryTest::saveShouldUpdateAndNotify() {
     auto const &testCRUDRepository = TestCRUDRepository(database);
     auto * const newTestEntity = new TestEntity(-1);
     auto testObserver = TestObserver();
-    newTestEntity->attach(testObserver);
+    newTestEntity->attach(&testObserver);
 
     // When
     database.connect();
@@ -279,8 +279,8 @@ void CRUDRepositoryTest::saveAllShouldInsertAndNotify() {
     auto * const newTestEntity1 = new TestEntity(-1);
     auto * const newTestEntity2 = new TestEntity(-1);
     auto testObserver = TestObserver();
-    newTestEntity1->attach(testObserver);
-    newTestEntity2->attach(testObserver);
+    newTestEntity1->attach(&testObserver);
+    newTestEntity2->attach(&testObserver);
 
     // When
     database.connect();
@@ -317,7 +317,7 @@ void CRUDRepositoryTest::eraseShouldDeleteAndNotify() {
     auto const &testCRUDRepository = TestCRUDRepository(database);
     auto * const newTestEntity = new TestEntity(-1);
     auto testObserver = TestObserver();
-    newTestEntity->attach(testObserver);
+    newTestEntity->attach(&testObserver);
     auto const newTestEntityTypeIndex = newTestEntity->getTypeIndex();
 
     // When
@@ -339,8 +339,8 @@ void CRUDRepositoryTest::eraseAllShouldDeleteAndNotify() {
     auto * const newTestEntity1 = new TestEntity(-1);
     auto * const newTestEntity2 = new TestEntity(-1);
     auto testObserver = TestObserver();
-    newTestEntity1->attach(testObserver);
-    newTestEntity2->attach(testObserver);
+    newTestEntity1->attach(&testObserver);
+    newTestEntity2->attach(&testObserver);
     auto const newTestEntity1TypeIndex = newTestEntity1->getTypeIndex();
     auto const newTestEntity2TypeIndex = newTestEntity2->getTypeIndex();
 
