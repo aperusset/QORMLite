@@ -13,15 +13,15 @@ class Reference {
  public:
     Reference(Field from, Field to) :
         from(std::move(from)), to(std::move(to)) {}
-    auto getFrom() const -> Field;
-    auto getTo() const -> Field;
+    auto getFrom() const -> const Field&;
+    auto getTo() const -> const Field&;
 };
 
-inline auto Reference::getFrom() const -> Field {
+inline auto Reference::getFrom() const -> const Field& {
     return this->from;
 }
 
-inline auto Reference::getTo() const -> Field {
+inline auto Reference::getTo() const -> const Field& {
     return this->to;
 }
 
