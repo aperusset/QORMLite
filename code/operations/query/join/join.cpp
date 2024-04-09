@@ -3,12 +3,12 @@
 #include <string>
 #include "operations/query/condition/and.h"
 
-QORM::Join::Join(const JoinType &joinType, QString table,
+QORM::Join::Join(JoinType joinType, QString table,
                  std::list<Condition> conditions) :
     joinType(joinType), table(std::move(table)),
     conditions(std::move(conditions)) {
     if (this->joinType != JoinType::Cross && this->conditions.empty()) {
-        throw std::string("Join clause must have at least one condition.");
+        throw std::invalid_argument("Join must have at least one condition.");
     }
 }
 

@@ -14,7 +14,7 @@ const QString JoinTest::DEFAULT_FIELD_NAME = "field";
 void JoinTest::innerJoinShouldFailWithoutConditions() {
     // Given / When / Then
     QVERIFY_EXCEPTION_THROWN(QORM::InnerJoin(DEFAULT_TABLE_NAME, {}),
-                             std::string);
+                             std::invalid_argument);
 }
 
 void JoinTest::innerJoinGenerate() {
@@ -36,7 +36,7 @@ void JoinTest::innerJoinGenerate() {
 void JoinTest::leftJoinShouldFailWithoutConditions() {
     // Given / When / Then
     QVERIFY_EXCEPTION_THROWN(QORM::LeftJoin(DEFAULT_TABLE_NAME, {}),
-                             std::string);
+                             std::invalid_argument);
 }
 
 void JoinTest::leftJoinGenerate() {
@@ -58,7 +58,7 @@ void JoinTest::leftJoinGenerate() {
 void JoinTest::rightJoinShouldFailWithoutConditions() {
     // Given / When / Then
     QVERIFY_EXCEPTION_THROWN(QORM::RightJoin(DEFAULT_TABLE_NAME, {}),
-                             std::string);
+                             std::invalid_argument);
 }
 
 void JoinTest::rightJoinGenerate() {

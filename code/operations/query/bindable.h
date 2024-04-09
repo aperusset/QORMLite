@@ -8,8 +8,8 @@ namespace QORM {
 
 class Bindable {
  public:
-    virtual auto getParameter() const -> QString = 0;
-    virtual auto getValue() const -> QVariant = 0;
+    virtual auto getParameter() const -> const QString& = 0;
+    virtual auto getValue() const -> const QVariant& = 0;
 };
 
 }  // namespace QORM
