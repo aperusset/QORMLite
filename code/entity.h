@@ -28,33 +28,39 @@ class Entity {
         return observers;
     }
 
-    auto isAttached(Observer<Key> &observer) const -> bool {
-        return observers.find(&observer) != observers.end();
+    auto isAttached(Observer<Key> *observer) const -> bool {
+        return observers.find(observer) != observers.end();
     }
 
     auto getTypeIndex() const -> const std::type_index {
         return std::type_index(typeid(*this));
     }
 
-    virtual void attach(Observer<Key> &observer) {
-        observers.insert(&observer);
+    virtual void attach(Observer<Key> *observer) {
+        if (observer != nullptr) {
+            observers.insert(observer);
+        }
     }
 
-    virtual void detach(Observer<Key> &observer) {
-        observers.erase(&observer);
+    virtual void detach(Observer<Key> *observer) {
+        observers.erase(observer);
     }
 
     virtual void notifyChange() const {
         std::for_each(observers.begin(), observers.end(),
             [this](Observer<Key> *observer) {
-                observer->onChange(this->key, getTypeIndex());
+                if (observer != nullptr) {
+                    observer->onChange(this->key, getTypeIndex());
+                }
             });
     }
 
     virtual void notifyDelete() const {
         std::for_each(observers.begin(), observers.end(),
             [this](Observer<Key> *observer) {
-                observer->onDelete(this->key, getTypeIndex());
+                if (observer != nullptr) {
+                    observer->onDelete(this->key, getTypeIndex());
+                }
             });
     }
 };

@@ -13,7 +13,7 @@ class ObserverTest : public QObject {
 
  public:
     ObserverTest() : entity(DEFAULT_ENTITY_KEY) {
-        entity.attach(observer);
+        entity.attach(&observer);
     }
 
  private slots:
