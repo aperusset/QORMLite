@@ -28,7 +28,9 @@ auto QORM::Database::prepare(const QString &query) const -> QSqlQuery {
 }
 
 auto QORM::Database::prepare(const Query &query) const -> QSqlQuery {
-    return query.bind(this->prepare(query.generate()));
+    auto qSqlQuery = this->prepare(query.generate());
+    query.bind(qSqlQuery);
+    return qSqlQuery;
 }
 
 auto QORM::Database::execute(const QString &query) const -> QSqlQuery {
@@ -52,7 +54,7 @@ auto QORM::Database::execute(QSqlQuery query) const -> QSqlQuery {
     return query;
 }
 
-auto QORM::Database::getName() const -> QString {
+auto QORM::Database::getName() const -> const QString& {
     return this->connector.getName();
 }
 

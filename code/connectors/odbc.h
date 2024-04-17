@@ -13,18 +13,18 @@ class ODBC : public Connector {
     ODBC(const QString &name, QString driverDefinition,
          QString connectionString);
 
-    auto getDriverDefinition() const -> QString;
-    auto getConnectionString() const -> QString;
+    auto getDriverDefinition() const -> const QString&;
+    auto getConnectionString() const -> const QString&;
     auto databaseName() const -> QString override;
     auto driverName() const -> QString override;
     auto backup(const QString &fileName) const -> bool override;
 };
 
-inline auto ODBC::getDriverDefinition() const -> QString {
+inline auto ODBC::getDriverDefinition() const -> const QString& {
     return this->driverDefinition;
 }
 
-inline auto ODBC::getConnectionString() const -> QString {
+inline auto ODBC::getConnectionString() const -> const QString& {
     return this->connectionString;
 }
 

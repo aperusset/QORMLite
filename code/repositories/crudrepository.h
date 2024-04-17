@@ -19,7 +19,7 @@ class CRUDRepository : public ReadOnlyRepository<Key, Entity> {
                             Cache<Key, Entity>* const cache = nullptr) :
         ReadOnlyRepository<Key, Entity> (database, cache) {}
 
-    virtual auto save(Entity* const entity) const -> Key {
+    virtual auto save(Entity* const entity) const -> const Key& {
         auto const assignmentsToDo = this->assignments(*entity);
         if (this->exists(entity->getKey())) {
             if (!assignmentsToDo.empty()) {

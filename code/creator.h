@@ -26,7 +26,7 @@ class Creator {
     virtual ~Creator() {}
 
     auto getRequiredCreators() const ->
-        const std::list<std::reference_wrapper<const Creator>>;
+        const std::list<std::reference_wrapper<const Creator>>&;
     void addRequiredCreator(const Creator&);
     auto isCreated(const Database&, const std::list<QString> &existingTables,
                    const std::list<QString> &existingViews) const -> bool;
@@ -46,7 +46,7 @@ class Creator {
 };
 
 inline auto Creator::getRequiredCreators() const ->
-        const std::list<std::reference_wrapper<const Creator>> {
+        const std::list<std::reference_wrapper<const Creator>>& {
     return this->requiredCreators;
 }
 

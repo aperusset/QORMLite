@@ -38,7 +38,7 @@ class Database {
     Database& operator=(const Database&) = delete;
     Database& operator=(Database&&) = delete;
 
-    auto getName() const -> QString;
+    auto getName() const -> const QString&;
     auto isVerbose() const -> bool;
     auto isConnected() const -> bool;
 
