@@ -28,14 +28,14 @@ void ConditionTest::withoutOperatorShouldFail() {
     QVERIFY_EXCEPTION_THROWN(
         QORM::Condition("", {QORM::IsNull(DEFAULT_FIELD_NAME)},
                         DEFAULT_FIELD_NAME, QString(), QVariant()),
-        std::string);
+        std::invalid_argument);
 }
 
 void ConditionTest::withoutLeftOperandAndNestedConditionShouldFail() {
     // When / Then
     QVERIFY_EXCEPTION_THROWN(
         QORM::Condition("op", {}, QString(), QString(), QVariant()),
-        std::string);
+        std::invalid_argument);
 }
 
 void ConditionTest::parameterShouldReturnRightField() {
@@ -490,14 +490,14 @@ void ConditionTest::inWithEmptyIntegersShouldFail() {
     // Given / When / Then
     QVERIFY_EXCEPTION_THROWN(
         QORM::In(DEFAULT_FIELD_NAME, std::list<int>()),
-        std::string);
+        std::invalid_argument);
 }
 
 void ConditionTest::inWithEmptyStringsShouldFail() {
     // Given / When / Then
     QVERIFY_EXCEPTION_THROWN(
         QORM::In(DEFAULT_FIELD_NAME, std::list<QString>()),
-        std::string);
+        std::invalid_argument);
 }
 
 void ConditionTest::inWithIntegers() {

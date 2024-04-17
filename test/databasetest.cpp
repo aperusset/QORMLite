@@ -150,7 +150,7 @@ void DatabaseTest::insertAndRetrieveKeyAsIntShouldFail() {
         database.insertAndRetrieveKey(
             QORM::Insert(TestCreator::TEST_TABLE,
                         {QORM::Assignment(TestCreator::TEST_FIELD, 0)})),
-        std::string);
+        std::logic_error);
 }
 
 void DatabaseTest::entityShouldSuccess() {

@@ -46,9 +46,8 @@ class Cache {
         if (this->contains(key)) {
             return *entities.at(key).get();
         }
-        throw std::invalid_argument(
-                    std::string("Cannot retrieve an entity of type ")
-                        .append(typeid(this).name()));
+        throw std::invalid_argument("Cannot retrieve an entity of type " +
+                                    std::string(typeid(this).name()));
     }
 
     auto getOrCreate(const Key &key,
