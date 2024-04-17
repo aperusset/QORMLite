@@ -52,7 +52,7 @@ auto QORM::Select::groupBy(const std::list<QString> &groupBy) -> Select& {
 
 auto QORM::Select::having(const std::list<Condition> &conditions) -> Select& {
     if (this->groupedBy.empty()) {
-        throw std::string("Cannot use having clause without group by clause.");
+        throw std::invalid_argument("Having clause must have group by clause");
     }
     std::copy(conditions.begin(), conditions.end(),
               std::back_inserter(this->havings));
@@ -76,7 +76,7 @@ auto QORM::Select::offset(const unsigned int offset) -> Select& {
 
 auto QORM::Select::merge(Select select) -> Select& {
     if (this->selections.size() != select.selections.size()) {
-        throw std::string("Two selects must have same number of selections.");
+        throw std::logic_error("Selects must have same number of selections.");
     }
     this->mergedSelects.emplace_back(std::move(select));
     return *this;

@@ -69,7 +69,8 @@ void DatabaseTest::prepareExecuteShouldFailWithInvalidQuery() {
     database.connect();
 
     // Then
-    QVERIFY_EXCEPTION_THROWN(database.execute("invalid query"), std::string);
+    QVERIFY_EXCEPTION_THROWN(database.execute("invalid query"),
+                             std::runtime_error);
 }
 
 void DatabaseTest::executeShouldSuccessWithTextQuery() {
@@ -191,7 +192,7 @@ void DatabaseTest::entityShouldThrowWhenNothingFound() {
             [&testEntity](const QSqlRecord &record) -> TestEntity& {
                 record.value(TestCreator::TEST_FIELD).canConvert<int>();
                 return testEntity;
-            }), std::string);
+            }), std::logic_error);
 }
 
 void DatabaseTest::entitiesShouldReturnNonEmptyList() {

@@ -92,7 +92,7 @@ void CreatorTest::createViewShouldFailIfTableNotExists() {
     QVERIFY_EXCEPTION_THROWN(
         testCreator.createView(database, TestCreator::TEST_VIEW,
                                QORM::Select(TestCreator::TEST_TABLE)),
-        std::string);
+        std::runtime_error);
 }
 
 void CreatorTest::insertShouldSuccess() {

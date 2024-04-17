@@ -74,8 +74,8 @@ class Database {
     const -> Entity& {
         auto const allEntities = entities(select, extractor);
         if (allEntities.empty()) {
-            throw std::string("No entity found with given query : ")
-                    .append(select.generate().toStdString());
+            throw std::logic_error("No entity found with given query : " +
+                                   select.generate().toStdString());
         }
         return allEntities.front().get();
     }

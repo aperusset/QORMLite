@@ -76,7 +76,7 @@ class ReadOnlyRepository {
     auto get(const std::list<Condition> &conditions) const -> Entity& {
         auto const entities = this->getAll(conditions);
         if (entities.empty()) {
-            throw std::string("No entity match the given conditions");
+            throw std::logic_error("No entity match the given conditions");
         }
         return entities.front().get();
     }
@@ -126,8 +126,9 @@ class ReadOnlyRepository {
     void assertFieldValidity(const QString &field) const {
         if (!QORM::Utils::contains(this->fields(), field) &&
             !QORM::Utils::contains(this->qualifiedFields(), field)) {
-            throw field.toStdString() + " field is not part of " +
-                  this->tableName().toStdString() + " table";
+            throw std::logic_error(field.toStdString() +
+                " field is not part of " +
+                this->tableName().toStdString() + " table");
         }
     }
 

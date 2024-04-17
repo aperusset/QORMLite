@@ -551,7 +551,7 @@ void ConditionTest::andSingleConditionShouldFail() {
     auto const equals = QORM::Equals::fields(DEFAULT_FIELD_NAME,
                                              DEFAULT_FIELD_NAME);
     // When / Then
-    QVERIFY_EXCEPTION_THROWN(QORM::And({equals}), std::string);
+    QVERIFY_EXCEPTION_THROWN(QORM::And({equals}), std::invalid_argument);
 }
 
 void ConditionTest::andMultipleConditions() {

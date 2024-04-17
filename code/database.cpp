@@ -20,10 +20,9 @@ QORM::Database::~Database() {
 auto QORM::Database::prepare(const QString &query) const -> QSqlQuery {
     QSqlQuery sqlQuery(connector.getDatabase());
     if (!sqlQuery.prepare(query + ";")) {
-        throw std::string("Preparing error : ") +
-                sqlQuery.lastError().text().toStdString() +
-                " | Query : " +
-                query.toStdString();
+        throw std::runtime_error("Preparing error : " +
+                sqlQuery.lastError().text().toStdString() + " | Query : " +
+                query.toStdString());
     }
     return sqlQuery;
 }
@@ -46,9 +45,9 @@ auto QORM::Database::execute(QSqlQuery query) const -> QSqlQuery {
     }
     auto const success = query.exec();
     if (!success && query.lastError().isValid()) {
-        throw std::string("Query error : ") +
+        throw std::runtime_error("Query error : " +
                 query.lastQuery().toStdString() + " (" +
-                query.lastError().driverText().toStdString() + ")";
+                query.lastError().driverText().toStdString() + ")");
     }
     return query;
 }
