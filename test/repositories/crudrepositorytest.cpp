@@ -38,7 +38,7 @@ void CRUDRepositoryTest::getByKeyShouldFail() {
     database.connect();
 
     // When / Then
-    QVERIFY_EXCEPTION_THROWN(testCRUDRepository.get(0), std::string);
+    QVERIFY_EXCEPTION_THROWN(testCRUDRepository.get(0), std::logic_error);
 }
 
 void CRUDRepositoryTest::getByKeyShouldReturnEntity() {
@@ -69,7 +69,7 @@ void CRUDRepositoryTest::getShouldFail() {
     QVERIFY_EXCEPTION_THROWN(
         testCRUDRepository.get(
             {QORM::Equals::field(TestCreator::TEST_FIELD, 0)}),
-        std::string);
+        std::logic_error);
 }
 
 void CRUDRepositoryTest::getShouldReturnEntity() {
@@ -368,11 +368,11 @@ void CRUDRepositoryTest::assertFieldValidityShouldThrow() {
     // When / Then
     QVERIFY_EXCEPTION_THROWN(
         testCRUDRepository.assertFieldValidity("invalid"),
-        std::string);
+        std::logic_error);
 
     QVERIFY_EXCEPTION_THROWN(testCRUDRepository.assertFieldValidity(
         QORM::Utils::qualifyFieldName(testCRUDRepository.tableName(),
-                                      "invalid")), std::string);
+                                      "invalid")), std::logic_error);
 }
 
 void CRUDRepositoryTest::assertFieldValidityShouldNotThrow() {

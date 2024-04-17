@@ -22,7 +22,8 @@ auto QORM::Utils::backupFileName(const QString& databaseName) -> QString {
 }
 
 auto QORM::Utils::parametrize(const QString &field) -> QString {
-    return ":" + field.toLower().remove(QRegExp("[.() ]"));
+    static const auto regExp = QRegExp("[.() ]");
+    return ":" + field.toLower().remove(regExp);
 }
 
 auto QORM::Utils::dateToDay(const QString &fieldName,

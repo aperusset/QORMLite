@@ -116,7 +116,7 @@ void SelectTest::selectAllWithoutGroupByWithHavingShouldFail() {
     // When / Then
     QVERIFY_EXCEPTION_THROWN(
         QORM::Select(DEFAULT_TABLE_NAME).having({fieldCondition}),
-        std::string);
+        std::invalid_argument);
 }
 
 void SelectTest::selectAllWithGroupByAndHaving() {
@@ -240,7 +240,7 @@ void SelectTest::selectWithIncompatibleUnionsShouldFail() {
     auto const select2 = QORM::Select(DEFAULT_TABLE_NAME,
                                       {DEFAULT_FIELD_NAME, DEFAULT_FIELD_NAME});
     // When / Then
-    QVERIFY_EXCEPTION_THROWN(select1.merge(select2), std::string);
+    QVERIFY_EXCEPTION_THROWN(select1.merge(select2), std::logic_error);
 }
 
 void SelectTest::selectAllWithUnions() {

@@ -23,7 +23,7 @@ QORM::SQLite::SQLite(const QString &name, bool foreignKeysActivated,
     Connector((test ? TEST_PREFIX : "") + name + FILE_EXTENSION),
     foreignKeysActivated(foreignKeysActivated), test(test) {
     if (name.isEmpty()) {
-        throw std::string("Database must have a name");
+        throw std::invalid_argument("Database must have a name");
     }
     deleteIfTestMode(this->getName(), this->test);
 }

@@ -21,10 +21,10 @@ class Entity {
     Entity& operator=(Entity&&) = delete;
     virtual ~Entity() {}
 
-    auto getKey() const -> Key { return this->key; }
+    auto getKey() const -> const Key& { return this->key; }
     void setKey(const Key &key) { this->key = key; }
 
-    auto getObservers() const -> std::set<Observer<Key>*> {
+    auto getObservers() const -> const std::set<Observer<Key>*>& {
         return observers;
     }
 

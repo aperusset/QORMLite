@@ -366,7 +366,7 @@ void UtilsTest::validOrThrowShouldThrow() {
         QORM::Utils::validOrThrow<uint32_t>(42U, errorMessage,
                                             [](const uint32_t) {
                                                 return false;
-                                            }), std::string);
+                                            }), std::invalid_argument);
 }
 
 void UtilsTest::notBlankOrNullShouldReturnNull() {
@@ -396,7 +396,8 @@ void UtilsTest::notBlankOrNullShouldReturnTrimmedValue() {
 
 void UtilsTest::notBlankOrThrowShouldThrow() {
     // Given / When / Then
-    QVERIFY_EXCEPTION_THROWN(QORM::Utils::notBlankOrThrow("   "), std::string);
+    QVERIFY_EXCEPTION_THROWN(QORM::Utils::notBlankOrThrow("   "),
+                             std::invalid_argument);
 }
 
 void UtilsTest::notBlankOrThrowShouldReturnTrimmedValue() {
@@ -440,7 +441,7 @@ void UtilsTest::validOrNullDateTimeShouldReturnValue() {
 void UtilsTest::validOrThrowDateShouldThrow() {
     // Given / When / Then
     QVERIFY_EXCEPTION_THROWN(QORM::Utils::validOrThrow(QDate()),
-                             std::string);
+                             std::invalid_argument);
 }
 
 void UtilsTest::validOrThrowDateShouldReturnValue() {
@@ -459,7 +460,7 @@ void UtilsTest::validOrThrowDateShouldReturnValue() {
 void UtilsTest::validOrThrowDateTimeShouldThrow() {
     // Given / When / Then
     QVERIFY_EXCEPTION_THROWN(QORM::Utils::validOrThrow(QDateTime()),
-                             std::string);
+                             std::invalid_argument);
 }
 
 void UtilsTest::validOrThrowDateTimeShouldReturnValue() {

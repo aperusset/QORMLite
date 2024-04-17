@@ -24,12 +24,13 @@ void QORMLiteTest::initializeShouldFailIfDatabaseAlreadyExists() {
     QVERIFY(QORM::isInitialized(this->databaseName()));
     QVERIFY_EXCEPTION_THROWN(
         QORM::initialize(*this->connector, this->creator, false),
-        std::string);
+        std::logic_error);
 }
 
 void QORMLiteTest::getShouldFailIfDatabaseNotExists() {
     // Given / When / Then
-    QVERIFY_EXCEPTION_THROWN(QORM::get(this->databaseName()), std::string);
+    QVERIFY_EXCEPTION_THROWN(QORM::get(this->databaseName()),
+                             std::invalid_argument);
 }
 
 void QORMLiteTest::getShouldSuccess() {

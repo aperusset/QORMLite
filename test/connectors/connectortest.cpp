@@ -8,7 +8,7 @@ void ConnectorTest::initShouldFailIfNameIsEmpty() {
     // Given / When / Then
     QVERIFY_EXCEPTION_THROWN(
         TestConnector testConnector(""),
-        std::string);
+        std::invalid_argument);
 }
 
 void ConnectorTest::initShouldFailIfIfNameAlreadyUsed() {
@@ -19,7 +19,7 @@ void ConnectorTest::initShouldFailIfIfNameAlreadyUsed() {
     // When / Then
     QVERIFY_EXCEPTION_THROWN(
         TestConnector testConnector(this->databaseName()),
-        std::string);
+        std::invalid_argument);
     QVERIFY(testConnector.isConnected());
 }
 
@@ -43,7 +43,7 @@ void ConnectorTest::getDatabaseShouldFailIfDatabaseClosed() {
     auto const &testConnector = TestConnector(this->databaseName());
 
     // When / Then
-    QVERIFY_EXCEPTION_THROWN(testConnector.getDatabase(), std::string);
+    QVERIFY_EXCEPTION_THROWN(testConnector.getDatabase(), std::logic_error);
 }
 
 void ConnectorTest::connectShouldSuccessPreOpenPostAndOptimize() {

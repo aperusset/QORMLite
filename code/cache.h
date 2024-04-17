@@ -29,7 +29,7 @@ class Cache {
 
     auto insert(const Key &key, std::unique_ptr<Entity> &&entity) -> Entity& {
         if (entity == nullptr) {
-            throw std::string("Cannot store a null entity");
+            throw std::invalid_argument("Cannot store a null entity");
         }
         if (!this->contains(key)) {
             entities.insert(std::make_pair(key,
@@ -46,8 +46,8 @@ class Cache {
         if (this->contains(key)) {
             return *entities.at(key).get();
         }
-        throw std::string("Cannot retrieve an entity of type ")
-                .append(typeid(this).name());
+        throw std::invalid_argument("Cannot retrieve an entity of type " +
+                                    std::string(typeid(this).name()));
     }
 
     auto getOrCreate(const Key &key,

@@ -15,12 +15,13 @@ QORM::Condition::Condition(QString op, std::list<Condition> nestedConditions,
             std::move(rightField)),
     value(std::move(value)) {
     if (this->op.isNull() || this->op.isEmpty()) {
-        throw std::string("A condition must have an operator.");
+        throw std::invalid_argument("A condition must have an operator.");
     }
 
     if ((this->leftField.isNull() || this->leftField.isEmpty()) &&
             this->nestedConditions.empty()) {
-        throw std::string("A condition must have a left operand or be nested.");
+        throw std::invalid_argument(
+                    "A condition must have a left operand or be nested.");
     }
 }
 
