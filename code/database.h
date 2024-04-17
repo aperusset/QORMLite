@@ -61,7 +61,7 @@ class Database {
             [](const QSqlQuery &query) -> int {
                 auto const &result = query.lastInsertId();
                 if (!result.isValid() || !result.canConvert<int>()) {
-                    throw std::string("Failed to get last inserted ID as int");
+                    throw std::logic_error("Failed to get last id as int");
                 }
                 return result.toInt();
             }) const -> Key {

@@ -14,8 +14,10 @@ auto initialized(const QString &name) -> bool {
 }
 
 void initializeChecks(const QORM::Connector &connector) {
-    if (initialized(connector.getName())) {
-        throw std::string("This database is already initialized");
+    const auto databaseName = connector.getName();
+    if (initialized(databaseName)) {
+        throw std::logic_error("Database " + databaseName.toStdString() +
+                               " is already initialized");
     }
     qDebug("Initializing database %s.", qUtf8Printable(connector.getName()));
 }
@@ -44,7 +46,8 @@ void QORM::initialize(const Connector &connector, const Creator &creator,
 auto QORM::get(const QString &name) -> Database& {
     const QMutexLocker lock(&poolMutex);
     if (!initialized(name)) {
-        throw std::string("You must initialize the database before using it");
+        throw std::invalid_argument("You must initialize database " +
+                                    name.toStdString() + " before using it");
     }
     return *pool[name];
 }

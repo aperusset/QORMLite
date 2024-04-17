@@ -7,7 +7,8 @@
 
 void SQLiteTest::initShouldFailIfNameIsEmpty() {
     // Given / When / Then
-    QVERIFY_EXCEPTION_THROWN(QORM::SQLite sqLite("", true, false), std::string);
+    QVERIFY_EXCEPTION_THROWN(QORM::SQLite sqLite("", true, false),
+                             std::invalid_argument);
 }
 
 void SQLiteTest::initShouldAddFileExtensionToName() {
@@ -56,7 +57,7 @@ void SQLiteTest::connectShouldFailWithInvalidDatabaseName() {
     auto const &sqlite = QORM::SQLite("data/base.db", true, false);
 
     // When / Then
-    QVERIFY_EXCEPTION_THROWN(sqlite.connect(), std::string);
+    QVERIFY_EXCEPTION_THROWN(sqlite.connect(), std::logic_error);
 }
 
 void SQLiteTest::connectShouldEnableRegexpButNotForeignKeys() {
