@@ -22,7 +22,7 @@ QORM::In::In(const QString &field, const std::list<QString> &elements,
                         return "'" + element + "'";
                     }) + ")", QVariant())  {
     if (elements.empty()) {
-        throw std::string("In condition must contain at least one value.");
+        throw std::invalid_argument("In must contain at least one value.");
     }
 }
 
@@ -34,6 +34,6 @@ QORM::In::In(const QString &field, const std::list<int> &elements,
                         return QString::number(element);
                     }) + ")", QVariant())  {
     if (elements.empty()) {
-        throw std::string("In condition must contain at least one value.");
+        throw std::invalid_argument("In must contain at least one value.");
     }
 }

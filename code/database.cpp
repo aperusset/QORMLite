@@ -20,16 +20,17 @@ QORM::Database::~Database() {
 auto QORM::Database::prepare(const QString &query) const -> QSqlQuery {
     QSqlQuery sqlQuery(connector.getDatabase());
     if (!sqlQuery.prepare(query + ";")) {
-        throw std::string("Preparing error : ") +
-                sqlQuery.lastError().text().toStdString() +
-                " | Query : " +
-                query.toStdString();
+        throw std::runtime_error("Preparing error : " +
+                sqlQuery.lastError().text().toStdString() + " | Query : " +
+                query.toStdString());
     }
     return sqlQuery;
 }
 
 auto QORM::Database::prepare(const Query &query) const -> QSqlQuery {
-    return query.bind(this->prepare(query.generate()));
+    auto qSqlQuery = this->prepare(query.generate());
+    query.bind(qSqlQuery);
+    return qSqlQuery;
 }
 
 auto QORM::Database::execute(const QString &query) const -> QSqlQuery {
@@ -46,14 +47,14 @@ auto QORM::Database::execute(QSqlQuery query) const -> QSqlQuery {
     }
     auto const success = query.exec();
     if (!success && query.lastError().isValid()) {
-        throw std::string("Query error : ") +
+        throw std::runtime_error("Query error : " +
                 query.lastQuery().toStdString() + " (" +
-                query.lastError().driverText().toStdString() + ")";
+                query.lastError().driverText().toStdString() + ")");
     }
     return query;
 }
 
-auto QORM::Database::getName() const -> QString {
+auto QORM::Database::getName() const -> const QString& {
     return this->connector.getName();
 }
 

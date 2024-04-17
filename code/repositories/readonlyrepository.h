@@ -19,6 +19,7 @@ class ReadOnlyRepository {
         std::is_base_of<QORM::Entity<Key>, Entity>::value,
         "Entity must extend QORM::Entity");
     using EntityCreator = std::function<Entity&(const QSqlRecord&)>;
+    using EntityList = std::list<std::reference_wrapper<Entity>>;
 
     const Database &database;
     const std::unique_ptr<Cache<Key, Entity>> cache;
@@ -50,7 +51,7 @@ class ReadOnlyRepository {
         return *this->cache.get();
     }
 
-    auto getEntityCreator() const -> const EntityCreator {
+    auto getEntityCreator() const -> const EntityCreator& {
         return this->entityCreator;
     }
 
@@ -76,27 +77,24 @@ class ReadOnlyRepository {
     auto get(const std::list<Condition> &conditions) const -> Entity& {
         auto const entities = this->getAll(conditions);
         if (entities.empty()) {
-            throw std::string("No entity match the given conditions");
+            throw std::logic_error("No entity match the given conditions");
         }
         return entities.front().get();
     }
 
-    auto getAll(const std::list<Order> &orders = {})
-        const -> std::list<std::reference_wrapper<Entity>> {
+    auto getAll(const std::list<Order> &orders = {}) const -> EntityList {
         return this->getAll({}, orders);
     }
 
     auto getAll(const std::list<Condition> &conditions,
-                const std::list<Order> &orders = {})
-        const -> std::list<std::reference_wrapper<Entity>> {
+                const std::list<Order> &orders = {}) const -> EntityList {
         return this->select(
             Select(this->tableName(), this->fields())
                 .where(conditions)
                 .orderBy(orders));
     }
 
-    auto select(const Select &select)
-        const -> std::list<std::reference_wrapper<Entity>> {
+    auto select(const Select &select) const -> EntityList {
         return database.entities<Entity>(select, entityCreator);
     }
 
@@ -126,8 +124,9 @@ class ReadOnlyRepository {
     void assertFieldValidity(const QString &field) const {
         if (!QORM::Utils::contains(this->fields(), field) &&
             !QORM::Utils::contains(this->qualifiedFields(), field)) {
-            throw field.toStdString() + " field is not part of " +
-                  this->tableName().toStdString() + " table";
+            throw std::logic_error(field.toStdString() +
+                " field is not part of " +
+                this->tableName().toStdString() + " table");
         }
     }
 

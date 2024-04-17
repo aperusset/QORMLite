@@ -16,7 +16,7 @@ void ViewTest::selectWithBindableShouldFail() {
 
     // When / Then
     QVERIFY_EXCEPTION_THROWN(
-                QORM::View(DEFAULT_VIEW_NAME, select), std::string);
+                QORM::View(DEFAULT_VIEW_NAME, select), std::invalid_argument);
 }
 
 void ViewTest::generate() {

@@ -23,6 +23,5 @@ auto QORM::PrimaryKey::generateConstraint() const -> QString {
     for (auto const &field : this->fields) {
         constraintFields << field.getName();
     }
-    return (QStringLiteral("primary key (") + constraintFields.join(", ") +
-            QStringLiteral(")")).simplified();
+    return ("primary key (" + constraintFields.join(", ") + ")").simplified();
 }

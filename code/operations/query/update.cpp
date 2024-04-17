@@ -18,7 +18,7 @@ QORM::Update::Update(const QString &tableName,
     TableQuery(tableName), assignements(std::move(assignements)),
     conditions(std::move(conditions)) {
     if (this->assignements.empty()) {
-        throw std::string("An update must have at least one assignement.");
+        throw std::invalid_argument("Update must have at least 1 assignement");
     }
 
     for (auto const &assignement : this->assignements) {

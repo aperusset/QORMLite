@@ -216,11 +216,11 @@ namespace Utils {
 
     /**
      * @brief Return a value wrapped in a QVariant if valid, based on a given
-     * predicate, or throw the given error message.
+     * predicate, or throw the given error message wrapped int an exception.
      * @param value the value to validate and wrap
      * @param predicate a function to determine if the value is valid or not
      * @return the wrapped value
-     * @throw std::string if the value is not valid
+     * @throw std::invalid_argument if the value is not valid
      */
     template <typename T>
     auto validOrThrow(const T &value, const std::string &errorMessage,
@@ -228,7 +228,7 @@ namespace Utils {
         if (predicate(value)) {
             return QVariant::fromValue(value);
         }
-        throw errorMessage;
+        throw std::invalid_argument(errorMessage);
     }
 
     /**
@@ -244,7 +244,7 @@ namespace Utils {
      * exception if the QString is blank.
      * @param value the value to validate and wrap
      * @return the wrapped value (or null QVariant)
-     * @throw std::string if the QString is blank
+     * @throw std::invalid_argument if the QString is blank
      */
     auto notBlankOrThrow(const QString &value) -> QVariant;
 
@@ -261,7 +261,7 @@ namespace Utils {
      * the QDate is invalid.
      * @param value the value to validate and wrap
      * @return the wrapped value (or null QVariant)
-     * @throw std::string if the QDate is invalid
+     * @throw std::invalid_argument if the QDate is invalid
      */
     auto validOrThrow(const QDate &value) -> QVariant;
 
@@ -278,7 +278,7 @@ namespace Utils {
      * the QDateTime is invalid.
      * @param value the value to validate and wrap
      * @return the wrapped value (or null QVariant)
-     * @throw std::string if the QDateTime is invalid
+     * @throw std::invalid_argument if the QDateTime is invalid
      */
     auto validOrThrow(const QDateTime &value) -> QVariant;
 

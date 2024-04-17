@@ -11,7 +11,7 @@ const QString UpdateTest::DEFAULT_FIELD_NAME = "field_name";
 void UpdateTest::withoutAssignementsShouldFail() {
     // When / Then
     QVERIFY_EXCEPTION_THROWN(QORM::Update(DEFAULT_TABLE_NAME, {}, {}),
-                             std::string);
+                             std::invalid_argument);
 }
 
 void UpdateTest::generateWithoutConditions() {

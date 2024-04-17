@@ -38,7 +38,7 @@ class Database {
     Database& operator=(const Database&) = delete;
     Database& operator=(Database&&) = delete;
 
-    auto getName() const -> QString;
+    auto getName() const -> const QString&;
     auto isVerbose() const -> bool;
     auto isConnected() const -> bool;
 
@@ -61,7 +61,7 @@ class Database {
             [](const QSqlQuery &query) -> int {
                 auto const &result = query.lastInsertId();
                 if (!result.isValid() || !result.canConvert<int>()) {
-                    throw std::string("Failed to get last inserted ID as int");
+                    throw std::logic_error("Failed to get last id as int");
                 }
                 return result.toInt();
             }) const -> Key {
@@ -74,8 +74,8 @@ class Database {
     const -> Entity& {
         auto const allEntities = entities(select, extractor);
         if (allEntities.empty()) {
-            throw std::string("No entity found with given query : ")
-                    .append(select.generate().toStdString());
+            throw std::logic_error("No entity found with given query : " +
+                                   select.generate().toStdString());
         }
         return allEntities.front().get();
     }
