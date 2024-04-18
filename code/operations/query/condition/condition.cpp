@@ -37,7 +37,7 @@ const -> std::list<Condition> {
         return {*this};
     }
     std::list<Condition> parametrizedConditions;
-    for (auto const &nestedCondition : this->nestedConditions) {
+    for (const auto &nestedCondition : this->nestedConditions) {
         if (nestedCondition.isParametrized()) {
             parametrizedConditions.splice(parametrizedConditions.end(),
                 nestedCondition.getParametrizedConditions());
@@ -55,7 +55,7 @@ auto QORM::Condition::generate() const -> QString {
                 this->nestedConditions.front().generate()).simplified();
     }
     QStringList conditions;
-    for (auto const &condition : this->nestedConditions) {
+    for (const auto &condition : this->nestedConditions) {
         conditions << condition.generate();
     }
     return "(" + conditions.join(this->op).simplified() + ")";

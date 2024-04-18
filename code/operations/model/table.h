@@ -25,6 +25,7 @@ class Table : public Query {
     auto getPrimaryKey() const -> const PrimaryKey&;
     auto getFields() const -> const std::list<Field>&;
     auto getForeignKeys() const -> const std::list<ForeignKey>&;
+    auto getUniques() const -> const std::list<Unique>&;
     auto generate() const -> QString override;
 };
 
@@ -42,6 +43,10 @@ inline auto Table::getFields() const -> const std::list<Field>& {
 
 inline auto Table::getForeignKeys() const -> const std::list<ForeignKey>& {
     return this->foreignKeys;
+}
+
+inline auto Table::getUniques() const -> const std::list<Unique>& {
+    return this->uniques;
 }
 
 }  // namespace QORM

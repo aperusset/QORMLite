@@ -21,11 +21,11 @@ QORM::Update::Update(const QString &tableName,
         throw std::invalid_argument("Update must have at least 1 assignement");
     }
 
-    for (auto const &assignement : this->assignements) {
+    for (const auto &assignement : this->assignements) {
         this->addBindable(assignement);
     }
-    for (auto const &condition : this->conditions) {
-        for (auto const &bindable : condition.getParametrizedConditions()) {
+    for (const auto &condition : this->conditions) {
+        for (const auto &bindable : condition.getParametrizedConditions()) {
             this->addBindable(bindable);
         }
     }
@@ -34,7 +34,7 @@ QORM::Update::Update(const QString &tableName,
 auto QORM::Update::generate() const -> QString {
     QString update = "update " + this->getTableName() + " set ";
     QStringList assignements;
-    for (auto const &assignement : this->assignements) {
+    for (const auto &assignement : this->assignements) {
         assignements << assignement.generate();
     }
     return (update + assignements.join(",") +

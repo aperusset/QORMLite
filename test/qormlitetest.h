@@ -10,7 +10,7 @@ class QORMLiteTest : public MainDatabaseTest {
     Q_OBJECT
 
     FakeCreator creator;
-    TestConnector *connector = nullptr;
+    std::unique_ptr<TestConnector> connector = nullptr;
 
  public:
     auto databaseName() const -> QString override {
@@ -27,7 +27,6 @@ class QORMLiteTest : public MainDatabaseTest {
     void destroyAllShouldSuccess();
 
     void initTestCase();
-    void cleanupTestCase();
     void cleanup() override;
 };
 

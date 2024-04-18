@@ -38,8 +38,8 @@ class Cache {
         return this->get(key);
     }
 
-    auto contains(const Key &key) const -> bool {
-        return entities.count(key);
+    auto contains(const Key &key) const {
+        return static_cast<bool>(entities.count(key));
     }
 
     auto get(const Key &key) const -> Entity& {
@@ -55,8 +55,8 @@ class Cache {
         return this->contains(key) ? this->get(key) : creator();
     }
 
-    auto remove(const Key &key) -> bool {
-        return entities.erase(key);
+    auto remove(const Key &key) {
+        return static_cast<bool>(entities.erase(key));
     }
 
     auto size() const -> size_t {

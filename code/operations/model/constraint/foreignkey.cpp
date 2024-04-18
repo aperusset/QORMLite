@@ -19,7 +19,7 @@ QORM::ForeignKey::ForeignKey(std::list<Reference> references,
 auto QORM::ForeignKey::generateConstraint() const -> QString {
     QStringList fromFieldNames;
     QStringList toFieldNames;
-    for (auto const &reference : this->references) {
+    for (const auto &reference : this->references) {
         fromFieldNames << reference.getFrom().getName();
         toFieldNames << reference.getTo().getName();
     }

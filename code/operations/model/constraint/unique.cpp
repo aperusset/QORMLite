@@ -16,7 +16,7 @@ QORM::Unique::Unique(const QString &name, std::list<Field> fields) :
 
 auto QORM::Unique::generateConstraint() const -> QString {
     QStringList fieldNames;
-    for (auto const &field : this->fields) {
+    for (const auto &field : this->fields) {
         fieldNames << field.getName();
     }
     return ("unique (" + fieldNames.join(", ") + ")").simplified();
