@@ -60,7 +60,7 @@ void SelectTest::selectAllWithJoins() {
     auto const innerJoin = QORM::InnerJoin(DEFAULT_TABLE_NAME,
                                            {fieldCondition});
     auto const leftJoin = QORM::LeftJoin(DEFAULT_TABLE_NAME, {bindedCondition});
-    auto const &select = QORM::Select(DEFAULT_TABLE_NAME)
+    auto const select = QORM::Select(DEFAULT_TABLE_NAME)
                             .join({innerJoin, leftJoin});
 
     // When

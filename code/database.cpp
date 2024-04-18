@@ -45,7 +45,7 @@ auto QORM::Database::execute(QSqlQuery query) const -> QSqlQuery {
     if (this->verbose) {
         qDebug("%s", qUtf8Printable(query.lastQuery()));
     }
-    auto const success = query.exec();
+    const auto success = query.exec();
     if (!success && query.lastError().isValid()) {
         throw std::runtime_error("Query error : " +
                 query.lastQuery().toStdString() + " (" +
@@ -67,7 +67,7 @@ auto QORM::Database::connect() -> bool {
     if (!this->isConnected()) {
         this->connector.connect();
         if (this->creator != nullptr) {
-            auto const shouldBeCreated = !this->creator->isCreated(*this,
+            const auto shouldBeCreated = !this->creator->isCreated(*this,
                 this->connector.tables(), this->connector.views());
             if (shouldBeCreated) {
                 qDebug(

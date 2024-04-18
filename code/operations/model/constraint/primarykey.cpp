@@ -20,7 +20,7 @@ auto QORM::PrimaryKey::generateConstraint() const -> QString {
                 " primary key autoincrement").simplified();
     }
     QStringList constraintFields;
-    for (auto const &field : this->fields) {
+    for (const auto &field : this->fields) {
         constraintFields << field.getName();
     }
     return ("primary key (" + constraintFields.join(", ") + ")").simplified();

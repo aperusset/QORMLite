@@ -23,7 +23,7 @@ auto QORM::Creator::isCreated(const Database &database,
 }
 
 void QORM::Creator::createAllAndPopulate(const Database &database) const {
-    for (auto const &requiredCreator : this->requiredCreators) {
+    for (const auto &requiredCreator : this->requiredCreators) {
         requiredCreator.get().createAllAndPopulate(database);
     }
     this->createTables(database);

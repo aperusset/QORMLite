@@ -35,8 +35,8 @@ class ReadOnlyRepository {
     explicit ReadOnlyRepository(const Database &database,
                                 Cache<Key, Entity>* const cache = nullptr) :
         database(database),
-        cache(std::unique_ptr<Cache<Key, Entity>>(
-                cache == nullptr ? new Cache<Key, Entity>() : cache)) {}
+        cache(cache == nullptr ? std::make_unique<Cache<Key, Entity>>()
+                               : std::unique_ptr<Cache<Key, Entity>>(cache)) {}
     ReadOnlyRepository(const ReadOnlyRepository&) = delete;
     ReadOnlyRepository(ReadOnlyRepository&&) = delete;
     ReadOnlyRepository& operator=(const ReadOnlyRepository&) = delete;
