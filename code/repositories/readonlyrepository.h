@@ -57,7 +57,7 @@ class ReadOnlyRepository {
 
     auto qualifiedFields() const {
         const auto tableFields = this->fields();
-        auto qualifiedFields = std::list<QString>();
+        std::list<QString> qualifiedFields;
         std::transform(tableFields.begin(), tableFields.end(),
             std::back_inserter(qualifiedFields),
             std::bind(&Utils::qualifyFieldName, this->tableName(),
