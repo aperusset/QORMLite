@@ -28,11 +28,11 @@ class Entity {
         return observers;
     }
 
-    auto isAttached(Observer<Key> *observer) const -> bool {
+    auto isAttached(Observer<Key> *observer) const {
         return observers.find(observer) != observers.end();
     }
 
-    auto getTypeIndex() const -> const std::type_index {
+    auto getTypeIndex() const {
         return std::type_index(typeid(*this));
     }
 
@@ -50,7 +50,7 @@ class Entity {
 
     virtual void notifyChange() const {
         std::for_each(observers.begin(), observers.end(),
-            [this](Observer<Key> *observer) {
+            [=](auto *observer) {
                 if (observer != nullptr) {
                     observer->onChange(this->key, getTypeIndex());
                 }
@@ -59,7 +59,7 @@ class Entity {
 
     virtual void notifyDelete() const {
         std::for_each(observers.begin(), observers.end(),
-            [this](Observer<Key> *observer) {
+            [=](auto *observer) {
                 if (observer != nullptr) {
                     observer->onDelete(this->key, getTypeIndex());
                 }

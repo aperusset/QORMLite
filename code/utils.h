@@ -87,7 +87,7 @@ namespace Utils {
      * @return true : contains, false : does not contain
      */
     template<typename T>
-    auto contains(const std::list<T> &list, const T &element) -> bool {
+    auto contains(const std::list<T> &list, const T &element) {
         return std::find(list.begin(), list.end(), element) != list.end();
     }
 
@@ -100,7 +100,7 @@ namespace Utils {
      */
     template<typename T>
     auto joinToString(const std::list<T> &elements, const QString &separator,
-              const std::function<QString(const T&)> &transformer) -> QString {
+              const std::function<QString(const T&)> &transformer) {
         QStringList transformed;
         std::transform(elements.begin(), elements.end(),
                        std::back_inserter(transformed), transformer);
@@ -117,7 +117,7 @@ namespace Utils {
     template<typename T>
     auto getOrDefault(const QSqlRecord &record, const QString &fieldName,
                       const T &defaultValue,
-                      const std::function<T(const QVariant&)> &extractor) -> T {
+                      const std::function<T(const QVariant&)> &extractor) {
         if (record.isNull(fieldName)) {
             return defaultValue;
         } else {
@@ -133,7 +133,7 @@ namespace Utils {
      */
     template<typename T>
     auto getOrNull(const QSqlRecord &record, const QString &fieldName,
-                   const std::function<T*(const QVariant&)> &extractor) -> T* {
+                   const std::function<T*(const QVariant&)> &extractor) {
         return getOrDefault<T*>(record, fieldName, nullptr, extractor);
     }
 
@@ -224,7 +224,7 @@ namespace Utils {
      */
     template <typename T>
     auto validOrThrow(const T &value, const std::string &errorMessage,
-            const std::function<bool(const T&)> &predicate) -> QVariant {
+            const std::function<bool(const T&)> &predicate) {
         if (predicate(value)) {
             return QVariant::fromValue(value);
         }

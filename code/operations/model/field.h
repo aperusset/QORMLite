@@ -17,7 +17,7 @@ class Field : public Operation {
     auto getName() const -> const QString&;
     auto getType() const -> const Type&;
     auto getDefaultValue() const -> const QString&;
-    auto isNullable() const -> bool;
+    auto isNullable() const;
     auto generate() const -> QString override;
     auto operator == (const Field&) const -> bool;
     auto operator != (const Field&) const -> bool;
@@ -42,7 +42,7 @@ inline auto Field::getDefaultValue() const -> const QString& {
     return this->defaultValue;
 }
 
-inline auto Field::isNullable() const -> bool {
+inline auto Field::isNullable() const {
     return this->nullable;
 }
 

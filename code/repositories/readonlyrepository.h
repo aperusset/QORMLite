@@ -25,7 +25,7 @@ class ReadOnlyRepository {
     const std::unique_ptr<Cache<Key, Entity>> cache;
 
     const EntityCreator entityCreator =
-        [=](const QSqlRecord &record) -> Entity& {
+        [=](const auto &record) -> Entity& {
             return cache.get()->insert(
                 this->buildKey(record),
                 std::unique_ptr<Entity>(this->build(record)));
@@ -55,8 +55,8 @@ class ReadOnlyRepository {
         return this->entityCreator;
     }
 
-    auto qualifiedFields() const -> std::list<QString> {
-        auto const tableFields = this->fields();
+    auto qualifiedFields() const {
+        const auto tableFields = this->fields();
         auto qualifiedFields = std::list<QString>();
         std::transform(tableFields.begin(), tableFields.end(),
             std::back_inserter(qualifiedFields),
@@ -82,19 +82,19 @@ class ReadOnlyRepository {
         return entities.front().get();
     }
 
-    auto getAll(const std::list<Order> &orders = {}) const -> EntityList {
+    auto getAll(const std::list<Order> &orders = {}) const {
         return this->getAll({}, orders);
     }
 
     auto getAll(const std::list<Condition> &conditions,
-                const std::list<Order> &orders = {}) const -> EntityList {
+                const std::list<Order> &orders = {}) const {
         return this->select(
             Select(this->tableName(), this->fields())
                 .where(conditions)
                 .orderBy(orders));
     }
 
-    auto select(const Select &select) const -> EntityList {
+    auto select(const Select &select) const {
         return database.entities<Entity>(select, entityCreator);
     }
 
@@ -107,7 +107,7 @@ class ReadOnlyRepository {
         return database.result<size_t>(
             Select(this->tableName(), {Count("*", total)})
                     .where(conditions), 0,
-            [&total](const QSqlRecord &record) -> size_t {
+            [&total](const auto &record) -> size_t {
                 return record.value(total).toUInt();
             });
     }

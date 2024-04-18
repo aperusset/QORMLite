@@ -22,7 +22,7 @@ class Condition : public Operation, public Bindable {
  public:
     Condition(QString op, std::list<Condition> nestedConditions,
               QString leftField, QString rightField, QVariant value);
-    auto getNestedConditions() const -> std::list<Condition>;
+    auto getNestedConditions() const -> const std::list<Condition>&;
     auto getOperator() const -> const QString&;
     auto getLeftField() const -> const QString&;
     auto getRightField() const -> const QString&;
@@ -35,7 +35,8 @@ class Condition : public Operation, public Bindable {
                                  const std::list<Condition>&) -> QString;
 };
 
-inline auto Condition::getNestedConditions() const -> std::list<Condition> {
+inline auto Condition::getNestedConditions()
+const -> const std::list<Condition>& {
     return this->nestedConditions;
 }
 

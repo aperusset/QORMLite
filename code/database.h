@@ -39,7 +39,7 @@ class Database {
     Database& operator=(Database&&) = delete;
 
     auto getName() const -> const QString&;
-    auto isVerbose() const -> bool;
+    auto isVerbose() const;
     auto isConnected() const -> bool;
 
     /**
@@ -58,13 +58,13 @@ class Database {
     template<typename Key = int>
     auto insertAndRetrieveKey(const Insert &insert,
         const std::function<Key(const QSqlQuery&)> &keyExtractor =
-            [](const QSqlQuery &query) -> int {
-                auto const &result = query.lastInsertId();
-                if (!result.isValid() || !result.canConvert<int>()) {
-                    throw std::logic_error("Failed to get last id as int");
+            [](const auto &query) -> Key {
+                const auto &result = query.lastInsertId();
+                if (!result.isValid() || !result.template canConvert<Key>()) {
+                    throw std::logic_error("Failed to get last id as Key");
                 }
                 return result.toInt();
-            }) const -> Key {
+            }) const {
         return keyExtractor(this->execute(insert));
     }
 
@@ -72,7 +72,7 @@ class Database {
     auto entity(const Select &select,
                 const std::function<Entity&(const QSqlRecord&)> &extractor)
     const -> Entity& {
-        auto const allEntities = entities(select, extractor);
+        const auto allEntities = entities(select, extractor);
         if (allEntities.empty()) {
             throw std::logic_error("No entity found with given query : " +
                                    select.generate().toStdString());
@@ -82,8 +82,7 @@ class Database {
 
     template<class Entity>
     auto entities(const Select &select,
-                  const std::function<Entity&(const QSqlRecord&)> &extractor)
-    const -> std::list<std::reference_wrapper<Entity>> {
+            const std::function<Entity&(const QSqlRecord&)> &extractor) const {
         std::list<std::reference_wrapper<Entity>> entities;
         auto qSqlQuery = this->execute(select);
         while (qSqlQuery.next()) {
@@ -93,11 +92,9 @@ class Database {
     }
 
     template<typename Result>
-    auto result(const Select &select,
-                const Result &defaultValue,
-                const std::function<Result(const QSqlRecord&)> &extractor)
-    const -> Result {
-        auto const allResults = results(select, extractor);
+    auto result(const Select &select, const Result &defaultValue,
+            const std::function<Result(const QSqlRecord&)> &extractor) const {
+        const auto allResults = results(select, extractor);
         if (allResults.empty()) {
             return defaultValue;
         }
@@ -106,8 +103,7 @@ class Database {
 
     template<typename Result>
     auto results(const Select &select,
-                 const std::function<Result(const QSqlRecord&)> &extractor)
-    const -> std::list<Result> {
+            const std::function<Result(const QSqlRecord&)> &extractor) const {
         std::list<Result> results;
         auto qSqlQuery = this->execute(select);
         while (qSqlQuery.next()) {
@@ -117,7 +113,7 @@ class Database {
     }
 };
 
-inline auto Database::isVerbose() const -> bool {
+inline auto Database::isVerbose() const {
     return this->verbose;
 }
 

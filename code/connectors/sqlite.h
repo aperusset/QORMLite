@@ -17,8 +17,8 @@ class SQLite : public Connector {
  public:
     explicit SQLite(const QString &name, bool foreignKeysActivated = true,
                     bool test = false);
-    auto areForeignKeysActivated() const -> bool;
-    auto isTest() const -> bool;
+    auto areForeignKeysActivated() const;
+    auto isTest() const;
     void disconnect() const override;
     void preConnect() const override;
     void postConnect() const override;
@@ -28,11 +28,11 @@ class SQLite : public Connector {
     auto backup(const QString &fileName) const -> bool override;
 };
 
-inline auto SQLite::areForeignKeysActivated() const -> bool {
+inline auto SQLite::areForeignKeysActivated() const {
     return this->foreignKeysActivated;
 }
 
-inline auto SQLite::isTest() const -> bool {
+inline auto SQLite::isTest() const {
     return this->test;
 }
 
