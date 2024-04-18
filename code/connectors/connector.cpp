@@ -6,12 +6,12 @@
 
 namespace {
 
-auto contains(const QString &name) -> bool {
+auto contains(const QString &name) {
     return QSqlDatabase::contains(name);
 }
 
 auto tablesByType(const QSqlDatabase &database,
-                  const QSql::TableType &tableType) -> std::list<QString> {
+                  const QSql::TableType &tableType) {
     auto tables = database.tables(tableType);
     return std::list<QString>(tables.begin(), tables.end());
 }

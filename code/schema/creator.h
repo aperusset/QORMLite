@@ -15,18 +15,18 @@ namespace QORM {
 class Database;
 
 class Creator {
-    std::list<std::reference_wrapper<const Creator>> requiredCreators;
+    using CreatorList = std::list<std::reference_wrapper<const Creator>>;
+    CreatorList requiredCreators;
 
  public:
-    explicit Creator(std::list<std::reference_wrapper<const Creator>> = {});
+    explicit Creator(CreatorList = {});
     Creator(const Creator&) = delete;
     Creator(Creator&&) = delete;
     Creator& operator=(const Creator&) = delete;
     Creator& operator=(Creator&&) = delete;
     virtual ~Creator() {}
 
-    auto getRequiredCreators() const ->
-        const std::list<std::reference_wrapper<const Creator>>&;
+    auto getRequiredCreators() const -> const CreatorList&;
     void addRequiredCreator(const Creator&);
     auto isCreated(const Database&, const std::list<QString> &existingTables,
                    const std::list<QString> &existingViews) const -> bool;
@@ -45,8 +45,7 @@ class Creator {
     static void insert(const Database&, const Insert&);
 };
 
-inline auto Creator::getRequiredCreators() const ->
-        const std::list<std::reference_wrapper<const Creator>>& {
+inline auto Creator::getRequiredCreators() const -> const CreatorList& {
     return this->requiredCreators;
 }
 

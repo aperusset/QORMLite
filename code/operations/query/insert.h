@@ -13,11 +13,11 @@ class Insert : public TableQuery {
  public:
     explicit Insert(const QString &tableName);
     Insert(const QString &tableName, std::list<Assignment>);
-    auto getAssignments() const -> std::list<Assignment>;
+    auto getAssignments() const -> const std::list<Assignment>&;
     auto generate() const -> QString override;
 };
 
-inline auto Insert::getAssignments() const -> std::list<Assignment> {
+inline auto Insert::getAssignments() const -> const std::list<Assignment>& {
     return this->assignments;
 }
 

@@ -83,7 +83,7 @@ auto QORM::Utils::getUIntOrDefault(const QSqlRecord &record,
                                    const QString &fieldName,
                                    uint32_t defaultValue) -> uint32_t {
     return getOrDefault<uint32_t>(record, fieldName, defaultValue,
-                                  [](const QVariant &variant) -> uint32_t {
+                                  [](const auto &variant) -> uint32_t {
                                     return variant.toUInt();
                                   });
 }
@@ -92,7 +92,7 @@ auto QORM::Utils::getIntOrDefault(const QSqlRecord &record,
                                   const QString &fieldName,
                                   int32_t defaultValue) -> int32_t {
     return getOrDefault<int32_t>(record, fieldName, defaultValue,
-                                 [](const QVariant &variant) -> int32_t {
+                                 [](const auto &variant) -> int32_t {
                                    return variant.toInt();
                                  });
 }
@@ -101,12 +101,12 @@ auto QORM::Utils::getDoubleOrDefault(const QSqlRecord &record,
                                      const QString &fieldName,
                                      double defaultValue) -> double {
     return getOrDefault<double>(record, fieldName, defaultValue,
-                                [](const QVariant &variant) -> double {
+                                [](const auto &variant) -> double {
                                   return variant.toDouble();
                                 });
 }
 
-auto const validString = [](const QString &value) {
+const auto validString = [](const QString &value) {
     return !value.isEmpty();
 };
 
@@ -119,7 +119,7 @@ auto QORM::Utils::notBlankOrThrow(const QString &value) -> QVariant {
                                  "A not blank string is expected", validString);
 }
 
-auto const validDate = [](const QDate &value) {
+const auto validDate = [](const QDate &value) {
     return value.isValid();
 };
 

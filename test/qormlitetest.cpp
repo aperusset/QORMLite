@@ -68,11 +68,7 @@ void QORMLiteTest::destroyAllShouldSuccess() {
 }
 
 void QORMLiteTest::initTestCase() {
-    this->connector = new TestConnector(this->databaseName());
-}
-
-void QORMLiteTest::cleanupTestCase() {
-    delete this->connector;
+    this->connector = std::make_unique<TestConnector>(this->databaseName());
 }
 
 void QORMLiteTest::cleanup() {

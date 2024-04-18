@@ -17,16 +17,16 @@ class Order : public Operation {
     Order(QString fieldName, const Ordering&);
 
  public:
-    auto getFieldName() const -> QString;
-    auto getOrdering() const -> Ordering;
+    auto getFieldName() const -> const QString&;
+    auto getOrdering() const -> const Ordering&;
     auto generate() const -> QString override;
 };
 
-inline auto Order::getFieldName() const -> QString {
+inline auto Order::getFieldName() const -> const QString& {
     return this->fieldName;
 }
 
-inline auto Order::getOrdering() const -> Ordering {
+inline auto Order::getOrdering() const -> const Ordering& {
     return this->ordering;
 }
 
