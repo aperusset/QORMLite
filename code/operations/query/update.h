@@ -9,7 +9,7 @@
 namespace QORM {
 
 class Update : public TableQuery {
-    const std::list<Assignment> assignements;
+    const std::list<Assignment> assignments;
     const std::list<Condition> conditions;
 
  public:
@@ -18,13 +18,13 @@ class Update : public TableQuery {
            const Condition&);
     Update(const QString &tableName, std::list<Assignment>,
            std::list<Condition>);
-    auto getAssignements() const -> const std::list<Assignment>&;
+    auto getAssignments() const -> const std::list<Assignment>&;
     auto getConditions() const -> const std::list<Condition>&;
     auto generate() const -> QString override;
 };
 
-inline auto Update::getAssignements() const -> const std::list<Assignment>& {
-    return this->assignements;
+inline auto Update::getAssignments() const -> const std::list<Assignment>& {
+    return this->assignments;
 }
 
 inline auto Update::getConditions() const -> const std::list<Condition>& {
