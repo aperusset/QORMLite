@@ -10,7 +10,7 @@ class UpdateTest : public QObject {
     static const QString DEFAULT_FIELD_NAME;
 
  private slots:
-    static void withoutAssignementsShouldFail();
+    static void withoutAssignmentsShouldFail();
     static void generateWithoutConditions();
     static void generateWithConditions();
 };

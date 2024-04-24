@@ -4,24 +4,24 @@
 #include "operations/query/condition/and.h"
 
 QORM::Update::Update(const QString &tableName,
-                     const std::list<Assignment> &assignements) :
-    Update(tableName, assignements, {}) {}
+                     const std::list<Assignment> &assignments) :
+    Update(tableName, assignments, {}) {}
 
 QORM::Update::Update(const QString &tableName,
-                     const std::list<Assignment> &assignements,
+                     const std::list<Assignment> &assignments,
                      const Condition &condition) :
-    Update(tableName, assignements, std::list<Condition>({condition})) {}
+    Update(tableName, assignments, std::list<Condition>({condition})) {}
 
 QORM::Update::Update(const QString &tableName,
-                     std::list<Assignment> assignements,
+                     std::list<Assignment> assignments,
                      std::list<Condition> conditions) :
-    TableQuery(tableName), assignements(std::move(assignements)),
+    TableQuery(tableName), assignments(std::move(assignments)),
     conditions(std::move(conditions)) {
-    if (this->assignements.empty()) {
-        throw std::invalid_argument("Update must have at least 1 assignement");
+    if (this->assignments.empty()) {
+        throw std::invalid_argument("Update must have at least one assignment");
     }
 
-    for (const auto &assignement : this->assignements) {
+    for (const auto &assignement : this->assignments) {
         this->addBindable(assignement);
     }
     for (const auto &condition : this->conditions) {
@@ -33,10 +33,10 @@ QORM::Update::Update(const QString &tableName,
 
 auto QORM::Update::generate() const -> QString {
     QString update = "update " + this->getTableName() + " set ";
-    QStringList assignements;
-    for (const auto &assignement : this->assignements) {
-        assignements << assignement.generate();
+    QStringList assignments;
+    for (const auto &assignment : this->assignments) {
+        assignments << assignment.generate();
     }
-    return (update + assignements.join(",") +
+    return (update + assignments.join(",") +
         Condition::generateMultiple(" where ", this->conditions)).simplified();
 }

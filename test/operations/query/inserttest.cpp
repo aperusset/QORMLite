@@ -18,7 +18,7 @@ void InsertTest::generateDefaultValues() {
                         " default values");
 }
 
-void InsertTest::generateWithAssignements() {
+void InsertTest::generateWithAssignments() {
     // Given
     auto const assignement = QORM::Assignment(DEFAULT_FIELD_NAME, 1);
     auto const insert = QORM::Insert(DEFAULT_TABLE_NAME,
