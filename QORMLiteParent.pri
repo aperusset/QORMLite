@@ -1,4 +1,4 @@
-QMAKE_CXXFLAGS += -std=c++14 -std=gnu++11 -Wall -Wextra #-Wpedantic
+QMAKE_CXXFLAGS += -std=c++14 -std=gnu++14 -Wall -Wextra -Wpedantic -Werror
 CONFIG += c++14
 QT += sql
 DEFINES += QT_DEPRECATED_WARNINGS
