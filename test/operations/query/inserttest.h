@@ -11,7 +11,7 @@ class InsertTest : public QObject {
 
  private slots:
     static void generateDefaultValues();
-    static void generateWithAssignements();
+    static void generateWithAssignments();
 };
 
 #endif  // TEST_OPERATIONS_QUERY_INSERTTEST_H_
