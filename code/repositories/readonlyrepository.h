@@ -135,11 +135,17 @@ class ReadOnlyRepository {
     }
 
     virtual auto keyCondition(const Key &key) const -> Condition {
-        return QORM::Equals::field(this->keyName(), key);
+        if constexpr (std::is_integral<Key>::value) {
+            return QORM::Equals::field(this->keyName(), key);
+        }
+        throw std::runtime_error("keyCondition must be overriden");
     }
 
     virtual auto buildKey(const QSqlRecord &record) const -> Key {
-        return QORM::Utils::getUIntOrThrow(record, this->keyName());
+        if constexpr (std::is_integral<Key>::value) {
+            return QORM::Utils::getUIntOrThrow(record, this->keyName());
+        }
+        throw std::runtime_error("buildKey must be overriden");
     }
 
     virtual auto tableName() const -> QString = 0;
