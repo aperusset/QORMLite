@@ -6,12 +6,12 @@
 
 void PrimaryKeyTest::getSingleField() {
     // Given
-    auto const field = QORM::Field("name", QORM::Type("type"), false,
+    const auto field = QORM::Field("name", QORM::Type("type"), false,
                                    QString());
-    auto const primaryKey = QORM::PrimaryKey(field);
+    const auto primaryKey = QORM::PrimaryKey(field);
 
     // When
-    auto const fields = primaryKey.getFields();
+    const auto fields = primaryKey.getFields();
 
     // Then
     QCOMPARE(fields.size(), 1U);
@@ -19,12 +19,12 @@ void PrimaryKeyTest::getSingleField() {
 
 void PrimaryKeyTest::getMultipleFields() {
     // Given
-    auto const field = QORM::Field("name", QORM::Type("type"), false,
+    const auto field = QORM::Field("name", QORM::Type("type"), false,
                                    QString());
-    auto const primaryKey = QORM::PrimaryKey({field, field});
+    const auto primaryKey = QORM::PrimaryKey({field, field});
 
     // When
-    auto const fields = primaryKey.getFields();
+    const auto fields = primaryKey.getFields();
 
     // Then
     QCOMPARE(fields.size(), 2U);
@@ -33,11 +33,11 @@ void PrimaryKeyTest::getMultipleFields() {
 
 void PrimaryKeyTest::isAutoIncrement() {
     // Given
-    auto const primaryKey = QORM::PrimaryKey(QORM::Field("name",
+    const auto primaryKey = QORM::PrimaryKey(QORM::Field("name",
                                              QORM::Type("type"), false,
                                              QString()));
     // When
-    auto const isAutoIncrement = primaryKey.isAutoIncrement();
+    const auto isAutoIncrement = primaryKey.isAutoIncrement();
 
     // Then
     QVERIFY(isAutoIncrement);
@@ -45,11 +45,11 @@ void PrimaryKeyTest::isAutoIncrement() {
 
 void PrimaryKeyTest::isNotAutoIncrement() {
     // Given
-    auto const primaryKey = QORM::PrimaryKey(QORM::Field("name",
+    const auto primaryKey = QORM::PrimaryKey(QORM::Field("name",
                                              QORM::Type("type"), false,
                                              QString()), false);
     // When
-    auto const isAutoIncrement = primaryKey.isAutoIncrement();
+    const auto isAutoIncrement = primaryKey.isAutoIncrement();
 
     // Then
     QVERIFY(!isAutoIncrement);
@@ -57,12 +57,12 @@ void PrimaryKeyTest::isNotAutoIncrement() {
 
 void PrimaryKeyTest::generateSingleField() {
     // Given
-    auto const type = QORM::Type("type");
-    auto const field = QORM::Field("name", type, false, QString());
-    auto const primaryKey = QORM::PrimaryKey(field, false);
+    const auto type = QORM::Type("type");
+    const auto field = QORM::Field("name", type, false, QString());
+    const auto primaryKey = QORM::PrimaryKey(field, false);
 
     // When
-    auto const generated = primaryKey.generate();
+    const auto generated = primaryKey.generate();
 
     // Then
     QCOMPARE(generated, "primary key (name)");
@@ -70,13 +70,13 @@ void PrimaryKeyTest::generateSingleField() {
 
 void PrimaryKeyTest::generateSingleFieldAutoIncrement() {
     // Given
-    auto const type = QORM::Type("type");
-    auto const field = QORM::Field("name", type, false, QString());
-    auto const generatedField = field.generate();
-    auto const primaryKey = QORM::PrimaryKey(field);
+    const auto type = QORM::Type("type");
+    const auto field = QORM::Field("name", type, false, QString());
+    const auto generatedField = field.generate();
+    const auto primaryKey = QORM::PrimaryKey(field);
 
     // When
-    auto const generated = primaryKey.generate();
+    const auto generated = primaryKey.generate();
 
     // Then
     QCOMPARE(generated, generatedField + " primary key autoincrement");
@@ -84,12 +84,12 @@ void PrimaryKeyTest::generateSingleFieldAutoIncrement() {
 
 void PrimaryKeyTest::generateMultipleFields() {
     // Given
-    auto const type = QORM::Type("type");
-    auto const field = QORM::Field("name", type, false, QString());
-    auto const primaryKey = QORM::PrimaryKey({field, field});
+    const auto type = QORM::Type("type");
+    const auto field = QORM::Field("name", type, false, QString());
+    const auto primaryKey = QORM::PrimaryKey({field, field});
 
     // When
-    auto const generated = primaryKey.generate();
+    const auto generated = primaryKey.generate();
 
     // Then
     QCOMPARE(generated, "primary key (name, name)");

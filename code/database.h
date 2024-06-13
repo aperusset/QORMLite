@@ -21,6 +21,7 @@ namespace QORM {
 class Database {
     QMutex databaseMutex;
 
+    // TODO(aperusset) Database should take connector and creator ownership ?
     const QORM::Connector &connector;
     const QORM::Creator* const creator;
     const bool verbose;
@@ -59,11 +60,11 @@ class Database {
     auto insertAndRetrieveKey(const Insert &insert,
         const std::function<Key(const QSqlQuery&)> &keyExtractor =
             [](const auto &query) -> Key {
-                const auto &result = query.lastInsertId();
-                if (!result.isValid() || !result.template canConvert<Key>()) {
-                    throw std::logic_error("Failed to get last id as Key");
+                if (const auto &result = query.lastInsertId();
+                        result.isValid() & result.template canConvert<Key>()) {
+                    return result.toInt();
                 }
-                return result.toInt();
+                throw std::logic_error("Failed to get last id as Key");
             }) const {
         return keyExtractor(this->execute(insert));
     }
@@ -72,12 +73,11 @@ class Database {
     auto entity(const Select &select,
                 const std::function<Entity&(const QSqlRecord&)> &extractor)
     const -> Entity& {
-        const auto allEntities = entities(select, extractor);
-        if (allEntities.empty()) {
-            throw std::logic_error("No entity found with given query : " +
-                                   select.generate().toStdString());
+        if (const auto all = entities(select, extractor); !all.empty()) {
+            return all.front().get();
         }
-        return allEntities.front().get();
+        throw std::logic_error("No entity found with given query : " +
+                               select.generate().toStdString());
     }
 
     template<class Entity>
@@ -94,11 +94,10 @@ class Database {
     template<typename Result>
     auto result(const Select &select, const Result &defaultValue,
             const std::function<Result(const QSqlRecord&)> &extractor) const {
-        const auto allResults = results(select, extractor);
-        if (allResults.empty()) {
-            return defaultValue;
+        if (const auto all = results(select, extractor); !all.empty()) {
+            return all.front();
         }
-        return allResults.front();
+        return defaultValue;
     }
 
     template<typename Result>

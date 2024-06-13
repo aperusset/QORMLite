@@ -6,7 +6,7 @@
 #include "observer.h"
 
 class TestObserver : public QORM::Observer<>  {
-    static const int INVALID_KEY = -1;
+    inline static const int INVALID_KEY = -1;
 
     std::list<std::pair<int, std::type_index>> changedKeys;
     std::list<std::pair<int, std::type_index>> deletedKeys;

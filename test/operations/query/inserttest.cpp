@@ -2,15 +2,12 @@
 #include "operations/query/insert.h"
 #include "operations/query/assignment.h"
 
-const QString InsertTest::DEFAULT_TABLE_NAME = "table_name";
-const QString InsertTest::DEFAULT_FIELD_NAME = "field";
-
 void InsertTest::generateDefaultValues() {
     // Given
-    auto const insert = QORM::Insert(DEFAULT_TABLE_NAME);
+    const auto insert = QORM::Insert(DEFAULT_TABLE_NAME);
 
     // When
-    auto const generated = insert.generate();
+    const auto generated = insert.generate();
 
     // Then
     QVERIFY(!insert.hasBindables());
@@ -20,11 +17,11 @@ void InsertTest::generateDefaultValues() {
 
 void InsertTest::generateWithAssignments() {
     // Given
-    auto const assignement = QORM::Assignment(DEFAULT_FIELD_NAME, 1);
-    auto const insert = QORM::Insert(DEFAULT_TABLE_NAME,
+    const auto assignement = QORM::Assignment(DEFAULT_FIELD_NAME, 1);
+    const auto insert = QORM::Insert(DEFAULT_TABLE_NAME,
                                      {assignement, assignement});
     // When
-    auto const generated = insert.generate();
+    const auto generated = insert.generate();
 
     // Then
     QVERIFY(insert.hasBindables());

@@ -6,8 +6,8 @@
 class JoinTest : public QObject {
     Q_OBJECT
 
-    static const QString DEFAULT_TABLE_NAME;
-    static const QString DEFAULT_FIELD_NAME;
+    inline static const QString DEFAULT_TABLE_NAME = "table";
+    inline static const QString DEFAULT_FIELD_NAME = "field";
 
  private slots:
     static void innerJoinShouldFailWithoutConditions();

@@ -6,7 +6,7 @@
 class ForeignKeyTest : public QObject {
     Q_OBJECT
 
-    static const QString DEFAULT_TARGET_TABLE;
+    inline static const QString DEFAULT_TARGET_TABLE = "targetTable";
 
  private slots:
     static void emptyReferencesListShouldFail();

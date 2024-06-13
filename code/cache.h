@@ -32,7 +32,7 @@ class Cache {
             throw std::invalid_argument("Cannot store a null entity");
         }
         if (!this->contains(key)) {
-            entities.insert(std::make_pair(key,
+            entities.insert(std::pair(key,
                 std::forward<std::unique_ptr<Entity>>(entity)));
         }
         return this->get(key);

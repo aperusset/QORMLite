@@ -25,8 +25,8 @@ class ReadOnlyRepository {
     const std::unique_ptr<Cache<Key, Entity>> cache;
 
     const EntityCreator entityCreator =
-        [=](const auto &record) -> Entity& {
-            return cache.get()->insert(
+        [this](const auto &record) -> Entity& {
+            return this->cache.get()->insert(
                 this->buildKey(record),
                 std::unique_ptr<Entity>(this->build(record)));
         };
@@ -67,19 +67,16 @@ class ReadOnlyRepository {
 
     auto get(const Key &key) const -> Entity& {
         return this->cache.get()->getOrCreate(key, [=]() -> Entity& {
-            return database.entity<Entity>(
-                Select(this->tableName(), this->fields())
-                        .where({this->keyCondition(key)}),
-                entityCreator);
+            return database.entity(Select(this->tableName(), this->fields())
+                    .where({this->keyCondition(key)}), entityCreator);
         });
     }
 
     auto get(const std::list<Condition> &conditions) const -> Entity& {
-        auto const entities = this->getAll(conditions);
-        if (entities.empty()) {
-            throw std::logic_error("No entity match the given conditions");
+        if (const auto entities = this->getAll(conditions); !entities.empty()) {
+            return entities.front().get();
         }
-        return entities.front().get();
+        throw std::logic_error("No entity match the given conditions");
     }
 
     auto getAll(const std::list<Order> &orders = {}) const {
@@ -95,7 +92,7 @@ class ReadOnlyRepository {
     }
 
     auto select(const Select &select) const {
-        return database.entities<Entity>(select, entityCreator);
+        return database.entities(select, entityCreator);
     }
 
     auto count() const -> size_t {
@@ -103,7 +100,7 @@ class ReadOnlyRepository {
     }
 
     virtual auto count(const std::list<Condition> &conditions) const -> size_t {
-        auto const total = "total";
+        const auto total = "total";
         return database.result<size_t>(
             Select(this->tableName(), {Count("*", total)})
                     .where(conditions), 0,

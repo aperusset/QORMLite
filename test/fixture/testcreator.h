@@ -12,9 +12,9 @@ class TestCreator : public QORM::Creator {
     auto tables() const -> std::list<QString> override;
     auto views() const -> std::list<QString> override;
 
-    static const QString TEST_TABLE;
-    static const QString TEST_VIEW;
-    static const QString TEST_FIELD;
+    inline static const QString TEST_TABLE = "test_table";
+    inline static const QString TEST_VIEW = "test_view";
+    inline static const QString TEST_FIELD = "test_field";
 };
 
 class FakeCreator : public QORM::Creator {
