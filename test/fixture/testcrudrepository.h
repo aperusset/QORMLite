@@ -7,7 +7,7 @@
 #include "operations/query/assignment.h"
 #include "repositories/crudrepository.h"
 
-class TestCRUDRepository : public QORM::CRUDRepository<int, TestEntity> {
+class TestCRUDRepository : public QORM::CRUDRepository<TestEntity> {
  public:
     explicit TestCRUDRepository(const QORM::Database &database);
 
