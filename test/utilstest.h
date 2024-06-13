@@ -20,6 +20,8 @@ class UtilsTest : public QObject {
     static void containsShouldReturnTrue();
     static void containsShouldReturnFalse();
     static void joinToStringShouldJoinWithSeparator();
+    static void getOrThrowShouldReturnValue();
+    static void getOrThrowShouldThrow();
     static void getOrDefaultShouldReturnValue();
     static void getOrDefaultShouldReturnDefault();
     static void getOrDefaultShouldReturnDefaultIfNotExists();
@@ -29,6 +31,7 @@ class UtilsTest : public QObject {
     static void getStringOrDefaultShouldReturnValue();
     static void getDateOrDefaultShouldReturnValue();
     static void getDateTimeOrDefaultShouldReturnValue();
+    static void getUIntOrThrowShouldReturnValue();
     static void getUIntOrDefaultShouldReturnValue();
     static void getIntOrDefaultShouldReturnValue();
     static void getDoubleOrDefaultShouldReturnValue();

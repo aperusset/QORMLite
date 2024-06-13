@@ -79,13 +79,21 @@ auto QORM::Utils::getDateTimeOrDefault(const QSqlRecord &record,
                                    &QVariant::toDateTime);
 }
 
+const auto uIntExtractor = [](const auto &variant) -> uint32_t {
+    return variant.toUInt();
+};
+
 auto QORM::Utils::getUIntOrDefault(const QSqlRecord &record,
                                    const QString &fieldName,
                                    uint32_t defaultValue) -> uint32_t {
     return getOrDefault<uint32_t>(record, fieldName, defaultValue,
-                                  [](const auto &variant) -> uint32_t {
-                                    return variant.toUInt();
-                                  });
+                                  uIntExtractor);
+}
+
+auto QORM::Utils::getUIntOrThrow(const QSqlRecord &record,
+                                 const QString &fieldName) -> uint32_t {
+    return getOrThrow<uint32_t>(record, fieldName,
+                    "A valid unsigned int is expected", uIntExtractor);
 }
 
 auto QORM::Utils::getIntOrDefault(const QSqlRecord &record,
@@ -106,7 +114,7 @@ auto QORM::Utils::getDoubleOrDefault(const QSqlRecord &record,
                                 });
 }
 
-const auto validString = [](const QString &value) {
+const auto validString = [](const auto &value) {
     return !value.isEmpty();
 };
 

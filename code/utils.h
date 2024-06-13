@@ -12,9 +12,7 @@
 #include <string>
 #include "operations/query/selection/selection.h"
 
-namespace QORM {
-
-namespace Utils {
+namespace QORM::Utils {
 
     /**
      * @brief Format a QDate to database valid date
@@ -108,8 +106,30 @@ namespace Utils {
     }
 
     /**
+     * @brief Extract a T value from a QSqlRecord or, if null, throw an
+     * std::invalid_argument with a given error message
+     * @param record the record from which to extract the value
+     * @param fieldName the name of the field to extract from the record
+     * @param errorMessage the error message if value is null
+     * @param extractor the function that transform from QVariant to T
+     * @return extracted T value
+     * @throw std::invalid_argument if the value is invalid
+     */
+    template<typename T>
+    auto getOrThrow(const QSqlRecord &record, const QString &fieldName,
+                    const std::string &errorMessage,
+                    const std::function<T(const QVariant&)> &extractor) {
+        if (record.isNull(fieldName)) {
+            throw std::invalid_argument(errorMessage);
+        } else {
+            return extractor(record.value(fieldName));
+        }
+    }
+
+    /**
      * @brief Extract a T value from a QSqlRecord or, if null, a default value
      * @param record the record from which to extract the value
+     * @param fieldName the name of the field to extract from the record
      * @param defaultValue the default T value
      * @param extractor the function that transform from QVariant to T
      * @return extracted T value
@@ -128,6 +148,7 @@ namespace Utils {
     /**
      * @brief Extract a pointer to T value from a QSqlRecord or nullptr
      * @param record the record from which to extract the pointer
+     * @param fieldName the name of the field to extract from the record
      * @param extractor the function that transform from QVariant to T*
      * @return extracted pointer to T or nulltpr
      */
@@ -182,6 +203,15 @@ namespace Utils {
      */
     auto getUIntOrDefault(const QSqlRecord &record, const QString &fieldName,
                           uint32_t defaultValue) -> uint32_t;
+
+    /**
+     * @brief Extract a uint32_t from a QSqlRecord or, if null, a default value
+     * @param record the record from which to extract the uint32_t value
+     * @param defaultValue the default uint32_t value
+     * @return extracted uint32_t value
+     */
+    auto getUIntOrThrow(const QSqlRecord &record, const QString &fieldName)
+        -> uint32_t;
 
     /**
      * @brief Extract a int32_t from a QSqlRecord or, if null, a default value
@@ -282,8 +312,6 @@ namespace Utils {
      */
     auto validOrThrow(const QDateTime &value) -> QVariant;
 
-}  // namespace Utils
-
-}  // namespace QORM
+}  // namespace QORM::Utils
 
 #endif  // UTILS_H_

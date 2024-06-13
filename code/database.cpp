@@ -6,7 +6,6 @@ QORM::Database::Database(const QORM::Connector &connector, bool verbose) :
     connector(connector), creator(nullptr), verbose(verbose) {
 }
 
-
 QORM::Database::Database(const QORM::Connector &connector,
                          const QORM::Creator &creator, bool verbose) :
     databaseMutex(QMutex::RecursionMode::Recursive),
@@ -70,9 +69,8 @@ auto QORM::Database::connect() -> bool {
             const auto shouldBeCreated = !this->creator->isCreated(*this,
                 this->connector.tables(), this->connector.views());
             if (shouldBeCreated) {
-                qDebug(
-                    "Create database with name %s",
-                    qUtf8Printable(connector.getName()));
+                qDebug("Create database with name %s",
+                       qUtf8Printable(connector.getName()));
                 this->creator->createAllAndPopulate(*this);
             }
             return shouldBeCreated;

@@ -21,6 +21,7 @@ namespace QORM {
 class Database {
     QMutex databaseMutex;
 
+    // TODO(aperusset) Database should take connector and creator ownership
     const QORM::Connector &connector;
     const QORM::Creator* const creator;
     const bool verbose;

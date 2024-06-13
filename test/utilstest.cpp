@@ -124,12 +124,43 @@ void UtilsTest::joinToStringShouldJoinWithSeparator() {
 
     // When
     auto const joined = QORM::Utils::joinToString<int>(values, "-",
-        [](const int &value) -> QString {
+        [](const auto &value) -> QString {
             return QString::number(value);
         });
 
     // Then
     QCOMPARE(joined, "0-1-2");
+}
+
+void UtilsTest::getOrThrowShouldReturnValue() {
+    // Given
+    auto field = QSqlField(FIELD_NAME, QVariant::Type::String);
+    auto const value = QString("value");
+    field.setValue(QVariant::fromValue(value));
+    auto record = QSqlRecord();
+    record.append(field);
+
+    // When
+    auto rValue = QORM::Utils::getOrThrow<QString>(record, FIELD_NAME,
+                        "error-message", [](const auto &variant) -> QString {
+                            return variant.toString();
+                        });
+    // Then
+    QCOMPARE(rValue, value);
+}
+
+void UtilsTest::getOrThrowShouldThrow() {
+    // Given
+    auto field = QSqlField(FIELD_NAME, QVariant::Type::String);
+    auto record = QSqlRecord();
+    record.append(field);
+
+    // When / Then
+    QVERIFY_EXCEPTION_THROWN(
+        QORM::Utils::getOrThrow<QString>(record, FIELD_NAME,
+            "Error message", [](const auto &variant) -> QString {
+                return variant.toString();
+            }), std::invalid_argument);
 }
 
 void UtilsTest::getOrDefaultShouldReturnValue() {
@@ -142,7 +173,7 @@ void UtilsTest::getOrDefaultShouldReturnValue() {
 
     // When
     auto rValue = QORM::Utils::getOrDefault<QString>(record, FIELD_NAME, "",
-                        [](const QVariant &variant) -> QString {
+                        [](const auto &variant) -> QString {
                             return variant.toString();
                         });
     // Then
@@ -158,7 +189,7 @@ void UtilsTest::getOrDefaultShouldReturnDefault() {
 
     // When
     auto rValue = QORM::Utils::getOrDefault<QString>(record, FIELD_NAME,
-                        defaultValue, [](const QVariant &variant) -> QString {
+                        defaultValue, [](const auto &variant) -> QString {
                             return variant.toString();
                         });
     // Then
@@ -171,7 +202,7 @@ void UtilsTest::getOrDefaultShouldReturnDefaultIfNotExists() {
 
     // When
     auto rValue = QORM::Utils::getOrDefault<QString>(QSqlRecord(), FIELD_NAME,
-                        defaultValue, [](const QVariant &variant) -> QString {
+                        defaultValue, [](const auto &variant) -> QString {
                             return variant.toString();
                         });
     // Then
@@ -188,7 +219,7 @@ void UtilsTest::getOrNullShouldReturnPointer() {
 
     // When
     auto *pointer = QORM::Utils::getOrNull<int32_t>(record, FIELD_NAME,
-                        [&value](const QVariant&) -> int32_t* {
+                        [&value](const auto&) -> int32_t* {
                             return &value;
                         });
     // Then
@@ -204,7 +235,7 @@ void UtilsTest::getOrNullShouldReturnNullptr() {
 
     // When
     auto *pointer = QORM::Utils::getOrNull<int32_t>(record, FIELD_NAME,
-                        [&value](const QVariant&) -> int32_t* {
+                        [&value](const auto&) -> int32_t* {
                             return &value;
                         });
     // Then
@@ -271,9 +302,24 @@ void UtilsTest::getDateTimeOrDefaultShouldReturnValue() {
     QCOMPARE(rValue, value);
 }
 
+void UtilsTest::getUIntOrThrowShouldReturnValue() {
+    // Given
+    auto field = QSqlField(FIELD_NAME, QVariant::Type::UInt);
+    auto const value = 42U;
+    field.setValue(QVariant::fromValue(value));
+    auto record = QSqlRecord();
+    record.append(field);
+
+    // When
+    auto rValue = QORM::Utils::getUIntOrThrow(record, FIELD_NAME);
+
+    // Then
+    QCOMPARE(rValue, value);
+}
+
 void UtilsTest::getUIntOrDefaultShouldReturnValue() {
     // Given
-    auto field = QSqlField(FIELD_NAME, QVariant::Type::Int);
+    auto field = QSqlField(FIELD_NAME, QVariant::Type::UInt);
     auto const value = 42U;
     field.setValue(QVariant::fromValue(value));
     auto record = QSqlRecord();
@@ -322,7 +368,7 @@ void UtilsTest::validOrNullShouldReturnValue() {
 
     // When
     auto const rValue = QORM::Utils::validOrNull<uint32_t>(value,
-                                                           [](const uint32_t) {
+                                                           [](const auto) {
                                                                return true;
                                                            });
     // Then
@@ -333,7 +379,7 @@ void UtilsTest::validOrNullShouldReturnValue() {
 
 void UtilsTest::validOrNullShouldReturnNull() {
     // Given / When
-    auto rValue = QORM::Utils::validOrNull<uint32_t>(42U, [](const uint32_t) {
+    auto rValue = QORM::Utils::validOrNull<uint32_t>(42U, [](const auto) {
         return false;
     });
 
@@ -347,10 +393,10 @@ void UtilsTest::validOrThrowShouldReturnValue() {
     auto const value = 42U;
 
     // When
-    auto const rValue = QORM::Utils::validOrThrow<uint32_t>(value, "message",
-                                                      [](const uint32_t) {
-                                                          return true;
-                                                      });
+    auto const rValue = QORM::Utils::validOrThrow<uint32_t>(value,
+                                            "error-message", [](const auto) {
+                                                 return true;
+                                             });
     // Then
     QVERIFY(rValue.isValid());
     QVERIFY(!rValue.isNull());
@@ -364,7 +410,7 @@ void UtilsTest::validOrThrowShouldThrow() {
     // When / Then
     QVERIFY_EXCEPTION_THROWN(
         QORM::Utils::validOrThrow<uint32_t>(42U, errorMessage,
-                                            [](const uint32_t) {
+                                            [](const auto) {
                                                 return false;
                                             }), std::invalid_argument);
 }

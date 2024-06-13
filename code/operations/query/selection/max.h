@@ -8,7 +8,8 @@ namespace QORM {
 
 class Max : public Selection {
  public:
-    Max(const QString &fieldToMax, const QString &renameTo) :
+    explicit Max(const QString &fieldToMax,
+                 const QString &renameTo = QString()) :
         Selection("max(" + fieldToMax + ")", renameTo) {}
 };
 
