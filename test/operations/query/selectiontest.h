@@ -6,9 +6,9 @@
 class SelectionTest : public QObject {
     Q_OBJECT
 
-    static const QString DEFAULT_FIELD_NAME;
-    static const QString DEFAULT_RENAMED_TO;
-    static const QString DEFAULT_FORMAT;
+    inline static const QString DEFAULT_FIELD_NAME = "defaultFieldName";
+    inline static const QString DEFAULT_RENAMED_TO = "renamedTo";
+    inline static const QString DEFAULT_FORMAT = "format";
 
  private slots:
     static void generate();

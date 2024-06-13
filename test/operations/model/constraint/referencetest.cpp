@@ -5,13 +5,13 @@
 
 void ReferenceTest::getFrom() {
     // Given
-    auto const type = QORM::Type("type");
-    auto const field1 = QORM::Field("field1", type, false, QString());
-    auto const field2 = QORM::Field("field2", type, false, QString());
-    auto const reference = QORM::Reference(field1, field2);
+    const auto type = QORM::Type("type");
+    const auto field1 = QORM::Field("field1", type, false, QString());
+    const auto field2 = QORM::Field("field2", type, false, QString());
+    const auto reference = QORM::Reference(field1, field2);
 
     // When
-    auto const &from = reference.getFrom();
+    const auto &from = reference.getFrom();
 
     // Then
     QCOMPARE(from.generate(), field1.generate());
@@ -19,13 +19,13 @@ void ReferenceTest::getFrom() {
 
 void ReferenceTest::getTo() {
     // Given
-    auto const type = QORM::Type("type");
-    auto const field1 = QORM::Field("field1", type, false, QString());
-    auto const field2 = QORM::Field("field2", type, false, QString());
-    auto const reference = QORM::Reference(field1, field2);
+    const auto type = QORM::Type("type");
+    const auto field1 = QORM::Field("field1", type, false, QString());
+    const auto field2 = QORM::Field("field2", type, false, QString());
+    const auto reference = QORM::Reference(field1, field2);
 
     // When
-    auto const &to = reference.getTo();
+    const auto &to = reference.getTo();
 
     // Then
     QCOMPARE(to.generate(), field2.generate());

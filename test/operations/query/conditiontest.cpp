@@ -19,10 +19,6 @@
 #include "operations/query/select.h"
 #include "./utils.h"
 
-const QString ConditionTest::DEFAULT_TABLE_NAME = "table";
-const QString ConditionTest::DEFAULT_FIELD_NAME = "field";
-const QVariant ConditionTest::DEFAULT_VALUE = QVariant::fromValue(42);
-
 void ConditionTest::withoutOperatorShouldFail() {
     // When / Then
     QVERIFY_EXCEPTION_THROWN(
@@ -40,10 +36,10 @@ void ConditionTest::withoutLeftOperandAndNestedConditionShouldFail() {
 
 void ConditionTest::parameterShouldReturnRightField() {
     // Given
-    auto const condition = QORM::Condition("op", {}, "leftField",
+    const auto condition = QORM::Condition("op", {}, "leftField",
                                            DEFAULT_FIELD_NAME, QVariant());
     // When
-    auto const parameter = condition.getParameter();
+    const auto parameter = condition.getParameter();
 
     // Then
     QCOMPARE(parameter, DEFAULT_FIELD_NAME);
@@ -51,10 +47,10 @@ void ConditionTest::parameterShouldReturnRightField() {
 
 void ConditionTest::isNull() {
     // Given
-    auto const isNull = QORM::IsNull(DEFAULT_FIELD_NAME);
+    const auto isNull = QORM::IsNull(DEFAULT_FIELD_NAME);
 
     // When
-    auto const generated = isNull.generate();
+    const auto generated = isNull.generate();
 
     // Then
     QCOMPARE(generated, DEFAULT_FIELD_NAME + " is null");
@@ -66,10 +62,10 @@ void ConditionTest::isNull() {
 
 void ConditionTest::isNotNull() {
     // Given
-    auto const isNotNull = QORM::IsNotNull(DEFAULT_FIELD_NAME);
+    const auto isNotNull = QORM::IsNotNull(DEFAULT_FIELD_NAME);
 
     // When
-    auto const generated = isNotNull.generate();
+    const auto generated = isNotNull.generate();
 
     // Then
     QCOMPARE(generated, DEFAULT_FIELD_NAME + " is not null");
@@ -82,10 +78,10 @@ void ConditionTest::isNotNull() {
 void ConditionTest::like() {
     // Given
     const auto *const likePattern = "%test%";
-    auto const like = QORM::Like(DEFAULT_FIELD_NAME, likePattern);
+    const auto like = QORM::Like(DEFAULT_FIELD_NAME, likePattern);
 
     // When
-    auto const generated = like.generate();
+    const auto generated = like.generate();
 
     // Then
     QCOMPARE(generated, DEFAULT_FIELD_NAME + " like " +
@@ -97,10 +93,10 @@ void ConditionTest::like() {
 
 void ConditionTest::equalsField() {
     // Given
-    auto const equals = QORM::Equals::field(DEFAULT_FIELD_NAME, DEFAULT_VALUE);
+    const auto equals = QORM::Equals::field(DEFAULT_FIELD_NAME, DEFAULT_VALUE);
 
     // When
-    auto const generated = equals.generate();
+    const auto generated = equals.generate();
 
     // Then
     QCOMPARE(generated, DEFAULT_FIELD_NAME + " = " +
@@ -112,11 +108,11 @@ void ConditionTest::equalsField() {
 
 void ConditionTest::equalsFields() {
     // Given
-    auto const equals = QORM::Equals::fields(DEFAULT_FIELD_NAME,
+    const auto equals = QORM::Equals::fields(DEFAULT_FIELD_NAME,
                                              DEFAULT_FIELD_NAME);
 
     // When
-    auto const generated = equals.generate();
+    const auto generated = equals.generate();
 
     // Then
     QCOMPARE(generated, DEFAULT_FIELD_NAME + " = " + DEFAULT_FIELD_NAME);
@@ -127,11 +123,11 @@ void ConditionTest::equalsFields() {
 
 void ConditionTest::equalsSelection() {
     // Given
-    auto const sum = QORM::Sum(DEFAULT_FIELD_NAME, QString());
-    auto const equals = QORM::Equals::selection(sum, DEFAULT_VALUE);
+    const auto sum = QORM::Sum(DEFAULT_FIELD_NAME, QString());
+    const auto equals = QORM::Equals::selection(sum, DEFAULT_VALUE);
 
     // When
-    auto const generated = equals.generate();
+    const auto generated = equals.generate();
 
     // Then
     QCOMPARE(generated, sum.generate() + " = " +
@@ -143,11 +139,11 @@ void ConditionTest::equalsSelection() {
 
 void ConditionTest::equalsSelections() {
     // Given
-    auto const sum = QORM::Sum(DEFAULT_FIELD_NAME, QString());
-    auto const equals = QORM::Equals::selections(sum, sum);
+    const auto sum = QORM::Sum(DEFAULT_FIELD_NAME, QString());
+    const auto equals = QORM::Equals::selections(sum, sum);
 
     // When
-    auto const generated = equals.generate();
+    const auto generated = equals.generate();
 
     // Then
     QCOMPARE(generated, sum.generate() + " = " + sum.generate());
@@ -158,11 +154,11 @@ void ConditionTest::equalsSelections() {
 
 void ConditionTest::notEqualsField() {
     // Given
-    auto const notEquals = QORM::NotEquals::field(DEFAULT_FIELD_NAME,
+    const auto notEquals = QORM::NotEquals::field(DEFAULT_FIELD_NAME,
                                                   DEFAULT_VALUE);
 
     // When
-    auto const generated = notEquals.generate();
+    const auto generated = notEquals.generate();
 
     // Then
     QCOMPARE(generated, DEFAULT_FIELD_NAME + " <> " +
@@ -174,10 +170,10 @@ void ConditionTest::notEqualsField() {
 
 void ConditionTest::notEqualsFields() {
     // Given
-    auto const notEquals = QORM::NotEquals::fields(DEFAULT_FIELD_NAME,
+    const auto notEquals = QORM::NotEquals::fields(DEFAULT_FIELD_NAME,
                                                    DEFAULT_FIELD_NAME);
     // When
-    auto const generated = notEquals.generate();
+    const auto generated = notEquals.generate();
 
     // Then
     QCOMPARE(generated, DEFAULT_FIELD_NAME + " <> " + DEFAULT_FIELD_NAME);
@@ -188,11 +184,11 @@ void ConditionTest::notEqualsFields() {
 
 void ConditionTest::notEqualsSelection() {
     // Given
-    auto const sum = QORM::Sum(DEFAULT_FIELD_NAME, QString());
-    auto const notEquals = QORM::NotEquals::selection(sum, DEFAULT_VALUE);
+    const auto sum = QORM::Sum(DEFAULT_FIELD_NAME, QString());
+    const auto notEquals = QORM::NotEquals::selection(sum, DEFAULT_VALUE);
 
     // When
-    auto const generated = notEquals.generate();
+    const auto generated = notEquals.generate();
 
     // Then
     QCOMPARE(generated,
@@ -204,11 +200,11 @@ void ConditionTest::notEqualsSelection() {
 
 void ConditionTest::notEqualsSelections() {
     // Given
-    auto const sum = QORM::Sum(DEFAULT_FIELD_NAME, QString());
-    auto const notEquals = QORM::NotEquals::selections(sum, sum);
+    const auto sum = QORM::Sum(DEFAULT_FIELD_NAME, QString());
+    const auto notEquals = QORM::NotEquals::selections(sum, sum);
 
     // When
-    auto const generated = notEquals.generate();
+    const auto generated = notEquals.generate();
 
     // Then
     QCOMPARE(generated, sum.generate() + " <> " + sum.generate());
@@ -219,11 +215,11 @@ void ConditionTest::notEqualsSelections() {
 
 void ConditionTest::greaterField() {
     // Given
-    auto const greater = QORM::Greater::field(DEFAULT_FIELD_NAME,
+    const auto greater = QORM::Greater::field(DEFAULT_FIELD_NAME,
                                               DEFAULT_VALUE);
 
     // When
-    auto const generated = greater.generate();
+    const auto generated = greater.generate();
 
     // Then
     QCOMPARE(generated, DEFAULT_FIELD_NAME + " > " +
@@ -235,10 +231,10 @@ void ConditionTest::greaterField() {
 
 void ConditionTest::greaterFields() {
     // Given
-    auto const greater = QORM::Greater::fields(DEFAULT_FIELD_NAME,
+    const auto greater = QORM::Greater::fields(DEFAULT_FIELD_NAME,
                                                DEFAULT_FIELD_NAME);
     // When
-    auto const generated = greater.generate();
+    const auto generated = greater.generate();
 
     // Then
     QCOMPARE(generated, DEFAULT_FIELD_NAME + " > " + DEFAULT_FIELD_NAME);
@@ -249,11 +245,11 @@ void ConditionTest::greaterFields() {
 
 void ConditionTest::greaterSelection() {
     // Given
-    auto const sum = QORM::Sum(DEFAULT_FIELD_NAME, QString());
-    auto const greater = QORM::Greater::selection(sum, DEFAULT_VALUE);
+    const auto sum = QORM::Sum(DEFAULT_FIELD_NAME, QString());
+    const auto greater = QORM::Greater::selection(sum, DEFAULT_VALUE);
 
     // When
-    auto const generated = greater.generate();
+    const auto generated = greater.generate();
 
     // Then
     QCOMPARE(generated,
@@ -265,11 +261,11 @@ void ConditionTest::greaterSelection() {
 
 void ConditionTest::greaterSelections() {
     // Given
-    auto const sum = QORM::Sum(DEFAULT_FIELD_NAME, QString());
-    auto const greater = QORM::Greater::selections(sum, sum);
+    const auto sum = QORM::Sum(DEFAULT_FIELD_NAME, QString());
+    const auto greater = QORM::Greater::selections(sum, sum);
 
     // When
-    auto const generated = greater.generate();
+    const auto generated = greater.generate();
 
     // Then
     QCOMPARE(generated, sum.generate() + " > " + sum.generate());
@@ -280,11 +276,11 @@ void ConditionTest::greaterSelections() {
 
 void ConditionTest::greaterOrEqualsField() {
     // Given
-    auto const greaterOrEquals = QORM::GreaterOrEquals::field(
+    const auto greaterOrEquals = QORM::GreaterOrEquals::field(
                 DEFAULT_FIELD_NAME, DEFAULT_VALUE);
 
     // When
-    auto const generated = greaterOrEquals.generate();
+    const auto generated = greaterOrEquals.generate();
 
     // Then
     QCOMPARE(generated, DEFAULT_FIELD_NAME + " >= " +
@@ -296,10 +292,10 @@ void ConditionTest::greaterOrEqualsField() {
 
 void ConditionTest::greaterOrEqualsFields() {
     // Given
-    auto const greaterOrEquals = QORM::GreaterOrEquals::fields(
+    const auto greaterOrEquals = QORM::GreaterOrEquals::fields(
                 DEFAULT_FIELD_NAME, DEFAULT_FIELD_NAME);
     // When
-    auto const generated = greaterOrEquals.generate();
+    const auto generated = greaterOrEquals.generate();
 
     // Then
     QCOMPARE(generated, DEFAULT_FIELD_NAME + " >= " + DEFAULT_FIELD_NAME);
@@ -310,11 +306,11 @@ void ConditionTest::greaterOrEqualsFields() {
 
 void ConditionTest::greaterOrEqualsSelection() {
     // Given
-    auto const sum = QORM::Sum(DEFAULT_FIELD_NAME, QString());
-    auto const greaterOrEquals = QORM::GreaterOrEquals::selection(sum,
+    const auto sum = QORM::Sum(DEFAULT_FIELD_NAME, QString());
+    const auto greaterOrEquals = QORM::GreaterOrEquals::selection(sum,
                                     DEFAULT_VALUE);
     // When
-    auto const generated = greaterOrEquals.generate();
+    const auto generated = greaterOrEquals.generate();
 
     // Then
     QCOMPARE(generated,
@@ -326,11 +322,11 @@ void ConditionTest::greaterOrEqualsSelection() {
 
 void ConditionTest::greaterOrEqualsSelections() {
     // Given
-    auto const sum = QORM::Sum(DEFAULT_FIELD_NAME, QString());
-    auto const greaterOrEquals = QORM::GreaterOrEquals::selections(sum, sum);
+    const auto sum = QORM::Sum(DEFAULT_FIELD_NAME, QString());
+    const auto greaterOrEquals = QORM::GreaterOrEquals::selections(sum, sum);
 
     // When
-    auto const generated = greaterOrEquals.generate();
+    const auto generated = greaterOrEquals.generate();
 
     // Then
     QCOMPARE(generated, sum.generate() + " >= " + sum.generate());
@@ -341,11 +337,11 @@ void ConditionTest::greaterOrEqualsSelections() {
 
 void ConditionTest::smallerField() {
     // Given
-    auto const smaller = QORM::Smaller::field(DEFAULT_FIELD_NAME,
+    const auto smaller = QORM::Smaller::field(DEFAULT_FIELD_NAME,
                                               DEFAULT_VALUE);
 
     // When
-    auto const generated = smaller.generate();
+    const auto generated = smaller.generate();
 
     // Then
     QCOMPARE(generated, DEFAULT_FIELD_NAME + " < " +
@@ -357,10 +353,10 @@ void ConditionTest::smallerField() {
 
 void ConditionTest::smallerFields() {
     // Given
-    auto const smaller = QORM::Smaller::fields(DEFAULT_FIELD_NAME,
+    const auto smaller = QORM::Smaller::fields(DEFAULT_FIELD_NAME,
                                                DEFAULT_FIELD_NAME);
     // When
-    auto const generated = smaller.generate();
+    const auto generated = smaller.generate();
 
     // Then
     QCOMPARE(generated, DEFAULT_FIELD_NAME + " < " + DEFAULT_FIELD_NAME);
@@ -371,11 +367,11 @@ void ConditionTest::smallerFields() {
 
 void ConditionTest::smallerSelection() {
     // Given
-    auto const sum = QORM::Sum(DEFAULT_FIELD_NAME, QString());
-    auto const smaller = QORM::Smaller::selection(sum, DEFAULT_VALUE);
+    const auto sum = QORM::Sum(DEFAULT_FIELD_NAME, QString());
+    const auto smaller = QORM::Smaller::selection(sum, DEFAULT_VALUE);
 
     // When
-    auto const generated = smaller.generate();
+    const auto generated = smaller.generate();
 
     // Then
     QCOMPARE(generated,
@@ -387,11 +383,11 @@ void ConditionTest::smallerSelection() {
 
 void ConditionTest::smallerSelections() {
     // Given
-    auto const sum = QORM::Sum(DEFAULT_FIELD_NAME, QString());
-    auto const smaller = QORM::Smaller::selections(sum, sum);
+    const auto sum = QORM::Sum(DEFAULT_FIELD_NAME, QString());
+    const auto smaller = QORM::Smaller::selections(sum, sum);
 
     // When
-    auto const generated = smaller.generate();
+    const auto generated = smaller.generate();
 
     // Then
     QCOMPARE(generated, sum.generate() + " < " + sum.generate());
@@ -402,11 +398,11 @@ void ConditionTest::smallerSelections() {
 
 void ConditionTest::smallerOrEqualsField() {
     // Given
-    auto const smallerOrEquals = QORM::SmallerOrEquals::field(
+    const auto smallerOrEquals = QORM::SmallerOrEquals::field(
                 DEFAULT_FIELD_NAME, DEFAULT_VALUE);
 
     // When
-    auto const generated = smallerOrEquals.generate();
+    const auto generated = smallerOrEquals.generate();
 
     // Then
     QCOMPARE(generated, DEFAULT_FIELD_NAME + " <= " +
@@ -418,10 +414,10 @@ void ConditionTest::smallerOrEqualsField() {
 
 void ConditionTest::smallerOrEqualsFields() {
     // Given
-    auto const smallerOrEquals = QORM::SmallerOrEquals::fields(
+    const auto smallerOrEquals = QORM::SmallerOrEquals::fields(
                 DEFAULT_FIELD_NAME, DEFAULT_FIELD_NAME);
     // When
-    auto const generated = smallerOrEquals.generate();
+    const auto generated = smallerOrEquals.generate();
 
     // Then
     QCOMPARE(generated, DEFAULT_FIELD_NAME + " <= " + DEFAULT_FIELD_NAME);
@@ -432,11 +428,11 @@ void ConditionTest::smallerOrEqualsFields() {
 
 void ConditionTest::smallerOrEqualsSelection() {
     // Given
-    auto const sum = QORM::Sum(DEFAULT_FIELD_NAME, QString());
-    auto const smallerOrEquals = QORM::SmallerOrEquals::selection(sum,
+    const auto sum = QORM::Sum(DEFAULT_FIELD_NAME, QString());
+    const auto smallerOrEquals = QORM::SmallerOrEquals::selection(sum,
                                     DEFAULT_VALUE);
     // When
-    auto const generated = smallerOrEquals.generate();
+    const auto generated = smallerOrEquals.generate();
 
     // Then
     QCOMPARE(generated,
@@ -448,11 +444,11 @@ void ConditionTest::smallerOrEqualsSelection() {
 
 void ConditionTest::smallerOrEqualsSelections() {
     // Given
-    auto const sum = QORM::Sum(DEFAULT_FIELD_NAME, QString());
-    auto const smallerOrEquals = QORM::SmallerOrEquals::selections(sum, sum);
+    const auto sum = QORM::Sum(DEFAULT_FIELD_NAME, QString());
+    const auto smallerOrEquals = QORM::SmallerOrEquals::selections(sum, sum);
 
     // When
-    auto const generated = smallerOrEquals.generate();
+    const auto generated = smallerOrEquals.generate();
 
     // Then
     QCOMPARE(generated, sum.generate() + " <= " + sum.generate());
@@ -463,11 +459,11 @@ void ConditionTest::smallerOrEqualsSelections() {
 
 void ConditionTest::inWithSelect() {
     // Given
-    auto const select = QORM::Select(DEFAULT_TABLE_NAME);
-    auto const in = QORM::In(DEFAULT_FIELD_NAME, select);
+    const auto select = QORM::Select(DEFAULT_TABLE_NAME);
+    const auto in = QORM::In(DEFAULT_FIELD_NAME, select);
 
     // When
-    auto const generated = in.generate();
+    const auto generated = in.generate();
 
     // Then
     QCOMPARE(generated, DEFAULT_FIELD_NAME + " in (" + select.generate() + ")");
@@ -475,11 +471,11 @@ void ConditionTest::inWithSelect() {
 
 void ConditionTest::notInWithSelect() {
     // Given
-    auto const select = QORM::Select(DEFAULT_TABLE_NAME);
-    auto const notIn = QORM::In(DEFAULT_FIELD_NAME, select, false);
+    const auto select = QORM::Select(DEFAULT_TABLE_NAME);
+    const auto notIn = QORM::In(DEFAULT_FIELD_NAME, select, false);
 
     // When
-    auto const generated = notIn.generate();
+    const auto generated = notIn.generate();
 
     // Then
     QCOMPARE(generated,
@@ -502,10 +498,10 @@ void ConditionTest::inWithEmptyStringsShouldFail() {
 
 void ConditionTest::inWithIntegers() {
     // Given
-    auto const in = QORM::In(DEFAULT_FIELD_NAME, {0, 1, 2});
+    const auto in = QORM::In(DEFAULT_FIELD_NAME, {0, 1, 2});
 
     // When
-    auto const generated = in.generate();
+    const auto generated = in.generate();
 
     // Then
     QCOMPARE(generated, DEFAULT_FIELD_NAME + " in (0, 1, 2)");
@@ -513,10 +509,10 @@ void ConditionTest::inWithIntegers() {
 
 void ConditionTest::notInWithIntegers() {
     // Given
-    auto const notIn = QORM::In(DEFAULT_FIELD_NAME, {0, 1, 2}, false);
+    const auto notIn = QORM::In(DEFAULT_FIELD_NAME, {0, 1, 2}, false);
 
     // When
-    auto const generated = notIn.generate();
+    const auto generated = notIn.generate();
 
     // Then
     QCOMPARE(generated, DEFAULT_FIELD_NAME + " not in (0, 1, 2)");
@@ -524,10 +520,10 @@ void ConditionTest::notInWithIntegers() {
 
 void ConditionTest::inWithStrings() {
     // Given
-    auto const in = QORM::In(DEFAULT_FIELD_NAME, {"test1", "test2", "test3"});
+    const auto in = QORM::In(DEFAULT_FIELD_NAME, {"test1", "test2", "test3"});
 
     // When
-    auto const generated = in.generate();
+    const auto generated = in.generate();
 
     // Then
     QCOMPARE(generated, DEFAULT_FIELD_NAME + " in ('test1', 'test2', 'test3')");
@@ -535,11 +531,11 @@ void ConditionTest::inWithStrings() {
 
 void ConditionTest::notInWithStrings() {
     // Given
-    auto const notIn = QORM::In(DEFAULT_FIELD_NAME, {"test1", "test2", "test3"},
+    const auto notIn = QORM::In(DEFAULT_FIELD_NAME, {"test1", "test2", "test3"},
                                 false);
 
     // When
-    auto const generated = notIn.generate();
+    const auto generated = notIn.generate();
 
     // Then
     QCOMPARE(generated,
@@ -548,7 +544,7 @@ void ConditionTest::notInWithStrings() {
 
 void ConditionTest::andSingleConditionShouldFail() {
     // Given
-    auto const equals = QORM::Equals::fields(DEFAULT_FIELD_NAME,
+    const auto equals = QORM::Equals::fields(DEFAULT_FIELD_NAME,
                                              DEFAULT_FIELD_NAME);
     // When / Then
     QVERIFY_EXCEPTION_THROWN(QORM::And({equals}), std::invalid_argument);
@@ -556,12 +552,12 @@ void ConditionTest::andSingleConditionShouldFail() {
 
 void ConditionTest::andMultipleConditions() {
     // Given
-    auto const equals = QORM::Equals::fields(DEFAULT_FIELD_NAME,
+    const auto equals = QORM::Equals::fields(DEFAULT_FIELD_NAME,
                                              DEFAULT_FIELD_NAME);
-    auto const andCondition = QORM::And({equals, equals, equals});
+    const auto andCondition = QORM::And({equals, equals, equals});
 
     // When
-    auto const generated = andCondition.generate();
+    const auto generated = andCondition.generate();
 
     // Then
     QCOMPARE(generated, "(" + equals.generate() + " and " + equals.generate() +
@@ -575,7 +571,7 @@ void ConditionTest::andMultipleConditions() {
 
 void ConditionTest::orSingleConditionShouldFail() {
     // Given
-    auto const equals = QORM::Equals::fields(DEFAULT_FIELD_NAME,
+    const auto equals = QORM::Equals::fields(DEFAULT_FIELD_NAME,
                                              DEFAULT_FIELD_NAME);
     // When / Then
     QVERIFY_EXCEPTION_THROWN(QORM::Or({equals}), std::invalid_argument);
@@ -583,12 +579,12 @@ void ConditionTest::orSingleConditionShouldFail() {
 
 void ConditionTest::orMultipleCondition() {
     // Given
-    auto const equals = QORM::Equals::fields(DEFAULT_FIELD_NAME,
+    const auto equals = QORM::Equals::fields(DEFAULT_FIELD_NAME,
                                              DEFAULT_FIELD_NAME);
-    auto const orCondition = QORM::Or({equals, equals, equals});
+    const auto orCondition = QORM::Or({equals, equals, equals});
 
     // When
-    auto const generated = orCondition.generate();
+    const auto generated = orCondition.generate();
 
     // Then
     QCOMPARE(generated, "(" + equals.generate() + " or " + equals.generate() +
@@ -602,24 +598,24 @@ void ConditionTest::orMultipleCondition() {
 
 void ConditionTest::notSingleCondition() {
     // Given
-    auto const equals = QORM::Equals::fields(DEFAULT_FIELD_NAME,
+    const auto equals = QORM::Equals::fields(DEFAULT_FIELD_NAME,
                                              DEFAULT_FIELD_NAME);
-    auto const notCondition = QORM::Not(equals);
+    const auto notCondition = QORM::Not(equals);
 
     // When
-    auto const generated = notCondition.generate();
+    const auto generated = notCondition.generate();
 
     QCOMPARE(generated, "not " + equals.generate());
 }
 
 void ConditionTest::notMultipleCondition() {
     // Given
-    auto const equals = QORM::Equals::fields(DEFAULT_FIELD_NAME,
+    const auto equals = QORM::Equals::fields(DEFAULT_FIELD_NAME,
                                              DEFAULT_FIELD_NAME);
-    auto const notCondition = QORM::Not(QORM::And({equals, equals}));
+    const auto notCondition = QORM::Not(QORM::And({equals, equals}));
 
     // When
-    auto const generated = notCondition.generate();
+    const auto generated = notCondition.generate();
 
     QCOMPARE(generated, "not (" + equals.generate() + " and " +
              equals.generate() + ")");
@@ -627,15 +623,15 @@ void ConditionTest::notMultipleCondition() {
 
 void ConditionTest::recursiveParametrized() {
     // Given
-    auto const equals = QORM::Equals::fields(DEFAULT_FIELD_NAME,
+    const auto equals = QORM::Equals::fields(DEFAULT_FIELD_NAME,
                                              DEFAULT_FIELD_NAME);
-    auto const equalsParameter = QORM::Equals::field(DEFAULT_FIELD_NAME,
+    const auto equalsParameter = QORM::Equals::field(DEFAULT_FIELD_NAME,
                                                      DEFAULT_VALUE);
-    auto const condition = QORM::Or(
+    const auto condition = QORM::Or(
             {equals, QORM::And({equals, equalsParameter, equalsParameter})});
 
     // When
-    auto const generated = condition.generate();
+    const auto generated = condition.generate();
 
     // Then
     QCOMPARE(generated, "(" + equals.generate() + " or (" + equals.generate() +
@@ -650,12 +646,12 @@ void ConditionTest::recursiveParametrized() {
 
 void ConditionTest::recursiveNotParametrized() {
     // Given
-    auto const equals = QORM::Equals::fields(DEFAULT_FIELD_NAME,
+    const auto equals = QORM::Equals::fields(DEFAULT_FIELD_NAME,
                                              DEFAULT_FIELD_NAME);
-    auto const condition = QORM::Or({equals, QORM::And({equals, equals})});
+    const auto condition = QORM::Or({equals, QORM::And({equals, equals})});
 
     // When
-    auto const generated = condition.generate();
+    const auto generated = condition.generate();
 
     // Then
     QCOMPARE(generated, "(" + equals.generate() + " or (" + equals.generate() +

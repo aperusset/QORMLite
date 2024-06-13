@@ -6,7 +6,7 @@
 class OrderTest : public QObject {
     Q_OBJECT
 
-    static const QString DEFAULT_FIELD_NAME;
+    inline static const QString DEFAULT_FIELD_NAME = "fieldName";
 
  private slots:
     static void generateAsc();

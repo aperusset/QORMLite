@@ -1,9 +1,7 @@
 #include "operations/query.h"
 
 void QORM::Query::addBindable(const Bindable &bindable) {
-    this->bindables.insert(std::make_pair(
-        bindable.getParameter(),
-        bindable.getValue()));
+    this->bindables.insert({bindable.getParameter(), bindable.getValue()});
 }
 
 void QORM::Query::bind(QSqlQuery &query) const {

@@ -6,9 +6,9 @@
 class ConditionTest : public QObject {
     Q_OBJECT
 
-    static const QString DEFAULT_TABLE_NAME;
-    static const QString DEFAULT_FIELD_NAME;
-    static const QVariant DEFAULT_VALUE;
+    inline static const QString DEFAULT_TABLE_NAME = "table";
+    inline static const QString DEFAULT_FIELD_NAME = "field";
+    inline static const QVariant DEFAULT_VALUE = QVariant::fromValue(42);
 
  private slots:
     static void withoutOperatorShouldFail();

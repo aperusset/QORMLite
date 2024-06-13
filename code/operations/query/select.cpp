@@ -52,7 +52,7 @@ auto QORM::Select::groupBy(const std::list<QString> &groupBy) -> Select& {
 
 auto QORM::Select::having(const std::list<Condition> &conditions) -> Select& {
     if (this->groupedBy.empty()) {
-        throw std::invalid_argument("Having clause must have group by clause");
+        throw std::invalid_argument("Having clause need a group by clause");
     }
     std::copy(conditions.begin(), conditions.end(),
               std::back_inserter(this->havings));
@@ -107,8 +107,7 @@ auto QORM::Select::generate() const -> QString {
     select += Condition::generateMultiple(" where ", this->conditions);
     if (!this->groupedBy.empty()) {
         select += " group by " +  QStringList(this->groupedBy.begin(),
-                                              this->groupedBy.end())
-                .join(", ");
+                                              this->groupedBy.end()).join(", ");
     }
     select += Condition::generateMultiple(" having ", this->havings);
     select += generatedOrders.isEmpty() ? "" : " order by " +

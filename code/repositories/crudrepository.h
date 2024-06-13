@@ -54,8 +54,7 @@ class CRUDRepository : public ReadOnlyRepository<Key, Entity> {
     }
 
     virtual void eraseAll() const {
-        const auto &allEntities = this->getAll();
-        if (!allEntities.empty()) {
+        if (const auto &allEntities = this->getAll(); !allEntities.empty()) {
             this->getDatabase().execute(QORM::Delete(this->tableName()));
             for (const auto &entity : allEntities) {
                 entity.get().notifyDelete();

@@ -8,7 +8,8 @@ namespace QORM {
 
 class Sum : public Selection {
  public:
-    Sum(const QString &fieldToSum, const QString &renameTo) :
+    explicit Sum(const QString &fieldToSum,
+                 const QString &renameTo = QString()) :
         Selection("sum(" + fieldToSum + ")", renameTo) {}
 };
 

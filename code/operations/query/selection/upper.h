@@ -8,8 +8,9 @@ namespace QORM {
 
 class Upper : public Selection {
  public:
-    explicit Upper(const QString &fieldToUpper) :
-        Selection("upper(" +  fieldToUpper + ")", QString()) {}
+    explicit Upper(const QString &fieldToUpper,
+                   const QString &renameTo = QString()) :
+        Selection("upper(" +  fieldToUpper + ")", renameTo) {}
 };
 
 }  // namespace QORM

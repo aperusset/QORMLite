@@ -8,7 +8,8 @@ namespace QORM {
 
 class Count : public Selection {
  public:
-    Count(const QString &fieldToCount, const QString &renameTo) :
+    explicit Count(const QString &fieldToCount,
+                   const QString &renameTo = QString()) :
         Selection("count(" + fieldToCount + ")", renameTo) {}
 };
 

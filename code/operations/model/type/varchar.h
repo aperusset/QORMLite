@@ -8,8 +8,8 @@ namespace QORM {
 
 class Varchar : public Type {
  public:
-    static const int DEFAULT_SIZE = 255;
-    static const QString EMPTY;
+    inline static const int DEFAULT_SIZE = 255;
+    inline static const QString EMPTY = "''";
 
     // size is just documentation, not a constraint
     explicit Varchar(const int size = DEFAULT_SIZE);

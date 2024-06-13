@@ -8,7 +8,8 @@ namespace QORM {
 
 class Min : public Selection {
  public:
-    Min(const QString &fieldToMin, const QString &renameTo) :
+    explicit Min(const QString &fieldToMin,
+                 const QString &renameTo = QString()) :
         Selection("min(" + fieldToMin + ")", renameTo) {}
 };
 

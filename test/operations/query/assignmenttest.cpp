@@ -2,15 +2,12 @@
 #include "operations/query/assignment.h"
 #include "./utils.h"
 
-const QString AssignmentTest::DEFAULT_FIELD_NAME = "defaultFieldName";
-const QVariant AssignmentTest::DEFAULT_VALUE = QVariant::fromValue(1);
-
 void AssignmentTest::generate() {
     // Given
-    auto const assignment = QORM::Assignment(DEFAULT_FIELD_NAME, DEFAULT_VALUE);
+    const auto assignment = QORM::Assignment(DEFAULT_FIELD_NAME, DEFAULT_VALUE);
 
     // When
-    auto const generated = assignment.generate();
+    const auto generated = assignment.generate();
 
     // Then
     QCOMPARE(DEFAULT_FIELD_NAME, assignment.getFieldName());
