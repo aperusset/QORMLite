@@ -9,7 +9,7 @@
 #include "operations/query/insert.h"
 
 void TestCreator::createTables(const QORM::Database &database) const {
-    auto const primaryKey = QORM::PrimaryKey(
+    const auto primaryKey = QORM::PrimaryKey(
                 QORM::Field::notNull(TEST_FIELD, QORM::Integer()));
     database.execute(QORM::Table(TEST_TABLE, primaryKey));
 }

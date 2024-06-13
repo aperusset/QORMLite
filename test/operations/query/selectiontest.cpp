@@ -11,10 +11,10 @@
 
 void SelectionTest::generate() {
     // Given
-    auto const selection = QORM::Selection(DEFAULT_FIELD_NAME);
+    const auto selection = QORM::Selection(DEFAULT_FIELD_NAME);
 
     // When
-    auto const generated = selection.generate();
+    const auto generated = selection.generate();
 
     // Then
     QCOMPARE(selection.getFieldName(), DEFAULT_FIELD_NAME);
@@ -24,10 +24,10 @@ void SelectionTest::generate() {
 
 void SelectionTest::generateRenamed() {
     // Given
-    auto const selection = QORM::Selection(DEFAULT_FIELD_NAME,
+    const auto selection = QORM::Selection(DEFAULT_FIELD_NAME,
                                            DEFAULT_RENAMED_TO);
     // When
-    auto const generated = selection.generate();
+    const auto generated = selection.generate();
 
     // Then
     QCOMPARE(selection.getFieldName(), DEFAULT_FIELD_NAME);
@@ -37,12 +37,12 @@ void SelectionTest::generateRenamed() {
 
 void SelectionTest::equals() {
     // Given
-    auto const selection1 = QORM::Selection(DEFAULT_FIELD_NAME);
-    auto const selection2 = QORM::Selection(DEFAULT_FIELD_NAME,
+    const auto selection1 = QORM::Selection(DEFAULT_FIELD_NAME);
+    const auto selection2 = QORM::Selection(DEFAULT_FIELD_NAME,
                                             DEFAULT_RENAMED_TO);
     // When
-    auto const equals = selection1 == selection2;
-    auto const notEquals = selection1 != selection2;
+    const auto equals = selection1 == selection2;
+    const auto notEquals = selection1 != selection2;
 
     // Then
     QVERIFY(equals);
@@ -51,12 +51,12 @@ void SelectionTest::equals() {
 
 void SelectionTest::notEquals() {
     // Given
-    auto const selection1 = QORM::Selection(DEFAULT_FIELD_NAME);
-    auto const selection2 = QORM::Selection("anotherName");
+    const auto selection1 = QORM::Selection(DEFAULT_FIELD_NAME);
+    const auto selection2 = QORM::Selection("anotherName");
 
     // When
-    auto const equals = selection1 == selection2;
-    auto const notEquals = selection1 != selection2;
+    const auto equals = selection1 == selection2;
+    const auto notEquals = selection1 != selection2;
 
     // Then
     QVERIFY(!equals);
@@ -65,10 +65,10 @@ void SelectionTest::notEquals() {
 
 void SelectionTest::sum() {
     // Given
-    auto const sum = QORM::Sum(DEFAULT_FIELD_NAME, DEFAULT_RENAMED_TO);
+    const auto sum = QORM::Sum(DEFAULT_FIELD_NAME, DEFAULT_RENAMED_TO);
 
     // When
-    auto const generated = sum.generate();
+    const auto generated = sum.generate();
 
     // Then
     QCOMPARE(generated, "sum(" + DEFAULT_FIELD_NAME + ") as " +
@@ -77,10 +77,10 @@ void SelectionTest::sum() {
 
 void SelectionTest::avg() {
     // Given
-    auto const avg = QORM::Avg(DEFAULT_FIELD_NAME, DEFAULT_RENAMED_TO);
+    const auto avg = QORM::Avg(DEFAULT_FIELD_NAME, DEFAULT_RENAMED_TO);
 
     // When
-    auto const generated = avg.generate();
+    const auto generated = avg.generate();
 
     // Then
     QCOMPARE(generated, "avg(" + DEFAULT_FIELD_NAME + ") as " +
@@ -89,10 +89,10 @@ void SelectionTest::avg() {
 
 void SelectionTest::count() {
     // Given
-    auto const count = QORM::Count(DEFAULT_FIELD_NAME, DEFAULT_RENAMED_TO);
+    const auto count = QORM::Count(DEFAULT_FIELD_NAME, DEFAULT_RENAMED_TO);
 
     // When
-    auto const generated = count.generate();
+    const auto generated = count.generate();
 
     // Then
     QCOMPARE(generated, "count(" + DEFAULT_FIELD_NAME + ") as " +
@@ -101,10 +101,10 @@ void SelectionTest::count() {
 
 void SelectionTest::min() {
     // Given
-    auto const min = QORM::Min(DEFAULT_FIELD_NAME, DEFAULT_RENAMED_TO);
+    const auto min = QORM::Min(DEFAULT_FIELD_NAME, DEFAULT_RENAMED_TO);
 
     // When
-    auto const generated = min.generate();
+    const auto generated = min.generate();
 
     // Then
     QCOMPARE(generated, "min(" + DEFAULT_FIELD_NAME + ") as " +
@@ -113,10 +113,10 @@ void SelectionTest::min() {
 
 void SelectionTest::max() {
     // Given
-    auto const max = QORM::Max(DEFAULT_FIELD_NAME, DEFAULT_RENAMED_TO);
+    const auto max = QORM::Max(DEFAULT_FIELD_NAME, DEFAULT_RENAMED_TO);
 
     // When
-    auto const generated = max.generate();
+    const auto generated = max.generate();
 
     // Then
     QCOMPARE(generated, "max(" + DEFAULT_FIELD_NAME + ") as " +
@@ -125,11 +125,11 @@ void SelectionTest::max() {
 
 void SelectionTest::dateFormatter() {
     // Given
-    auto const dateFormatter = QORM::DateFormatter(DEFAULT_FORMAT,
+    const auto dateFormatter = QORM::DateFormatter(DEFAULT_FORMAT,
                                                    DEFAULT_FIELD_NAME,
                                                    DEFAULT_RENAMED_TO);
     // When
-    auto const generated = dateFormatter.generate();
+    const auto generated = dateFormatter.generate();
 
     // Then
     QCOMPARE(generated, "strftime('" + DEFAULT_FORMAT + "', " +
@@ -138,10 +138,10 @@ void SelectionTest::dateFormatter() {
 
 void SelectionTest::lower() {
     // Given
-    auto const lower = QORM::Lower(DEFAULT_FIELD_NAME);
+    const auto lower = QORM::Lower(DEFAULT_FIELD_NAME);
 
     // When
-    auto const generated = lower.generate();
+    const auto generated = lower.generate();
 
     // Then
     QCOMPARE(generated, "lower(" + DEFAULT_FIELD_NAME + ")");
@@ -149,10 +149,10 @@ void SelectionTest::lower() {
 
 void SelectionTest::upper() {
     // Given
-    auto const upper = QORM::Upper(DEFAULT_FIELD_NAME);
+    const auto upper = QORM::Upper(DEFAULT_FIELD_NAME);
 
     // When
-    auto const generated = upper.generate();
+    const auto generated = upper.generate();
 
     // Then
     QCOMPARE(generated, "upper(" + DEFAULT_FIELD_NAME + ")");

@@ -8,10 +8,10 @@
 
 void UtilsTest::formatSQLiteDate() {
     // Given
-    auto const date = QDate(2010, 10, 30);
+    const auto date = QDate(2010, 10, 30);
 
     // When
-    auto const sqliteDate = QORM::Utils::formatSQLiteDate(date);
+    const auto sqliteDate = QORM::Utils::formatSQLiteDate(date);
 
     // Then
     QCOMPARE("2010-10-30", sqliteDate);
@@ -19,11 +19,11 @@ void UtilsTest::formatSQLiteDate() {
 
 void UtilsTest::backupFileName() {
     // Given
-    auto const now = QDate::currentDate();
+    const auto now = QDate::currentDate();
     const auto *const name = "testDatabase";
 
     // When
-    auto const backupFileName = QORM::Utils::backupFileName(name);
+    const auto backupFileName = QORM::Utils::backupFileName(name);
 
     // Then
     QCOMPARE(QString("backup_") + name + "_" +
@@ -35,7 +35,7 @@ void UtilsTest::parametrize() {
     const auto *const fieldName = "FieldName.(really funny at all)";
 
     // When
-    auto const parametrizedFieldName = QORM::Utils::parametrize(fieldName);
+    const auto parametrizedFieldName = QORM::Utils::parametrize(fieldName);
 
     // Then
     QCOMPARE(":fieldnamereallyfunnyatall", parametrizedFieldName);
@@ -43,10 +43,10 @@ void UtilsTest::parametrize() {
 
 void UtilsTest::dateToDay() {
     // Given
-    auto const selection = QORM::Utils::dateToDay("field", "rename");
+    const auto selection = QORM::Utils::dateToDay("field", "rename");
 
     // When
-    auto const fieldName = selection.getFieldName();
+    const auto fieldName = selection.getFieldName();
 
     // Then
     QCOMPARE(fieldName.simplified(), "strftime('%d', field)");
@@ -54,10 +54,10 @@ void UtilsTest::dateToDay() {
 
 void UtilsTest::dateToMonth() {
     // Given
-    auto const selection = QORM::Utils::dateToMonth("field", "rename");
+    const auto selection = QORM::Utils::dateToMonth("field", "rename");
 
     // When
-    auto const fieldName = selection.getFieldName();
+    const auto fieldName = selection.getFieldName();
 
     // Then
     QCOMPARE(fieldName.simplified(), "strftime('%m', field)");
@@ -65,10 +65,10 @@ void UtilsTest::dateToMonth() {
 
 void UtilsTest::dateToYear() {
     // Given
-    auto const selection = QORM::Utils::dateToYear("field", "rename");
+    const auto selection = QORM::Utils::dateToYear("field", "rename");
 
     // When
-    auto const fieldName = selection.getFieldName();
+    const auto fieldName = selection.getFieldName();
 
     // Then
     QCOMPARE(fieldName.simplified(), "strftime('%Y', field)");
@@ -76,7 +76,7 @@ void UtilsTest::dateToYear() {
 
 void UtilsTest::null() {
     // Given
-    auto const nullValue = QORM::Utils::null();
+    const auto nullValue = QORM::Utils::null();
 
     // When / Then
     QVERIFY(nullValue.isNull());
@@ -86,12 +86,12 @@ void UtilsTest::null() {
 
 void UtilsTest::qualifyFieldName() {
     // Given
-    auto const qualifier = "qualifier";
-    auto const fieldName = "field-name";
-    auto const expectedResult = QString(qualifier) + "." + fieldName;
+    const auto qualifier = "qualifier";
+    const auto fieldName = "field-name";
+    const auto expectedResult = QString(qualifier) + "." + fieldName;
 
     // When
-    auto const result = QORM::Utils::qualifyFieldName(qualifier, fieldName);
+    const auto result = QORM::Utils::qualifyFieldName(qualifier, fieldName);
 
     // Then
     QCOMPARE(result, expectedResult);
@@ -121,7 +121,7 @@ void UtilsTest::joinToStringShouldJoinWithSeparator() {
     const std::list<int> values{0, 1, 2};
 
     // When
-    auto const joined = QORM::Utils::joinToString<int>(values, "-",
+    const auto joined = QORM::Utils::joinToString<int>(values, "-",
         [](const auto &value) -> QString {
             return QString::number(value);
         });
@@ -133,7 +133,7 @@ void UtilsTest::joinToStringShouldJoinWithSeparator() {
 void UtilsTest::getOrThrowShouldReturnValue() {
     // Given
     auto field = QSqlField(FIELD_NAME, QVariant::Type::String);
-    auto const value = QString("value");
+    const auto value = QString("value");
     field.setValue(QVariant::fromValue(value));
     auto record = QSqlRecord();
     record.append(field);
@@ -164,7 +164,7 @@ void UtilsTest::getOrThrowShouldThrow() {
 void UtilsTest::getOrDefaultShouldReturnValue() {
     // Given
     auto field = QSqlField(FIELD_NAME, QVariant::Type::String);
-    auto const value = QString("value");
+    const auto value = QString("value");
     field.setValue(QVariant::fromValue(value));
     auto record = QSqlRecord();
     record.append(field);
@@ -181,7 +181,7 @@ void UtilsTest::getOrDefaultShouldReturnValue() {
 void UtilsTest::getOrDefaultShouldReturnDefault() {
     // Given
     auto field = QSqlField(FIELD_NAME, QVariant::Type::String);
-    auto const defaultValue = QString("default");
+    const auto defaultValue = QString("default");
     auto record = QSqlRecord();
     record.append(field);
 
@@ -196,7 +196,7 @@ void UtilsTest::getOrDefaultShouldReturnDefault() {
 
 void UtilsTest::getOrDefaultShouldReturnDefaultIfNotExists() {
     // Given
-    auto const defaultValue = QString("default");
+    const auto defaultValue = QString("default");
 
     // When
     auto rValue = QORM::Utils::getOrDefault<QString>(QSqlRecord(), FIELD_NAME,
@@ -243,7 +243,7 @@ void UtilsTest::getOrNullShouldReturnNullptr() {
 void UtilsTest::getBoolOrDefaultShouldReturnValue() {
     // Given
     auto field = QSqlField(FIELD_NAME, QVariant::Type::Bool);
-    auto const value = true;
+    const auto value = true;
     field.setValue(QVariant::fromValue(value));
     auto record = QSqlRecord();
     record.append(field);
@@ -258,7 +258,7 @@ void UtilsTest::getBoolOrDefaultShouldReturnValue() {
 void UtilsTest::getStringOrDefaultShouldReturnValue() {
     // Given
     auto field = QSqlField(FIELD_NAME, QVariant::Type::String);
-    auto const value = QString("value");
+    const auto value = QString("value");
     field.setValue(QVariant::fromValue(value));
     auto record = QSqlRecord();
     record.append(field);
@@ -273,7 +273,7 @@ void UtilsTest::getStringOrDefaultShouldReturnValue() {
 void UtilsTest::getDateOrDefaultShouldReturnValue() {
     // Given
     auto field = QSqlField(FIELD_NAME, QVariant::Type::Date);
-    auto const value = QDate::currentDate();
+    const auto value = QDate::currentDate();
     field.setValue(QVariant::fromValue(value));
     auto record = QSqlRecord();
     record.append(field);
@@ -288,7 +288,7 @@ void UtilsTest::getDateOrDefaultShouldReturnValue() {
 void UtilsTest::getDateTimeOrDefaultShouldReturnValue() {
     // Given
     auto field = QSqlField(FIELD_NAME, QVariant::Type::DateTime);
-    auto const value = QDateTime::currentDateTime();
+    const auto value = QDateTime::currentDateTime();
     field.setValue(QVariant::fromValue(value));
     auto record = QSqlRecord();
     record.append(field);
@@ -303,7 +303,7 @@ void UtilsTest::getDateTimeOrDefaultShouldReturnValue() {
 void UtilsTest::getUIntOrThrowShouldReturnValue() {
     // Given
     auto field = QSqlField(FIELD_NAME, QVariant::Type::UInt);
-    auto const value = 42U;
+    const auto value = 42U;
     field.setValue(QVariant::fromValue(value));
     auto record = QSqlRecord();
     record.append(field);
@@ -318,7 +318,7 @@ void UtilsTest::getUIntOrThrowShouldReturnValue() {
 void UtilsTest::getUIntOrDefaultShouldReturnValue() {
     // Given
     auto field = QSqlField(FIELD_NAME, QVariant::Type::UInt);
-    auto const value = 42U;
+    const auto value = 42U;
     field.setValue(QVariant::fromValue(value));
     auto record = QSqlRecord();
     record.append(field);
@@ -333,7 +333,7 @@ void UtilsTest::getUIntOrDefaultShouldReturnValue() {
 void UtilsTest::getIntOrDefaultShouldReturnValue() {
     // Given
     auto field = QSqlField(FIELD_NAME, QVariant::Type::Int);
-    auto const value = 42;
+    const auto value = 42;
     field.setValue(QVariant::fromValue(value));
     auto record = QSqlRecord();
     record.append(field);
@@ -348,7 +348,7 @@ void UtilsTest::getIntOrDefaultShouldReturnValue() {
 void UtilsTest::getDoubleOrDefaultShouldReturnValue() {
     // Given
     auto field = QSqlField(FIELD_NAME, QVariant::Type::Double);
-    auto const value = 42.0;
+    const auto value = 42.0;
     field.setValue(QVariant::fromValue(value));
     auto record = QSqlRecord();
     record.append(field);
@@ -362,10 +362,10 @@ void UtilsTest::getDoubleOrDefaultShouldReturnValue() {
 
 void UtilsTest::validOrNullShouldReturnValue() {
     // Given
-    auto const value = 42U;
+    const auto value = 42U;
 
     // When
-    auto const rValue = QORM::Utils::validOrNull<uint32_t>(value,
+    const auto rValue = QORM::Utils::validOrNull<uint32_t>(value,
                                                            [](const auto) {
                                                                return true;
                                                            });
@@ -388,10 +388,10 @@ void UtilsTest::validOrNullShouldReturnNull() {
 
 void UtilsTest::validOrThrowShouldReturnValue() {
     // Given
-    auto const value = 42U;
+    const auto value = 42U;
 
     // When
-    auto const rValue = QORM::Utils::validOrThrow<uint32_t>(value,
+    const auto rValue = QORM::Utils::validOrThrow<uint32_t>(value,
                                             "error-message", [](const auto) {
                                                  return true;
                                              });
@@ -403,7 +403,7 @@ void UtilsTest::validOrThrowShouldReturnValue() {
 
 void UtilsTest::validOrThrowShouldThrow() {
     // Given
-    auto const errorMessage = std::string("error-message");
+    const auto errorMessage = std::string("error-message");
 
     // When / Then
     QVERIFY_EXCEPTION_THROWN(
@@ -415,10 +415,10 @@ void UtilsTest::validOrThrowShouldThrow() {
 
 void UtilsTest::notBlankOrNullShouldReturnNull() {
     // Given
-    auto const value = QString("   ");
+    const auto value = QString("   ");
 
     // When
-    auto const rValue = QORM::Utils::notBlankOrNull(value);
+    const auto rValue = QORM::Utils::notBlankOrNull(value);
 
     // Then
     QVERIFY(rValue.isNull());
@@ -427,10 +427,10 @@ void UtilsTest::notBlankOrNullShouldReturnNull() {
 
 void UtilsTest::notBlankOrNullShouldReturnTrimmedValue() {
     // Given
-    auto const value = QString(" test  value  ");
+    const auto value = QString(" test  value  ");
 
     // When
-    auto const rValue = QORM::Utils::notBlankOrNull(value);
+    const auto rValue = QORM::Utils::notBlankOrNull(value);
 
     // Then
     QVERIFY(!rValue.isNull());
@@ -446,10 +446,10 @@ void UtilsTest::notBlankOrThrowShouldThrow() {
 
 void UtilsTest::notBlankOrThrowShouldReturnTrimmedValue() {
     // Given
-    auto const value = QString(" test  value  ");
+    const auto value = QString(" test  value  ");
 
     // When
-    auto const rValue = QORM::Utils::notBlankOrThrow(value);
+    const auto rValue = QORM::Utils::notBlankOrThrow(value);
 
     // Then
     QVERIFY(!rValue.isNull());
@@ -459,10 +459,10 @@ void UtilsTest::notBlankOrThrowShouldReturnTrimmedValue() {
 
 void UtilsTest::validOrNullDateTimeShouldReturnNull() {
     // Given
-    auto const value = QDateTime();
+    const auto value = QDateTime();
 
     // When
-    auto const rValue = QORM::Utils::validOrNull(value);
+    const auto rValue = QORM::Utils::validOrNull(value);
 
     // Then
     QVERIFY(rValue.isNull());
@@ -471,10 +471,10 @@ void UtilsTest::validOrNullDateTimeShouldReturnNull() {
 
 void UtilsTest::validOrNullDateTimeShouldReturnValue() {
     // Given
-    auto const value = QDateTime::currentDateTime();
+    const auto value = QDateTime::currentDateTime();
 
     // When
-    auto const rValue = QORM::Utils::validOrNull(value);
+    const auto rValue = QORM::Utils::validOrNull(value);
 
     // Then
     QVERIFY(!rValue.isNull());
@@ -490,10 +490,10 @@ void UtilsTest::validOrThrowDateShouldThrow() {
 
 void UtilsTest::validOrThrowDateShouldReturnValue() {
     // Given
-    auto const value = QDate::currentDate();
+    const auto value = QDate::currentDate();
 
     // When
-    auto const rValue = QORM::Utils::validOrThrow(value);
+    const auto rValue = QORM::Utils::validOrThrow(value);
 
     // Then
     QVERIFY(!rValue.isNull());
@@ -509,10 +509,10 @@ void UtilsTest::validOrThrowDateTimeShouldThrow() {
 
 void UtilsTest::validOrThrowDateTimeShouldReturnValue() {
     // Given
-    auto const value = QDateTime::currentDateTime();
+    const auto value = QDateTime::currentDateTime();
 
     // When
-    auto const rValue = QORM::Utils::validOrThrow(value);
+    const auto rValue = QORM::Utils::validOrThrow(value);
 
     // Then
     QVERIFY(!rValue.isNull());

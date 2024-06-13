@@ -4,10 +4,10 @@
 
 void OrderTest::generateAsc() {
     // Given
-    auto const order = QORM::Asc(DEFAULT_FIELD_NAME);
+    const auto order = QORM::Asc(DEFAULT_FIELD_NAME);
 
     // When
-    auto const generated = order.generate();
+    const auto generated = order.generate();
 
     // Then
     QCOMPARE(order.getFieldName(), DEFAULT_FIELD_NAME);
@@ -17,10 +17,10 @@ void OrderTest::generateAsc() {
 
 void OrderTest::generateDesc() {
     // Given
-    auto const order = QORM::Desc(DEFAULT_FIELD_NAME);
+    const auto order = QORM::Desc(DEFAULT_FIELD_NAME);
 
     // When
-    auto const generated = order.generate();
+    const auto generated = order.generate();
 
     // Then
     QCOMPARE(order.getFieldName(), DEFAULT_FIELD_NAME);

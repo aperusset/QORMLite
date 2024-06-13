@@ -8,11 +8,11 @@
 
 void TableTest::autoIncrementedPrimaryKeyWithoutFields() {
     // Given
-    auto const primaryKey = QORM::PrimaryKey(DEFAULT_FIELD_1);
+    const auto primaryKey = QORM::PrimaryKey(DEFAULT_FIELD_1);
     const QORM::Table table(DEFAULT_TABLE_NAME, primaryKey);
 
     // When
-    auto const generated = table.generate();
+    const auto generated = table.generate();
 
     // Then
     QCOMPARE(table.getTableName(), DEFAULT_TABLE_NAME);
@@ -22,11 +22,11 @@ void TableTest::autoIncrementedPrimaryKeyWithoutFields() {
 
 void TableTest::autoIncrementedPrimaryKeyWithFields() {
     // Given
-    auto const primaryKey = QORM::PrimaryKey(DEFAULT_FIELD_1);
+    const auto primaryKey = QORM::PrimaryKey(DEFAULT_FIELD_1);
     const QORM::Table table(DEFAULT_TABLE_NAME, primaryKey, {DEFAULT_FIELD_2});
 
     // When
-    auto const generated = table.generate();
+    const auto generated = table.generate();
 
     // Then
     QCOMPARE(table.getTableName(), DEFAULT_TABLE_NAME);
@@ -37,11 +37,11 @@ void TableTest::autoIncrementedPrimaryKeyWithFields() {
 
 void TableTest::autoIncrementedPrimaryKeyWithDuplicatedFields() {
     // Given
-    auto const primaryKey = QORM::PrimaryKey(DEFAULT_FIELD_1);
+    const auto primaryKey = QORM::PrimaryKey(DEFAULT_FIELD_1);
     const QORM::Table table(DEFAULT_TABLE_NAME, primaryKey,
                             {DEFAULT_FIELD_1, DEFAULT_FIELD_2});
     // When
-    auto const generated = table.generate();
+    const auto generated = table.generate();
 
     // Then
     QCOMPARE(table.getTableName(), DEFAULT_TABLE_NAME);
@@ -52,12 +52,12 @@ void TableTest::autoIncrementedPrimaryKeyWithDuplicatedFields() {
 
 void TableTest::primaryKeyWithoutAdditionalFields() {
     // Given
-    auto const primaryKey = QORM::PrimaryKey({DEFAULT_FIELD_1,
+    const auto primaryKey = QORM::PrimaryKey({DEFAULT_FIELD_1,
                                               DEFAULT_FIELD_2});
     const QORM::Table table(DEFAULT_TABLE_NAME, primaryKey);
 
     // When
-    auto const generated = table.generate();
+    const auto generated = table.generate();
 
     // Then
     QCOMPARE(table.getTableName(), DEFAULT_TABLE_NAME);
@@ -69,11 +69,11 @@ void TableTest::primaryKeyWithoutAdditionalFields() {
 
 void TableTest::primaryKeyWithAdditionalFields() {
     // Given
-    auto const primaryKey = QORM::PrimaryKey(DEFAULT_FIELD_1, false);
+    const auto primaryKey = QORM::PrimaryKey(DEFAULT_FIELD_1, false);
     const QORM::Table table(DEFAULT_TABLE_NAME, primaryKey, {DEFAULT_FIELD_2});
 
     // When
-    auto const generated = table.generate();
+    const auto generated = table.generate();
 
     // Then
     QCOMPARE(table.getTableName(), DEFAULT_TABLE_NAME);
@@ -85,11 +85,11 @@ void TableTest::primaryKeyWithAdditionalFields() {
 
 void TableTest::primaryKeyWithDuplicatedFields() {
     // Given
-    auto const primaryKey = QORM::PrimaryKey(DEFAULT_FIELD_1, false);
+    const auto primaryKey = QORM::PrimaryKey(DEFAULT_FIELD_1, false);
     const QORM::Table table(DEFAULT_TABLE_NAME, primaryKey,
                             {DEFAULT_FIELD_1, DEFAULT_FIELD_2});
     // When
-    auto const generated = table.generate();
+    const auto generated = table.generate();
 
     // Then
     QCOMPARE(table.getTableName(), DEFAULT_TABLE_NAME);
@@ -101,14 +101,14 @@ void TableTest::primaryKeyWithDuplicatedFields() {
 
 void TableTest::singleForeignKey() {
     // Given
-    auto const primaryKey = QORM::PrimaryKey(DEFAULT_FIELD_1);
-    auto const foreignKey = QORM::ForeignKey(
+    const auto primaryKey = QORM::PrimaryKey(DEFAULT_FIELD_1);
+    const auto foreignKey = QORM::ForeignKey(
                 {QORM::Reference(DEFAULT_FIELD_1, DEFAULT_FIELD_1)},
                 DEFAULT_TABLE_NAME, QORM::OnAction::Cascade);
     const QORM::Table table(DEFAULT_TABLE_NAME, primaryKey, {}, {foreignKey});
 
     // When
-    auto const generated = table.generate();
+    const auto generated = table.generate();
 
     // Then
     QCOMPARE(table.getTableName(), DEFAULT_TABLE_NAME);
@@ -119,14 +119,14 @@ void TableTest::singleForeignKey() {
 
 void TableTest::multipleForeignKeys() {
     // Given
-    auto const primaryKey = QORM::PrimaryKey(DEFAULT_FIELD_1);
-    auto const foreignKey = QORM::ForeignKey(
+    const auto primaryKey = QORM::PrimaryKey(DEFAULT_FIELD_1);
+    const auto foreignKey = QORM::ForeignKey(
                 {QORM::Reference(DEFAULT_FIELD_1, DEFAULT_FIELD_1)},
                 DEFAULT_TABLE_NAME, QORM::OnAction::Cascade);
     const QORM::Table table(DEFAULT_TABLE_NAME, primaryKey, {},
                             {foreignKey, foreignKey});
     // When
-    auto const generated = table.generate();
+    const auto generated = table.generate();
 
     // Then
     QCOMPARE(table.getTableName(), DEFAULT_TABLE_NAME);
@@ -138,11 +138,11 @@ void TableTest::multipleForeignKeys() {
 
 void TableTest::singleUnique() {
     // Given
-    auto const primaryKey = QORM::PrimaryKey(DEFAULT_FIELD_1);
-    auto const unique = QORM::Unique({DEFAULT_FIELD_1});
+    const auto primaryKey = QORM::PrimaryKey(DEFAULT_FIELD_1);
+    const auto unique = QORM::Unique({DEFAULT_FIELD_1});
     const QORM::Table table(DEFAULT_TABLE_NAME, primaryKey, {}, {}, {unique});
     // When
-    auto const generated = table.generate();
+    const auto generated = table.generate();
 
     // Then
     QCOMPARE(table.getTableName(), DEFAULT_TABLE_NAME);
@@ -153,12 +153,12 @@ void TableTest::singleUnique() {
 
 void TableTest::multipleUniques() {
     // Given
-    auto const primaryKey = QORM::PrimaryKey(DEFAULT_FIELD_1);
-    auto const unique = QORM::Unique({DEFAULT_FIELD_1});
+    const auto primaryKey = QORM::PrimaryKey(DEFAULT_FIELD_1);
+    const auto unique = QORM::Unique({DEFAULT_FIELD_1});
     const QORM::Table table(DEFAULT_TABLE_NAME, primaryKey, {}, {},
                             {unique, unique});
     // When
-    auto const generated = table.generate();
+    const auto generated = table.generate();
 
     // Then
     QCOMPARE(table.getTableName(), DEFAULT_TABLE_NAME);

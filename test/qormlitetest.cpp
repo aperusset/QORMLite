@@ -38,7 +38,7 @@ void QORMLiteTest::getShouldSuccess() {
     QORM::initialize(*this->connector, this->creator, false);
 
     // When
-    auto const &database = QORM::get(this->databaseName());
+    const auto &database = QORM::get(this->databaseName());
 
     // Then
     QVERIFY(QORM::isInitialized(this->databaseName()));

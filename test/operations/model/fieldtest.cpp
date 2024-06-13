@@ -3,10 +3,10 @@
 
 void FieldTest::generateNotNullWithoutDefaultValue() {
     // Given
-    auto const field = QORM::Field::notNull(DEFAULT_NAME, DEFAULT_TYPE);
+    const auto field = QORM::Field::notNull(DEFAULT_NAME, DEFAULT_TYPE);
 
     // When
-    auto const generated = field.generate();
+    const auto generated = field.generate();
 
     // Then
     QCOMPARE(field.getName(), DEFAULT_NAME);
@@ -18,10 +18,10 @@ void FieldTest::generateNotNullWithoutDefaultValue() {
 
 void FieldTest::generateNotNullWithDefaultValue() {
     // Given
-    auto const field = QORM::Field::notNullWithDefault(DEFAULT_NAME,
+    const auto field = QORM::Field::notNullWithDefault(DEFAULT_NAME,
                                                 DEFAULT_TYPE, DEFAULT_VALUE);
     // When
-    auto const generated = field.generate();
+    const auto generated = field.generate();
 
     // Then
     QCOMPARE(field.getName(), DEFAULT_NAME);
@@ -34,10 +34,10 @@ void FieldTest::generateNotNullWithDefaultValue() {
 
 void FieldTest::generateNullableWithoutDefaultValue() {
     // Given
-    auto const field = QORM::Field::null(DEFAULT_NAME, DEFAULT_TYPE);
+    const auto field = QORM::Field::null(DEFAULT_NAME, DEFAULT_TYPE);
 
     // When
-    auto const generated = field.generate();
+    const auto generated = field.generate();
 
     // Then
     QCOMPARE(field.getName(), DEFAULT_NAME);
@@ -49,10 +49,10 @@ void FieldTest::generateNullableWithoutDefaultValue() {
 
 void FieldTest::generateNullableWithDefaultValue() {
     // Given
-    auto const field = QORM::Field::nullWithDefault(DEFAULT_NAME, DEFAULT_TYPE,
+    const auto field = QORM::Field::nullWithDefault(DEFAULT_NAME, DEFAULT_TYPE,
                                                     DEFAULT_VALUE);
     // When
-    auto const generated = field.generate();
+    const auto generated = field.generate();
 
     // Then
     QCOMPARE(field.getName(), DEFAULT_NAME);
@@ -65,11 +65,11 @@ void FieldTest::generateNullableWithDefaultValue() {
 
 void FieldTest::equals() {
     // Given
-    auto const field1 = QORM::Field::notNull(DEFAULT_NAME, DEFAULT_TYPE);
-    auto const field2 = QORM::Field::nullWithDefault(DEFAULT_NAME, DEFAULT_TYPE,
+    const auto field1 = QORM::Field::notNull(DEFAULT_NAME, DEFAULT_TYPE);
+    const auto field2 = QORM::Field::nullWithDefault(DEFAULT_NAME, DEFAULT_TYPE,
                                                      DEFAULT_VALUE);
     // When
-    auto const equals = field1 == field2;
+    const auto equals = field1 == field2;
 
     // Then
     QVERIFY(equals);
@@ -77,11 +77,11 @@ void FieldTest::equals() {
 
 void FieldTest::notEquals() {
     // Given
-    auto const field1 = QORM::Field::notNull(DEFAULT_NAME, DEFAULT_TYPE);
-    auto const field2 = QORM::Field::notNull("otherName", DEFAULT_TYPE);
+    const auto field1 = QORM::Field::notNull(DEFAULT_NAME, DEFAULT_TYPE);
+    const auto field2 = QORM::Field::notNull("otherName", DEFAULT_TYPE);
 
     // When
-    auto const notEquals = field1 != field2;
+    const auto notEquals = field1 != field2;
 
     // Then
     QVERIFY(notEquals);

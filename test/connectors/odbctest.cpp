@@ -24,7 +24,7 @@ void ODBCTest::initShouldFailWithEmptyConnectionString() {
 
 void ODBCTest::initShouldSuccess() {
     // Given
-    auto const &odbc = QORM::ODBC(this->databaseName(),
+    const auto &odbc = QORM::ODBC(this->databaseName(),
                                   DEFAULT_DRIVER_DEFINITION,
                                   DEFAULT_CONNECTION_STRING);
 
@@ -36,7 +36,7 @@ void ODBCTest::initShouldSuccess() {
 
 void ODBCTest::driverNameShouldBeCompliant() {
     // Given
-    auto const &odbc = QORM::ODBC(this->databaseName(),
+    const auto &odbc = QORM::ODBC(this->databaseName(),
                                   DEFAULT_DRIVER_DEFINITION,
                                   DEFAULT_CONNECTION_STRING);
 
@@ -46,7 +46,7 @@ void ODBCTest::driverNameShouldBeCompliant() {
 
 void ODBCTest::databaseNameShouldContainsDriverAndConnectionString() {
     // Given
-    auto const &odbc = QORM::ODBC(this->databaseName(),
+    const auto &odbc = QORM::ODBC(this->databaseName(),
                                   DEFAULT_DRIVER_DEFINITION,
                                   DEFAULT_CONNECTION_STRING);
 
@@ -57,7 +57,7 @@ void ODBCTest::databaseNameShouldContainsDriverAndConnectionString() {
 
 void ODBCTest::backupShouldFail() {
     // Given
-    auto const &odbc = QORM::ODBC(this->databaseName(),
+    const auto &odbc = QORM::ODBC(this->databaseName(),
                                   DEFAULT_DRIVER_DEFINITION,
                                   DEFAULT_CONNECTION_STRING);
 

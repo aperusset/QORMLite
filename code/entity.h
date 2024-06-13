@@ -25,11 +25,11 @@ class Entity {
     void setKey(const Key &key) { this->key = key; }
 
     auto getObservers() const -> const std::set<Observer<Key>*>& {
-        return observers;
+        return this->observers;
     }
 
     auto isAttached(Observer<Key> *observer) const {
-        return observers.find(observer) != observers.end();
+        return this->observers.find(observer) != this->observers.end();
     }
 
     auto getTypeIndex() const {
@@ -38,30 +38,30 @@ class Entity {
 
     virtual void attach(Observer<Key> *observer) {
         if (observer != nullptr) {
-            observers.insert(observer);
+            this->observers.insert(observer);
         }
     }
 
     virtual void detach(Observer<Key> *observer) {
         if (observer != nullptr) {
-            observers.erase(observer);
+            this->observers.erase(observer);
         }
     }
 
     virtual void notifyChange() const {
-        std::for_each(observers.begin(), observers.end(),
-            [=](auto *observer) {
+        std::for_each(this->observers.begin(), this->observers.end(),
+            [this](auto *observer) {
                 if (observer != nullptr) {
-                    observer->onChange(this->key, getTypeIndex());
+                    observer->onChange(this->key, this->getTypeIndex());
                 }
             });
     }
 
     virtual void notifyDelete() const {
-        std::for_each(observers.begin(), observers.end(),
-            [=](auto *observer) {
+        std::for_each(this->observers.begin(), this->observers.end(),
+            [this](auto *observer) {
                 if (observer != nullptr) {
-                    observer->onDelete(this->key, getTypeIndex());
+                    observer->onDelete(this->key, this->getTypeIndex());
                 }
             });
     }

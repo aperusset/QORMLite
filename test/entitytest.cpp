@@ -6,7 +6,7 @@ void EntityTest::getKey() {
     TestEntity entity(DEFAULT_ENTITY_KEY);
 
     // When
-    auto const key = entity.getKey();
+    const auto key = entity.getKey();
 
     // Then
     QCOMPARE(DEFAULT_ENTITY_KEY, key);

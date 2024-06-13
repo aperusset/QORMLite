@@ -4,10 +4,10 @@
 
 void InsertTest::generateDefaultValues() {
     // Given
-    auto const insert = QORM::Insert(DEFAULT_TABLE_NAME);
+    const auto insert = QORM::Insert(DEFAULT_TABLE_NAME);
 
     // When
-    auto const generated = insert.generate();
+    const auto generated = insert.generate();
 
     // Then
     QVERIFY(!insert.hasBindables());
@@ -17,11 +17,11 @@ void InsertTest::generateDefaultValues() {
 
 void InsertTest::generateWithAssignments() {
     // Given
-    auto const assignement = QORM::Assignment(DEFAULT_FIELD_NAME, 1);
-    auto const insert = QORM::Insert(DEFAULT_TABLE_NAME,
+    const auto assignement = QORM::Assignment(DEFAULT_FIELD_NAME, 1);
+    const auto insert = QORM::Insert(DEFAULT_TABLE_NAME,
                                      {assignement, assignement});
     // When
-    auto const generated = insert.generate();
+    const auto generated = insert.generate();
 
     // Then
     QVERIFY(insert.hasBindables());
