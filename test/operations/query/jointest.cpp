@@ -8,9 +8,6 @@
 #include "operations/query/condition/equals.h"
 #include "operations/query/condition/and.h"
 
-const QString JoinTest::DEFAULT_TABLE_NAME = "table";
-const QString JoinTest::DEFAULT_FIELD_NAME = "field";
-
 void JoinTest::innerJoinShouldFailWithoutConditions() {
     // Given / When / Then
     QVERIFY_EXCEPTION_THROWN(QORM::InnerJoin(DEFAULT_TABLE_NAME, {}),

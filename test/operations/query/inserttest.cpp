@@ -2,9 +2,6 @@
 #include "operations/query/insert.h"
 #include "operations/query/assignment.h"
 
-const QString InsertTest::DEFAULT_TABLE_NAME = "table_name";
-const QString InsertTest::DEFAULT_FIELD_NAME = "field";
-
 void InsertTest::generateDefaultValues() {
     // Given
     auto const insert = QORM::Insert(DEFAULT_TABLE_NAME);

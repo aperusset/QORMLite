@@ -8,10 +8,6 @@
 #include "operations/query/select.h"
 #include "operations/query/insert.h"
 
-const QString TestCreator::TEST_TABLE = "test_table";
-const QString TestCreator::TEST_VIEW = "test_view";
-const QString TestCreator::TEST_FIELD = "test_field";
-
 void TestCreator::createTables(const QORM::Database &database) const {
     auto const primaryKey = QORM::PrimaryKey(
                 QORM::Field::notNull(TEST_FIELD, QORM::Integer()));

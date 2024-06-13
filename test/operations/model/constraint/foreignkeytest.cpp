@@ -5,8 +5,6 @@
 #include "operations/model/type/type.h"
 #include "operations/model/type/integer.h"
 
-const QString ForeignKeyTest::DEFAULT_TARGET_TABLE = "targetTable";
-
 void ForeignKeyTest::emptyReferencesListShouldFail() {
     // When / Then
     QVERIFY_EXCEPTION_THROWN(

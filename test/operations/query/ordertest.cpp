@@ -2,8 +2,6 @@
 #include "operations/query/order/asc.h"
 #include "operations/query/order/desc.h"
 
-const QString OrderTest::DEFAULT_FIELD_NAME = "fieldName";
-
 void OrderTest::generateAsc() {
     // Given
     auto const order = QORM::Asc(DEFAULT_FIELD_NAME);

@@ -75,11 +75,10 @@ class ReadOnlyRepository {
     }
 
     auto get(const std::list<Condition> &conditions) const -> Entity& {
-        auto const entities = this->getAll(conditions);
-        if (entities.empty()) {
-            throw std::logic_error("No entity match the given conditions");
+        if (const auto entities = this->getAll(conditions); !entities.empty()) {
+            return entities.front().get();
         }
-        return entities.front().get();
+        throw std::logic_error("No entity match the given conditions");
     }
 
     auto getAll(const std::list<Order> &orders = {}) const {

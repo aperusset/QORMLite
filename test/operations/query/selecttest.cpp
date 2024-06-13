@@ -8,9 +8,6 @@
 #include "operations/query/order/asc.h"
 #include "operations/query/order/desc.h"
 
-const QString SelectTest::DEFAULT_TABLE_NAME = "table_name";
-const QString SelectTest::DEFAULT_FIELD_NAME = "field";
-
 void SelectTest::selectAll() {
     // Given
     const QORM::Select select(DEFAULT_TABLE_NAME);

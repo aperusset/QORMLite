@@ -10,9 +10,9 @@ class SQLite : public Connector {
     const bool foreignKeysActivated;
     const bool test;
 
-    static const QString TEST_PREFIX;
-    static const QString FILE_EXTENSION;
-    static const QString SEQUENCE_TABLE;
+    inline static const QString TEST_PREFIX = "test_";
+    inline static const QString FILE_EXTENSION = ".db";
+    inline static const QString SEQUENCE_TABLE = "sqlite_sequence";
 
  public:
     explicit SQLite(const QString &name, bool foreignKeysActivated = true,

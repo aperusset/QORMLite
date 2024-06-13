@@ -9,10 +9,6 @@
 #include "operations/query/selection/lower.h"
 #include "operations/query/selection/upper.h"
 
-const QString SelectionTest::DEFAULT_FIELD_NAME = "defaultFieldName";
-const QString SelectionTest::DEFAULT_RENAMED_TO = "renamedTo";
-const QString SelectionTest::DEFAULT_FORMAT = "format";
-
 void SelectionTest::generate() {
     // Given
     auto const selection = QORM::Selection(DEFAULT_FIELD_NAME);

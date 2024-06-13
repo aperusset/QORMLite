@@ -8,7 +8,7 @@ namespace QORM {
 
 class Date : public Type {
  public:
-    static const QString NOW;
+    inline static const QString NOW = "date('now')";
     Date();
 };
 

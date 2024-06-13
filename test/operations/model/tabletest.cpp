@@ -5,13 +5,6 @@
 #include "operations/model/constraint/foreignkey.h"
 #include "operations/model/constraint/unique.h"
 #include "operations/model/table.h"
-#include "operations/model/type/integer.h"
-
-const QString TableTest::DEFAULT_TABLE_NAME = "test_table";
-const QORM::Field TableTest::DEFAULT_FIELD_1 =
-        QORM::Field::notNull("field1", QORM::Integer());
-const QORM::Field TableTest::DEFAULT_FIELD_2 =
-        QORM::Field::notNull("field2", QORM::Integer());
 
 void TableTest::autoIncrementedPrimaryKeyWithoutFields() {
     // Given

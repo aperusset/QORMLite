@@ -2,9 +2,6 @@
 #include <string>
 #include "connectors/odbc.h"
 
-const QString ODBCTest::DEFAULT_DRIVER_DEFINITION = "driverdefinition";
-const QString ODBCTest::DEFAULT_CONNECTION_STRING = "connectionstring";
-
 void ODBCTest::initShouldFailWithEmptyName() {
     // Given / When / Then
     QVERIFY_EXCEPTION_THROWN(QORM::ODBC odbc("", DEFAULT_DRIVER_DEFINITION,

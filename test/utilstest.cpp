@@ -6,8 +6,6 @@
 #include "./utils.h"
 #include "operations/query/selection/selection.h"
 
-const QString UtilsTest::FIELD_NAME = "field-name";
-
 void UtilsTest::formatSQLiteDate() {
     // Given
     auto const date = QDate(2010, 10, 30);

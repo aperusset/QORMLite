@@ -4,9 +4,6 @@
 #include "operations/query/condition/equals.h"
 #include "operations/query/condition/and.h"
 
-const QString DeleteTest::DEFAULT_TABLE_NAME = "table_name";
-const QString DeleteTest::DEFAULT_FIELD_NAME = "field_name";
-
 void DeleteTest::generateWithoutConditions() {
     // Given
     auto const del = QORM::Delete(DEFAULT_TABLE_NAME);

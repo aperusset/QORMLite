@@ -1,10 +1,5 @@
 #include "fieldtest.h"
 #include "operations/model/field.h"
-#include "operations/model/type/integer.h"
-
-const QString FieldTest::DEFAULT_NAME = "defaultName";
-const QORM::Type FieldTest::DEFAULT_TYPE = QORM::Integer();
-const QString FieldTest::DEFAULT_VALUE = "'defaultValue'";
 
 void FieldTest::generateNotNullWithoutDefaultValue() {
     // Given

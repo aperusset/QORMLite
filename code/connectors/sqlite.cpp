@@ -14,10 +14,6 @@ void deleteIfTestMode(const QString &fileName, bool test) {
 
 }  // namespace
 
-const QString QORM::SQLite::TEST_PREFIX = "test_";
-const QString QORM::SQLite::FILE_EXTENSION = ".db";
-const QString QORM::SQLite::SEQUENCE_TABLE = "sqlite_sequence";
-
 QORM::SQLite::SQLite(const QString &name, bool foreignKeysActivated,
                      bool test) :
     Connector((test ? TEST_PREFIX : "") + name + FILE_EXTENSION),

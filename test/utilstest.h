@@ -6,7 +6,7 @@
 class UtilsTest : public QObject {
     Q_OBJECT
 
-    static const QString FIELD_NAME;
+    inline static const QString FIELD_NAME = "field-name";
 
  private slots:
     static void formatSQLiteDate();

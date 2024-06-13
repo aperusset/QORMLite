@@ -5,9 +5,6 @@
 #include "operations/query/condition/equals.h"
 #include "operations/query/condition/and.h"
 
-const QString UpdateTest::DEFAULT_TABLE_NAME = "table_name";
-const QString UpdateTest::DEFAULT_FIELD_NAME = "field_name";
-
 void UpdateTest::withoutAssignmentsShouldFail() {
     // When / Then
     QVERIFY_EXCEPTION_THROWN(QORM::Update(DEFAULT_TABLE_NAME, {}, {}),

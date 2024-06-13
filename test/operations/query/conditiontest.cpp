@@ -19,10 +19,6 @@
 #include "operations/query/select.h"
 #include "./utils.h"
 
-const QString ConditionTest::DEFAULT_TABLE_NAME = "table";
-const QString ConditionTest::DEFAULT_FIELD_NAME = "field";
-const QVariant ConditionTest::DEFAULT_VALUE = QVariant::fromValue(42);
-
 void ConditionTest::withoutOperatorShouldFail() {
     // When / Then
     QVERIFY_EXCEPTION_THROWN(
