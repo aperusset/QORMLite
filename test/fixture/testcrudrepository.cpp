@@ -4,7 +4,7 @@
 #include "operations/query/condition/equals.h"
 
 TestCRUDRepository::TestCRUDRepository(const QORM::Database &database) :
-    QORM::CRUDRepository<int, TestEntity>(database) {}
+    QORM::CRUDRepository<TestEntity>(database) {}
 
 auto TestCRUDRepository::tableName() const -> QString {
     return TestCreator::TEST_TABLE;

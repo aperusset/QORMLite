@@ -12,12 +12,12 @@
 
 namespace QORM {
 
-template<typename Key, class Entity>
-class CRUDRepository : public ReadOnlyRepository<Key, Entity> {
+template<class Entity, typename Key = int>
+class CRUDRepository : public ReadOnlyRepository<Entity, Key> {
  public:
     explicit CRUDRepository(const Database &database,
                             Cache<Key, Entity>* const cache = nullptr) :
-        ReadOnlyRepository<Key, Entity> (database, cache) {}
+        ReadOnlyRepository<Entity, Key>(database, cache) {}
 
     virtual auto save(Entity* const entity) const -> const Key& {
         const auto &assignmentsToDo = this->assignments(*entity);
