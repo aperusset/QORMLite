@@ -10,19 +10,22 @@
 #include "./entity.h"
 #include "./utils.h"
 #include "operations/query/selection/count.h"
+#include "operations/query/condition/equals.h"
 
 namespace QORM {
 
-template<typename Key, class Entity>
+template<class Entity, typename Key = int>
 class ReadOnlyRepository {
     static_assert(
         std::is_base_of<QORM::Entity<Key>, Entity>::value,
         "Entity must extend QORM::Entity");
     using EntityCreator = std::function<Entity&(const QSqlRecord&)>;
     using EntityList = std::list<std::reference_wrapper<Entity>>;
+    using EntityCache = Cache<Key, Entity>;
+    inline static const QString DEFAULT_KEY_NAME = "id";
 
     const Database &database;
-    const std::unique_ptr<Cache<Key, Entity>> cache;
+    const std::unique_ptr<EntityCache> cache;
 
     const EntityCreator entityCreator =
         [this](const auto &record) -> Entity& {
@@ -35,8 +38,8 @@ class ReadOnlyRepository {
     explicit ReadOnlyRepository(const Database &database,
                                 Cache<Key, Entity>* const cache = nullptr) :
         database(database),
-        cache(cache == nullptr ? std::make_unique<Cache<Key, Entity>>()
-                               : std::unique_ptr<Cache<Key, Entity>>(cache)) {}
+        cache(cache == nullptr ? std::make_unique<EntityCache>()
+                               : std::unique_ptr<EntityCache>(cache)) {}
     ReadOnlyRepository(const ReadOnlyRepository&) = delete;
     ReadOnlyRepository(ReadOnlyRepository&&) = delete;
     ReadOnlyRepository& operator=(const ReadOnlyRepository&) = delete;
@@ -47,7 +50,7 @@ class ReadOnlyRepository {
         return this->database;
     }
 
-    auto getCache() const -> Cache<Key, Entity>& {
+    auto getCache() const -> EntityCache& {
         return *this->cache.get();
     }
 
@@ -127,10 +130,20 @@ class ReadOnlyRepository {
         }
     }
 
+    virtual auto keyName() const -> QString {
+        return DEFAULT_KEY_NAME;
+    }
+
+    virtual auto keyCondition(const Key &key) const -> Condition {
+        return QORM::Equals::field(this->keyName(), key);
+    }
+
+    virtual auto buildKey(const QSqlRecord &record) const -> Key {
+        return QORM::Utils::getUIntOrThrow(record, this->keyName());
+    }
+
     virtual auto tableName() const -> QString = 0;
-    virtual auto keyCondition(const Key&) const -> Condition = 0;
     virtual auto fields() const -> std::list<QString> = 0;
-    virtual auto buildKey(const QSqlRecord &record) const -> Key = 0;
     virtual auto build(const QSqlRecord &record) const -> Entity* = 0;
 };
 
