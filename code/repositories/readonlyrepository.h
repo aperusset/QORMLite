@@ -143,7 +143,7 @@ class ReadOnlyRepository {
 
     virtual auto buildKey(const QSqlRecord &record) const -> Key {
         if constexpr (std::is_integral<Key>::value) {
-            return QORM::Utils::getUIntOrThrow(record, this->keyName());
+            return QORM::Utils::getIntOrThrow(record, this->keyName());
         }
         throw std::runtime_error("buildKey must be overriden");
     }
