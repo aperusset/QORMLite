@@ -255,6 +255,21 @@ void UtilsTest::getBoolOrDefaultShouldReturnValue() {
     QCOMPARE(rValue, value);
 }
 
+void UtilsTest::getBoolOrThrowShouldReturnValue() {
+    // Given
+    auto field = QSqlField(FIELD_NAME, QVariant::Type::Bool);
+    const auto value = true;
+    field.setValue(QVariant::fromValue(value));
+    auto record = QSqlRecord();
+    record.append(field);
+
+    // When
+    auto rValue = QORM::Utils::getBoolOrThrow(record, FIELD_NAME);
+
+    // Then
+    QCOMPARE(rValue, value);
+}
+
 void UtilsTest::getStringOrDefaultShouldReturnValue() {
     // Given
     auto field = QSqlField(FIELD_NAME, QVariant::Type::String);
@@ -266,6 +281,21 @@ void UtilsTest::getStringOrDefaultShouldReturnValue() {
     // When
     auto rValue = QORM::Utils::getStringOrDefault(record, FIELD_NAME,
                                                   "default");
+    // Then
+    QCOMPARE(rValue, value);
+}
+
+void UtilsTest::getStringOrThrowShouldReturnValue() {
+    // Given
+    auto field = QSqlField(FIELD_NAME, QVariant::Type::String);
+    const auto value = QString("value");
+    field.setValue(QVariant::fromValue(value));
+    auto record = QSqlRecord();
+    record.append(field);
+
+    // When
+    auto rValue = QORM::Utils::getStringOrThrow(record, FIELD_NAME);
+
     // Then
     QCOMPARE(rValue, value);
 }
@@ -285,6 +315,21 @@ void UtilsTest::getDateOrDefaultShouldReturnValue() {
     QCOMPARE(rValue, value);
 }
 
+void UtilsTest::getDateOrThrowShouldReturnValue() {
+    // Given
+    auto field = QSqlField(FIELD_NAME, QVariant::Type::Date);
+    const auto value = QDate::currentDate();
+    field.setValue(QVariant::fromValue(value));
+    auto record = QSqlRecord();
+    record.append(field);
+
+    // When
+    auto rValue = QORM::Utils::getDateOrThrow(record, FIELD_NAME);
+
+    // Then
+    QCOMPARE(rValue, value);
+}
+
 void UtilsTest::getDateTimeOrDefaultShouldReturnValue() {
     // Given
     auto field = QSqlField(FIELD_NAME, QVariant::Type::DateTime);
@@ -300,17 +345,16 @@ void UtilsTest::getDateTimeOrDefaultShouldReturnValue() {
     QCOMPARE(rValue, value);
 }
 
-void UtilsTest::getUIntOrThrowShouldReturnValue() {
+void UtilsTest::getDateTimeOrThrowShouldReturnValue() {
     // Given
-    auto field = QSqlField(FIELD_NAME, QVariant::Type::UInt);
-    const auto value = 42U;
+    auto field = QSqlField(FIELD_NAME, QVariant::Type::DateTime);
+    const auto value = QDateTime::currentDateTime();
     field.setValue(QVariant::fromValue(value));
     auto record = QSqlRecord();
     record.append(field);
 
     // When
-    auto rValue = QORM::Utils::getUIntOrThrow(record, FIELD_NAME);
-
+    auto rValue = QORM::Utils::getDateTimeOrThrow(record, FIELD_NAME);
     // Then
     QCOMPARE(rValue, value);
 }
@@ -325,6 +369,21 @@ void UtilsTest::getUIntOrDefaultShouldReturnValue() {
 
     // When
     auto rValue = QORM::Utils::getUIntOrDefault(record, FIELD_NAME, 100U);
+
+    // Then
+    QCOMPARE(rValue, value);
+}
+
+void UtilsTest::getUIntOrThrowShouldReturnValue() {
+    // Given
+    auto field = QSqlField(FIELD_NAME, QVariant::Type::UInt);
+    const auto value = 42U;
+    field.setValue(QVariant::fromValue(value));
+    auto record = QSqlRecord();
+    record.append(field);
+
+    // When
+    auto rValue = QORM::Utils::getUIntOrThrow(record, FIELD_NAME);
 
     // Then
     QCOMPARE(rValue, value);
@@ -345,6 +404,21 @@ void UtilsTest::getIntOrDefaultShouldReturnValue() {
     QCOMPARE(rValue, value);
 }
 
+void UtilsTest::getIntOrThrowShouldReturnValue() {
+    // Given
+    auto field = QSqlField(FIELD_NAME, QVariant::Type::Int);
+    const auto value = 42;
+    field.setValue(QVariant::fromValue(value));
+    auto record = QSqlRecord();
+    record.append(field);
+
+    // When
+    auto rValue = QORM::Utils::getIntOrThrow(record, FIELD_NAME);
+
+    // Then
+    QCOMPARE(rValue, value);
+}
+
 void UtilsTest::getDoubleOrDefaultShouldReturnValue() {
     // Given
     auto field = QSqlField(FIELD_NAME, QVariant::Type::Double);
@@ -355,6 +429,21 @@ void UtilsTest::getDoubleOrDefaultShouldReturnValue() {
 
     // When
     auto rValue = QORM::Utils::getDoubleOrDefault(record, FIELD_NAME, 100.0);
+
+    // Then
+    QCOMPARE(rValue, value);
+}
+
+void UtilsTest::getDoubleOrThrowShouldReturnValue() {
+    // Given
+    auto field = QSqlField(FIELD_NAME, QVariant::Type::Double);
+    const auto value = 42.0;
+    field.setValue(QVariant::fromValue(value));
+    auto record = QSqlRecord();
+    record.append(field);
+
+    // When
+    auto rValue = QORM::Utils::getDoubleOrThrow(record, FIELD_NAME);
 
     // Then
     QCOMPARE(rValue, value);

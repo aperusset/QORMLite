@@ -161,6 +161,7 @@ namespace QORM::Utils {
     /**
      * @brief Extract a bool from a QSqlRecord or, if null, a default value
      * @param record the record from which to extract the bool value
+     * @param fieldName the name of the field to extract from the record
      * @param defaultValue the default bool value
      * @return extracted bool value
      */
@@ -168,8 +169,19 @@ namespace QORM::Utils {
                           bool defaultValue) -> bool;
 
     /**
+     * @brief Extract a bool from a QSqlRecord or, if null or a invalid, throw
+     * an exception
+     * @param record the record from which to extract the bool value
+     * @param fieldName the name of the field to extract from the record
+     * @return extracted bool value
+     */
+    auto getBoolOrThrow(const QSqlRecord &record, const QString &fieldName)
+        -> bool;
+
+    /**
      * @brief Extract a QString from a QSqlRecord or, if null, a default value
      * @param record the record from which to extract the QString value
+     * @param fieldName the name of the field to extract from the record
      * @param defaultValue the default QString value
      * @return extracted QString value
      */
@@ -177,8 +189,19 @@ namespace QORM::Utils {
                             const QString &defaultValue) -> QString;
 
     /**
+     * @brief Extract a QString from a QSqlRecord or, if null or a invalid,
+     * throw an exception
+     * @param record the record from which to extract the QString value
+     * @param fieldName the name of the field to extract from the record
+     * @return extracted QString value
+     */
+    auto getStringOrThrow(const QSqlRecord &record, const QString &fieldName)
+        -> QString;
+
+    /**
      * @brief Extract a QDate from a QSqlRecord or, if null, a default value
      * @param record the record from which to extract the QDate value
+     * @param fieldName the name of the field to extract from the record
      * @param defaultValue the default QDate value
      * @return extracted QDate value
      */
@@ -186,8 +209,19 @@ namespace QORM::Utils {
                           const QDate &defaultValue) -> QDate;
 
     /**
+     * @brief Extract a QDate from a QSqlRecord or, if null or a invalid,
+     * throw an exception
+     * @param record the record from which to extract the QDate value
+     * @param fieldName the name of the field to extract from the record
+     * @return extracted QDate value
+     */
+    auto getDateOrThrow(const QSqlRecord &record, const QString &fieldName)
+        -> QDate;
+
+    /**
      * @brief Extract a QDateTime from a QSqlRecord or, if null, a default value
      * @param record the record from which to extract the QDateTime value
+     * @param fieldName the name of the field to extract from the record
      * @param defaultValue the default QDateTime value
      * @return extracted QDateTime value
      */
@@ -196,8 +230,19 @@ namespace QORM::Utils {
                               const QDateTime &defaultValue) -> QDateTime;
 
     /**
+     * @brief Extract a QDateTime from a QSqlRecord or, if null or a invalid,
+     * throw an exception
+     * @param record the record from which to extract the QDateTime value
+     * @param fieldName the name of the field to extract from the record
+     * @return extracted QDateTime value
+     */
+    auto getDateTimeOrThrow(const QSqlRecord &record, const QString &fieldName)
+        -> QDateTime;
+
+    /**
      * @brief Extract a uint32_t from a QSqlRecord or, if null, a default value
      * @param record the record from which to extract the uint32_t value
+     * @param fieldName the name of the field to extract from the record
      * @param defaultValue the default uint32_t value
      * @return extracted uint32_t value
      */
@@ -205,9 +250,10 @@ namespace QORM::Utils {
                           uint32_t defaultValue) -> uint32_t;
 
     /**
-     * @brief Extract a uint32_t from a QSqlRecord or, if null, a default value
+     * @brief Extract a uint32_t from a QSqlRecord or, if null or a invalid,
+     * throw an exception
      * @param record the record from which to extract the uint32_t value
-     * @param defaultValue the default uint32_t value
+     * @param fieldName the name of the field to extract from the record
      * @return extracted uint32_t value
      */
     auto getUIntOrThrow(const QSqlRecord &record, const QString &fieldName)
@@ -216,6 +262,7 @@ namespace QORM::Utils {
     /**
      * @brief Extract a int32_t from a QSqlRecord or, if null, a default value
      * @param record the record from which to extract the int32_t value
+     * @param fieldName the name of the field to extract from the record
      * @param defaultValue the default int32_t value
      * @return extracted int32_t value
      */
@@ -223,13 +270,34 @@ namespace QORM::Utils {
                          int32_t defaultValue) -> int32_t;
 
     /**
+     * @brief Extract a int32_t from a QSqlRecord or, if null or a invalid,
+     * throw an exception
+     * @param record the record from which to extract the int32_t value
+     * @param fieldName the name of the field to extract from the record
+     * @return extracted int32_t value
+     */
+    auto getIntOrThrow(const QSqlRecord &record, const QString &fieldName)
+        -> int32_t;
+
+    /**
      * @brief Extract a double from a QSqlRecord or, if null, a default value
      * @param record the record from which to extract the double value
+     * @param fieldName the name of the field to extract from the record
      * @param defaultValue the default double value
      * @return extracted double value
      */
     auto getDoubleOrDefault(const QSqlRecord &record, const QString &fieldName,
                             double defaultValue) -> double;
+
+    /**
+     * @brief Extract a double from a QSqlRecord or, if null or a invalid,
+     * throw an exception
+     * @param record the record from which to extract the double value
+     * @param fieldName the name of the field to extract from the record
+     * @return extracted double value
+     */
+    auto getDoubleOrThrow(const QSqlRecord &record, const QString &fieldName)
+        -> double;
 
     /**
      * @brief Return a value wrapped in a QVariant if valid, based on a given
