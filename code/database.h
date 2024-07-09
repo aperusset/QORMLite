@@ -83,7 +83,7 @@ class Database {
     template<class Entity>
     auto entities(const Select &select,
             const std::function<Entity&(const QSqlRecord&)> &extractor) const {
-        std::list<std::reference_wrapper<Entity>> entities;
+        RefList<Entity> entities;
         auto qSqlQuery = this->execute(select);
         while (qSqlQuery.next()) {
             entities.push_back(extractor(qSqlQuery.record()));

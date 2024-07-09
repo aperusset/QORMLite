@@ -2,6 +2,7 @@
 #define ENTITY_H_
 
 #include <algorithm>
+#include <list>
 #include <set>
 #include <typeindex>
 #include "./observer.h"
@@ -66,6 +67,11 @@ class Entity {
             });
     }
 };
+
+template<class Entity>
+using RefList = std::list<std::reference_wrapper<Entity>>;
+template<class Entity>
+using ConstRefList = std::list<std::reference_wrapper<const Entity>>;
 
 }  // namespace QORM
 
