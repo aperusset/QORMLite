@@ -20,7 +20,6 @@ class ReadOnlyRepository {
         std::is_base_of<QORM::Entity<Key>, Entity>::value,
         "Entity must extend QORM::Entity");
     using EntityCreator = std::function<Entity&(const QSqlRecord&)>;
-    using EntityList = std::list<std::reference_wrapper<Entity>>;
     using EntityCache = Cache<Key, Entity>;
     inline static const QString DEFAULT_KEY_NAME = "id";
 
