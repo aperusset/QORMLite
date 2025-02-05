@@ -3,8 +3,10 @@
 
 namespace QORM {
 
+class Database;
+
 class Upgrader {
-    const unsigned int version;
+    const unsigned short version;
 
  public:
     explicit Upgrader(unsigned int version) : version(version) {}
@@ -14,8 +16,13 @@ class Upgrader {
     Upgrader& operator=(Upgrader&&) = delete;
     virtual ~Upgrader() {}
 
-
+    auto getVersion() const -> unsigned short;
+    void upgrade(const Database&) const {}
 };
+
+inline auto Upgrader::getVersion() const -> unsigned short {
+    return this->version;
+}
 
 }  // namespace QORM
 

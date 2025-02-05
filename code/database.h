@@ -43,11 +43,7 @@ class Database {
     auto isVerbose() const;
     auto isConnected() const -> bool;
 
-    /**
-     * @brief connect
-     * @return true if the database has been created, false if already exists
-     */
-    auto connect() -> bool;
+    void connect();
     void disconnect();
     void optimize() const;
     auto backup(const QString &fileName) -> bool;

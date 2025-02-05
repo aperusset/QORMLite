@@ -105,6 +105,7 @@ HEADERS += \
   repositories/crudrepository.h \
   repositories/readonlyrepository.h \
   schema/creator.h \
+  schema/state.h \
   schema/upgrader.h \
   cache.h \
   database.h \

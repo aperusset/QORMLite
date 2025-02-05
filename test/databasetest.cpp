@@ -12,17 +12,17 @@
 
 const int DEFAULT_VALUE = 42;
 
-void DatabaseTest::connectShouldReturnTrue() {
+void DatabaseTest::connectShouldConnect() {
     // Given
     const auto &connector = TestConnector(this->databaseName());
     QORM::Database database(connector, this->testCreator, false);
 
     // When / Then
-    QVERIFY(database.connect());
+    database.connect();
     QVERIFY(database.isConnected());
 }
 
-void DatabaseTest::subsequentConnectShouldReturnFalse() {
+void DatabaseTest::subsequentConnectShouldFail() {
     // Given
     const auto &connector = TestConnector(this->databaseName());
     QORM::Database database(connector, this->testCreator, false);
@@ -31,8 +31,7 @@ void DatabaseTest::subsequentConnectShouldReturnFalse() {
     database.connect();
 
     // When / Then
-    QVERIFY(!database.connect());
-    QVERIFY(database.isConnected());
+    QVERIFY_EXCEPTION_THROWN(database.connect(), std::runtime_error);
 }
 
 void DatabaseTest::disconnectShouldSuccess() {

@@ -17,15 +17,14 @@ class CreatorTest : public MainDatabaseTest {
     }
 
  private slots:
-    void isCreatedShouldReturnFalseIfNotConnected();
-    void isCreatedShouldReturnFalseIfTablesNotCreated();
-    void isCreatedShouldReturnFalseIfViewsNotCreated();
-    void isCreatedShouldReturnTrue();
+    // TODO(aperusset) verify upgraders (order after ctor and adder)
+    // TODO(aperusset) test getSchemaState
     void createTableShouldSuccess();
     void createViewShouldSuccess();
     void createViewShouldFailIfTableNotExists();
     void insertShouldSuccess();
     void createAllAndPopulateShouldSuccess();
+    // TODO(aperusset) test upgradeToLatestVersion
 };
 
 #endif  // QORMCREATORTEST_H_

@@ -16,8 +16,8 @@ class DatabaseTest : public MainDatabaseTest {
     }
 
  private slots:
-    void connectShouldReturnTrue();
-    void subsequentConnectShouldReturnFalse();
+    void connectShouldConnect();
+    void subsequentConnectShouldFail();
     void disconnectShouldSuccess();
     void optimizeShouldSuccess();
     void prepareExecuteShouldFailWithInvalidQuery();

@@ -61,22 +61,30 @@ auto QORM::Database::isConnected() const -> bool {
     return connector.isConnected();
 }
 
-auto QORM::Database::connect() -> bool {
+void QORM::Database::connect() {
     const QMutexLocker lock(&databaseMutex);
     if (!this->isConnected()) {
         this->connector.connect();
         if (this->creator != nullptr) {
-            const auto shouldBeCreated = !this->creator->isCreated(*this,
-                this->connector.tables(), this->connector.views());
-            if (shouldBeCreated) {
-                qDebug("Create database with name %s",
+            auto schemaState = this->creator->getSchemaState(*this,
+                this->connector.tables());
+            if (schemaState == Schema::State::EMPTY) {
+                qDebug("Create and upgrade database with name %s",
                        qUtf8Printable(connector.getName()));
                 this->creator->createAllAndPopulate(*this);
+                this->creator->upgradeToLatestVersion(*this);
+            } else if (schemaState == Schema::State::TO_BE_UPDATED) {
+                qDebug("Upgrade database with name %s",
+                       qUtf8Printable(connector.getName()));
+                this->creator->upgradeToLatestVersion(*this);
+            } else {
+                qDebug("Database %s is up to date",
+                       qUtf8Printable(connector.getName()));
             }
-            return shouldBeCreated;
         }
+    } else {
+        throw std::runtime_error("Already connected to database");
     }
-    return false;
 }
 
 void QORM::Database::disconnect() {
