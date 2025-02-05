@@ -4,15 +4,12 @@
 #include "operations/query/condition/equals.h"
 #include "operations/query/condition/and.h"
 
-const QString DeleteTest::DEFAULT_TABLE_NAME = "table_name";
-const QString DeleteTest::DEFAULT_FIELD_NAME = "field_name";
-
 void DeleteTest::generateWithoutConditions() {
     // Given
-    auto const del = QORM::Delete(DEFAULT_TABLE_NAME);
+    const auto del = QORM::Delete(DEFAULT_TABLE_NAME);
 
     // When
-    auto const generated = del.generate();
+    const auto generated = del.generate();
 
     // Then
     QVERIFY(!del.hasBindables());
@@ -21,11 +18,11 @@ void DeleteTest::generateWithoutConditions() {
 
 void DeleteTest::generateWithConditions() {
     // Given
-    auto const condition = QORM::Equals::field(DEFAULT_FIELD_NAME, 1);
-    auto const del = QORM::Delete(DEFAULT_TABLE_NAME, {condition, condition});
+    const auto condition = QORM::Equals::field(DEFAULT_FIELD_NAME, 1);
+    const auto del = QORM::Delete(DEFAULT_TABLE_NAME, {condition, condition});
 
     // When
-    auto const generated = del.generate();
+    const auto generated = del.generate();
 
     // Then
     QVERIFY(del.hasBindables());

@@ -10,8 +10,8 @@ namespace {
 auto bindConditions(QORM::Select *select,
                     const std::list<QORM::Condition> &conditions)
 -> QORM::Select& {
-    for (auto const &condition : conditions) {
-        for (auto const &bindable : condition.getParametrizedConditions()) {
+    for (const auto &condition : conditions) {
+        for (const auto &bindable : condition.getParametrizedConditions()) {
             select->addBindable(bindable);
         }
     }
@@ -25,14 +25,14 @@ QORM::Select::Select(const QString &tableName) : Select(tableName, {" * "}) {}
 QORM::Select::Select(const QString &tableName,
                      const std::list<QString> &fields) :
     TableQuery(tableName) {
-    for (auto const &field : fields) {
+    for (const auto &field : fields) {
         this->selections.emplace_back(Selection(field));
     }
 }
 
 auto QORM::Select::join(const std::list<Join> &joins) -> Select& {
     std::copy(joins.begin(), joins.end(), std::back_inserter(this->joins));
-    for (auto const &join : joins) {
+    for (const auto &join : joins) {
         bindConditions(this, join.getConditions());
     }
     return *this;
@@ -52,7 +52,7 @@ auto QORM::Select::groupBy(const std::list<QString> &groupBy) -> Select& {
 
 auto QORM::Select::having(const std::list<Condition> &conditions) -> Select& {
     if (this->groupedBy.empty()) {
-        throw std::string("Cannot use having clause without group by clause.");
+        throw std::invalid_argument("Having clause need a group by clause");
     }
     std::copy(conditions.begin(), conditions.end(),
               std::back_inserter(this->havings));
@@ -76,7 +76,7 @@ auto QORM::Select::offset(const unsigned int offset) -> Select& {
 
 auto QORM::Select::merge(Select select) -> Select& {
     if (this->selections.size() != select.selections.size()) {
-        throw std::string("Two selects must have same number of selections.");
+        throw std::logic_error("Selects must have same number of selections.");
     }
     this->mergedSelects.emplace_back(std::move(select));
     return *this;
@@ -90,7 +90,7 @@ auto QORM::Select::generate() const -> QString {
     QStringList generatedOrders;
     std::transform(this->orders.begin(), this->orders.end(),
                    std::back_inserter(generatedOrders),
-        [this, &generatedSelections](const Order &order) -> QString {
+        [this, &generatedSelections](const auto &order) {
             if (!QORM::Utils::contains(this->selections, Selection(" * ")) &&
                 !QORM::Utils::contains(
                         this->selections,
@@ -101,15 +101,13 @@ auto QORM::Select::generate() const -> QString {
         });
     QString select = std::accumulate(this->joins.begin(), this->joins.end(),
         "select distinct " + generatedSelections.join(", ") + " from " +
-                                     this->getTableName(),
-         [](const QString &acc, const Join &join) -> QString {
-             return acc + " " + join.generate();
-         });
+        this->getTableName(), [](const auto &acc, const auto &join) {
+                                return acc + " " + join.generate();
+                              });
     select += Condition::generateMultiple(" where ", this->conditions);
     if (!this->groupedBy.empty()) {
         select += " group by " +  QStringList(this->groupedBy.begin(),
-                                              this->groupedBy.end())
-                .join(", ");
+                                              this->groupedBy.end()).join(", ");
     }
     select += Condition::generateMultiple(" having ", this->havings);
     select += generatedOrders.isEmpty() ? "" : " order by " +
@@ -122,7 +120,7 @@ auto QORM::Select::generate() const -> QString {
     }
     select += std::accumulate(this->mergedSelects.begin(),
                               this->mergedSelects.end(), QString(""),
-        [](const QString &acc, const Select &mergedSelect) -> QString {
+        [](const auto &acc, const auto &mergedSelect) {
             return acc + " union " + mergedSelect.generate();
         });
     return select.simplified();

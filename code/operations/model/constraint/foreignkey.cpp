@@ -4,19 +4,22 @@
 #include <string>
 
 QORM::ForeignKey::ForeignKey(std::list<Reference> references,
-                             QString targetTable, const OnAction &onAction) :
+                             QString targetTable, OnAction onAction) :
     Constraint(targetTable.toLower() + "_fk"),
     references(std::move(references)), targetTable(std::move(targetTable)),
     onAction(onAction) {
+    if (this->targetTable.trimmed().isEmpty()) {
+        throw std::invalid_argument("Target table must be not blank.");
+    }
     if (this->references.empty()) {
-        throw std::string("Cannot generate foreign key without any reference.");
+        throw std::invalid_argument("Foreign key must have reference(s).");
     }
 }
 
 auto QORM::ForeignKey::generateConstraint() const -> QString {
     QStringList fromFieldNames;
     QStringList toFieldNames;
-    for (auto const &reference : this->references) {
+    for (const auto &reference : this->references) {
         fromFieldNames << reference.getFrom().getName();
         toFieldNames << reference.getTo().getName();
     }

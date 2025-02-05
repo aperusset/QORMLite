@@ -5,17 +5,19 @@
 #include <string>
 
 QMutex poolMutex;
-std::map<QString, QORM::Database*> pool;
+std::map<QString, std::unique_ptr<QORM::Database>> pool;
 
 namespace {
 
-auto initialized(const QString &name) -> bool {
-    return pool.count(name);
+auto initialized(const QString &name) {
+    return static_cast<bool>(pool.count(name));
 }
 
 void initializeChecks(const QORM::Connector &connector) {
-    if (initialized(connector.getName())) {
-        throw std::string("This database is already initialized");
+    const auto databaseName = connector.getName();
+    if (initialized(databaseName)) {
+        throw std::logic_error("Database " + databaseName.toStdString() +
+                               " is already initialized");
     }
     qDebug("Initializing database %s.", qUtf8Printable(connector.getName()));
 }
@@ -29,22 +31,23 @@ auto QORM::isInitialized(const QString &name) -> bool {
 void QORM::initialize(const Connector &connector, bool verbose) {
     const QMutexLocker lock(&poolMutex);
     initializeChecks(connector);
-    pool.insert(std::make_pair(
-        connector.getName(), new Database(connector, verbose)));
+    pool.insert(std::pair(connector.getName(),
+                    std::make_unique<Database>(connector, verbose)));
 }
 
 void QORM::initialize(const Connector &connector, const Creator &creator,
                       bool verbose) {
     const QMutexLocker lock(&poolMutex);
     initializeChecks(connector);
-    pool.insert(std::make_pair(
-        connector.getName(), new Database(connector, creator, verbose)));
+    pool.insert(std::pair(connector.getName(),
+                    std::make_unique<Database>(connector, creator, verbose)));
 }
 
 auto QORM::get(const QString &name) -> Database& {
     const QMutexLocker lock(&poolMutex);
     if (!initialized(name)) {
-        throw std::string("You must initialize the database before using it");
+        throw std::invalid_argument("You must initialize database " +
+                                    name.toStdString() + " before using it");
     }
     return *pool[name];
 }
@@ -52,15 +55,11 @@ auto QORM::get(const QString &name) -> Database& {
 void QORM::destroy(const QString &name) {
     const QMutexLocker lock(&poolMutex);
     if (initialized(name)) {
-        delete pool[name];
         pool.erase(name);
     }
 }
 
 void QORM::destroyAll() {
     const QMutexLocker lock(&poolMutex);
-    for (const auto &database : pool) {
-        delete database.second;
-    }
     pool.clear();
 }

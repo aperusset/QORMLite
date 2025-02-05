@@ -11,7 +11,6 @@ class CRUDRepositoryTest : public MainDatabaseTest {
     Q_OBJECT
 
     TestCreator testCreator;
-    QORM::Cache<int, TestEntity> cache;
 
  public:
     auto databaseName() const -> QString override {
@@ -19,10 +18,14 @@ class CRUDRepositoryTest : public MainDatabaseTest {
     }
 
  private slots:
+    void qualifiedFieldsShouldQualifyAllFields();
     void getByKeyShouldFail();
     void getByKeyShouldReturnEntity();
+    void getShouldFail();
+    void getShouldReturnEntity();
     void getAllShouldReturnAllExistingEntities();
-    void getAllShouldReturnEntitiesAccordingToSelect();
+    void getAllShouldReturnEntitiesAccordingToConditions();
+    void selectShouldReturnExpectedEntities();
     void countShouldCountAllEntities();
     void countShouldCountEntitiesAccordingToConditions();
     void existsByKeyShouldReturnTrue();
@@ -31,12 +34,15 @@ class CRUDRepositoryTest : public MainDatabaseTest {
     void existsShouldReturnFalse();
     void saveShouldInsertAndNotify();
     void saveShouldUpdateAndNotify();
-    void eraseShouldDoNothinIfNotExists();
+    void saveAllShouldInsertAndNotify();
+    void eraseShouldNotFailIfNotExists();
     void eraseShouldDeleteAndNotify();
+    void eraseAllShouldDeleteAndNotify();
+    void assertFieldValidityShouldThrow();
+    void assertFieldValidityShouldNotThrow();
 
     void init() override {
         MainDatabaseTest::init();
-        this->cache.clear();
     }
 };
 

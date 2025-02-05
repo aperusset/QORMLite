@@ -7,10 +7,10 @@
 
 void TypeTest::generate() {
     // Given
-    auto const type = QORM::Type("typeName");
+    const auto type = QORM::Type("typeName");
 
     // When
-    auto const generated = type.generate();
+    const auto generated = type.generate();
 
     // Then
     QCOMPARE(type.getName(), generated);
@@ -18,7 +18,7 @@ void TypeTest::generate() {
 
 void TypeTest::generateQString() {
     // Given
-    auto const type = QORM::Type("typeName");
+    const auto type = QORM::Type("typeName");
 
     // When
     const QString generated = type;
@@ -29,7 +29,7 @@ void TypeTest::generateQString() {
 
 void TypeTest::integerGenerate() {
     // When
-    auto const generated = QORM::Integer().generate();
+    const auto generated = QORM::Integer().generate();
 
     // Then
     QCOMPARE("integer", generated);
@@ -37,7 +37,7 @@ void TypeTest::integerGenerate() {
 
 void TypeTest::decimalGenerate() {
     // When
-    auto const generated = QORM::Decimal().generate();
+    const auto generated = QORM::Decimal().generate();
 
     // Then
     QCOMPARE("decimal(" + QString::number(QORM::Decimal::DEFAULT_DIGITS) + "," +
@@ -46,7 +46,7 @@ void TypeTest::decimalGenerate() {
 
 void TypeTest::varcharGenerate() {
     // When
-    auto const generated = QORM::Varchar().generate();
+    const auto generated = QORM::Varchar().generate();
 
     // Then
     QCOMPARE("varchar(" + QString::number(QORM::Varchar::DEFAULT_SIZE) + ")",
@@ -60,7 +60,7 @@ void TypeTest::emptyIsCompliant() {
 
 void TypeTest::dateGenerate() {
     // When
-    auto const generated = QORM::Date().generate();
+    const auto generated = QORM::Date().generate();
 
     // Then
     QCOMPARE("date", generated);

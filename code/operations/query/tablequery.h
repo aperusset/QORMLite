@@ -15,10 +15,10 @@ class TableQuery : public Query {
         tableName(std::move(tableName)) {}
 
  public:
-    auto getTableName() const -> QString;
+    auto getTableName() const -> const QString&;
 };
 
-inline auto TableQuery::getTableName() const -> QString {
+inline auto TableQuery::getTableName() const -> const QString& {
     return this->tableName;
 }
 

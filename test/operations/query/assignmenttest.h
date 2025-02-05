@@ -6,8 +6,8 @@
 class AssignmentTest : public QObject {
     Q_OBJECT
 
-    static const QString DEFAULT_FIELD_NAME;
-    static const QVariant DEFAULT_VALUE;
+    inline static const QString DEFAULT_FIELD_NAME = "defaultFieldName";
+    inline static const QVariant DEFAULT_VALUE = QVariant::fromValue(1);
 
  private slots:
     static void generate();

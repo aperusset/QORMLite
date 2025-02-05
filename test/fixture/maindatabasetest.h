@@ -14,7 +14,7 @@ class MainDatabaseTest : public QObject {
             QFile::remove(connection);
         }
         QFile::remove(this->databaseName());
-        auto const backupName = this->databaseBackupName();
+        const auto backupName = this->databaseBackupName();
         if (!backupName.isNull()) {
             QFile::remove(backupName);
         }

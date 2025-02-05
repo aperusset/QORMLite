@@ -24,12 +24,13 @@ void QORMLiteTest::initializeShouldFailIfDatabaseAlreadyExists() {
     QVERIFY(QORM::isInitialized(this->databaseName()));
     QVERIFY_EXCEPTION_THROWN(
         QORM::initialize(*this->connector, this->creator, false),
-        std::string);
+        std::logic_error);
 }
 
 void QORMLiteTest::getShouldFailIfDatabaseNotExists() {
     // Given / When / Then
-    QVERIFY_EXCEPTION_THROWN(QORM::get(this->databaseName()), std::string);
+    QVERIFY_EXCEPTION_THROWN(QORM::get(this->databaseName()),
+                             std::invalid_argument);
 }
 
 void QORMLiteTest::getShouldSuccess() {
@@ -37,7 +38,7 @@ void QORMLiteTest::getShouldSuccess() {
     QORM::initialize(*this->connector, this->creator, false);
 
     // When
-    auto const &database = QORM::get(this->databaseName());
+    const auto &database = QORM::get(this->databaseName());
 
     // Then
     QVERIFY(QORM::isInitialized(this->databaseName()));
@@ -67,11 +68,7 @@ void QORMLiteTest::destroyAllShouldSuccess() {
 }
 
 void QORMLiteTest::initTestCase() {
-    this->connector = new TestConnector(this->databaseName());
-}
-
-void QORMLiteTest::cleanupTestCase() {
-    delete this->connector;
+    this->connector = std::make_unique<TestConnector>(this->databaseName());
 }
 
 void QORMLiteTest::cleanup() {

@@ -7,12 +7,13 @@
 
 void SQLiteTest::initShouldFailIfNameIsEmpty() {
     // Given / When / Then
-    QVERIFY_EXCEPTION_THROWN(QORM::SQLite sqLite("", true, false), std::string);
+    QVERIFY_EXCEPTION_THROWN(QORM::SQLite sqLite("", true, false),
+                             std::invalid_argument);
 }
 
 void SQLiteTest::initShouldAddFileExtensionToName() {
     // Given
-    auto const &sqlite = QORM::SQLite(this->databaseName(), true, false);
+    const auto &sqlite = QORM::SQLite(this->databaseName(), true, false);
 
     // When / Then
     QVERIFY(!sqlite.isTest());
@@ -21,7 +22,7 @@ void SQLiteTest::initShouldAddFileExtensionToName() {
 
 void SQLiteTest::initShouldAddTestPrefixAndFileExtensionToName() {
     // Given
-    auto const &sqlite = QORM::SQLite(this->databaseName(), true, true);
+    const auto &sqlite = QORM::SQLite(this->databaseName(), true, true);
 
     // When / Then
     QVERIFY(sqlite.isTest());
@@ -30,7 +31,7 @@ void SQLiteTest::initShouldAddTestPrefixAndFileExtensionToName() {
 
 void SQLiteTest::initShouldDeleteDatabaseFile() {
     // Given
-    auto const &sqlite = QORM::SQLite("test_" + this->databaseName(),
+    const auto &sqlite = QORM::SQLite("test_" + this->databaseName(),
                                       true, false);
     // When
     sqlite.connect();
@@ -38,14 +39,14 @@ void SQLiteTest::initShouldDeleteDatabaseFile() {
 
     // Then
     QVERIFY(QFile::exists(sqlite.getName()));
-    auto const &sqliteTest = QORM::SQLite(this->databaseName(), true, true);
+    const auto &sqliteTest = QORM::SQLite(this->databaseName(), true, true);
     QCOMPARE(sqliteTest.getName(), sqlite.getName());
     QVERIFY(!QFile::exists(sqliteTest.getName()));
 }
 
 void SQLiteTest::driverNameShouldBeCompliant() {
     // Given
-    auto const &sqlite = QORM::SQLite(this->databaseName(), true, false);
+    const auto &sqlite = QORM::SQLite(this->databaseName(), true, false);
 
     // When / Then
     QCOMPARE(sqlite.driverName(), "QSQLITE");
@@ -53,15 +54,15 @@ void SQLiteTest::driverNameShouldBeCompliant() {
 
 void SQLiteTest::connectShouldFailWithInvalidDatabaseName() {
     // Given
-    auto const &sqlite = QORM::SQLite("data/base.db", true, false);
+    const auto &sqlite = QORM::SQLite("data/base.db", true, false);
 
     // When / Then
-    QVERIFY_EXCEPTION_THROWN(sqlite.connect(), std::string);
+    QVERIFY_EXCEPTION_THROWN(sqlite.connect(), std::logic_error);
 }
 
 void SQLiteTest::connectShouldEnableRegexpButNotForeignKeys() {
     // Given
-    auto const &sqlite = QORM::SQLite("test_" + this->databaseName(),
+    const auto &sqlite = QORM::SQLite("test_" + this->databaseName(),
                                       false, false);
     // When
     sqlite.connect();
@@ -76,7 +77,7 @@ void SQLiteTest::connectShouldEnableRegexpButNotForeignKeys() {
 
 void SQLiteTest::connectShouldEnableRegexpAndForeignKeys() {
     // Given
-    auto const &sqlite = QORM::SQLite("test_" + this->databaseName(),
+    const auto &sqlite = QORM::SQLite("test_" + this->databaseName(),
                                       true, false);
     // When
     sqlite.connect();
@@ -91,7 +92,7 @@ void SQLiteTest::connectShouldEnableRegexpAndForeignKeys() {
 
 void SQLiteTest::disconnectShouldNotDeleteDatabaseFile() {
     // Given
-    auto const &sqlite = QORM::SQLite(this->databaseName(), true, false);
+    const auto &sqlite = QORM::SQLite(this->databaseName(), true, false);
 
     // When
     sqlite.connect();
@@ -103,7 +104,7 @@ void SQLiteTest::disconnectShouldNotDeleteDatabaseFile() {
 
 void SQLiteTest::disconnectShouldDeleteDatabaseFile() {
     // Given
-    auto const &sqlite = QORM::SQLite(this->databaseName(), true, true);
+    const auto &sqlite = QORM::SQLite(this->databaseName(), true, true);
 
     // When
     sqlite.connect();
@@ -115,15 +116,15 @@ void SQLiteTest::disconnectShouldDeleteDatabaseFile() {
 
 void SQLiteTest::tablesShouldReturnWithoutSequence() {
     // Given
-    auto const &sqlite = QORM::SQLite(this->databaseName(), true, true);
-    auto const field = QORM::Field::notNull("field", QORM::Type("integer"));
-    auto const primaryKey = QORM::PrimaryKey(field);
-    auto const table = QORM::Table("test_table", primaryKey);
+    const auto &sqlite = QORM::SQLite(this->databaseName(), true, true);
+    const auto field = QORM::Field::notNull("field", QORM::Type("integer"));
+    const auto primaryKey = QORM::PrimaryKey(field);
+    const auto table = QORM::Table("test_table", primaryKey);
     sqlite.connect();
 
     // When
     sqlite.getDatabase().exec(table.generate() + ";");
-    auto const tables = sqlite.tables();
+    const auto tables = sqlite.tables();
 
     // Then
     QCOMPARE(2, sqlite.getDatabase().tables().size());
@@ -133,7 +134,7 @@ void SQLiteTest::tablesShouldReturnWithoutSequence() {
 
 void SQLiteTest::backupShouldSuccessAndCreateFile() {
     // Given
-    auto const &sqlite = QORM::SQLite(this->databaseName(), true, false);
+    const auto &sqlite = QORM::SQLite(this->databaseName(), true, false);
 
     // When
     sqlite.connect();

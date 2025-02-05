@@ -14,22 +14,18 @@ void deleteIfTestMode(const QString &fileName, bool test) {
 
 }  // namespace
 
-const QString QORM::SQLite::TEST_PREFIX = "test_";
-const QString QORM::SQLite::FILE_EXTENSION = ".db";
-const QString QORM::SQLite::SEQUENCE_TABLE = "sqlite_sequence";
-
 QORM::SQLite::SQLite(const QString &name, bool foreignKeysActivated,
                      bool test) :
     Connector((test ? TEST_PREFIX : "") + name + FILE_EXTENSION),
     foreignKeysActivated(foreignKeysActivated), test(test) {
     if (name.isEmpty()) {
-        throw std::string("Database must have a name");
+        throw std::invalid_argument("Database must have a name");
     }
     deleteIfTestMode(this->getName(), this->test);
 }
 
 void QORM::SQLite::disconnect() const {
-    auto const name = this->getName();
+    const auto name = this->getName();
     Connector::disconnect();
     deleteIfTestMode(name, this->test);
 }
@@ -62,7 +58,7 @@ auto QORM::SQLite::tables() const -> std::list<QString> {
 auto QORM::SQLite::backup(const QString &fileName) const -> bool {
     this->optimize();
     this->disconnect();
-    auto const success = QFile::copy(this->getName(), fileName);
+    const auto success = QFile::copy(this->getName(), fileName);
     this->connect();
     return success;
 }

@@ -6,12 +6,12 @@
 class InsertTest : public QObject {
     Q_OBJECT
 
-    static const QString DEFAULT_TABLE_NAME;
-    static const QString DEFAULT_FIELD_NAME;
+    inline static const QString DEFAULT_TABLE_NAME = "table_name";
+    inline static const QString DEFAULT_FIELD_NAME = "field";
 
  private slots:
     static void generateDefaultValues();
-    static void generateWithAssignements();
+    static void generateWithAssignments();
 };
 
 #endif  // TEST_OPERATIONS_QUERY_INSERTTEST_H_

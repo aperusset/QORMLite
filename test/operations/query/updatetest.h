@@ -6,11 +6,11 @@
 class UpdateTest : public QObject {
     Q_OBJECT
 
-    static const QString DEFAULT_TABLE_NAME;
-    static const QString DEFAULT_FIELD_NAME;
+    inline static const QString DEFAULT_TABLE_NAME = "table_name";
+    inline static const QString DEFAULT_FIELD_NAME = "field_name";
 
  private slots:
-    static void withoutAssignementsShouldFail();
+    static void withoutAssignmentsShouldFail();
     static void generateWithoutConditions();
     static void generateWithConditions();
 };

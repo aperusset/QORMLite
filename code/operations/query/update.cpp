@@ -4,28 +4,28 @@
 #include "operations/query/condition/and.h"
 
 QORM::Update::Update(const QString &tableName,
-                     const std::list<Assignment> &assignements) :
-    Update(tableName, assignements, {}) {}
+                     const std::list<Assignment> &assignments) :
+    Update(tableName, assignments, {}) {}
 
 QORM::Update::Update(const QString &tableName,
-                     const std::list<Assignment> &assignements,
+                     const std::list<Assignment> &assignments,
                      const Condition &condition) :
-    Update(tableName, assignements, std::list<Condition>({condition})) {}
+    Update(tableName, assignments, std::list<Condition>({condition})) {}
 
 QORM::Update::Update(const QString &tableName,
-                     std::list<Assignment> assignements,
+                     std::list<Assignment> assignments,
                      std::list<Condition> conditions) :
-    TableQuery(tableName), assignements(std::move(assignements)),
+    TableQuery(tableName), assignments(std::move(assignments)),
     conditions(std::move(conditions)) {
-    if (this->assignements.empty()) {
-        throw std::string("An update must have at least one assignement.");
+    if (this->assignments.empty()) {
+        throw std::invalid_argument("Update must have at least one assignment");
     }
 
-    for (auto const &assignement : this->assignements) {
+    for (const auto &assignement : this->assignments) {
         this->addBindable(assignement);
     }
-    for (auto const &condition : this->conditions) {
-        for (auto const &bindable : condition.getParametrizedConditions()) {
+    for (const auto &condition : this->conditions) {
+        for (const auto &bindable : condition.getParametrizedConditions()) {
             this->addBindable(bindable);
         }
     }
@@ -33,10 +33,10 @@ QORM::Update::Update(const QString &tableName,
 
 auto QORM::Update::generate() const -> QString {
     QString update = "update " + this->getTableName() + " set ";
-    QStringList assignements;
-    for (auto const &assignement : this->assignements) {
-        assignements << assignement.generate();
+    QStringList assignments;
+    for (const auto &assignment : this->assignments) {
+        assignments << assignment.generate();
     }
-    return (update + assignements.join(",") +
+    return (update + assignments.join(",") +
         Condition::generateMultiple(" where ", this->conditions)).simplified();
 }

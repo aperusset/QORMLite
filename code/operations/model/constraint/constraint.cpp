@@ -4,7 +4,7 @@
 
 QORM::Constraint::Constraint(QString name) : name(std::move(name)) {
     if (!this->name.isNull() && this->name.isEmpty()) {
-        throw std::string("Constraint name must be null or not empty");
+        throw std::invalid_argument("Constraint name null or not empty.");
     }
 }
 

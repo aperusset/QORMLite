@@ -12,18 +12,18 @@ class PrimaryKey : public Constraint {
     const bool autoIncrement;
 
  public:
-    explicit PrimaryKey(Field, const bool autoIncrement = true);
+    explicit PrimaryKey(Field, bool autoIncrement = true);
     explicit PrimaryKey(std::list<Field>);
-    auto getFields() const -> std::list<Field>;
-    auto isAutoIncrement() const -> bool;
+    auto getFields() const -> const std::list<Field>&;
+    auto isAutoIncrement() const;
     auto generateConstraint() const -> QString override;
 };
 
-inline auto PrimaryKey::getFields() const -> std::list<Field> {
+inline auto PrimaryKey::getFields() const -> const std::list<Field>& {
     return this->fields;
 }
 
-inline auto PrimaryKey::isAutoIncrement() const -> bool {
+inline auto PrimaryKey::isAutoIncrement() const {
     return this->autoIncrement;
 }
 

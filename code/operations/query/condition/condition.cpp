@@ -15,28 +15,29 @@ QORM::Condition::Condition(QString op, std::list<Condition> nestedConditions,
             std::move(rightField)),
     value(std::move(value)) {
     if (this->op.isNull() || this->op.isEmpty()) {
-        throw std::string("A condition must have an operator.");
+        throw std::invalid_argument("A condition must have an operator.");
     }
 
     if ((this->leftField.isNull() || this->leftField.isEmpty()) &&
             this->nestedConditions.empty()) {
-        throw std::string("A condition must have a left operand or be nested.");
+        throw std::invalid_argument(
+                    "A condition must have a left operand or be nested.");
     }
 }
 
 auto QORM::Condition::isParametrized() const -> bool {
-    return value.isValid() || std::any_of(
+    return this->value.isValid() || std::any_of(
         nestedConditions.begin(), nestedConditions.end(),
         std::bind(&Condition::isParametrized, std::placeholders::_1));
 }
 
 auto QORM::Condition::getParametrizedConditions()
 const -> std::list<Condition> {
-    if (value.isValid()) {
+    if (this->value.isValid()) {
         return {*this};
     }
     std::list<Condition> parametrizedConditions;
-    for (auto const &nestedCondition : this->nestedConditions) {
+    for (const auto &nestedCondition : this->nestedConditions) {
         if (nestedCondition.isParametrized()) {
             parametrizedConditions.splice(parametrizedConditions.end(),
                 nestedCondition.getParametrizedConditions());
@@ -54,7 +55,7 @@ auto QORM::Condition::generate() const -> QString {
                 this->nestedConditions.front().generate()).simplified();
     }
     QStringList conditions;
-    for (auto const &condition : this->nestedConditions) {
+    for (const auto &condition : this->nestedConditions) {
         conditions << condition.generate();
     }
     return "(" + conditions.join(this->op).simplified() + ")";

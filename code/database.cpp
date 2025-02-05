@@ -6,7 +6,6 @@ QORM::Database::Database(const QORM::Connector &connector, bool verbose) :
     connector(connector), creator(nullptr), verbose(verbose) {
 }
 
-
 QORM::Database::Database(const QORM::Connector &connector,
                          const QORM::Creator &creator, bool verbose) :
     databaseMutex(QMutex::RecursionMode::Recursive),
@@ -20,16 +19,17 @@ QORM::Database::~Database() {
 auto QORM::Database::prepare(const QString &query) const -> QSqlQuery {
     QSqlQuery sqlQuery(connector.getDatabase());
     if (!sqlQuery.prepare(query + ";")) {
-        throw std::string("Preparing error : ") +
-                sqlQuery.lastError().text().toStdString() +
-                " | Query : " +
-                query.toStdString();
+        throw std::runtime_error("Preparing error : " +
+                sqlQuery.lastError().text().toStdString() + " | Query : " +
+                query.toStdString());
     }
     return sqlQuery;
 }
 
 auto QORM::Database::prepare(const Query &query) const -> QSqlQuery {
-    return query.bind(this->prepare(query.generate()));
+    auto qSqlQuery = this->prepare(query.generate());
+    query.bind(qSqlQuery);
+    return qSqlQuery;
 }
 
 auto QORM::Database::execute(const QString &query) const -> QSqlQuery {
@@ -44,16 +44,16 @@ auto QORM::Database::execute(QSqlQuery query) const -> QSqlQuery {
     if (this->verbose) {
         qDebug("%s", qUtf8Printable(query.lastQuery()));
     }
-    query.exec();
-    if (query.lastError().isValid()) {
-        throw std::string("Query error : ") +
+    const auto success = query.exec();
+    if (!success && query.lastError().isValid()) {
+        throw std::runtime_error("Query error : " +
                 query.lastQuery().toStdString() + " (" +
-                query.lastError().driverText().toStdString() + ")";
+                query.lastError().driverText().toStdString() + ")");
     }
     return query;
 }
 
-auto QORM::Database::getName() const -> QString {
+auto QORM::Database::getName() const -> const QString& {
     return this->connector.getName();
 }
 
@@ -61,23 +61,30 @@ auto QORM::Database::isConnected() const -> bool {
     return connector.isConnected();
 }
 
-auto QORM::Database::connect() -> bool {
+void QORM::Database::connect() {
     const QMutexLocker lock(&databaseMutex);
     if (!this->isConnected()) {
         this->connector.connect();
         if (this->creator != nullptr) {
-            auto const shouldBeCreated = !this->creator->isCreated(*this,
-                this->connector.tables(), this->connector.views());
-            if (shouldBeCreated) {
-                qDebug(
-                    "Create database with name %s",
-                    qUtf8Printable(connector.getName()));
+            auto schemaState = this->creator->getSchemaState(*this,
+                this->connector.tables());
+            if (schemaState == Schema::State::EMPTY) {
+                qDebug("Create and upgrade database with name %s",
+                       qUtf8Printable(connector.getName()));
                 this->creator->createAllAndPopulate(*this);
+                this->creator->upgradeToLatestVersion(*this);
+            } else if (schemaState == Schema::State::TO_BE_UPDATED) {
+                qDebug("Upgrade database with name %s",
+                       qUtf8Printable(connector.getName()));
+                this->creator->upgradeToLatestVersion(*this);
+            } else {
+                qDebug("Database %s is up to date",
+                       qUtf8Printable(connector.getName()));
             }
-            return shouldBeCreated;
         }
+    } else {
+        throw std::runtime_error("Already connected to database");
     }
-    return false;
 }
 
 void QORM::Database::disconnect() {

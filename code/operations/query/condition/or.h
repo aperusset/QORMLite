@@ -14,7 +14,7 @@ class Or : public Condition {
     explicit Or(const std::list<Condition> &conditions) :
         Condition(" or ", conditions, QString(), QString(), QVariant()) {
         if (conditions.size() < 2) {
-            throw std::string("Or must wrap at least 2 conditions");
+            throw std::invalid_argument("Or must wrap at least 2 conditions");
         }
     }
 };

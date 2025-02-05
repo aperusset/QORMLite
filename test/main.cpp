@@ -3,7 +3,6 @@
 #include "./observertest.h"
 #include "./cachetest.h"
 #include "./databasetest.h"
-#include "./creatortest.h"
 #include "./qormlitetest.h"
 #include "connectors/connectortest.h"
 #include "connectors/sqlitetest.h"
@@ -26,50 +25,47 @@
 #include "operations/query/updatetest.h"
 #include "operations/query/deletetest.h"
 #include "repositories/crudrepositorytest.h"
+#include "schema/creatortest.h"
 
 auto main(int argc, char *argv[]) -> int {
-    auto tests = std::list<std::shared_ptr<QObject>>{
-        std::make_shared<UtilsTest>(),
-        std::make_shared<EntityTest>(),
-        std::make_shared<ObserverTest>(),
-        std::make_shared<CacheTest>(),
-        std::make_shared<TypeTest>(),
-        std::make_shared<FieldTest>(),
-        std::make_shared<PrimaryKeyTest>(),
-        std::make_shared<ReferenceTest>(),
-        std::make_shared<ForeignKeyTest>(),
-        std::make_shared<UniqueTest>(),
-        std::make_shared<OrderTest>(),
-        std::make_shared<AssignmentTest>(),
-        std::make_shared<SelectionTest>(),
-        std::make_shared<ConditionTest>(),
-        std::make_shared<JoinTest>(),
-        std::make_shared<TableTest>(),
-        std::make_shared<SelectTest>(),
-        std::make_shared<ViewTest>(),
-        std::make_shared<InsertTest>(),
-        std::make_shared<UpdateTest>(),
-        std::make_shared<DeleteTest>(),
-        std::make_shared<ConnectorTest>(),
-        std::make_shared<SQLiteTest>(),
-        std::make_shared<ODBCTest>(),
-        std::make_shared<DatabaseTest>(),
-        std::make_shared<CreatorTest>(),
-        std::make_shared<QORMLiteTest>(),
-        std::make_shared<CRUDRepositoryTest>()
-    };
+    std::list<std::unique_ptr<QObject>> tests;
+    tests.emplace_back(std::make_unique<UtilsTest>());
+    tests.emplace_back(std::make_unique<EntityTest>());
+    tests.emplace_back(std::make_unique<ObserverTest>());
+    tests.emplace_back(std::make_unique<CacheTest>());
+    tests.emplace_back(std::make_unique<TypeTest>());
+    tests.emplace_back(std::make_unique<FieldTest>());
+    tests.emplace_back(std::make_unique<PrimaryKeyTest>());
+    tests.emplace_back(std::make_unique<ReferenceTest>());
+    tests.emplace_back(std::make_unique<ForeignKeyTest>());
+    tests.emplace_back(std::make_unique<UniqueTest>());
+    tests.emplace_back(std::make_unique<OrderTest>());
+    tests.emplace_back(std::make_unique<AssignmentTest>());
+    tests.emplace_back(std::make_unique<SelectionTest>());
+    tests.emplace_back(std::make_unique<ConditionTest>());
+    tests.emplace_back(std::make_unique<JoinTest>());
+    tests.emplace_back(std::make_unique<TableTest>());
+    tests.emplace_back(std::make_unique<SelectTest>());
+    tests.emplace_back(std::make_unique<ViewTest>());
+    tests.emplace_back(std::make_unique<InsertTest>());
+    tests.emplace_back(std::make_unique<UpdateTest>());
+    tests.emplace_back(std::make_unique<DeleteTest>());
+    tests.emplace_back(std::make_unique<ConnectorTest>());
+    tests.emplace_back(std::make_unique<SQLiteTest>());
+    tests.emplace_back(std::make_unique<ODBCTest>());
+    tests.emplace_back(std::make_unique<DatabaseTest>());
+    tests.emplace_back(std::make_unique<CreatorTest>());
+    tests.emplace_back(std::make_unique<QORMLiteTest>());
+    tests.emplace_back(std::make_unique<CRUDRepositoryTest>());
 
     try {
-        for (auto &test : tests) {
-            if (QTest::qExec(test.get(), argc, argv)) {
-                return EXIT_FAILURE;
-            }
+        if (std::any_of(tests.begin(), tests.end(), [=](const auto &test) {
+            return static_cast<bool>(QTest::qExec(test.get(), argc, argv));
+        })) {
+            return EXIT_FAILURE;
         }
-    } catch (std::string &exception) {
-        qFatal("Uncaught exception : %s", exception.c_str());
-        return EXIT_FAILURE;
-    } catch (std::bad_function_call &exception) {
-        qFatal("Uncaught exception : %s", exception.what());
+    } catch (std::exception &exception) {
+        qFatal("Unexpected exception : %s", exception.what());
         return EXIT_FAILURE;
     }
 

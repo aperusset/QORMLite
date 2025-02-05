@@ -10,8 +10,8 @@ QORM::Delete::Delete(const QString &tableName, Condition condition) :
 QORM::Delete::Delete(const QString &tableName,
                      std::list<Condition> conditions) :
     TableQuery(tableName), conditions(std::move(conditions)) {
-    for (auto const &condition : this->conditions) {
-        for (auto const &bindable : condition.getParametrizedConditions()) {
+    for (const auto &condition : this->conditions) {
+        for (const auto &bindable : condition.getParametrizedConditions()) {
             this->addBindable(bindable);
         }
     }

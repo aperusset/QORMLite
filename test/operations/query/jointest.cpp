@@ -8,23 +8,20 @@
 #include "operations/query/condition/equals.h"
 #include "operations/query/condition/and.h"
 
-const QString JoinTest::DEFAULT_TABLE_NAME = "table";
-const QString JoinTest::DEFAULT_FIELD_NAME = "field";
-
 void JoinTest::innerJoinShouldFailWithoutConditions() {
     // Given / When / Then
     QVERIFY_EXCEPTION_THROWN(QORM::InnerJoin(DEFAULT_TABLE_NAME, {}),
-                             std::string);
+                             std::invalid_argument);
 }
 
 void JoinTest::innerJoinGenerate() {
     // Given
-    auto const condition = QORM::Equals::fields(DEFAULT_FIELD_NAME,
+    const auto condition = QORM::Equals::fields(DEFAULT_FIELD_NAME,
                                                 DEFAULT_FIELD_NAME);
-    auto const innerJoin = QORM::InnerJoin(DEFAULT_TABLE_NAME,
+    const auto innerJoin = QORM::InnerJoin(DEFAULT_TABLE_NAME,
                                            {condition, condition});
     // When
-    auto const generated = innerJoin.generate();
+    const auto generated = innerJoin.generate();
 
     // Then
     QCOMPARE(generated, "inner join " + DEFAULT_TABLE_NAME + " on " +
@@ -36,17 +33,17 @@ void JoinTest::innerJoinGenerate() {
 void JoinTest::leftJoinShouldFailWithoutConditions() {
     // Given / When / Then
     QVERIFY_EXCEPTION_THROWN(QORM::LeftJoin(DEFAULT_TABLE_NAME, {}),
-                             std::string);
+                             std::invalid_argument);
 }
 
 void JoinTest::leftJoinGenerate() {
     // Given
-    auto const condition = QORM::Equals::fields(DEFAULT_FIELD_NAME,
+    const auto condition = QORM::Equals::fields(DEFAULT_FIELD_NAME,
                                                 DEFAULT_FIELD_NAME);
-    auto const leftJoin = QORM::LeftJoin(DEFAULT_TABLE_NAME,
+    const auto leftJoin = QORM::LeftJoin(DEFAULT_TABLE_NAME,
                                          {condition, condition});
     // When
-    auto const generated = leftJoin.generate();
+    const auto generated = leftJoin.generate();
 
     // Then
     QCOMPARE(generated, "left join " + DEFAULT_TABLE_NAME + " on " +
@@ -58,17 +55,17 @@ void JoinTest::leftJoinGenerate() {
 void JoinTest::rightJoinShouldFailWithoutConditions() {
     // Given / When / Then
     QVERIFY_EXCEPTION_THROWN(QORM::RightJoin(DEFAULT_TABLE_NAME, {}),
-                             std::string);
+                             std::invalid_argument);
 }
 
 void JoinTest::rightJoinGenerate() {
     // Given
-    auto const condition = QORM::Equals::fields(DEFAULT_FIELD_NAME,
+    const auto condition = QORM::Equals::fields(DEFAULT_FIELD_NAME,
                                                 DEFAULT_FIELD_NAME);
-    auto const rightJoin = QORM::RightJoin(DEFAULT_TABLE_NAME,
+    const auto rightJoin = QORM::RightJoin(DEFAULT_TABLE_NAME,
                                            {condition, condition});
     // When
-    auto const generated = rightJoin.generate();
+    const auto generated = rightJoin.generate();
 
     // Then
     QCOMPARE(generated, "right join " + DEFAULT_TABLE_NAME + " on " +
@@ -79,10 +76,10 @@ void JoinTest::rightJoinGenerate() {
 
 void JoinTest::crossJoinGenerate() {
     // Given
-    auto const crossJoin = QORM::CrossJoin(DEFAULT_TABLE_NAME);
+    const auto crossJoin = QORM::CrossJoin(DEFAULT_TABLE_NAME);
 
     // When
-    auto const generated = crossJoin.generate();
+    const auto generated = crossJoin.generate();
 
     // Then
     QCOMPARE(generated, "cross join " + DEFAULT_TABLE_NAME);

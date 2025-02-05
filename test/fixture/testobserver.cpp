@@ -1,38 +1,27 @@
 #include "testobserver.h"
+#include "./utils.h"
 
-TestObserver::TestObserver() :
-    changeNotified(false), deleteNotified(false),
-    changedKey(INVALID_KEY), deletedKey(INVALID_KEY) {}
+TestObserver::TestObserver() {}
 
-void TestObserver::onChange(const int &key) {
-    this->changeNotified = true;
-    this->changedKey = key;
+void TestObserver::onChange(const int &key, const std::type_index &index) {
+    this->changedKeys.push_back(std::pair(key, index));
 }
 
-void TestObserver::onDelete(const int &key) {
-    this->deleteNotified = true;
-    this->deletedKey = key;
+void TestObserver::onDelete(const int &key, const std::type_index &index) {
+    this->deletedKeys.push_back(std::pair(key, index));
 }
 
-auto TestObserver::isChangeNotified() const -> bool {
-    return this->changeNotified;
+auto TestObserver::wasChanged(const int key, const std::type_index &index)
+const -> bool {
+    return QORM::Utils::contains(this->changedKeys, std::pair(key, index));
 }
 
-auto TestObserver::isDeleteNotified() const -> bool {
-    return this->deleteNotified;
-}
-
-auto TestObserver::getChangedKey() const -> int {
-    return this->changedKey;
-}
-
-auto TestObserver::getDeletedKey() const -> int {
-    return this->deletedKey;
+auto TestObserver::wasDeleted(const int key,  const std::type_index &index)
+const -> bool {
+    return QORM::Utils::contains(this->deletedKeys, std::pair(key, index));
 }
 
 void TestObserver::reset() {
-    this->changeNotified = false;
-    this->deleteNotified = false;
-    this->changedKey = INVALID_KEY;
-    this->deletedKey = INVALID_KEY;
+    this->changedKeys.clear();
+    this->deletedKeys.clear();
 }

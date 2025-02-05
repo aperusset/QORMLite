@@ -1,17 +1,18 @@
 #ifndef UTILS_H_
 #define UTILS_H_
 
+#include <QDate>
+#include <QDateTime>
+#include <QSqlRecord>
 #include <QString>
 #include <QStringList>
 #include <QVariant>
-#include <QDate>
-#include <list>
 #include <algorithm>
+#include <list>
+#include <string>
 #include "operations/query/selection/selection.h"
 
-namespace QORM {
-
-namespace Utils {
+namespace QORM::Utils {
 
     /**
      * @brief Format a QDate to database valid date
@@ -65,17 +66,26 @@ namespace Utils {
 
     /**
      * @brief Generate a null SQL value for specified type
-     * @param type the type of the null value
      * @return the null value
      */
-    auto null(QVariant::Type type) -> QVariant;
+    auto null() -> QVariant;
+
+    /**
+     * @brief Qualify a field name with a table, a view, or everything else. The
+     * qualifier and the field name are concatenated with a dot ".".
+     * @param qualifier the qualifier
+     * @param fieldName the field name
+     * @return the qualified field name
+     */
+    auto qualifyFieldName(const QString &qualifier,
+                          const QString &fieldName) -> QString;
 
     /**
      * @brief Define if a STL list contains or not an element.
      * @return true : contains, false : does not contain
      */
     template<typename T>
-    auto contains(const std::list<T> &list, const T &element) -> bool {
+    auto contains(const std::list<T> &list, const T &element) {
         return std::find(list.begin(), list.end(), element) != list.end();
     }
 
@@ -88,15 +98,288 @@ namespace Utils {
      */
     template<typename T>
     auto joinToString(const std::list<T> &elements, const QString &separator,
-              const std::function<QString(const T&)> &transformer) -> QString {
+              const std::function<QString(const T&)> &transformer) {
         QStringList transformed;
         std::transform(elements.begin(), elements.end(),
                        std::back_inserter(transformed), transformer);
         return transformed.join(separator);
     }
 
-}  // namespace Utils
+    /**
+     * @brief Extract a T value from a QSqlRecord or, if null, throw an
+     * std::invalid_argument with a given error message
+     * @param record the record from which to extract the value
+     * @param fieldName the name of the field to extract from the record
+     * @param errorMessage the error message if value is null
+     * @param extractor the function that transform from QVariant to T
+     * @return extracted T value
+     * @throw std::invalid_argument if the value is invalid
+     */
+    template<typename T>
+    auto getOrThrow(const QSqlRecord &record, const QString &fieldName,
+                    const std::string &errorMessage,
+                    const std::function<T(const QVariant&)> &extractor) {
+        if (record.isNull(fieldName)) {
+            throw std::invalid_argument(errorMessage);
+        } else {
+            return extractor(record.value(fieldName));
+        }
+    }
 
-}  // namespace QORM
+    /**
+     * @brief Extract a T value from a QSqlRecord or, if null, a default value
+     * @param record the record from which to extract the value
+     * @param fieldName the name of the field to extract from the record
+     * @param defaultValue the default T value
+     * @param extractor the function that transform from QVariant to T
+     * @return extracted T value
+     */
+    template<typename T>
+    auto getOrDefault(const QSqlRecord &record, const QString &fieldName,
+                      const T &defaultValue,
+                      const std::function<T(const QVariant&)> &extractor) {
+        if (record.isNull(fieldName)) {
+            return defaultValue;
+        } else {
+            return extractor(record.value(fieldName));
+        }
+    }
+
+    /**
+     * @brief Extract a pointer to T value from a QSqlRecord or nullptr
+     * @param record the record from which to extract the pointer
+     * @param fieldName the name of the field to extract from the record
+     * @param extractor the function that transform from QVariant to T*
+     * @return extracted pointer to T or nulltpr
+     */
+    template<typename T>
+    auto getOrNull(const QSqlRecord &record, const QString &fieldName,
+                   const std::function<T*(const QVariant&)> &extractor) {
+        return getOrDefault<T*>(record, fieldName, nullptr, extractor);
+    }
+
+    /**
+     * @brief Extract a bool from a QSqlRecord or, if null, a default value
+     * @param record the record from which to extract the bool value
+     * @param fieldName the name of the field to extract from the record
+     * @param defaultValue the default bool value
+     * @return extracted bool value
+     */
+    auto getBoolOrDefault(const QSqlRecord &record, const QString &fieldName,
+                          bool defaultValue) -> bool;
+
+    /**
+     * @brief Extract a bool from a QSqlRecord or, if null or a invalid, throw
+     * an exception
+     * @param record the record from which to extract the bool value
+     * @param fieldName the name of the field to extract from the record
+     * @return extracted bool value
+     */
+    auto getBoolOrThrow(const QSqlRecord &record, const QString &fieldName)
+        -> bool;
+
+    /**
+     * @brief Extract a QString from a QSqlRecord or, if null, a default value
+     * @param record the record from which to extract the QString value
+     * @param fieldName the name of the field to extract from the record
+     * @param defaultValue the default QString value
+     * @return extracted QString value
+     */
+    auto getStringOrDefault(const QSqlRecord &record, const QString &fieldName,
+                            const QString &defaultValue) -> QString;
+
+    /**
+     * @brief Extract a QString from a QSqlRecord or, if null or a invalid,
+     * throw an exception
+     * @param record the record from which to extract the QString value
+     * @param fieldName the name of the field to extract from the record
+     * @return extracted QString value
+     */
+    auto getStringOrThrow(const QSqlRecord &record, const QString &fieldName)
+        -> QString;
+
+    /**
+     * @brief Extract a QDate from a QSqlRecord or, if null, a default value
+     * @param record the record from which to extract the QDate value
+     * @param fieldName the name of the field to extract from the record
+     * @param defaultValue the default QDate value
+     * @return extracted QDate value
+     */
+    auto getDateOrDefault(const QSqlRecord &record, const QString &fieldName,
+                          const QDate &defaultValue) -> QDate;
+
+    /**
+     * @brief Extract a QDate from a QSqlRecord or, if null or a invalid,
+     * throw an exception
+     * @param record the record from which to extract the QDate value
+     * @param fieldName the name of the field to extract from the record
+     * @return extracted QDate value
+     */
+    auto getDateOrThrow(const QSqlRecord &record, const QString &fieldName)
+        -> QDate;
+
+    /**
+     * @brief Extract a QDateTime from a QSqlRecord or, if null, a default value
+     * @param record the record from which to extract the QDateTime value
+     * @param fieldName the name of the field to extract from the record
+     * @param defaultValue the default QDateTime value
+     * @return extracted QDateTime value
+     */
+    auto getDateTimeOrDefault(const QSqlRecord &record,
+                              const QString &fieldName,
+                              const QDateTime &defaultValue) -> QDateTime;
+
+    /**
+     * @brief Extract a QDateTime from a QSqlRecord or, if null or a invalid,
+     * throw an exception
+     * @param record the record from which to extract the QDateTime value
+     * @param fieldName the name of the field to extract from the record
+     * @return extracted QDateTime value
+     */
+    auto getDateTimeOrThrow(const QSqlRecord &record, const QString &fieldName)
+        -> QDateTime;
+
+    /**
+     * @brief Extract a uint32_t from a QSqlRecord or, if null, a default value
+     * @param record the record from which to extract the uint32_t value
+     * @param fieldName the name of the field to extract from the record
+     * @param defaultValue the default uint32_t value
+     * @return extracted uint32_t value
+     */
+    auto getUIntOrDefault(const QSqlRecord &record, const QString &fieldName,
+                          uint32_t defaultValue) -> uint32_t;
+
+    /**
+     * @brief Extract a uint32_t from a QSqlRecord or, if null or a invalid,
+     * throw an exception
+     * @param record the record from which to extract the uint32_t value
+     * @param fieldName the name of the field to extract from the record
+     * @return extracted uint32_t value
+     */
+    auto getUIntOrThrow(const QSqlRecord &record, const QString &fieldName)
+        -> uint32_t;
+
+    /**
+     * @brief Extract a int32_t from a QSqlRecord or, if null, a default value
+     * @param record the record from which to extract the int32_t value
+     * @param fieldName the name of the field to extract from the record
+     * @param defaultValue the default int32_t value
+     * @return extracted int32_t value
+     */
+    auto getIntOrDefault(const QSqlRecord &record, const QString &fieldName,
+                         int32_t defaultValue) -> int32_t;
+
+    /**
+     * @brief Extract a int32_t from a QSqlRecord or, if null or a invalid,
+     * throw an exception
+     * @param record the record from which to extract the int32_t value
+     * @param fieldName the name of the field to extract from the record
+     * @return extracted int32_t value
+     */
+    auto getIntOrThrow(const QSqlRecord &record, const QString &fieldName)
+        -> int32_t;
+
+    /**
+     * @brief Extract a double from a QSqlRecord or, if null, a default value
+     * @param record the record from which to extract the double value
+     * @param fieldName the name of the field to extract from the record
+     * @param defaultValue the default double value
+     * @return extracted double value
+     */
+    auto getDoubleOrDefault(const QSqlRecord &record, const QString &fieldName,
+                            double defaultValue) -> double;
+
+    /**
+     * @brief Extract a double from a QSqlRecord or, if null or a invalid,
+     * throw an exception
+     * @param record the record from which to extract the double value
+     * @param fieldName the name of the field to extract from the record
+     * @return extracted double value
+     */
+    auto getDoubleOrThrow(const QSqlRecord &record, const QString &fieldName)
+        -> double;
+
+    /**
+     * @brief Return a value wrapped in a QVariant if valid, based on a given
+     * predicate, or return a null QVariant.
+     * @param value the value to validate and wrap
+     * @param predicate a function to determine if the value is valid or not
+     * @return the wrapped value (or null QVariant)
+     */
+    template <typename T>
+    auto validOrNull(const T &value,
+            const std::function<bool(const T&)> &predicate) -> QVariant {
+        return predicate(value) ? QVariant::fromValue(value) : null();
+    }
+
+    /**
+     * @brief Return a value wrapped in a QVariant if valid, based on a given
+     * predicate, or throw the given error message wrapped int an exception.
+     * @param value the value to validate and wrap
+     * @param predicate a function to determine if the value is valid or not
+     * @return the wrapped value
+     * @throw std::invalid_argument if the value is not valid
+     */
+    template <typename T>
+    auto validOrThrow(const T &value, const std::string &errorMessage,
+            const std::function<bool(const T&)> &predicate) {
+        if (predicate(value)) {
+            return QVariant::fromValue(value);
+        }
+        throw std::invalid_argument(errorMessage);
+    }
+
+    /**
+     * @brief Return a trimmed QString wrapped in a QVariant or a null QVariant
+     * if the QString is blank.
+     * @param value the value to validate and wrap
+     * @return the wrapped value (or null QVariant)
+     */
+    auto notBlankOrNull(const QString &value) -> QVariant;
+
+    /**
+     * @brief Return a trimmed QString wrapped in a QVariant or throw an
+     * exception if the QString is blank.
+     * @param value the value to validate and wrap
+     * @return the wrapped value (or null QVariant)
+     * @throw std::invalid_argument if the QString is blank
+     */
+    auto notBlankOrThrow(const QString &value) -> QVariant;
+
+    /**
+     * @brief Return a QDate wrapped in a QVariant or a null QVariant if the
+     * QDate is not valid.
+     * @param value the value to validate and wrap
+     * @return the wrapped value (or null QVariant)
+     */
+    auto validOrNull(const QDate &value) -> QVariant;
+
+    /**
+     * @brief Return a QDate wrapped in a QVariant or throw an exception if
+     * the QDate is invalid.
+     * @param value the value to validate and wrap
+     * @return the wrapped value (or null QVariant)
+     * @throw std::invalid_argument if the QDate is invalid
+     */
+    auto validOrThrow(const QDate &value) -> QVariant;
+
+    /**
+     * @brief Return a QDateTime wrapped in a QVariant or a null QVariant if the
+     * QDateTime is not valid.
+     * @param value the value to validate and wrap
+     * @return the wrapped value (or null QVariant)
+     */
+    auto validOrNull(const QDateTime &value) -> QVariant;
+
+    /**
+     * @brief Return a QDateTime wrapped in a QVariant or throw an exception if
+     * the QDateTime is invalid.
+     * @param value the value to validate and wrap
+     * @return the wrapped value (or null QVariant)
+     * @throw std::invalid_argument if the QDateTime is invalid
+     */
+    auto validOrThrow(const QDateTime &value) -> QVariant;
+
+}  // namespace QORM::Utils
 
 #endif  // UTILS_H_

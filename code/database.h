@@ -6,7 +6,6 @@
 #include <QtSql>
 #include <list>
 #include <string>
-#include "./creator.h"
 #include "./entity.h"
 #include "./utils.h"
 #include "connectors/connector.h"
@@ -15,12 +14,14 @@
 #include "operations/query/insert.h"
 #include "operations/query/select.h"
 #include "operations/query/update.h"
+#include "schema/creator.h"
 
 namespace QORM {
 
 class Database {
     QMutex databaseMutex;
 
+    // TODO(aperusset) Database should take connector and creator ownership ?
     const QORM::Connector &connector;
     const QORM::Creator* const creator;
     const bool verbose;
@@ -38,15 +39,11 @@ class Database {
     Database& operator=(const Database&) = delete;
     Database& operator=(Database&&) = delete;
 
-    auto getName() const -> QString;
-    auto isVerbose() const -> bool;
+    auto getName() const -> const QString&;
+    auto isVerbose() const;
     auto isConnected() const -> bool;
 
-    /**
-     * @brief connect
-     * @return true if the database has been created, false if already exists
-     */
-    auto connect() -> bool;
+    void connect();
     void disconnect();
     void optimize() const;
     auto backup(const QString &fileName) -> bool;
@@ -58,13 +55,13 @@ class Database {
     template<typename Key = int>
     auto insertAndRetrieveKey(const Insert &insert,
         const std::function<Key(const QSqlQuery&)> &keyExtractor =
-            [](const QSqlQuery &query) -> int {
-                auto const &result = query.lastInsertId();
-                if (!result.isValid() || !result.canConvert<int>()) {
-                    throw std::string("Failed to get last inserted ID as int");
+            [](const auto &query) -> Key {
+                if (const auto &result = query.lastInsertId();
+                        result.isValid() & result.template canConvert<Key>()) {
+                    return result.toInt();
                 }
-                return result.toInt();
-            }) const -> Key {
+                throw std::logic_error("Failed to get last id as Key");
+            }) const {
         return keyExtractor(this->execute(insert));
     }
 
@@ -72,37 +69,46 @@ class Database {
     auto entity(const Select &select,
                 const std::function<Entity&(const QSqlRecord&)> &extractor)
     const -> Entity& {
-        auto const allEntities = entities(select, extractor);
-        if (allEntities.empty()) {
-            throw std::string("No entity found with given query : ")
-                    .append(select.generate().toStdString());
+        if (const auto all = entities(select, extractor); !all.empty()) {
+            return all.front().get();
         }
-        return allEntities.front().get();
+        throw std::logic_error("No entity found with given query : " +
+                               select.generate().toStdString());
     }
 
     template<class Entity>
     auto entities(const Select &select,
-                  const std::function<Entity&(const QSqlRecord&)> &extractor)
-    const -> std::list<std::reference_wrapper<Entity>> {
-        std::list<std::reference_wrapper<Entity>> entities;
-        auto results = this->execute(select);
-        while (results.next()) {
-            entities.push_back(extractor(results.record()));
+            const std::function<Entity&(const QSqlRecord&)> &extractor) const {
+        RefList<Entity> entities;
+        auto qSqlQuery = this->execute(select);
+        while (qSqlQuery.next()) {
+            entities.push_back(extractor(qSqlQuery.record()));
         }
         return entities;
     }
 
     template<typename Result>
-    auto result(const Select &select,
-                const Result &defaultValue,
-                const std::function<Result(const QSqlRecord&)> &extractor)
-    const -> Result {
-        auto result = this->execute(select);
-        return result.next() ? extractor(result.record()) : defaultValue;
+    auto result(const Select &select, const Result &defaultValue,
+            const std::function<Result(const QSqlRecord&)> &extractor) const {
+        if (const auto all = results(select, extractor); !all.empty()) {
+            return all.front();
+        }
+        return defaultValue;
+    }
+
+    template<typename Result>
+    auto results(const Select &select,
+            const std::function<Result(const QSqlRecord&)> &extractor) const {
+        std::list<Result> results;
+        auto qSqlQuery = this->execute(select);
+        while (qSqlQuery.next()) {
+            results.push_back(extractor(qSqlQuery.record()));
+        }
+        return results;
     }
 };
 
-inline auto Database::isVerbose() const -> bool {
+inline auto Database::isVerbose() const {
     return this->verbose;
 }
 

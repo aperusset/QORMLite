@@ -5,26 +5,24 @@
 #include "operations/model/type/type.h"
 #include "operations/model/type/integer.h"
 
-const QString ForeignKeyTest::DEFAULT_TARGET_TABLE = "targetTable";
-
 void ForeignKeyTest::emptyReferencesListShouldFail() {
     // When / Then
     QVERIFY_EXCEPTION_THROWN(
         QORM::ForeignKey({}, "targetTable", QORM::OnAction::Cascade),
-        std::string);
+        std::invalid_argument);
 }
 
 void ForeignKeyTest::generateCascade() {
     // Given
-    auto const fieldFrom = QORM::Field("field1", QORM::Integer(), false,
+    const auto fieldFrom = QORM::Field("field1", QORM::Integer(), false,
                                        QString());
-    auto const fieldTo = QORM::Field("field2", QORM::Integer(), false,
+    const auto fieldTo = QORM::Field("field2", QORM::Integer(), false,
                                      QString());
-    auto const reference = QORM::Reference(fieldFrom, fieldTo);
-    auto const foreignKey = QORM::ForeignKey({reference}, DEFAULT_TARGET_TABLE,
+    const auto reference = QORM::Reference(fieldFrom, fieldTo);
+    const auto foreignKey = QORM::ForeignKey({reference}, DEFAULT_TARGET_TABLE,
                                              QORM::OnAction::Cascade);
     // When
-    auto const generated = foreignKey.generate();
+    const auto generated = foreignKey.generate();
 
     // Then
     QCOMPARE(generated, QString("constraint targettable_fk foreign ") +
@@ -33,15 +31,15 @@ void ForeignKeyTest::generateCascade() {
 
 void ForeignKeyTest::generateRestrict() {
     // Given
-    auto const fieldFrom = QORM::Field("field1", QORM::Integer(), false,
+    const auto fieldFrom = QORM::Field("field1", QORM::Integer(), false,
                                        QString());
-    auto const fieldTo = QORM::Field("field2", QORM::Integer(), false,
+    const auto fieldTo = QORM::Field("field2", QORM::Integer(), false,
                                      QString());
-    auto const reference = QORM::Reference(fieldFrom, fieldTo);
-    auto const foreignKey = QORM::ForeignKey({reference}, DEFAULT_TARGET_TABLE,
+    const auto reference = QORM::Reference(fieldFrom, fieldTo);
+    const auto foreignKey = QORM::ForeignKey({reference}, DEFAULT_TARGET_TABLE,
                                              QORM::OnAction::Restrict);
     // When
-    auto const generated = foreignKey.generate();
+    const auto generated = foreignKey.generate();
 
     // Then
     QCOMPARE(generated, QString("constraint targettable_fk foreign key") +
@@ -50,15 +48,15 @@ void ForeignKeyTest::generateRestrict() {
 
 void ForeignKeyTest::generateSetNull() {
     // Given
-    auto const fieldFrom = QORM::Field("field1", QORM::Integer(), false,
+    const auto fieldFrom = QORM::Field("field1", QORM::Integer(), false,
                                        QString());
-    auto const fieldTo = QORM::Field("field2", QORM::Integer(), false,
+    const auto fieldTo = QORM::Field("field2", QORM::Integer(), false,
                                      QString());
-    auto const reference = QORM::Reference(fieldFrom, fieldTo);
-    auto const foreignKey = QORM::ForeignKey({reference}, DEFAULT_TARGET_TABLE,
+    const auto reference = QORM::Reference(fieldFrom, fieldTo);
+    const auto foreignKey = QORM::ForeignKey({reference}, DEFAULT_TARGET_TABLE,
                                              QORM::OnAction::SetNull);
     // When
-    auto const generated = foreignKey.generate();
+    const auto generated = foreignKey.generate();
 
     // Then
     QCOMPARE(generated, QString("constraint targettable_fk foreign key") +
@@ -67,15 +65,15 @@ void ForeignKeyTest::generateSetNull() {
 
 void ForeignKeyTest::generateSetDefault() {
     // Given
-    auto const fieldFrom = QORM::Field("field1", QORM::Integer(), false,
+    const auto fieldFrom = QORM::Field("field1", QORM::Integer(), false,
                                        QString());
-    auto const fieldTo = QORM::Field("field2", QORM::Integer(), false,
+    const auto fieldTo = QORM::Field("field2", QORM::Integer(), false,
                                      QString());
-    auto const reference = QORM::Reference(fieldFrom, fieldTo);
-    auto const foreignKey = QORM::ForeignKey({reference}, DEFAULT_TARGET_TABLE,
+    const auto reference = QORM::Reference(fieldFrom, fieldTo);
+    const auto foreignKey = QORM::ForeignKey({reference}, DEFAULT_TARGET_TABLE,
                                              QORM::OnAction::SetDefault);
     // When
-    auto const generated = foreignKey.generate();
+    const auto generated = foreignKey.generate();
 
     // Then
     QCOMPARE(generated, QString("constraint targettable_fk foreign key") +
@@ -84,16 +82,16 @@ void ForeignKeyTest::generateSetDefault() {
 
 void ForeignKeyTest::generateMultipleFields() {
     // Given
-    auto const fieldFrom = QORM::Field("field1", QORM::Integer(), false,
+    const auto fieldFrom = QORM::Field("field1", QORM::Integer(), false,
                                        QString());
-    auto const fieldTo = QORM::Field("field2", QORM::Integer(), false,
+    const auto fieldTo = QORM::Field("field2", QORM::Integer(), false,
                                      QString());
-    auto const reference1 = QORM::Reference(fieldFrom, fieldTo);
-    auto const reference2 = QORM::Reference(fieldTo, fieldFrom);
-    auto const foreignKey = QORM::ForeignKey({reference1, reference2},
+    const auto reference1 = QORM::Reference(fieldFrom, fieldTo);
+    const auto reference2 = QORM::Reference(fieldTo, fieldFrom);
+    const auto foreignKey = QORM::ForeignKey({reference1, reference2},
                                 DEFAULT_TARGET_TABLE, QORM::OnAction::Cascade);
     // When
-    auto const generated = foreignKey.generate();
+    const auto generated = foreignKey.generate();
 
     // Then
     QCOMPARE(generated, QString("constraint targettable_fk foreign key") +

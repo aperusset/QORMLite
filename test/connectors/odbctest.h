@@ -7,8 +7,8 @@
 class ODBCTest : public MainDatabaseTest {
     Q_OBJECT
 
-    static const QString DEFAULT_DRIVER_DEFINITION;
-    static const QString DEFAULT_CONNECTION_STRING;
+    inline static const QString DEFAULT_DRIVER_DEFINITION = "driverdefinition";
+    inline static const QString DEFAULT_CONNECTION_STRING = "connectionstring";
 
  public:
     auto databaseName() const -> QString override {

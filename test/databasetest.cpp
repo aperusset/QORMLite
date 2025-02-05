@@ -12,32 +12,31 @@
 
 const int DEFAULT_VALUE = 42;
 
-void DatabaseTest::connectShouldReturnTrue() {
+void DatabaseTest::connectShouldConnect() {
     // Given
-    auto const &connector = TestConnector(this->databaseName());
+    const auto &connector = TestConnector(this->databaseName());
     QORM::Database database(connector, this->testCreator, false);
 
     // When / Then
-    QVERIFY(database.connect());
+    database.connect();
     QVERIFY(database.isConnected());
 }
 
-void DatabaseTest::subsequentConnectShouldReturnFalse() {
+void DatabaseTest::subsequentConnectShouldFail() {
     // Given
-    auto const &connector = TestConnector(this->databaseName());
+    const auto &connector = TestConnector(this->databaseName());
     QORM::Database database(connector, this->testCreator, false);
 
     // When
     database.connect();
 
     // When / Then
-    QVERIFY(!database.connect());
-    QVERIFY(database.isConnected());
+    QVERIFY_EXCEPTION_THROWN(database.connect(), std::runtime_error);
 }
 
 void DatabaseTest::disconnectShouldSuccess() {
     // Given
-    auto const &connector = TestConnector(this->databaseName());
+    const auto &connector = TestConnector(this->databaseName());
     QORM::Database database(connector, this->testCreator, false);
 
     // When
@@ -50,7 +49,7 @@ void DatabaseTest::disconnectShouldSuccess() {
 
 void DatabaseTest::optimizeShouldSuccess() {
     // Given
-    auto const &connector = TestConnector(this->databaseName());
+    const auto &connector = TestConnector(this->databaseName());
     QORM::Database database(connector, this->testCreator, false);
 
     // When
@@ -62,19 +61,20 @@ void DatabaseTest::optimizeShouldSuccess() {
 
 void DatabaseTest::prepareExecuteShouldFailWithInvalidQuery() {
     // Given
-    auto const &connector = TestConnector(this->databaseName());
+    const auto &connector = TestConnector(this->databaseName());
     QORM::Database database(connector, this->testCreator, false);
 
     // When
     database.connect();
 
     // Then
-    QVERIFY_EXCEPTION_THROWN(database.execute("invalid query"), std::string);
+    QVERIFY_EXCEPTION_THROWN(database.execute("invalid query"),
+                             std::runtime_error);
 }
 
 void DatabaseTest::executeShouldSuccessWithTextQuery() {
     // Given
-    auto const &connector = TestConnector(this->databaseName());
+    const auto &connector = TestConnector(this->databaseName());
     QORM::Database database(connector, this->testCreator, false);
 
     // When
@@ -87,7 +87,7 @@ void DatabaseTest::executeShouldSuccessWithTextQuery() {
 
 void DatabaseTest::executeShouldSuccessWithBuiltQuery() {
     // Given
-    auto const &connector = TestConnector(this->databaseName());
+    const auto &connector = TestConnector(this->databaseName());
     QORM::Database database(connector, this->testCreator, false);
 
     // When
@@ -99,7 +99,7 @@ void DatabaseTest::executeShouldSuccessWithBuiltQuery() {
 
 void DatabaseTest::existsShouldReturnTrue() {
     // Given
-    auto const &connector = TestConnector(this->databaseName());
+    const auto &connector = TestConnector(this->databaseName());
     QORM::Database database(connector, this->testCreator, false);
 
     // When
@@ -113,7 +113,7 @@ void DatabaseTest::existsShouldReturnTrue() {
 
 void DatabaseTest::existsShouldReturnFalse() {
     // Given
-    auto const &connector = TestConnector(this->databaseName());
+    const auto &connector = TestConnector(this->databaseName());
     QORM::Database database(connector, this->testCreator, false);
 
     // When
@@ -126,12 +126,12 @@ void DatabaseTest::existsShouldReturnFalse() {
 
 void DatabaseTest::insertAndRetrieveKeyAsIntShouldSuccess() {
     // Given
-    auto const &connector = TestConnector(this->databaseName());
+    const auto &connector = TestConnector(this->databaseName());
     QORM::Database database(connector, this->testCreator, false);
 
     // When
     database.connect();
-    auto const key = database.insertAndRetrieveKey(
+    const auto key = database.insertAndRetrieveKey(
                 QORM::Insert(TestCreator::TEST_TABLE));
     // Then
     QVERIFY(key == 1);
@@ -139,7 +139,7 @@ void DatabaseTest::insertAndRetrieveKeyAsIntShouldSuccess() {
 
 void DatabaseTest::insertAndRetrieveKeyAsIntShouldFail() {
     // Given
-    auto const &connector = TestConnector(this->databaseName());
+    const auto &connector = TestConnector(this->databaseName());
     QORM::Database database(connector, this->testCreator, false);
 
     // When
@@ -150,12 +150,12 @@ void DatabaseTest::insertAndRetrieveKeyAsIntShouldFail() {
         database.insertAndRetrieveKey(
             QORM::Insert(TestCreator::TEST_TABLE,
                         {QORM::Assignment(TestCreator::TEST_FIELD, 0)})),
-        std::string);
+        std::logic_error);
 }
 
 void DatabaseTest::entityShouldSuccess() {
     // Given
-    auto const &connector = TestConnector(this->databaseName());
+    const auto &connector = TestConnector(this->databaseName());
     QORM::Database database(connector, this->testCreator, false);
     TestEntity testEntity(DEFAULT_VALUE);
     bool convertible = false;
@@ -163,7 +163,7 @@ void DatabaseTest::entityShouldSuccess() {
     // When
     database.connect();
     database.execute(QORM::Insert(TestCreator::TEST_TABLE));
-    auto const &entity = database.entity<TestEntity>(
+    const auto &entity = database.entity<TestEntity>(
                 QORM::Select(TestCreator::TEST_TABLE),
         [&testEntity, &convertible](const QSqlRecord &record) -> TestEntity& {
             convertible = record.value(TestCreator::TEST_FIELD)
@@ -178,7 +178,7 @@ void DatabaseTest::entityShouldSuccess() {
 
 void DatabaseTest::entityShouldThrowWhenNothingFound() {
     // Given
-    auto const &connector = TestConnector(this->databaseName());
+    const auto &connector = TestConnector(this->databaseName());
     QORM::Database database(connector, this->testCreator, false);
     TestEntity testEntity(DEFAULT_VALUE);
 
@@ -191,12 +191,12 @@ void DatabaseTest::entityShouldThrowWhenNothingFound() {
             [&testEntity](const QSqlRecord &record) -> TestEntity& {
                 record.value(TestCreator::TEST_FIELD).canConvert<int>();
                 return testEntity;
-            }), std::string);
+            }), std::logic_error);
 }
 
 void DatabaseTest::entitiesShouldReturnNonEmptyList() {
     // Given
-    auto const &connector = TestConnector(this->databaseName());
+    const auto &connector = TestConnector(this->databaseName());
     QORM::Database database(connector, this->testCreator, false);
     TestEntity testEntity(DEFAULT_VALUE);
     bool convertible = false;
@@ -205,7 +205,7 @@ void DatabaseTest::entitiesShouldReturnNonEmptyList() {
     database.connect();
     database.execute(QORM::Insert(TestCreator::TEST_TABLE));
     database.execute(QORM::Insert(TestCreator::TEST_TABLE));
-    auto const list = database.entities<TestEntity>(
+    const auto list = database.entities<TestEntity>(
                 QORM::Select(TestCreator::TEST_TABLE),
         [&testEntity, &convertible](const QSqlRecord &record) -> TestEntity& {
             convertible = record.value(TestCreator::TEST_FIELD)
@@ -220,12 +220,12 @@ void DatabaseTest::entitiesShouldReturnNonEmptyList() {
 
 void DatabaseTest::entitiesShouldReturnEmptyList() {
     // Given
-    auto const &connector = TestConnector(this->databaseName());
+    const auto &connector = TestConnector(this->databaseName());
     QORM::Database database(connector, this->testCreator, false);
 
     // When
     database.connect();
-    auto const list = database.entities<TestEntity>(
+    const auto list = database.entities<TestEntity>(
                 QORM::Select(TestCreator::TEST_TABLE), {});
     // Then
     QVERIFY(list.empty());
@@ -233,12 +233,12 @@ void DatabaseTest::entitiesShouldReturnEmptyList() {
 
 void DatabaseTest::resultShouldReturnDefaultValueIfNoResult() {
     // Given
-    auto const &connector = TestConnector(this->databaseName());
+    const auto &connector = TestConnector(this->databaseName());
     QORM::Database database(connector, this->testCreator, false);
 
     // When
     database.connect();
-    auto const result = database.result<int>(
+    const auto result = database.result<int>(
         QORM::Select(TestCreator::TEST_TABLE,
             {TestCreator::TEST_FIELD}).where(
                     {QORM::Equals::field(TestCreator::TEST_FIELD, 99)}),
@@ -252,13 +252,13 @@ void DatabaseTest::resultShouldReturnDefaultValueIfNoResult() {
 
 void DatabaseTest::resultShouldReturnQueryValue() {
     // Given
-    auto const &connector = TestConnector(this->databaseName());
+    const auto &connector = TestConnector(this->databaseName());
     QORM::Database database(connector, this->testCreator, false);
 
     // When
     database.connect();
     database.execute(QORM::Insert(TestCreator::TEST_TABLE));
-    auto const result = database.result<int>(
+    const auto result = database.result<int>(
         QORM::Select(TestCreator::TEST_TABLE,
             {QORM::Sum(TestCreator::TEST_FIELD, "sum")}),
             DEFAULT_VALUE, [](const QSqlRecord &record) -> int {
@@ -267,4 +267,40 @@ void DatabaseTest::resultShouldReturnQueryValue() {
 
     // Then
     QCOMPARE(result, 1);
+}
+
+void DatabaseTest::resultsShouldReturnNonEmptyList() {
+    // Given
+    const auto &connector = TestConnector(this->databaseName());
+    QORM::Database database(connector, this->testCreator, false);
+
+    // When
+    database.connect();
+    database.execute(QORM::Insert(TestCreator::TEST_TABLE));
+    database.execute(QORM::Insert(TestCreator::TEST_TABLE));
+    const auto results = database.results<int>(
+        QORM::Select(TestCreator::TEST_TABLE, {TestCreator::TEST_FIELD}),
+            [](const QSqlRecord &record) -> int {
+                return record.value(TestCreator::TEST_FIELD).toInt();
+            });
+
+    // Then
+    QCOMPARE(results.size(), 2U);
+}
+
+void DatabaseTest::resultsShouldReturnEmptyList() {
+    // Given
+    const auto &connector = TestConnector(this->databaseName());
+    QORM::Database database(connector, this->testCreator, false);
+
+    // When
+    database.connect();
+    const auto results = database.results<int>(
+        QORM::Select(TestCreator::TEST_TABLE, {TestCreator::TEST_FIELD}),
+            [](const QSqlRecord &record) -> int {
+                return record.value(TestCreator::TEST_FIELD).toInt();
+            });
+
+    // Then
+    QVERIFY(results.empty());
 }

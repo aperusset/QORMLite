@@ -16,8 +16,8 @@ class DatabaseTest : public MainDatabaseTest {
     }
 
  private slots:
-    void connectShouldReturnTrue();
-    void subsequentConnectShouldReturnFalse();
+    void connectShouldConnect();
+    void subsequentConnectShouldFail();
     void disconnectShouldSuccess();
     void optimizeShouldSuccess();
     void prepareExecuteShouldFailWithInvalidQuery();
@@ -33,6 +33,8 @@ class DatabaseTest : public MainDatabaseTest {
     void entitiesShouldReturnEmptyList();
     void resultShouldReturnDefaultValueIfNoResult();
     void resultShouldReturnQueryValue();
+    void resultsShouldReturnNonEmptyList();
+    void resultsShouldReturnEmptyList();
 };
 
 #endif  // TEST_DATABASETEST_H_

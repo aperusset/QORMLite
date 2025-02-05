@@ -7,56 +7,11 @@
 #include "operations/query/insert.h"
 #include "fixture/testconnector.h"
 
-void CreatorTest::isCreatedShouldReturnFalseIfNotConnected() {
-    // Given
-    auto const &connector = TestConnector(this->databaseName());
-    QORM::Database database(connector, testCreator, false);
-
-    // When / Then
-    QVERIFY(!testCreator.isCreated(database,
-                { TestCreator::TEST_TABLE }, { TestCreator::TEST_VIEW }));
-}
-
-void CreatorTest::isCreatedShouldReturnFalseIfTablesNotCreated() {
-    // Given
-    auto const &connector = TestConnector(this->databaseName());
-    QORM::Database database(connector, testCreator, false);
-    database.connect();
-
-    // When / Then
-    QVERIFY(!testCreator.isCreated(database,
-                { TestCreator::TEST_TABLE, "another_table" },
-                { TestCreator::TEST_VIEW }));
-}
-
-void CreatorTest::isCreatedShouldReturnFalseIfViewsNotCreated() {
-    // Given
-    auto const &connector = TestConnector(this->databaseName());
-    QORM::Database database(connector, testCreator, false);
-    database.connect();
-
-    // When / Then
-    QVERIFY(!testCreator.isCreated(database,
-                { TestCreator::TEST_TABLE },
-                { TestCreator::TEST_VIEW, "another_view" }));
-}
-
-void CreatorTest::isCreatedShouldReturnTrue() {
-    // Given
-    auto const &connector = TestConnector(this->databaseName());
-    QORM::Database database(connector, testCreator, false);
-    database.connect();
-
-    // When / Then
-    QVERIFY(testCreator.isCreated(database,
-                { TestCreator::TEST_TABLE }, { TestCreator::TEST_VIEW }));
-}
-
 void CreatorTest::createTableShouldSuccess() {
     // Given
-    auto const &connector = TestConnector(this->databaseName());
+    const auto &connector = TestConnector(this->databaseName());
     QORM::Database database(connector, fakeCreator, false);
-    auto const primaryKey = QORM::PrimaryKey(
+    const auto primaryKey = QORM::PrimaryKey(
                 QORM::Field::notNull(TestCreator::TEST_FIELD, QORM::Integer()));
     database.connect();
 
@@ -69,7 +24,7 @@ void CreatorTest::createTableShouldSuccess() {
 
 void CreatorTest::createViewShouldSuccess() {
     // Given
-    auto const &connector = TestConnector(this->databaseName());
+    const auto &connector = TestConnector(this->databaseName());
     QORM::Database database(connector, fakeCreator, false);
     database.connect();
     testCreator.createTables(database);
@@ -84,7 +39,7 @@ void CreatorTest::createViewShouldSuccess() {
 
 void CreatorTest::createViewShouldFailIfTableNotExists() {
     // Given
-    auto const &connector = TestConnector(this->databaseName());
+    const auto &connector = TestConnector(this->databaseName());
     QORM::Database database(connector, fakeCreator, false);
     database.connect();
 
@@ -92,12 +47,12 @@ void CreatorTest::createViewShouldFailIfTableNotExists() {
     QVERIFY_EXCEPTION_THROWN(
         testCreator.createView(database, TestCreator::TEST_VIEW,
                                QORM::Select(TestCreator::TEST_TABLE)),
-        std::string);
+        std::runtime_error);
 }
 
 void CreatorTest::insertShouldSuccess() {
     // Given
-    auto const &connector = TestConnector(this->databaseName());
+    const auto &connector = TestConnector(this->databaseName());
     QORM::Database database(connector, fakeCreator, false);
     database.connect();
     testCreator.createTables(database);
@@ -111,7 +66,7 @@ void CreatorTest::insertShouldSuccess() {
 
 void CreatorTest::createAllAndPopulateShouldSuccess() {
     // Given
-    auto const &connector = TestConnector(this->databaseName());
+    const auto &connector = TestConnector(this->databaseName());
     QORM::Database database(connector, fakeCreator, false);
     database.connect();
 

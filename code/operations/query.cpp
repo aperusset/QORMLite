@@ -1,16 +1,13 @@
 #include "operations/query.h"
 
 void QORM::Query::addBindable(const Bindable &bindable) {
-    this->bindables.insert(std::make_pair(
-        bindable.getParameter(),
-        bindable.getValue()));
+    this->bindables.insert({bindable.getParameter(), bindable.getValue()});
 }
 
-auto QORM::Query::bind(QSqlQuery query) const -> QSqlQuery {
-    for (auto const &bindable : this->bindables) {
+void QORM::Query::bind(QSqlQuery &query) const {
+    for (const auto &bindable : this->bindables) {
         query.bindValue(bindable.first, bindable.second);
     }
-    return query;
 }
 
 auto QORM::Query::hasBindables() const -> bool {

@@ -2,32 +2,29 @@
 #include <string>
 #include "connectors/odbc.h"
 
-const QString ODBCTest::DEFAULT_DRIVER_DEFINITION = "driverdefinition";
-const QString ODBCTest::DEFAULT_CONNECTION_STRING = "connectionstring";
-
 void ODBCTest::initShouldFailWithEmptyName() {
     // Given / When / Then
     QVERIFY_EXCEPTION_THROWN(QORM::ODBC odbc("", DEFAULT_DRIVER_DEFINITION,
-                             DEFAULT_CONNECTION_STRING), std::string);
+                             DEFAULT_CONNECTION_STRING), std::invalid_argument);
 }
 
 void ODBCTest::initShouldFailWithEmptyDriverDefinition() {
     // Given / When / Then
     QVERIFY_EXCEPTION_THROWN(
         QORM::ODBC odbc(this->databaseName(), "", DEFAULT_CONNECTION_STRING),
-        std::string);
+        std::invalid_argument);
 }
 
 void ODBCTest::initShouldFailWithEmptyConnectionString() {
     // Given / When / Then
     QVERIFY_EXCEPTION_THROWN(
         QORM::ODBC odbc(this->databaseName(), DEFAULT_DRIVER_DEFINITION, ""),
-        std::string);
+        std::invalid_argument);
 }
 
 void ODBCTest::initShouldSuccess() {
     // Given
-    auto const &odbc = QORM::ODBC(this->databaseName(),
+    const auto &odbc = QORM::ODBC(this->databaseName(),
                                   DEFAULT_DRIVER_DEFINITION,
                                   DEFAULT_CONNECTION_STRING);
 
@@ -39,7 +36,7 @@ void ODBCTest::initShouldSuccess() {
 
 void ODBCTest::driverNameShouldBeCompliant() {
     // Given
-    auto const &odbc = QORM::ODBC(this->databaseName(),
+    const auto &odbc = QORM::ODBC(this->databaseName(),
                                   DEFAULT_DRIVER_DEFINITION,
                                   DEFAULT_CONNECTION_STRING);
 
@@ -49,7 +46,7 @@ void ODBCTest::driverNameShouldBeCompliant() {
 
 void ODBCTest::databaseNameShouldContainsDriverAndConnectionString() {
     // Given
-    auto const &odbc = QORM::ODBC(this->databaseName(),
+    const auto &odbc = QORM::ODBC(this->databaseName(),
                                   DEFAULT_DRIVER_DEFINITION,
                                   DEFAULT_CONNECTION_STRING);
 
@@ -60,11 +57,11 @@ void ODBCTest::databaseNameShouldContainsDriverAndConnectionString() {
 
 void ODBCTest::backupShouldFail() {
     // Given
-    auto const &odbc = QORM::ODBC(this->databaseName(),
+    const auto &odbc = QORM::ODBC(this->databaseName(),
                                   DEFAULT_DRIVER_DEFINITION,
                                   DEFAULT_CONNECTION_STRING);
 
     // When / Then
     QVERIFY_EXCEPTION_THROWN(odbc.backup(this->databaseBackupName()),
-                             std::string);
+                             std::logic_error);
 }

@@ -8,8 +8,8 @@ namespace QORM {
 
 class Decimal : public Type {
  public:
-    static const int DEFAULT_DIGITS = 9;
-    static const int DEFAULT_DECIMALS = 2;
+    inline static const int DEFAULT_DIGITS = 9;
+    inline static const int DEFAULT_DECIMALS = 2;
 
     // digits and decimals are just documentation, not constraints
     Decimal(const int digits = DEFAULT_DIGITS,

@@ -6,12 +6,12 @@
 
 namespace {
 
-auto contains(const QString &name) -> bool {
+auto contains(const QString &name) {
     return QSqlDatabase::contains(name);
 }
 
 auto tablesByType(const QSqlDatabase &database,
-                  const QSql::TableType &tableType) -> std::list<QString> {
+                  const QSql::TableType &tableType) {
     auto tables = database.tables(tableType);
     return std::list<QString>(tables.begin(), tables.end());
 }
@@ -20,19 +20,19 @@ auto tablesByType(const QSqlDatabase &database,
 
 QORM::Connector::Connector(QString name) : name(std::move(name)) {
     if (this->name.isEmpty()) {
-        throw std::string("Database must have a name");
+        throw std::invalid_argument("Database must have a name");
     }
     if (contains(this->name)) {
-        throw std::string("A connector to database ") +
-                 this->name.toStdString() + " already exists";
+        throw std::invalid_argument("A connector to database " +
+                 this->name.toStdString() + " already exists");
     }
 }
 
 auto QORM::Connector::getDatabase() const -> QSqlDatabase {
     if (!contains(this->name)) {
-        throw std::string("A connector to database ") +
+        throw std::logic_error("A connector to database " +
                 this->name.toStdString() +
-                " must be previously opened";
+                " must be previously opened");
     }
     return QSqlDatabase::database(this->name, false);
 }
@@ -47,10 +47,10 @@ void QORM::Connector::connect() const {
                                                   this->name);
         this->preConnect();
         if (!database.open()) {
-            throw std::string("Failed to open database with name : ") +
+            throw std::logic_error("Failed to open database with name : " +
                     this->name.toStdString() +
                     " | Error message : " +
-                    database.lastError().text().toStdString();
+                    database.lastError().text().toStdString());
         }
         this->postConnect();
         this->optimize();
