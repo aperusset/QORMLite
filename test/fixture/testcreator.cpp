@@ -17,11 +17,3 @@ void TestCreator::createTables(const QORM::Database &database) const {
 void TestCreator::createViews(const QORM::Database &database) const {
     database.execute(QORM::View(TEST_VIEW, QORM::Select(TEST_TABLE)));
 }
-
-auto TestCreator::tables() const -> std::list<QString> {
-    return { TEST_TABLE };
-}
-
-auto TestCreator::views() const -> std::list<QString> {
-    return { TEST_VIEW };
-}

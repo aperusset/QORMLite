@@ -17,7 +17,7 @@ class Upgrader {
     virtual ~Upgrader() {}
 
     auto getVersion() const -> unsigned short;
-    void upgrade(const Database&) const {}
+    virtual void upgrade(const Database&) const = 0;
 };
 
 inline auto Upgrader::getVersion() const -> unsigned short {

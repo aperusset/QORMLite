@@ -7,7 +7,7 @@ QORM::Database::Database(const QORM::Connector &connector, bool verbose) :
 }
 
 QORM::Database::Database(const QORM::Connector &connector,
-                         const QORM::Creator &creator, bool verbose) :
+                         const QORM::Schema::Creator &creator, bool verbose) :
     databaseMutex(QMutex::RecursionMode::Recursive),
     connector(connector), creator(&creator), verbose(verbose) {
 }
@@ -66,24 +66,28 @@ void QORM::Database::connect() {
     if (!this->isConnected()) {
         this->connector.connect();
         if (this->creator != nullptr) {
-            auto schemaState = this->creator->getSchemaState(*this,
-                this->connector.tables());
-            if (schemaState == Schema::State::EMPTY) {
-                qDebug("Create and upgrade database with name %s",
-                       qUtf8Printable(connector.getName()));
-                this->creator->createAllAndPopulate(*this);
-                this->creator->upgradeToLatestVersion(*this);
-            } else if (schemaState == Schema::State::TO_BE_UPDATED) {
-                qDebug("Upgrade database with name %s",
-                       qUtf8Printable(connector.getName()));
-                this->creator->upgradeToLatestVersion(*this);
-            } else {
-                qDebug("Database %s is up to date",
-                       qUtf8Printable(connector.getName()));
-            }
+            this->handleSchemaState();
         }
     } else {
         throw std::runtime_error("Already connected to database");
+    }
+}
+
+void QORM::Database::handleSchemaState() {
+    const auto schemaState = this->creator->getSchemaState(*this,
+        this->connector.tables());
+    if (schemaState == Schema::State::EMPTY) {
+        qDebug("Create and upgrade database with name %s",
+               qUtf8Printable(connector.getName()));
+        this->creator->execute(*this);
+        this->creator->upgradeToLatestVersion(*this);
+    } else if (schemaState == Schema::State::TO_BE_UPDATED) {
+        qDebug("Upgrade database with name %s",
+               qUtf8Printable(connector.getName()));
+        this->creator->upgradeToLatestVersion(*this);
+    } else {
+        qDebug("Database %s is up to date",
+               qUtf8Printable(connector.getName()));
     }
 }
 

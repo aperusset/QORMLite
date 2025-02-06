@@ -35,8 +35,8 @@ void QORM::initialize(const Connector &connector, bool verbose) {
                     std::make_unique<Database>(connector, verbose)));
 }
 
-void QORM::initialize(const Connector &connector, const Creator &creator,
-                      bool verbose) {
+void QORM::initialize(const Connector &connector,
+                      const Schema::Creator &creator, bool verbose) {
     const QMutexLocker lock(&poolMutex);
     initializeChecks(connector);
     pool.insert(std::pair(connector.getName(),

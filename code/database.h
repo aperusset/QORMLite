@@ -23,16 +23,18 @@ class Database {
 
     // TODO(aperusset) Database should take connector and creator ownership ?
     const QORM::Connector &connector;
-    const QORM::Creator* const creator;
+    const QORM::Schema::Creator* const creator;
     const bool verbose;
 
     auto prepare(const QString&) const -> QSqlQuery;
     auto prepare(const Query&) const -> QSqlQuery;
     auto execute(QSqlQuery) const -> QSqlQuery;
+    void handleSchemaState();
 
  public:
     Database(const QORM::Connector&, bool verbose);
-    Database(const QORM::Connector&, const QORM::Creator&, bool verbose);
+    Database(const QORM::Connector&, const QORM::Schema::Creator&,
+             bool verbose);
     ~Database();
     Database(const Database&) = delete;
     Database(Database&&) = delete;

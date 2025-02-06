@@ -43,6 +43,7 @@ SOURCES += \
   schema/creator.cpp \
   database.cpp \
   qormlite.cpp \
+  schema/operator.cpp \
   utils.cpp
 
 HEADERS += \
@@ -105,6 +106,7 @@ HEADERS += \
   repositories/crudrepository.h \
   repositories/readonlyrepository.h \
   schema/creator.h \
+  schema/operator.h \
   schema/state.h \
   schema/upgrader.h \
   cache.h \

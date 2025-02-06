@@ -64,14 +64,14 @@ void CreatorTest::insertShouldSuccess() {
     QVERIFY(database.execute(QORM::Select(TestCreator::TEST_TABLE)).next());
 }
 
-void CreatorTest::createAllAndPopulateShouldSuccess() {
+void CreatorTest::executeShouldSuccess() {
     // Given
     const auto &connector = TestConnector(this->databaseName());
     QORM::Database database(connector, fakeCreator, false);
     database.connect();
 
     // When
-    testCreator.createAllAndPopulate(database);
+    testCreator.execute(database);
     TestCreator::insert(database, QORM::Insert(TestCreator::TEST_TABLE));
 
     // Then

@@ -9,14 +9,13 @@
 #include "operations/model/constraint/unique.h"
 #include "operations/query/insert.h"
 #include "operations/query/select.h"
+#include "schema/operator.h"
 #include "schema/upgrader.h"
 #include "schema/state.h"
 
-namespace QORM {
+namespace QORM::Schema {
 
-class Database;
-
-class Creator {
+class Creator : public Schema::Operator {
     using CreatorList = std::list<std::reference_wrapper<const Creator>>;
     using UpgraderList = std::list<std::reference_wrapper<const Upgrader>>;
 
@@ -26,7 +25,7 @@ class Creator {
     void sortUpgraders();
 
  public:
-    explicit Creator(CreatorList = {}, UpgraderList = {});
+    Creator(CreatorList = {}, UpgraderList = {});
     Creator(const Creator&) = delete;
     Creator(Creator&&) = delete;
     Creator& operator=(const Creator&) = delete;
@@ -40,20 +39,11 @@ class Creator {
     auto getSchemaState(const Database&,
                         const std::list<QString> &existingTables)
         const -> Schema::State;
-    void createAllAndPopulate(const Database&) const;
+    void execute(const Database&) const override;
     void upgradeToLatestVersion(const Database&) const;
     virtual void createTables(const Database&) const = 0;
     virtual void createViews(const Database&) const = 0;
     virtual void populate(const Database&) const = 0;
-    virtual auto tables() const -> std::list<QString> = 0;
-    virtual auto views() const -> std::list<QString> = 0;
-
-    static void createTable(const Database&, const QString&,
-                            const PrimaryKey&, const std::list<Field>& = {},
-                            const std::list<ForeignKey>& = {},
-                            const std::list<Unique>& = {});
-    static void createView(const Database&, const QString&, const Select&);
-    static void insert(const Database&, const Insert&);
 };
 
 inline auto Creator::getRequiredCreators() const -> const CreatorList& {

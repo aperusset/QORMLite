@@ -23,7 +23,7 @@ class CreatorTest : public MainDatabaseTest {
     void createViewShouldSuccess();
     void createViewShouldFailIfTableNotExists();
     void insertShouldSuccess();
-    void createAllAndPopulateShouldSuccess();
+    void executeShouldSuccess();
     // TODO(aperusset) test upgradeToLatestVersion
 };
 
