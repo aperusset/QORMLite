@@ -5,6 +5,8 @@ namespace QORM {
 
 class Database;
 
+namespace Schema {
+
 class Upgrader {
     const unsigned short version;
 
@@ -23,6 +25,8 @@ class Upgrader {
 inline auto Upgrader::getVersion() const -> unsigned short {
     return this->version;
 }
+
+}  // namespace Schema
 
 }  // namespace QORM
 

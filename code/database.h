@@ -5,6 +5,7 @@
 #include <QSqlRecord>
 #include <QtSql>
 #include <list>
+#include <memory>
 #include <string>
 #include "./entity.h"
 #include "./utils.h"
@@ -15,26 +16,34 @@
 #include "operations/query/select.h"
 #include "operations/query/update.h"
 #include "schema/creator.h"
+#include "schema/upgrader.h"
+#include "schema/state.h"
 
 namespace QORM {
 
 class Database {
+    using UpgraderList = std::list<std::unique_ptr<Schema::Upgrader>>;
+
     QMutex databaseMutex;
 
-    // TODO(aperusset) Database should take connector and creator ownership ?
+    // TODO(aperusset) Database should take connector ownership ?
     const QORM::Connector &connector;
-    const QORM::Schema::Creator* const creator;
+    const std::unique_ptr<const QORM::Schema::Creator> creator;
+    UpgraderList upgraders;
     const bool verbose;
 
     auto prepare(const QString&) const -> QSqlQuery;
     auto prepare(const Query&) const -> QSqlQuery;
     auto execute(QSqlQuery) const -> QSqlQuery;
+    void create();
+    void upgrade();
     void handleSchemaState();
+    void sortUpgraders();
 
  public:
     Database(const QORM::Connector&, bool verbose);
-    Database(const QORM::Connector&, const QORM::Schema::Creator&,
-             bool verbose);
+    Database(const QORM::Connector&, std::unique_ptr<QORM::Schema::Creator>&&,
+             UpgraderList, bool verbose);
     ~Database();
     Database(const Database&) = delete;
     Database(Database&&) = delete;
@@ -44,6 +53,7 @@ class Database {
     auto getName() const -> const QString&;
     auto isVerbose() const;
     auto isConnected() const -> bool;
+    auto getSchemaState() const -> Schema::State;
 
     void connect();
     void disconnect();

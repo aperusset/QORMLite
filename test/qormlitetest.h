@@ -3,13 +3,11 @@
 
 #include <QtTest/QtTest>
 #include "fixture/maindatabasetest.h"
-#include "fixture/testcreator.h"
 #include "fixture/testconnector.h"
 
 class QORMLiteTest : public MainDatabaseTest {
     Q_OBJECT
 
-    FakeCreator creator;
     std::unique_ptr<TestConnector> connector = nullptr;
 
  public:

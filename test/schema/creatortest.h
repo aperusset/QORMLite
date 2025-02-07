@@ -9,7 +9,6 @@ class CreatorTest : public MainDatabaseTest {
     Q_OBJECT
 
     TestCreator testCreator;
-    FakeCreator fakeCreator;
 
  public:
     auto databaseName() const -> QString override {

@@ -3,12 +3,9 @@
 
 #include <QtTest/QtTest>
 #include "fixture/maindatabasetest.h"
-#include "fixture/testcreator.h"
 
 class DatabaseTest : public MainDatabaseTest {
     Q_OBJECT
-
-    TestCreator testCreator;
 
  public:
     auto databaseName() const -> QString override {

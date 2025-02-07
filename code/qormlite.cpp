@@ -36,11 +36,15 @@ void QORM::initialize(const Connector &connector, bool verbose) {
 }
 
 void QORM::initialize(const Connector &connector,
-                      const Schema::Creator &creator, bool verbose) {
+        std::unique_ptr<QORM::Schema::Creator> &&creator,
+        std::list<std::unique_ptr<Schema::Upgrader>> upgraders,
+        bool verbose) {
     const QMutexLocker lock(&poolMutex);
     initializeChecks(connector);
-    pool.insert(std::pair(connector.getName(),
-                    std::make_unique<Database>(connector, creator, verbose)));
+    pool.insert(std::pair(connector.getName(), std::make_unique<Database>(
+        connector,
+        std::forward<std::unique_ptr<QORM::Schema::Creator>>(creator),
+        std::move(upgraders), verbose)));
 }
 
 auto QORM::get(const QString &name) -> Database& {

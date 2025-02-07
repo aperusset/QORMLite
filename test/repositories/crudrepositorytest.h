@@ -3,14 +3,11 @@
 
 #include <QtTest/QtTest>
 #include "fixture/maindatabasetest.h"
-#include "fixture/testcreator.h"
 #include "fixture/testentity.h"
 #include "./cache.h"
 
 class CRUDRepositoryTest : public MainDatabaseTest {
     Q_OBJECT
-
-    TestCreator testCreator;
 
  public:
     auto databaseName() const -> QString override {

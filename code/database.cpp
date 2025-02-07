@@ -7,9 +7,11 @@ QORM::Database::Database(const QORM::Connector &connector, bool verbose) :
 }
 
 QORM::Database::Database(const QORM::Connector &connector,
-                         const QORM::Schema::Creator &creator, bool verbose) :
-    databaseMutex(QMutex::RecursionMode::Recursive),
-    connector(connector), creator(&creator), verbose(verbose) {
+                         std::unique_ptr<QORM::Schema::Creator> &&creator,
+                         UpgraderList upgraders, bool verbose) :
+        databaseMutex(QMutex::RecursionMode::Recursive),
+        connector(connector), creator(std::move(creator)),
+        upgraders(std::move(upgraders)), verbose(verbose) {
 }
 
 QORM::Database::~Database() {
@@ -61,6 +63,24 @@ auto QORM::Database::isConnected() const -> bool {
     return connector.isConnected();
 }
 
+auto QORM::Database::getSchemaState() const -> Schema::State {
+    if (!isConnected()) {
+        throw std::invalid_argument("Not connected to database");
+    }
+    // database is considered created if the schema version table exists
+    const auto created = this->creator == nullptr ||
+                         this->connector.tables().size() > 0;
+    if (!created) {
+        return Schema::State::EMPTY;
+    }
+    // TODO
+    //if (this->upgraders.empty()) {
+    //    return Schema::State::UP_TO_DATE;
+    //}
+    // TODO(aperusset) check the current version of the schema
+    return Schema::State::UP_TO_DATE;
+}
+
 void QORM::Database::connect() {
     const QMutexLocker lock(&databaseMutex);
     if (!this->isConnected()) {
@@ -73,22 +93,37 @@ void QORM::Database::connect() {
     }
 }
 
+void QORM::Database::create() {
+    qDebug("Create database with name %s",
+           qUtf8Printable(connector.getName()));
+}
+
+void QORM::Database::upgrade() {
+    if (!isConnected()) {
+        throw std::invalid_argument("Database is not connected");
+    }
+    qDebug("Upgrade database with name %s",
+           qUtf8Printable(connector.getName()));
+    // TODO(aperusset) do the upgrade sequentially, skip applied versions
+}
+
 void QORM::Database::handleSchemaState() {
-    const auto schemaState = this->creator->getSchemaState(*this,
-        this->connector.tables());
+    const auto schemaState = this->getSchemaState();
     if (schemaState == Schema::State::EMPTY) {
-        qDebug("Create and upgrade database with name %s",
-               qUtf8Printable(connector.getName()));
         this->creator->execute(*this);
-        this->creator->upgradeToLatestVersion(*this);
+        this->upgrade();
     } else if (schemaState == Schema::State::TO_BE_UPDATED) {
-        qDebug("Upgrade database with name %s",
-               qUtf8Printable(connector.getName()));
-        this->creator->upgradeToLatestVersion(*this);
+        this->upgrade();
     } else {
         qDebug("Database %s is up to date",
                qUtf8Printable(connector.getName()));
     }
+}
+
+void QORM::Database::sortUpgraders() {
+    this->upgraders.sort([](const auto &left, const auto &right) {
+        return left->getVersion() > right->getVersion();
+    });
 }
 
 void QORM::Database::disconnect() {

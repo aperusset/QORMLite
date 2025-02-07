@@ -2,6 +2,7 @@
 #include <string>
 #include "./qormlite.h"
 #include "fixture/testconnector.h"
+#include "fixture/testcreator.h"
 
 void QORMLiteTest::isInitializedShouldReturnFalse() {
     // Given / When / Then
@@ -10,20 +11,21 @@ void QORMLiteTest::isInitializedShouldReturnFalse() {
 
 void QORMLiteTest::initializeShouldSuccessAndIsInitializedShouldReturnTrue() {
     // Given / When
-    QORM::initialize(*this->connector, this->creator, false);
-
+    QORM::initialize(*this->connector, std::make_unique<FakeCreator>(), {},
+                     false);
     // Then
     QVERIFY(QORM::isInitialized(this->databaseName()));
 }
 
 void QORMLiteTest::initializeShouldFailIfDatabaseAlreadyExists() {
     // Given
-    QORM::initialize(*this->connector, this->creator, false);
-
+    QORM::initialize(*this->connector, std::make_unique<FakeCreator>(), {},
+                     false);
     // When / Then
     QVERIFY(QORM::isInitialized(this->databaseName()));
     QVERIFY_EXCEPTION_THROWN(
-        QORM::initialize(*this->connector, this->creator, false),
+        QORM::initialize(*this->connector, std::make_unique<FakeCreator>(), {},
+                         false),
         std::logic_error);
 }
 
@@ -35,8 +37,8 @@ void QORMLiteTest::getShouldFailIfDatabaseNotExists() {
 
 void QORMLiteTest::getShouldSuccess() {
     // Given
-    QORM::initialize(*this->connector, this->creator, false);
-
+    QORM::initialize(*this->connector, std::make_unique<FakeCreator>(), {},
+                     false);
     // When
     const auto &database = QORM::get(this->databaseName());
 
@@ -47,8 +49,8 @@ void QORMLiteTest::getShouldSuccess() {
 
 void QORMLiteTest::destroyShouldSuccess() {
     // Given
-    QORM::initialize(*this->connector, this->creator, false);
-
+    QORM::initialize(*this->connector, std::make_unique<FakeCreator>(), {},
+                     false);
     // When
     QORM::destroy(this->databaseName());
 
@@ -58,8 +60,8 @@ void QORMLiteTest::destroyShouldSuccess() {
 
 void QORMLiteTest::destroyAllShouldSuccess() {
     // Given
-    QORM::initialize(*this->connector, this->creator, false);
-
+    QORM::initialize(*this->connector, std::make_unique<FakeCreator>(), {},
+                     false);
     // When
     QORM::destroyAll();
 

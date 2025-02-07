@@ -10,7 +10,8 @@
 void CreatorTest::createTableShouldSuccess() {
     // Given
     const auto &connector = TestConnector(this->databaseName());
-    QORM::Database database(connector, fakeCreator, false);
+    QORM::Database database(connector, std::make_unique<FakeCreator>(), {},
+                            false);
     const auto primaryKey = QORM::PrimaryKey(
                 QORM::Field::notNull(TestCreator::TEST_FIELD, QORM::Integer()));
     database.connect();
@@ -25,7 +26,8 @@ void CreatorTest::createTableShouldSuccess() {
 void CreatorTest::createViewShouldSuccess() {
     // Given
     const auto &connector = TestConnector(this->databaseName());
-    QORM::Database database(connector, fakeCreator, false);
+    QORM::Database database(connector, std::make_unique<FakeCreator>(), {},
+                            false);
     database.connect();
     testCreator.createTables(database);
 
@@ -40,7 +42,8 @@ void CreatorTest::createViewShouldSuccess() {
 void CreatorTest::createViewShouldFailIfTableNotExists() {
     // Given
     const auto &connector = TestConnector(this->databaseName());
-    QORM::Database database(connector, fakeCreator, false);
+    QORM::Database database(connector, std::make_unique<FakeCreator>(), {},
+                            false);
     database.connect();
 
     // When / Then
@@ -53,7 +56,8 @@ void CreatorTest::createViewShouldFailIfTableNotExists() {
 void CreatorTest::insertShouldSuccess() {
     // Given
     const auto &connector = TestConnector(this->databaseName());
-    QORM::Database database(connector, fakeCreator, false);
+    QORM::Database database(connector, std::make_unique<FakeCreator>(), {},
+                            false);
     database.connect();
     testCreator.createTables(database);
 
@@ -67,7 +71,8 @@ void CreatorTest::insertShouldSuccess() {
 void CreatorTest::executeShouldSuccess() {
     // Given
     const auto &connector = TestConnector(this->databaseName());
-    QORM::Database database(connector, fakeCreator, false);
+    QORM::Database database(connector, std::make_unique<FakeCreator>(), {},
+                            false);
     database.connect();
 
     // When
