@@ -8,11 +8,18 @@ QORM::Schema::Creator::Creator(CreatorList requiredCreators) :
     requiredCreators(std::move(requiredCreators)) {
 }
 
-void QORM::Schema::Creator::execute(const Database &database) const {
-    for (const auto &requiredCreator : this->requiredCreators) {
-        requiredCreator->execute(database);
+void QORM::Schema::Creator::addRequiredCreator(CreatorPtr creator) {
+    this->requiredCreators.emplace_back(std::move(creator));
+}
+
+void QORM::Schema::Creator::execute(const Database &database) {
+    if (!this->isAlreadyExecuted()) {
+        for (const auto &requiredCreator : this->requiredCreators) {
+            requiredCreator->execute(database);
+        }
+        this->createTables(database);
+        this->createViews(database);
+        this->populate(database);
+        this->setAlreadyExecuted(true);
     }
-    this->createTables(database);
-    this->createViews(database);
-    this->populate(database);
 }

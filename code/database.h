@@ -22,13 +22,15 @@
 namespace QORM {
 
 class Database {
-    using UpgraderList = std::list<std::unique_ptr<Schema::Upgrader>>;
+    using CreatorPtr = std::unique_ptr<Schema::Creator>;
+    using UpgraderPtr = std::shared_ptr<Schema::Upgrader>;
+    using UpgraderList = std::list<UpgraderPtr>;
 
     QMutex databaseMutex;
 
     // TODO(aperusset) Database should take connector ownership ?
     const QORM::Connector &connector;
-    const std::unique_ptr<const QORM::Schema::Creator> creator;
+    std::unique_ptr<QORM::Schema::Creator> creator;
     UpgraderList upgraders;
     const bool verbose;
 
@@ -42,8 +44,7 @@ class Database {
 
  public:
     Database(const QORM::Connector&, bool verbose);
-    Database(const QORM::Connector&, std::unique_ptr<QORM::Schema::Creator>&&,
-             UpgraderList, bool verbose);
+    Database(const QORM::Connector&, CreatorPtr, UpgraderList, bool verbose);
     ~Database();
     Database(const Database&) = delete;
     Database(Database&&) = delete;

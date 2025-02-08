@@ -19,6 +19,8 @@ class Database;
 namespace QORM::Schema {
 
 class Operator {
+    bool alreadyExecuted = false;
+
  public:
     Operator() = default;
     Operator(const Operator&) = delete;
@@ -27,7 +29,9 @@ class Operator {
     Operator& operator=(Operator&&) = delete;
     virtual ~Operator() {}
 
-    virtual void execute(const Database&) const = 0;
+    virtual auto isAlreadyExecuted() const -> bool;
+    virtual void setAlreadyExecuted(bool);
+    virtual void execute(const Database&) = 0;
 
     static void createTable(const Database&, const QString&,
                             const PrimaryKey&, const std::list<Field>& = {},
@@ -36,6 +40,10 @@ class Operator {
     static void createView(const Database&, const QString&, const Select&);
     static void insert(const Database&, const Insert&);
 };
+
+inline auto Operator::isAlreadyExecuted() const -> bool {
+    return this->alreadyExecuted;
+}
 
 }  // namespace QORM::Schema
 

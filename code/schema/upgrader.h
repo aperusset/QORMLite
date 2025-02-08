@@ -1,14 +1,16 @@
 #ifndef SCHEMA_UPGRADER_H_
 #define SCHEMA_UPGRADER_H_
 
+#include "schema/operator.h"
+
 namespace QORM {
 
 class Database;
 
 namespace Schema {
 
-class Upgrader {
-    const unsigned short version;
+class Upgrader : public Operator {
+    const unsigned int version;
 
  public:
     explicit Upgrader(unsigned int version) : version(version) {}
@@ -19,6 +21,7 @@ class Upgrader {
     virtual ~Upgrader() {}
 
     auto getVersion() const -> unsigned short;
+    void execute(const Database&) override;
     virtual void upgrade(const Database&) const = 0;
 };
 

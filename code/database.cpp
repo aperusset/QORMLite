@@ -6,8 +6,7 @@ QORM::Database::Database(const QORM::Connector &connector, bool verbose) :
     connector(connector), creator(nullptr), verbose(verbose) {
 }
 
-QORM::Database::Database(const QORM::Connector &connector,
-                         std::unique_ptr<QORM::Schema::Creator> &&creator,
+QORM::Database::Database(const QORM::Connector &connector, CreatorPtr creator,
                          UpgraderList upgraders, bool verbose) :
         databaseMutex(QMutex::RecursionMode::Recursive),
         connector(connector), creator(std::move(creator)),

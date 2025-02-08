@@ -16,7 +16,8 @@
 namespace QORM::Schema {
 
 class Creator : public Schema::Operator {
-    using CreatorList = std::list<std::unique_ptr<Creator>>;
+    using CreatorPtr = std::shared_ptr<Creator>;
+    using CreatorList = std::list<CreatorPtr>;
 
     CreatorList requiredCreators;
 
@@ -29,8 +30,8 @@ class Creator : public Schema::Operator {
     virtual ~Creator() {}
 
     auto getRequiredCreators() const -> const CreatorList&;
-    void addRequiredCreator(const Creator&);
-    void execute(const Database&) const override;
+    void addRequiredCreator(CreatorPtr);
+    void execute(const Database&) override;
     virtual void createTables(const Database&) const = 0;
     virtual void createViews(const Database&) const = 0;
     virtual void populate(const Database&) const = 0;

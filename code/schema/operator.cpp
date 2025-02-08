@@ -3,6 +3,10 @@
 #include "operations/model/table.h"
 #include "operations/model/view.h"
 
+void QORM::Schema::Operator::setAlreadyExecuted(bool alreadyExecuted) {
+    this->alreadyExecuted = alreadyExecuted;
+}
+
 void QORM::Schema::Operator::createTable(const Database &database,
         const QString &name, const PrimaryKey &primaryKey,
         const std::list<Field> &fields,

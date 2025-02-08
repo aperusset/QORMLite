@@ -44,6 +44,7 @@ SOURCES += \
   database.cpp \
   qormlite.cpp \
   schema/operator.cpp \
+  schema/upgrader.cpp \
   utils.cpp
 
 HEADERS += \
