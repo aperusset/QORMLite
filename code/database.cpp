@@ -6,8 +6,8 @@ QORM::Database::Database(const QORM::Connector &connector, bool verbose) :
     connector(connector), creator(nullptr), verbose(verbose) {
 }
 
-QORM::Database::Database(const QORM::Connector &connector, CreatorPtr creator,
-                         UpgraderList upgraders, bool verbose) :
+QORM::Database::Database(const QORM::Connector &connector, CreatorUPtr creator,
+                         UpgraderUList upgraders, bool verbose) :
         databaseMutex(QMutex::RecursionMode::Recursive),
         connector(connector), creator(std::move(creator)),
         upgraders(std::move(upgraders)), verbose(verbose) {
@@ -121,7 +121,7 @@ void QORM::Database::handleSchemaState() {
 
 void QORM::Database::sortUpgraders() {
     this->upgraders.sort([](const auto &left, const auto &right) {
-        return left->getVersion() > right->getVersion();
+        return left->getVersion() < right->getVersion();
     });
 }
 

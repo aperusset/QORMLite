@@ -20,12 +20,12 @@ class Upgrader : public Operator {
     Upgrader& operator=(Upgrader&&) = delete;
     virtual ~Upgrader() {}
 
-    auto getVersion() const -> unsigned short;
+    auto getVersion() const -> unsigned int;
     void execute(const Database&) override;
     virtual void upgrade(const Database&) const = 0;
 };
 
-inline auto Upgrader::getVersion() const -> unsigned short {
+inline auto Upgrader::getVersion() const -> unsigned int {
     return this->version;
 }
 

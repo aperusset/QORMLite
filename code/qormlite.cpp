@@ -37,7 +37,7 @@ void QORM::initialize(const Connector &connector, bool verbose) {
 
 void QORM::initialize(const Connector &connector,
         std::unique_ptr<QORM::Schema::Creator> &&creator,
-        std::list<std::shared_ptr<Schema::Upgrader>> upgraders,
+        std::list<std::unique_ptr<Schema::Upgrader>> upgraders,
         bool verbose) {
     const QMutexLocker lock(&poolMutex);
     initializeChecks(connector);

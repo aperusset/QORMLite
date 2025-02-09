@@ -12,7 +12,7 @@ namespace QORM {
     void initialize(const Connector&, bool verbose);
     void initialize(const Connector&,
                     std::unique_ptr<QORM::Schema::Creator>&&,
-                    std::list<std::shared_ptr<Schema::Upgrader>>,
+                    std::list<std::unique_ptr<Schema::Upgrader>>,
                     bool verbose);
     auto get(const QString &name) -> Database&;
     void destroy(const QString &name);

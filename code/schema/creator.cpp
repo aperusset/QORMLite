@@ -8,7 +8,7 @@ QORM::Schema::Creator::Creator(CreatorList requiredCreators) :
     requiredCreators(std::move(requiredCreators)) {
 }
 
-void QORM::Schema::Creator::addRequiredCreator(CreatorPtr creator) {
+void QORM::Schema::Creator::addRequiredCreator(CreatorSPtr creator) {
     this->requiredCreators.emplace_back(std::move(creator));
 }
 
