@@ -23,7 +23,8 @@ void QORM::Schema::SchemaVersionCreator::populate(
         const QORM::Database &database) const {
     database.execute(QORM::Insert(
         Entities::SchemaVersion::TABLE, {
-            QORM::Assignment(Entities::SchemaVersion::VERSION, 0),
+            QORM::Assignment(Entities::SchemaVersion::VERSION,
+                             Entities::SchemaVersion::FIRST_VERSION),
             QORM::Assignment(Entities::SchemaVersion::DESCRIPTION,
                              "Initial version of schema"),
             QORM::Assignment(Entities::SchemaVersion::EXECUTION,

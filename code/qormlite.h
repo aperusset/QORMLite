@@ -12,8 +12,8 @@ namespace QORM {
     void initialize(std::unique_ptr<Connector>, bool verbose);
     void initialize(std::unique_ptr<Connector>,
                     std::unique_ptr<Schema::Creator>,
-                    std::list<std::unique_ptr<Schema::Upgrader>>,
-                    bool verbose);
+                    std::list<std::unique_ptr<Schema::Upgrader>> = {},
+                    bool verbose = false);
     auto get(const QString &name) -> Database&;
     void destroy(const QString &name);
     void destroyAll();

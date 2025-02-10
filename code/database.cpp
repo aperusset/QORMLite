@@ -13,6 +13,15 @@ QORM::Database::Database(ConnectorUPtr connector, CreatorUPtr creator,
         databaseMutex(QMutex::RecursionMode::Recursive),
         connector(std::move(connector)), creator(std::move(creator)),
         upgraders(std::move(upgraders)), verbose(verbose) {
+    std::set<int> upgraderVersions;
+    std::transform(this->upgraders.begin(), this->upgraders.end(),
+        std::inserter(upgraderVersions, upgraderVersions.begin()),
+        [](const auto &upgrader) -> int {
+            return upgrader->getVersion();
+        });
+    if (upgraderVersions.size() != this->upgraders.size()) {
+        throw std::logic_error("Duplicated upgrader version detected");
+    }
 }
 
 QORM::Database::~Database() {

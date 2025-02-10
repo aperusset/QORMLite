@@ -13,14 +13,11 @@ class CreatorTest : public MainDatabaseTest {
     }
 
  private slots:
-    // TODO(aperusset) verify upgraders (order after ctor and adder)
-    // TODO(aperusset) test getSchemaState
     void createTableShouldSuccess();
     void createViewShouldSuccess();
     void createViewShouldFailIfTableNotExists();
     void insertShouldSuccess();
     void executeShouldSuccess();
-    // TODO(aperusset) test upgradeToLatestVersion
 };
 
 #endif  // QORMCREATORTEST_H_

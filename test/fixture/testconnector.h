@@ -48,6 +48,12 @@ class TestConnector : public QORM::Connector {
     auto isOptimizeCalled() const -> bool {
         return optimizeCalled;
     }
+
+    static void reset() {
+        preConnectCalled = false;
+        postConnectCalled = false;
+        optimizeCalled = false;
+    }
 };
 
 #endif  // TEST_FIXTURE_TESTCONNECTOR_H_
