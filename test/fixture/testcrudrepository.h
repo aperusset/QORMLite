@@ -4,10 +4,9 @@
 #include <list>
 #include "./testentity.h"
 #include "operations/query/condition/condition.h"
-#include "operations/query/assignment.h"
 #include "repositories/crudrepository.h"
 
-class TestCRUDRepository : public QORM::CRUDRepository<TestEntity> {
+class TestCRUDRepository : public QORM::Repositories::CRUDRepository<TestEntity> {
  public:
     explicit TestCRUDRepository(const QORM::Database &database);
 

@@ -6,8 +6,8 @@
 #include <QSqlRecord>
 #include <list>
 #include <memory>
-#include "./entity.h"
 #include "connectors/connector.h"
+#include "entities/baseentity.h"
 #include "operations/query.h"
 #include "operations/query/insert.h"
 #include "operations/query/select.h"

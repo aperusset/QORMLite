@@ -5,12 +5,11 @@
 #include <QString>
 #include <list>
 #include <memory>
-#include "./entity.h"
 #include "operations/query/update.h"
 #include "operations/query/delete.h"
 #include "repositories/readonlyrepository.h"
 
-namespace QORM {
+namespace QORM::Repositories {
 
 template<class Entity, typename Key = int>
 class CRUDRepository : public ReadOnlyRepository<Entity, Key> {
@@ -70,6 +69,6 @@ class CRUDRepository : public ReadOnlyRepository<Entity, Key> {
     }
 };
 
-}  // namespace QORM
+}  // namespace QORM::Repositories
 
 #endif  // REPOSITORIES_CRUDREPOSITORY_H_

@@ -1,8 +1,6 @@
 #include "creator.h"
 #include <utility>
 #include "./database.h"
-#include "operations/model/table.h"
-#include "operations/model/view.h"
 
 QORM::Schema::Creator::Creator(CreatorList requiredCreators) :
     requiredCreators(std::move(requiredCreators)) {

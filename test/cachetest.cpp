@@ -1,5 +1,4 @@
 #include "cachetest.h"
-#include <string>
 #include <utility>
 
 void CacheTest::insert() {

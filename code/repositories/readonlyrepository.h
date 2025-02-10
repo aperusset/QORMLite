@@ -4,20 +4,19 @@
 #include <algorithm>
 #include <list>
 #include <memory>
-#include <string>
 #include "./cache.h"
 #include "./database.h"
-#include "./entity.h"
 #include "./utils.h"
+#include "entities/baseentity.h"
 #include "operations/query/selection/count.h"
 #include "operations/query/condition/equals.h"
 
-namespace QORM {
+namespace QORM::Repositories {
 
 template<class Entity, typename Key = int>
 class ReadOnlyRepository {
     static_assert(
-        std::is_base_of<QORM::Entity<Key>, Entity>::value,
+        std::is_base_of<Entities::BaseEntity<Key>, Entity>::value,
         "Entity must extend QORM::Entity");
     using EntityCreator = std::function<Entity&(const QSqlRecord&)>;
     using EntityCache = Cache<Key, Entity>;
@@ -152,6 +151,6 @@ class ReadOnlyRepository {
     virtual auto build(const QSqlRecord &record) const -> Entity* = 0;
 };
 
-}  // namespace QORM
+}  // namespace QORM::Repositories
 
 #endif  // REPOSITORIES_READONLYREPOSITORY_H

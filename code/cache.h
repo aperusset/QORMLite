@@ -7,14 +7,14 @@
 #include <string>
 #include <type_traits>
 #include <utility>
-#include "./entity.h"
+#include "entities/baseentity.h"
 
 namespace QORM {
 
 template<typename Key, class Entity>
 class Cache {
     static_assert(
-        std::is_base_of<QORM::Entity<Key>, Entity>::value,
+        std::is_base_of<Entities::BaseEntity<Key>, Entity>::value,
         "Entity must extend QORM::Entity");
 
     std::map<Key, std::unique_ptr<Entity>> entities;

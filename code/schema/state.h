@@ -1,6 +1,7 @@
 #ifndef SCHEMA_STATE_H
 #define SCHEMA_STATE_H
 
+#include "qobject.h"
 namespace QORM::Schema {
 
 enum class State {
@@ -10,5 +11,7 @@ enum class State {
 };
 
 }
+
+Q_DECLARE_METATYPE(QORM::Schema::State)
 
 #endif  // SCHEMA_STATE_H

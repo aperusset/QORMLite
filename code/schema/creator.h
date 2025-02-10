@@ -9,7 +9,7 @@
 
 namespace QORM::Schema {
 
-class Creator : public Schema::Operator {
+class Creator : public Operator {
     using CreatorSPtr = std::shared_ptr<Creator>;
     using CreatorList = std::list<CreatorSPtr>;
 
@@ -35,6 +35,6 @@ inline auto Creator::getRequiredCreators() const -> const CreatorList& {
     return this->requiredCreators;
 }
 
-}  // namespace QORM
+}  // namespace QORM::Schema
 
 #endif  // SCHEMA_CREATOR_H_
