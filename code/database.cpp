@@ -1,5 +1,4 @@
 #include "database.h"
-#include <algorithm>
 
 QORM::Database::Database(const QORM::Connector &connector, bool verbose) :
     databaseMutex(QMutex::RecursionMode::Recursive),
@@ -7,7 +6,7 @@ QORM::Database::Database(const QORM::Connector &connector, bool verbose) :
 }
 
 QORM::Database::Database(const QORM::Connector &connector, CreatorUPtr creator,
-                         UpgraderUList upgraders, bool verbose) :
+                         UpgraderUPtrList upgraders, bool verbose) :
         databaseMutex(QMutex::RecursionMode::Recursive),
         connector(connector), creator(std::move(creator)),
         upgraders(std::move(upgraders)), verbose(verbose) {

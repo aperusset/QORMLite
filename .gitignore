@@ -16,3 +16,4 @@ object_script.*
 moc_*
 test/QORMLiteTest
 test/target_wrapper.sh
+.qtc_clangd

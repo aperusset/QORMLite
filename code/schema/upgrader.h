@@ -3,17 +3,13 @@
 
 #include "schema/operator.h"
 
-namespace QORM {
-
-class Database;
-
-namespace Schema {
+namespace QORM::Schema {
 
 class Upgrader : public Operator {
     const unsigned int version;
 
  public:
-    explicit Upgrader(unsigned int version) : version(version) {}
+    explicit Upgrader(unsigned int version);
     Upgrader(const Upgrader&) = delete;
     Upgrader(Upgrader&&) = delete;
     Upgrader& operator=(const Upgrader&) = delete;
@@ -29,8 +25,6 @@ inline auto Upgrader::getVersion() const -> unsigned int {
     return this->version;
 }
 
-}  // namespace Schema
-
-}  // namespace QORM
+}  // namespace QORM::Schema
 
 #endif  // SCHEMA_UPGRADER_H_

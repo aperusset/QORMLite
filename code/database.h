@@ -2,19 +2,15 @@
 #define DATABASE_H_
 
 #include <QMutex>
+#include <QSqlError>
 #include <QSqlRecord>
-#include <QtSql>
 #include <list>
 #include <memory>
-#include <string>
 #include "./entity.h"
-#include "./utils.h"
 #include "connectors/connector.h"
 #include "operations/query.h"
-#include "operations/query/delete.h"
 #include "operations/query/insert.h"
 #include "operations/query/select.h"
-#include "operations/query/update.h"
 #include "schema/creator.h"
 #include "schema/upgrader.h"
 #include "schema/state.h"
@@ -24,14 +20,14 @@ namespace QORM {
 class Database {
     using CreatorUPtr = std::unique_ptr<Schema::Creator>;
     using UpgraderUPtr = std::unique_ptr<Schema::Upgrader>;
-    using UpgraderUList = std::list<UpgraderUPtr>;
+    using UpgraderUPtrList = std::list<UpgraderUPtr>;
 
     QMutex databaseMutex;
 
     // TODO(aperusset) Database should take connector ownership ?
     const QORM::Connector &connector;
     const CreatorUPtr creator;
-    UpgraderUList upgraders;
+    UpgraderUPtrList upgraders;
     const bool verbose;
 
     auto prepare(const QString&) const -> QSqlQuery;
@@ -44,7 +40,8 @@ class Database {
 
  public:
     Database(const QORM::Connector&, bool verbose);
-    Database(const QORM::Connector&, CreatorUPtr, UpgraderUList, bool verbose);
+    Database(const QORM::Connector&, CreatorUPtr, UpgraderUPtrList,
+             bool verbose);
     ~Database();
     Database(const Database&) = delete;
     Database(Database&&) = delete;
