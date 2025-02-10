@@ -15,6 +15,9 @@ class DatabaseTest : public MainDatabaseTest {
     void subsequentConnectShouldFail();
     void disconnectShouldSuccess();
     void optimizeShouldSuccess();
+    void getSchemaStateShouldReturnEmpty();
+    void getSchemaStateShouldReturnToBeUpgraded();
+    void getSchemaStateShouldReturnUpToDate();
     void prepareExecuteShouldFailWithInvalidQuery();
     void executeShouldSuccessWithTextQuery();
     void executeShouldSuccessWithBuiltQuery();

@@ -40,6 +40,7 @@ void CRUDRepositoryTest::getByKeyShouldFail() {
 
     // When
     database.connect();
+    database.migrate();
 
     // When / Then
     QVERIFY_EXCEPTION_THROWN(testCRUDRepository.get(0), std::logic_error);
@@ -54,6 +55,7 @@ void CRUDRepositoryTest::getByKeyShouldReturnEntity() {
 
     // When
     database.connect();
+    database.migrate();
     const auto lastInsertedKey = testCRUDRepository.save(new TestEntity(-1));
     const auto &entity = testCRUDRepository.get(lastInsertedKey);
 
@@ -70,6 +72,7 @@ void CRUDRepositoryTest::getShouldFail() {
 
     // When
     database.connect();
+    database.migrate();
 
     // When / Then
     QVERIFY_EXCEPTION_THROWN(
@@ -87,6 +90,7 @@ void CRUDRepositoryTest::getShouldReturnEntity() {
 
     // When
     database.connect();
+    database.migrate();
     const auto lastInsertedKey = testCRUDRepository.save(new TestEntity(-1));
     const auto &entity = testCRUDRepository.get(
         {QORM::Equals::field(TestCreator::TEST_FIELD, lastInsertedKey)});
@@ -104,6 +108,7 @@ void CRUDRepositoryTest::getAllShouldReturnAllExistingEntities() {
 
     // When
     database.connect();
+    database.migrate();
     testCRUDRepository.save(new TestEntity(-1));
     testCRUDRepository.save(new TestEntity(-1));
     testCRUDRepository.save(new TestEntity(-1));
@@ -121,6 +126,7 @@ void CRUDRepositoryTest::getAllShouldReturnEntitiesAccordingToConditions() {
 
     // When
     database.connect();
+    database.migrate();
     const auto id1 = testCRUDRepository.save(new TestEntity(-1));
     testCRUDRepository.save(new TestEntity(-1));
     testCRUDRepository.save(new TestEntity(-1));
@@ -139,6 +145,7 @@ void CRUDRepositoryTest::selectShouldReturnExpectedEntities() {
 
     // When
     database.connect();
+    database.migrate();
     const auto id1 = testCRUDRepository.save(new TestEntity(-1));
     testCRUDRepository.save(new TestEntity(-1));
     const auto id3 = testCRUDRepository.save(new TestEntity(-1));
@@ -158,6 +165,7 @@ void CRUDRepositoryTest::countShouldCountAllEntities() {
 
     // When
     database.connect();
+    database.migrate();
     testCRUDRepository.save(new TestEntity(-1));
     testCRUDRepository.save(new TestEntity(-1));
     testCRUDRepository.save(new TestEntity(-1));
@@ -175,6 +183,7 @@ void CRUDRepositoryTest::countShouldCountEntitiesAccordingToConditions() {
 
     // When
     database.connect();
+    database.migrate();
     const auto id1 = testCRUDRepository.save(new TestEntity(-1));
     testCRUDRepository.save(new TestEntity(-1));
     const auto id3 = testCRUDRepository.save(new TestEntity(-1));;
@@ -193,6 +202,7 @@ void CRUDRepositoryTest::existsByKeyShouldReturnTrue() {
 
     // When
     database.connect();
+    database.migrate();
     const auto lastInsertedKey = testCRUDRepository.save(new TestEntity(-1));
 
     // Then
@@ -208,6 +218,7 @@ void CRUDRepositoryTest::existsByKeyShouldReturnFalse() {
 
     // When
     database.connect();
+    database.migrate();
 
     // Then
     QVERIFY(!testCRUDRepository.exists(0));
@@ -222,6 +233,7 @@ void CRUDRepositoryTest::existsShouldReturnTrue() {
 
     // When
     database.connect();
+    database.migrate();
     const auto lastInsertedKey = testCRUDRepository.save(new TestEntity(-1));
 
     // Then
@@ -238,6 +250,7 @@ void CRUDRepositoryTest::existsShouldReturnFalse() {
 
     // When
     database.connect();
+    database.migrate();
 
     // Then
     QVERIFY(!testCRUDRepository.exists(
@@ -256,6 +269,7 @@ void CRUDRepositoryTest::saveShouldInsertAndNotify() {
 
     // When
     database.connect();
+    database.migrate();
     const auto lastInsertedKey = testCRUDRepository.save(newTestEntity);
 
     // Then
@@ -278,6 +292,7 @@ void CRUDRepositoryTest::saveShouldUpdateAndNotify() {
 
     // When
     database.connect();
+    database.migrate();
     const auto lastInsertedKey = testCRUDRepository.save(newTestEntity);
     testCRUDRepository.save(newTestEntity);
 
@@ -303,6 +318,7 @@ void CRUDRepositoryTest::saveAllShouldInsertAndNotify() {
 
     // When
     database.connect();
+    database.migrate();
     testCRUDRepository.saveAll({newTestEntity1, newTestEntity2});
 
     // Then
@@ -327,6 +343,7 @@ void CRUDRepositoryTest::eraseShouldNotFailIfNotExists() {
 
     // When / Then
     database.connect();
+    database.migrate();
     testCRUDRepository.erase(0);
 }
 
@@ -343,6 +360,7 @@ void CRUDRepositoryTest::eraseShouldDeleteAndNotify() {
 
     // When
     database.connect();
+    database.migrate();
     const auto lastInsertedKey = testCRUDRepository.save(newTestEntity);
     testCRUDRepository.erase(newTestEntity->getKey());
 
@@ -368,6 +386,7 @@ void CRUDRepositoryTest::eraseAllShouldDeleteAndNotify() {
 
     // When
     database.connect();
+    database.migrate();
     const auto key1 = testCRUDRepository.save(newTestEntity1);
     const auto key2 = testCRUDRepository.save(newTestEntity2);
     testCRUDRepository.eraseAll();

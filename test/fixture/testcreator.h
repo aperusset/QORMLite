@@ -1,7 +1,6 @@
 #ifndef TEST_FIXTURE_TESTCREATOR_H_
 #define TEST_FIXTURE_TESTCREATOR_H_
 
-#include <list>
 #include "schema/creator.h"
 
 class TestCreator : public QORM::Schema::Creator {

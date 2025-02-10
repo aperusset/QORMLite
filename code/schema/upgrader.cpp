@@ -1,10 +1,11 @@
 #include "upgrader.h"
 #include <QMutex>
+#include <utility>
 
 QMutex upgraderMutex;
 
 QORM::Schema::Upgrader::Upgrader(int version, QString description) :
-    version(version), description(description) {
+    version(version), description(std::move(description)) {
 }
 
 void QORM::Schema::Upgrader::execute(const Database &database) {

@@ -4,9 +4,9 @@
 #include "connectors/connector.h"
 
 class TestConnector : public QORM::Connector {
-    static bool preConnectCalled;
-    static bool postConnectCalled;
-    static bool optimizeCalled;
+    inline static bool preConnectCalled = false;
+    inline static bool postConnectCalled = false;
+    inline static bool optimizeCalled = false;
 
  public:
     explicit TestConnector(const QString &name) : Connector(name) {}

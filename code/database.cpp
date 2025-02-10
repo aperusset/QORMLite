@@ -92,25 +92,28 @@ void QORM::Database::connect() {
     const QMutexLocker lock(&databaseMutex);
     if (!this->isConnected()) {
         this->connector->connect();
-        switch (this->getSchemaState()) {
-            case Schema::State::EMPTY:
-                this->create();
-                this->createSchemaVersion();
-                this->upgrade();
-                break;
-            case Schema::State::TO_BE_VERSIONED:
-                this->createSchemaVersion();
-                this->upgrade();
-                break;
-            case Schema::State::TO_BE_UPGRADED:
-                this->upgrade();
-                break;
-            default:
-                qDebug("Database %s is up to date",
-                       qUtf8Printable(connector->getName()));
-        }
     } else {
         throw std::runtime_error("Already connected to database");
+    }
+}
+
+void QORM::Database::migrate() {
+    switch (this->getSchemaState()) {
+        case Schema::State::EMPTY:
+            this->create();
+            this->createSchemaVersion();
+            this->upgrade();
+            break;
+        case Schema::State::TO_BE_VERSIONED:
+            this->createSchemaVersion();
+            this->upgrade();
+            break;
+        case Schema::State::TO_BE_UPGRADED:
+            this->upgrade();
+            break;
+        default:
+            qDebug("Database %s is up to date",
+                   qUtf8Printable(connector->getName()));
     }
 }
 
@@ -144,7 +147,9 @@ void QORM::Database::upgrade() {
                qUtf8Printable(connector->getName()));
         const auto &schemaVersionRepository = this->schemaVersionRepository();
         const auto &version = schemaVersionRepository.getCurrentSchemaVersion();
-        this->sortUpgraders();
+        this->upgraders.sort([](const auto &left, const auto &right) {
+            return left->getVersion() < right->getVersion();
+        });
         std::for_each(this->upgraders.begin(), this->upgraders.end(),
             [&](const auto &upgrader) {
                 if (upgrader->getVersion() > version.getKey()) {
@@ -155,12 +160,6 @@ void QORM::Database::upgrade() {
                 }
             });
     }
-}
-
-void QORM::Database::sortUpgraders() {
-    this->upgraders.sort([](const auto &left, const auto &right) {
-        return left->getVersion() < right->getVersion();
-    });
 }
 
 auto QORM::Database::schemaVersionRepository()

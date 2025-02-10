@@ -6,7 +6,6 @@
 #include "operations/model/field.h"
 #include "operations/model/view.h"
 #include "operations/query/select.h"
-#include "operations/query/insert.h"
 
 void TestCreator::createTables(const QORM::Database &database) const {
     const auto primaryKey = QORM::PrimaryKey(

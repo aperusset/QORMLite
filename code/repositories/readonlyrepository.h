@@ -17,7 +17,7 @@ template<class Entity, typename Key = int>
 class ReadOnlyRepository {
     static_assert(
         std::is_base_of<Entities::BaseEntity<Key>, Entity>::value,
-        "Entity must extend QORM::Entities::Entity");
+        "Entity must extend QORM::Entities::BaseEntity");
     using EntityCreator = std::function<Entity&(const QSqlRecord&)>;
     using EntityCache = Cache<Key, Entity>;
     inline static const QString DEFAULT_KEY_NAME = "id";

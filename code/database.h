@@ -43,7 +43,6 @@ class Database {
     void createSchemaVersion();
     void create();
     void upgrade();
-    void sortUpgraders();
     auto schemaVersionRepository() const ->
         const Repositories::SchemaVersionRepository&;
 
@@ -57,13 +56,13 @@ class Database {
     Database& operator=(Database&&) = delete;
 
     auto getName() const -> const QString&;
-    auto getConnector() const -> Connector&;
     auto getCreator() const -> Schema::Creator&;
     auto isVerbose() const;
     auto isConnected() const -> bool;
     auto getSchemaState() const -> Schema::State;
 
     void connect();
+    void migrate();
     void disconnect();
     void optimize() const;
     auto backup(const QString &fileName) -> bool;
@@ -127,10 +126,6 @@ class Database {
         return results;
     }
 };
-
-inline auto Database::getConnector() const -> Connector& {
-    return *this->connector.get();
-}
 
 inline auto Database::getCreator() const -> Schema::Creator& {
     return *this->creator.get();
