@@ -13,11 +13,12 @@ class SchemaVersionRepository : public CRUDRepository<Entities::SchemaVersion> {
     auto tableName() const -> QString override;
     auto keyName() const -> QString override;
     auto fields() const -> std::list<QString> override;
-    auto build(const QSqlRecord&) const -> Entities::SchemaVersion* override;
+    auto build(const QSqlRecord&)
+        const -> std::unique_ptr<Entities::SchemaVersion> override;
     auto assignments(const Entities::SchemaVersion&)
         const -> std::list<Assignment> override;
 
-    auto getCurrentSchemaVersion() const -> Entities::SchemaVersion&;
+    auto getCurrentSchemaVersion() const -> const Entities::SchemaVersion&;
 };
 
 }  // namespace QORM::Repositories

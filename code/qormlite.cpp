@@ -2,7 +2,6 @@
 #include <QMutex>
 #include <map>
 #include <utility>
-#include <string>
 
 QMutex poolMutex;
 std::map<QString, std::unique_ptr<QORM::Database>> pool;
@@ -13,13 +12,14 @@ auto initialized(const QString &name) {
     return static_cast<bool>(pool.count(name));
 }
 
-void initializeChecks(const QORM::Connector &connector) {
+auto initializeChecks(const QORM::Connector &connector) -> QString {
     const auto databaseName = connector.getName();
     if (initialized(databaseName)) {
         throw std::logic_error("Database " + databaseName.toStdString() +
                                " is already initialized");
     }
     qDebug("Initializing database %s.", qUtf8Printable(connector.getName()));
+    return databaseName;
 }
 
 }  // namespace
@@ -28,23 +28,22 @@ auto QORM::isInitialized(const QString &name) -> bool {
     return initialized(name);
 }
 
-void QORM::initialize(const Connector &connector, bool verbose) {
+void QORM::initialize(std::unique_ptr<Connector> connector, bool verbose) {
     const QMutexLocker lock(&poolMutex);
-    initializeChecks(connector);
-    pool.insert(std::pair(connector.getName(),
-                    std::make_unique<Database>(connector, verbose)));
+    const auto connectorName = initializeChecks(*connector);
+    pool.insert(std::pair(connectorName, std::make_unique<Database>(
+        std::move(connector), verbose)));
 }
 
-void QORM::initialize(const Connector &connector,
-        std::unique_ptr<QORM::Schema::Creator> &&creator,
+void QORM::initialize(std::unique_ptr<Connector> connector,
+        std::unique_ptr<Schema::Creator> creator,
         std::list<std::unique_ptr<Schema::Upgrader>> upgraders,
         bool verbose) {
     const QMutexLocker lock(&poolMutex);
-    initializeChecks(connector);
-    pool.insert(std::pair(connector.getName(), std::make_unique<Database>(
-        connector,
-        std::forward<std::unique_ptr<QORM::Schema::Creator>>(creator),
-        std::move(upgraders), verbose)));
+    const auto connectorName = initializeChecks(*connector);
+    pool.insert(std::pair(connectorName, std::make_unique<Database>(
+        std::move(connector), std::move(creator), std::move(upgraders),
+        verbose)));
 }
 
 auto QORM::get(const QString &name) -> Database& {

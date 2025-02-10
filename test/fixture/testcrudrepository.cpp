@@ -1,4 +1,5 @@
 #include "testcrudrepository.h"
+#include <memory>
 #include "./testcreator.h"
 #include "operations/query/condition/equals.h"
 
@@ -21,6 +22,7 @@ auto TestCRUDRepository::buildKey(const QSqlRecord &record) const -> int {
     return record.value(TestCreator::TEST_FIELD).toInt();
 }
 
-auto TestCRUDRepository::build(const QSqlRecord &record) const -> TestEntity* {
-    return new TestEntity(this->buildKey(record));
+auto TestCRUDRepository::build(const QSqlRecord &record)
+const -> std::unique_ptr<TestEntity> {
+    return std::make_unique<TestEntity>(this->buildKey(record));
 }

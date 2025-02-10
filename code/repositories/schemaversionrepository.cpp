@@ -24,8 +24,8 @@ const -> std::list<QString> {
 
 auto QORM::Repositories::SchemaVersionRepository::build(
     const QSqlRecord &record)
-const -> Entities::SchemaVersion* {
-    return new Entities::SchemaVersion(this->buildKey(record),
+const -> std::unique_ptr<Entities::SchemaVersion> {
+    return std::make_unique<Entities::SchemaVersion>(this->buildKey(record),
         Utils::getStringOrThrow(record, Entities::SchemaVersion::DESCRIPTION),
         Utils::getDateTimeOrThrow(record, Entities::SchemaVersion::EXECUTION));
 }
@@ -34,19 +34,20 @@ auto QORM::Repositories::SchemaVersionRepository::assignments(
     const Entities::SchemaVersion &schemaVersion)
 const -> std::list<Assignment> {
     return {
-        Assignment(Entities::SchemaVersion::VERSION, schemaVersion.getKey()),
-        Assignment(Entities::SchemaVersion::DESCRIPTION,
-                   schemaVersion.getDescription()),
-        Assignment(Entities::SchemaVersion::EXECUTION,
-                   schemaVersion.getExecution())
+        Assignment(
+            Entities::SchemaVersion::VERSION,
+            schemaVersion.getKey()),
+        Assignment(
+            Entities::SchemaVersion::DESCRIPTION,
+            schemaVersion.getDescription()),
+        Assignment(
+            Entities::SchemaVersion::EXECUTION,
+            schemaVersion.getExecution())
     };
 }
 
 auto QORM::Repositories::SchemaVersionRepository::getCurrentSchemaVersion()
-const -> Entities::SchemaVersion& {
-    if (this->count() == 0) {
-        throw std::runtime_error("No version exists");
-    }
+const -> const Entities::SchemaVersion& {
     return this->select(Select(Entities::SchemaVersion::TABLE)
         .orderBy({
             Desc(Entities::SchemaVersion::VERSION)

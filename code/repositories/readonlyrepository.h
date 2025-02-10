@@ -17,7 +17,7 @@ template<class Entity, typename Key = int>
 class ReadOnlyRepository {
     static_assert(
         std::is_base_of<Entities::BaseEntity<Key>, Entity>::value,
-        "Entity must extend QORM::Entity");
+        "Entity must extend QORM::Entities::Entity");
     using EntityCreator = std::function<Entity&(const QSqlRecord&)>;
     using EntityCache = Cache<Key, Entity>;
     inline static const QString DEFAULT_KEY_NAME = "id";
@@ -28,8 +28,7 @@ class ReadOnlyRepository {
     const EntityCreator entityCreator =
         [this](const auto &record) -> Entity& {
             return this->cache.get()->insert(
-                this->buildKey(record),
-                std::unique_ptr<Entity>(this->build(record)));
+                this->buildKey(record), this->build(record));
         };
 
  public:
@@ -38,8 +37,8 @@ class ReadOnlyRepository {
         database(database),
         cache(cache == nullptr ? std::make_unique<EntityCache>()
                                : std::unique_ptr<EntityCache>(cache)) {}
-    ReadOnlyRepository(const ReadOnlyRepository&) = delete;
-    ReadOnlyRepository(ReadOnlyRepository&&) = delete;
+    ReadOnlyRepository(const ReadOnlyRepository&) noexcept = delete;
+    ReadOnlyRepository(ReadOnlyRepository&&) noexcept = delete;
     ReadOnlyRepository& operator=(const ReadOnlyRepository&) = delete;
     ReadOnlyRepository& operator=(ReadOnlyRepository&&) = delete;
     virtual ~ReadOnlyRepository() {}
@@ -148,7 +147,8 @@ class ReadOnlyRepository {
 
     virtual auto tableName() const -> QString = 0;
     virtual auto fields() const -> std::list<QString> = 0;
-    virtual auto build(const QSqlRecord &record) const -> Entity* = 0;
+    virtual auto build(const QSqlRecord &record)
+        const -> std::unique_ptr<Entity> = 0;
 };
 
 }  // namespace QORM::Repositories

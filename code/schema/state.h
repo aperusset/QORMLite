@@ -1,7 +1,8 @@
 #ifndef SCHEMA_STATE_H
 #define SCHEMA_STATE_H
 
-#include "qobject.h"
+#include <QObject>
+
 namespace QORM::Schema {
 
 enum class State {

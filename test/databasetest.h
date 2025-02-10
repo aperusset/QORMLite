@@ -1,14 +1,12 @@
 #ifndef TEST_DATABASETEST_H_
 #define TEST_DATABASETEST_H_
 
-#include <QtTest/QtTest>
 #include "fixture/maindatabasetest.h"
 
 class DatabaseTest : public MainDatabaseTest {
     Q_OBJECT
 
- public:
-    auto databaseName() const -> QString override {
+    auto databaseName() const -> QString {
         return "database";
     }
 

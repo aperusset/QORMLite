@@ -6,7 +6,6 @@
 #include <memory>
 #include "schema/operator.h"
 
-
 namespace QORM::Schema {
 
 class Creator : public Operator {

@@ -9,9 +9,9 @@
 namespace QORM {
 
     auto isInitialized(const QString &name) -> bool;
-    void initialize(const Connector&, bool verbose);
-    void initialize(const Connector&,
-                    std::unique_ptr<QORM::Schema::Creator>&&,
+    void initialize(std::unique_ptr<Connector>, bool verbose);
+    void initialize(std::unique_ptr<Connector>,
+                    std::unique_ptr<Schema::Creator>,
                     std::list<std::unique_ptr<Schema::Upgrader>>,
                     bool verbose);
     auto get(const QString &name) -> Database&;

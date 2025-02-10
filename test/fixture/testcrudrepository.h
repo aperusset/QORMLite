@@ -14,7 +14,8 @@ class TestCRUDRepository : public QORM::Repositories::CRUDRepository<TestEntity>
     auto keyCondition(const int&) const -> QORM::Condition override;
     auto fields() const -> std::list<QString> override;
     auto buildKey(const QSqlRecord &record) const -> int override;
-    auto build(const QSqlRecord &record) const -> TestEntity* override;
+    auto build(const QSqlRecord &record)
+        const -> std::unique_ptr<TestEntity> override;
 };
 
 #endif  // TEST_FIXTURE_TESTCRUDREPOSITORY_H_

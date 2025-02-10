@@ -27,11 +27,11 @@ class Database {
     using CreatorUPtr = std::unique_ptr<Schema::Creator>;
     using UpgraderUPtr = std::unique_ptr<Schema::Upgrader>;
     using UpgraderUPtrList = std::list<UpgraderUPtr>;
+    using ConnectorUPtr = std::unique_ptr<Connector>;
 
     QMutex databaseMutex;
 
-    // TODO(aperusset) Database should take connector ownership ?
-    const Connector &connector;
+    const ConnectorUPtr connector;
     const CreatorUPtr creator;
     UpgraderUPtrList upgraders;
 
@@ -48,9 +48,8 @@ class Database {
         const Repositories::SchemaVersionRepository&;
 
  public:
-    Database(const QORM::Connector&, bool verbose);
-    Database(const QORM::Connector&, CreatorUPtr, UpgraderUPtrList,
-             bool verbose);
+    Database(ConnectorUPtr, bool verbose);
+    Database(ConnectorUPtr, CreatorUPtr, UpgraderUPtrList, bool verbose);
     ~Database();
     Database(const Database&) = delete;
     Database(Database&&) = delete;
@@ -58,6 +57,8 @@ class Database {
     Database& operator=(Database&&) = delete;
 
     auto getName() const -> const QString&;
+    auto getConnector() const -> Connector&;
+    auto getCreator() const -> Schema::Creator&;
     auto isVerbose() const;
     auto isConnected() const -> bool;
     auto getSchemaState() const -> Schema::State;
@@ -126,6 +127,14 @@ class Database {
         return results;
     }
 };
+
+inline auto Database::getConnector() const -> Connector& {
+    return *this->connector.get();
+}
+
+inline auto Database::getCreator() const -> Schema::Creator& {
+    return *this->creator.get();
+}
 
 inline auto Database::isVerbose() const {
     return this->verbose;

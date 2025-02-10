@@ -16,8 +16,8 @@ class BaseEntity {
 
  public:
     explicit BaseEntity(const Key &key) : key(key) {}
-    BaseEntity(const BaseEntity&) = delete;
-    BaseEntity(BaseEntity&&) = delete;
+    BaseEntity(const BaseEntity&) noexcept = delete;
+    BaseEntity(BaseEntity&&) noexcept = delete;
     BaseEntity& operator=(const BaseEntity&) = delete;
     BaseEntity& operator=(BaseEntity&&) = delete;
     virtual ~BaseEntity() {}

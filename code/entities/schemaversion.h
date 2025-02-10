@@ -12,7 +12,7 @@ class SchemaVersion : public BaseEntity<> {
     const QDateTime execution;
 
  public:
-    SchemaVersion(int, QString, QDateTime);
+    SchemaVersion(int version, QString description, QDateTime execution);
     auto getDescription() const -> QString;
     auto getExecution() const -> QDateTime;
 
