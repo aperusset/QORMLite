@@ -1,4 +1,5 @@
 #include "schemaversionrepository.h"
+#include "operations/query/order/desc.h"
 
 QORM::Repositories::SchemaVersionRepository::SchemaVersionRepository(
     const Database &database) : CRUDRepository(database) {
@@ -39,4 +40,15 @@ const -> std::list<Assignment> {
         Assignment(Entities::SchemaVersion::EXECUTION,
                    schemaVersion.getExecution())
     };
+}
+
+auto QORM::Repositories::SchemaVersionRepository::getCurrentSchemaVersion()
+const -> Entities::SchemaVersion& {
+    if (this->count() == 0) {
+        throw std::runtime_error("No version exists");
+    }
+    return this->select(Select(Entities::SchemaVersion::TABLE)
+        .orderBy({
+            Desc(Entities::SchemaVersion::VERSION)
+        }).limit(1)).front();
 }

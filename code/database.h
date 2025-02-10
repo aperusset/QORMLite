@@ -17,6 +17,12 @@
 
 namespace QORM {
 
+namespace Repositories {
+
+class SchemaVersionRepository;
+
+}  // nameapce Repositories
+
 class Database {
     using CreatorUPtr = std::unique_ptr<Schema::Creator>;
     using UpgraderUPtr = std::unique_ptr<Schema::Upgrader>;
@@ -25,18 +31,21 @@ class Database {
     QMutex databaseMutex;
 
     // TODO(aperusset) Database should take connector ownership ?
-    const QORM::Connector &connector;
+    const Connector &connector;
     const CreatorUPtr creator;
     UpgraderUPtrList upgraders;
+
     const bool verbose;
 
     auto prepare(const QString&) const -> QSqlQuery;
     auto prepare(const Query&) const -> QSqlQuery;
     auto execute(QSqlQuery) const -> QSqlQuery;
+    void createSchemaVersion();
     void create();
     void upgrade();
-    void handleSchemaState();
     void sortUpgraders();
+    auto schemaVersionRepository() const ->
+        const Repositories::SchemaVersionRepository&;
 
  public:
     Database(const QORM::Connector&, bool verbose);

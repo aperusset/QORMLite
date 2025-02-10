@@ -6,23 +6,29 @@
 namespace QORM::Schema {
 
 class Upgrader : public Operator {
-    const unsigned int version;
+    const int version;
+    const QString description;
 
  public:
-    explicit Upgrader(unsigned int version);
+    Upgrader(int version, QString description);
     Upgrader(const Upgrader&) = delete;
     Upgrader(Upgrader&&) = delete;
     Upgrader& operator=(const Upgrader&) = delete;
     Upgrader& operator=(Upgrader&&) = delete;
     virtual ~Upgrader() {}
 
-    auto getVersion() const -> unsigned int;
+    auto getVersion() const -> int;
+    auto getDescription() const -> QString;
     void execute(const Database&) override;
     virtual void upgrade(const Database&) const = 0;
 };
 
-inline auto Upgrader::getVersion() const -> unsigned int {
+inline auto Upgrader::getVersion() const -> int {
     return this->version;
+}
+
+inline auto Upgrader::getDescription() const -> QString {
+    return this->description;
 }
 
 }  // namespace QORM::Schema

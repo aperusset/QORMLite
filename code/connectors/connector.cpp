@@ -2,7 +2,6 @@
 #include <QSqlError>
 #include <QStringList>
 #include <utility>
-#include <string>
 
 namespace {
 
@@ -32,7 +31,7 @@ auto QORM::Connector::getDatabase() const -> QSqlDatabase {
     if (!contains(this->name)) {
         throw std::logic_error("A connector to database " +
                 this->name.toStdString() +
-                " must be previously opened");
+                " must be previously created");
     }
     return QSqlDatabase::database(this->name, false);
 }

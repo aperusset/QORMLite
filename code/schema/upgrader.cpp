@@ -1,7 +1,7 @@
 #include "upgrader.h"
 
-QORM::Schema::Upgrader::Upgrader(unsigned int version) :
-    version(version) {
+QORM::Schema::Upgrader::Upgrader(int version, QString description) :
+    version(version), description(description) {
 }
 
 void QORM::Schema::Upgrader::execute(const Database &database) {

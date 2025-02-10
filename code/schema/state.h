@@ -6,8 +6,9 @@ namespace QORM::Schema {
 
 enum class State {
     EMPTY = 0,
-    TO_BE_UPDATED = 1,
-    UP_TO_DATE = 2
+    TO_BE_VERSIONED = 1,
+    TO_BE_UPGRADED = 2,
+    UP_TO_DATE = 3
 };
 
 }

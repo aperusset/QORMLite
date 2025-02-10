@@ -20,6 +20,7 @@ class SchemaVersion : public BaseEntity<> {
     inline static const QString VERSION = "version";
     inline static const QString DESCRIPTION = "description";
     inline static const QString EXECUTION = "execution";
+    inline static const unsigned int FIRST_VERSION = 0;
 };
 
 inline auto SchemaVersion::getDescription() const -> QString {

@@ -46,6 +46,7 @@ SOURCES += \
   database.cpp \
   qormlite.cpp \
   schema/operator.cpp \
+  schema/schemaversioncreator.cpp \
   schema/upgrader.cpp \
   utils.cpp
 
@@ -113,6 +114,7 @@ HEADERS += \
   repositories/schemaversionrepository.h \
   schema/creator.h \
   schema/operator.h \
+  schema/schemaversioncreator.h \
   schema/state.h \
   schema/upgrader.h \
   cache.h \
