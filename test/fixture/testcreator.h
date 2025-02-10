@@ -14,11 +14,4 @@ class TestCreator : public QORM::Schema::Creator {
     inline static const QString TEST_FIELD = "test_field";
 };
 
-class FakeCreator : public QORM::Schema::Creator {
- public:
-    void createTables(const QORM::Database&) const override {}
-    void createViews(const QORM::Database&) const override {}
-    void populate(const QORM::Database&) const override {}
-};
-
 #endif  // TEST_FIXTURE_TESTCREATOR_H_

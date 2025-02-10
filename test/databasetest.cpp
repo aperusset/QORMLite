@@ -7,21 +7,15 @@
 #include "operations/query/selection/sum.h"
 #include "operations/query/condition/equals.h"
 #include "fixture/testentity.h"
-#include "fixture/testconnector.h"
-#include "fixture/testcreator.h"
-#include "fixture/testupgrader.h"
 
 const int DEFAULT_VALUE = 42;
 
 void DatabaseTest::connectShouldConnect() {
     // Given
-    QORM::Database database(
-        std::make_unique<TestConnector>(this->databaseName()),
-        std::make_unique<TestCreator>(), {}, false);
+    auto database = this->databaseWithCreator();
 
     // When
     database.connect();
-    database.migrate();
 
     // Then
     QVERIFY(database.isConnected());
@@ -29,9 +23,7 @@ void DatabaseTest::connectShouldConnect() {
 
 void DatabaseTest::subsequentConnectShouldFail() {
     // Given
-    QORM::Database database(
-        std::make_unique<TestConnector>(this->databaseName()),
-        std::make_unique<TestCreator>(), {}, false);
+    auto database = this->databaseWithCreator();
 
     // When
     database.connect();
@@ -43,9 +35,7 @@ void DatabaseTest::subsequentConnectShouldFail() {
 
 void DatabaseTest::disconnectShouldSuccess() {
     // Given
-    QORM::Database database(
-        std::make_unique<TestConnector>(this->databaseName()),
-        std::make_unique<TestCreator>(), {}, false);
+    auto database = this->databaseWithCreator();
 
     // When
     database.connect();
@@ -57,9 +47,7 @@ void DatabaseTest::disconnectShouldSuccess() {
 
 void DatabaseTest::optimizeShouldSuccess() {
     // Given
-    QORM::Database database(
-        std::make_unique<TestConnector>(this->databaseName()),
-        std::make_unique<TestCreator>(), {}, false);
+    auto database = this->databaseWithCreator();
 
     // When
     database.connect();
@@ -70,9 +58,7 @@ void DatabaseTest::optimizeShouldSuccess() {
 
 void DatabaseTest::getSchemaStateShouldReturnEmpty() {
     // Given
-    QORM::Database database(
-        std::make_unique<TestConnector>(this->databaseName()),
-        std::make_unique<TestCreator>(), {}, false);
+    auto database = this->databaseWithCreator();
 
     // When
     database.connect();
@@ -84,16 +70,10 @@ void DatabaseTest::getSchemaStateShouldReturnEmpty() {
 
 void DatabaseTest::getSchemaStateShouldReturnToBeUpgraded() {
     // Given
-    QORM::Database database(
-        std::make_unique<TestConnector>(this->databaseName()),
-        std::make_unique<TestCreator>(), {}, false);
-
+    auto database = this->databaseWithCreator();
     std::list<std::unique_ptr<QORM::Schema::Upgrader>> upgraders;
     upgraders.emplace_back(std::make_unique<TestUpgrader>());
-    QORM::Database databaseUpgrade(
-        std::make_unique<TestConnector>(this->databaseName()),
-        std::make_unique<TestCreator>(), std::move(upgraders),
-        false);
+    auto databaseUpgrade = this->databaseWithCreator(std::move(upgraders));
 
     // When
     database.connect();
@@ -109,16 +89,10 @@ void DatabaseTest::getSchemaStateShouldReturnToBeUpgraded() {
 
 void DatabaseTest::getSchemaStateShouldReturnUpToDate() {
     // Given
-    QORM::Database database(
-        std::make_unique<TestConnector>(this->databaseName()),
-        std::make_unique<TestCreator>(), {}, false);
-
+    auto database = this->databaseWithCreator();
     std::list<std::unique_ptr<QORM::Schema::Upgrader>> upgraders;
     upgraders.emplace_back(std::make_unique<TestUpgrader>());
-    QORM::Database databaseUpgrade(
-        std::make_unique<TestConnector>(this->databaseName()),
-        std::make_unique<TestCreator>(), std::move(upgraders),
-        false);
+    auto databaseUpgrade = this->databaseWithCreator(std::move(upgraders));
 
     // When
     database.connect();
@@ -134,9 +108,7 @@ void DatabaseTest::getSchemaStateShouldReturnUpToDate() {
 
 void DatabaseTest::prepareExecuteShouldFailWithInvalidQuery() {
     // Given
-    QORM::Database database(
-        std::make_unique<TestConnector>(this->databaseName()),
-        std::make_unique<TestCreator>(), {}, false);
+    auto database = this->databaseWithCreator();
 
     // When
     database.connect();
@@ -149,9 +121,7 @@ void DatabaseTest::prepareExecuteShouldFailWithInvalidQuery() {
 
 void DatabaseTest::executeShouldSuccessWithTextQuery() {
     // Given
-    QORM::Database database(
-        std::make_unique<TestConnector>(this->databaseName()),
-        std::make_unique<TestCreator>(), {}, false);
+    auto database = this->databaseWithCreator();
 
     // When
     database.connect();
@@ -164,9 +134,7 @@ void DatabaseTest::executeShouldSuccessWithTextQuery() {
 
 void DatabaseTest::executeShouldSuccessWithBuiltQuery() {
     // Given
-    QORM::Database database(
-        std::make_unique<TestConnector>(this->databaseName()),
-        std::make_unique<TestCreator>(), {}, false);
+    auto database = this->databaseWithCreator();
 
     // When
     database.connect();
@@ -178,9 +146,7 @@ void DatabaseTest::executeShouldSuccessWithBuiltQuery() {
 
 void DatabaseTest::existsShouldReturnTrue() {
     // Given
-    QORM::Database database(
-        std::make_unique<TestConnector>(this->databaseName()),
-        std::make_unique<TestCreator>(), {}, false);
+    auto database = this->databaseWithCreator();
 
     // When
     database.connect();
@@ -194,9 +160,7 @@ void DatabaseTest::existsShouldReturnTrue() {
 
 void DatabaseTest::existsShouldReturnFalse() {
     // Given
-    QORM::Database database(
-        std::make_unique<TestConnector>(this->databaseName()),
-        std::make_unique<TestCreator>(), {}, false);
+    auto database = this->databaseWithCreator();
 
     // When
     database.connect();
@@ -209,9 +173,7 @@ void DatabaseTest::existsShouldReturnFalse() {
 
 void DatabaseTest::insertAndRetrieveKeyAsIntShouldSuccess() {
     // Given
-    QORM::Database database(
-        std::make_unique<TestConnector>(this->databaseName()),
-        std::make_unique<TestCreator>(), {}, false);
+    auto database = this->databaseWithCreator();
 
     // When
     database.connect();
@@ -224,9 +186,7 @@ void DatabaseTest::insertAndRetrieveKeyAsIntShouldSuccess() {
 
 void DatabaseTest::insertAndRetrieveKeyAsIntShouldFail() {
     // Given
-    QORM::Database database(
-        std::make_unique<TestConnector>(this->databaseName()),
-        std::make_unique<TestCreator>(), {}, false);
+    auto database = this->databaseWithCreator();
 
     // When
     database.connect();
@@ -242,9 +202,7 @@ void DatabaseTest::insertAndRetrieveKeyAsIntShouldFail() {
 
 void DatabaseTest::entityShouldSuccess() {
     // Given
-    QORM::Database database(
-        std::make_unique<TestConnector>(this->databaseName()),
-        std::make_unique<TestCreator>(), {}, false);
+    auto database = this->databaseWithCreator();
     TestEntity testEntity(DEFAULT_VALUE);
     bool convertible = false;
 
@@ -267,9 +225,7 @@ void DatabaseTest::entityShouldSuccess() {
 
 void DatabaseTest::entityShouldThrowWhenNothingFound() {
     // Given
-    QORM::Database database(
-        std::make_unique<TestConnector>(this->databaseName()),
-        std::make_unique<TestCreator>(), {}, false);
+    auto database = this->databaseWithCreator();
     TestEntity testEntity(DEFAULT_VALUE);
 
     // When
@@ -287,9 +243,7 @@ void DatabaseTest::entityShouldThrowWhenNothingFound() {
 
 void DatabaseTest::entitiesShouldReturnNonEmptyList() {
     // Given
-    QORM::Database database(
-        std::make_unique<TestConnector>(this->databaseName()),
-        std::make_unique<TestCreator>(), {}, false);
+    auto database = this->databaseWithCreator();
     TestEntity testEntity(DEFAULT_VALUE);
     bool convertible = false;
 
@@ -313,9 +267,7 @@ void DatabaseTest::entitiesShouldReturnNonEmptyList() {
 
 void DatabaseTest::entitiesShouldReturnEmptyList() {
     // Given
-    QORM::Database database(
-        std::make_unique<TestConnector>(this->databaseName()),
-        std::make_unique<TestCreator>(), {}, false);
+    auto database = this->databaseWithCreator();
 
     // When
     database.connect();
@@ -328,9 +280,7 @@ void DatabaseTest::entitiesShouldReturnEmptyList() {
 
 void DatabaseTest::resultShouldReturnDefaultValueIfNoResult() {
     // Given
-    QORM::Database database(
-        std::make_unique<TestConnector>(this->databaseName()),
-        std::make_unique<TestCreator>(), {}, false);
+    auto database = this->databaseWithCreator();
 
     // When
     database.connect();
@@ -349,9 +299,7 @@ void DatabaseTest::resultShouldReturnDefaultValueIfNoResult() {
 
 void DatabaseTest::resultShouldReturnQueryValue() {
     // Given
-    QORM::Database database(
-        std::make_unique<TestConnector>(this->databaseName()),
-        std::make_unique<TestCreator>(), {}, false);
+    auto database = this->databaseWithCreator();
 
     // When
     database.connect();
@@ -370,9 +318,7 @@ void DatabaseTest::resultShouldReturnQueryValue() {
 
 void DatabaseTest::resultsShouldReturnNonEmptyList() {
     // Given
-    QORM::Database database(
-        std::make_unique<TestConnector>(this->databaseName()),
-        std::make_unique<TestCreator>(), {}, false);
+    auto database = this->databaseWithCreator();
 
     // When
     database.connect();
@@ -391,9 +337,7 @@ void DatabaseTest::resultsShouldReturnNonEmptyList() {
 
 void DatabaseTest::resultsShouldReturnEmptyList() {
     // Given
-    QORM::Database database(
-        std::make_unique<TestConnector>(this->databaseName()),
-        std::make_unique<TestCreator>(), {}, false);
+    auto database = this->databaseWithCreator();
 
     // When
     database.connect();

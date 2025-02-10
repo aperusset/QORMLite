@@ -10,9 +10,7 @@
 
 void CreatorTest::createTableShouldSuccess() {
     // Given
-    QORM::Database database(
-        std::make_unique<TestConnector>(this->databaseName()),
-        std::make_unique<FakeCreator>(), {}, false);
+    auto database = this->databaseWithoutCreator();
     const auto primaryKey = QORM::PrimaryKey(
                 QORM::Field::notNull(TestCreator::TEST_FIELD, QORM::Integer()));
     database.connect();
@@ -26,9 +24,7 @@ void CreatorTest::createTableShouldSuccess() {
 
 void CreatorTest::createViewShouldSuccess() {
     // Given
-    QORM::Database database(
-        std::make_unique<TestConnector>(this->databaseName()),
-        std::make_unique<FakeCreator>(), {}, false);
+    auto database = this->databaseWithoutCreator();
     database.connect();
     TestCreator testCreator;
     testCreator.createTables(database);
@@ -43,9 +39,7 @@ void CreatorTest::createViewShouldSuccess() {
 
 void CreatorTest::createViewShouldFailIfTableNotExists() {
     // Given
-    QORM::Database database(
-        std::make_unique<TestConnector>(this->databaseName()),
-        std::make_unique<FakeCreator>(), {}, false);
+    auto database = this->databaseWithoutCreator();
     database.connect();
 
     // When / Then
@@ -57,9 +51,7 @@ void CreatorTest::createViewShouldFailIfTableNotExists() {
 
 void CreatorTest::insertShouldSuccess() {
     // Given
-    QORM::Database database(
-        std::make_unique<TestConnector>(this->databaseName()),
-        std::make_unique<FakeCreator>(), {}, false);
+    auto database = this->databaseWithoutCreator();
     database.connect();
     TestCreator testCreator;
     testCreator.createTables(database);
@@ -73,13 +65,13 @@ void CreatorTest::insertShouldSuccess() {
 
 void CreatorTest::executeShouldSuccess() {
     // Given
-    QORM::Database database(
-        std::make_unique<TestConnector>(this->databaseName()),
-        std::make_unique<TestCreator>(), {}, false);
+    auto database = this->databaseWithoutCreator();
     database.connect();
+    TestCreator testCreator;
+    testCreator.createTables(database);
+    testCreator.createViews(database);
 
     // When
-    database.getCreator().execute(database);
     TestCreator::insert(database, QORM::Insert(TestCreator::TEST_TABLE));
 
     // Then

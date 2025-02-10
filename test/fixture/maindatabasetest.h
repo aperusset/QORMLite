@@ -3,6 +3,10 @@
 
 #include <QSqlDatabase>
 #include <QtTest/QtTest>
+#include "./database.h"
+#include "fixture/testconnector.h"
+#include "fixture/testcreator.h"
+#include "fixture/testupgrader.h"
 
 class MainDatabaseTest : public QObject {
     Q_OBJECT
@@ -25,6 +29,21 @@ class MainDatabaseTest : public QObject {
     virtual auto databaseBackupName() const -> QString {
         return QString();
     };
+
+    virtual auto databaseWithCreator(
+            std::list<std::unique_ptr<QORM::Schema::Upgrader>> upgraders = {},
+            bool verbose = false) -> QORM::Database {
+        return QORM::Database(
+            std::make_unique<TestConnector>(this->databaseName()),
+            std::make_unique<TestCreator>(), std::move(upgraders), verbose);
+    }
+
+    virtual auto databaseWithoutCreator(
+            bool verbose = false) -> QORM::Database {
+        return QORM::Database(
+            std::make_unique<TestConnector>(this->databaseName()),
+            verbose);
+    }
 
  public slots:
 

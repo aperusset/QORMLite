@@ -6,7 +6,7 @@
 class DatabaseTest : public MainDatabaseTest {
     Q_OBJECT
 
-    auto databaseName() const -> QString {
+    auto databaseName() const -> QString override {
         return "database";
     }
 
