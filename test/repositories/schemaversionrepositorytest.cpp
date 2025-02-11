@@ -65,6 +65,22 @@ void SchemaVersionRepositoryTest::saveAndGet() {
     QCOMPARE(sv.getExecution(), schemaVersion->getExecution());
 }
 
+void SchemaVersionRepositoryTest::newSchemaVersionShouldFail() {
+    // Given
+    const auto now = QDateTime::currentDateTime();
+
+    // When / Then
+    QVERIFY_EXCEPTION_THROWN(
+        QORM::Entities::SchemaVersion(-1, "description", now),
+        std::invalid_argument);
+    QVERIFY_EXCEPTION_THROWN(
+        QORM::Entities::SchemaVersion(0, "", now),
+        std::invalid_argument);
+    QVERIFY_EXCEPTION_THROWN(
+        QORM::Entities::SchemaVersion(0, "   ", now),
+        std::invalid_argument);
+}
+
 void SchemaVersionRepositoryTest::getCurrentSchemaVersionShouldFail() {
     // Given
     auto database = this->databaseWithCreator();

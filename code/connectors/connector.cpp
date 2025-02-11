@@ -17,7 +17,7 @@ auto tablesByType(const QSqlDatabase &database,
 
 }  // namespace
 
-QORM::Connector::Connector(QString name) : name(std::move(name)) {
+QORM::Connector::Connector(QString name) : name(std::move(name).trimmed()) {
     if (this->name.isEmpty()) {
         throw std::invalid_argument("Database connector must have a name");
     }

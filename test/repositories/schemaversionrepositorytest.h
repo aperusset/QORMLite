@@ -16,6 +16,7 @@ class SchemaVersionRepositoryTest : public MainDatabaseTest {
     void keyCondition();
     void fields();
     void saveAndGet();
+    void newSchemaVersionShouldFail();
     void getCurrentSchemaVersionShouldFail();
     void getCurrentSchemaVersionShouldReturnInitial();
     void getCurrentSchemaVersionShouldReturnLatest();

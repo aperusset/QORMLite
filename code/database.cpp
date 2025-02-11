@@ -74,7 +74,7 @@ auto QORM::Database::isConnected() const -> bool {
 
 auto QORM::Database::getSchemaState() const -> Schema::State {
     if (!isConnected()) {
-        throw std::invalid_argument("Not connected to database");
+        throw std::runtime_error("Not connected to database");
     }
     const auto tables = this->connector->tables();
     const auto versioned = Utils::contains(tables,

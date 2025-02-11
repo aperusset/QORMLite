@@ -16,7 +16,7 @@ QORM::SQLite::SQLite(const QString &name, bool foreignKeysActivated,
                      bool test) :
     Connector((test ? TEST_PREFIX : "") + name),
     foreignKeysActivated(foreignKeysActivated), test(test) {
-    if (name.isEmpty()) {
+    if (name.trimmed().isEmpty()) {
         throw std::invalid_argument("Database connector must have a name");
     }
 }

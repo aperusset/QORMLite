@@ -12,6 +12,18 @@
 
 const int DEFAULT_VALUE = 42;
 
+void DatabaseTest::creationShouldFailWithSameVersions() {
+    // Given
+    std::list<std::unique_ptr<QORM::Schema::Upgrader>> upgraders;
+    upgraders.emplace_back(std::make_unique<TestUpgrader>(1));
+    upgraders.emplace_back(std::make_unique<TestUpgrader>(2));
+    upgraders.emplace_back(std::make_unique<TestUpgrader>(2));
+
+    // When / Then
+    QVERIFY_EXCEPTION_THROWN(this->databaseWithCreator(std::move(upgraders)),
+                             std::logic_error);
+}
+
 void DatabaseTest::connectShouldConnect() {
     // Given
     auto database = this->databaseWithCreator();
@@ -92,6 +104,14 @@ void DatabaseTest::optimizeShouldSuccess() {
 
     // Then
     database.optimize();
+}
+
+void DatabaseTest::getSchemaStateShouldFail() {
+    // Given
+    auto database = this->databaseWithCreator();
+
+    // When / Then
+    QVERIFY_EXCEPTION_THROWN(database.getSchemaState(), std::runtime_error);
 }
 
 void DatabaseTest::getSchemaStateShouldReturnEmpty() {

@@ -23,17 +23,12 @@ class Creator : public Operator {
     Creator& operator=(const Creator&) = delete;
     Creator& operator=(Creator&&) = delete;
 
-    auto getRequiredCreators() const -> const CreatorList&;
     void addRequiredCreator(CreatorSPtr);
     void execute(const Database&) override;
     virtual void createTables(const Database&) const = 0;
     virtual void createViews(const Database&) const = 0;
     virtual void populate(const Database&) const = 0;
 };
-
-inline auto Creator::getRequiredCreators() const -> const CreatorList& {
-    return this->requiredCreators;
-}
 
 }  // namespace QORM::Schema
 

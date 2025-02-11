@@ -11,12 +11,14 @@ class DatabaseTest : public MainDatabaseTest {
     }
 
  private slots:
+    void creationShouldFailWithSameVersions();
     void connectShouldConnect();
     void subsequentConnectShouldFail();
     void migrateShouldDoNothing();
     void migrateShouldInsertSchemaVersions();
     void disconnectShouldSuccess();
     void optimizeShouldSuccess();
+    void getSchemaStateShouldFail();
     void getSchemaStateShouldReturnEmpty();
     void getSchemaStateShouldReturnToBeUpgraded();
     void getSchemaStateShouldReturnUpToDate();
