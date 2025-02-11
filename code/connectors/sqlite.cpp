@@ -2,8 +2,6 @@
 #include <QFile>
 #include <QSqlQuery>
 
-#include <QDebug>
-
 namespace {
 
 void deleteIfTestMode(const QString &fileName, bool test) {
@@ -18,6 +16,9 @@ QORM::SQLite::SQLite(const QString &name, bool foreignKeysActivated,
                      bool test) :
     Connector((test ? TEST_PREFIX : "") + name),
     foreignKeysActivated(foreignKeysActivated), test(test) {
+    if (name.isEmpty()) {
+        throw std::invalid_argument("Database connector must have a name");
+    }
 }
 
 void QORM::SQLite::connect() const {

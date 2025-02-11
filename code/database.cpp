@@ -72,8 +72,6 @@ auto QORM::Database::isConnected() const -> bool {
     return connector->isConnected();
 }
 
-#include <QDebug>
-
 auto QORM::Database::getSchemaState() const -> Schema::State {
     if (!isConnected()) {
         throw std::invalid_argument("Not connected to database");
@@ -100,15 +98,17 @@ auto QORM::Database::getSchemaState() const -> Schema::State {
 
 void QORM::Database::connect() {
     const QMutexLocker lock(&databaseMutex);
-    if (!this->isConnected()) {
-        this->connector->connect();
-    } else {
+    if (this->isConnected()) {
         throw std::runtime_error("Already connected to database");
     }
+    this->connector->connect();
 }
 
 void QORM::Database::migrate() {
     const QMutexLocker lock(&databaseMutex);
+    if (!this->isConnected()) {
+        throw std::runtime_error("Not connected to database");
+    }
     switch (this->getSchemaState()) {
         case Schema::State::EMPTY:
             this->create();
@@ -131,16 +131,10 @@ void QORM::Database::migrate() {
 }
 
 void QORM::Database::createSchemaVersion() {
-    if (!isConnected()) {
-        throw std::invalid_argument("Database is not connected");
-    }
     Schema::SchemaVersionCreator().execute(*this);
 }
 
 void QORM::Database::create() {
-    if (!isConnected()) {
-        throw std::invalid_argument("Database is not connected");
-    }
     if (this->creator != nullptr) {
         qInfo("Create database with name %s",
             qUtf8Printable(connector->getName()));
@@ -154,9 +148,6 @@ void QORM::Database::create() {
 }
 
 void QORM::Database::upgrade() {
-    if (!isConnected()) {
-        throw std::invalid_argument("Database is not connected");
-    }
     if (!this->upgraders.empty()) {
         const auto &version =
             this->schemaVersionRepository->getCurrentSchemaVersion();

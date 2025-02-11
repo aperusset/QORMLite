@@ -25,7 +25,7 @@ QORM::Connector::Connector(QString name) : name(std::move(name)) {
 
 auto QORM::Connector::getDatabase() const -> QSqlDatabase {
     if (contains(this->connectionName())) {
-        return QSqlDatabase::database(this->connectionName());
+        return QSqlDatabase::database(this->connectionName(), false);
     }
     throw std::logic_error("A connection to database " +
         this->getName().toStdString() + " must be previously created");

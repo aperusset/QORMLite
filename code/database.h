@@ -53,7 +53,6 @@ class Database {
     Database& operator=(Database&&) = delete;
 
     auto getName() const -> const QString&;
-    auto getCreator() const -> Schema::Creator&;
     auto isVerbose() const;
     auto isConnected() const -> bool;
     auto getSchemaState() const -> Schema::State;
@@ -123,10 +122,6 @@ class Database {
         return results;
     }
 };
-
-inline auto Database::getCreator() const -> Schema::Creator& {
-    return *this->creator.get();
-}
 
 inline auto Database::isVerbose() const {
     return this->verbose;
