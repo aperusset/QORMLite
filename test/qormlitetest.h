@@ -1,16 +1,10 @@
 #ifndef TEST_QORMLITETEST_H_
 #define TEST_QORMLITETEST_H_
 
-#include <QtTest/QtTest>
 #include "fixture/maindatabasetest.h"
-#include "fixture/testcreator.h"
-#include "fixture/testconnector.h"
 
 class QORMLiteTest : public MainDatabaseTest {
     Q_OBJECT
-
-    FakeCreator creator;
-    std::unique_ptr<TestConnector> connector = nullptr;
 
  public:
     auto databaseName() const -> QString override {
@@ -26,8 +20,7 @@ class QORMLiteTest : public MainDatabaseTest {
     void destroyShouldSuccess();
     void destroyAllShouldSuccess();
 
-    void initTestCase();
-    void cleanup() override;
+    void cleanup();
 };
 
 #endif  // TEST_QORMLITETEST_H_

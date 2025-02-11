@@ -13,8 +13,7 @@ SOURCES += \
   connectors/connector.cpp \
   connectors/odbc.cpp \
   connectors/sqlite.cpp \
-  creator.cpp \
-  database.cpp \
+  entities/schemaversion.cpp \
   operations/model/constraint/constraint.cpp \
   operations/model/constraint/unique.cpp \
   operations/model/constraint/foreignkey.cpp \
@@ -42,18 +41,21 @@ SOURCES += \
   operations/query/select.cpp \
   operations/query/selection/selection.cpp \
   operations/query/update.cpp \
+  repositories/schemaversionrepository.cpp \
+  schema/creator.cpp \
+  database.cpp \
   qormlite.cpp \
+  schema/operator.cpp \
+  schema/schemaversioncreator.cpp \
+  schema/upgrader.cpp \
   utils.cpp
 
 HEADERS += \
-  cache.h \
   connectors/connector.h \
   connectors/odbc.h \
   connectors/sqlite.h \
-  creator.h \
-  database.h \
-  entity.h \
-  observer.h \
+  entities/baseentity.h \
+  entities/schemaversion.h \
   operations/model/constraint/constraint.h \
   operations/model/constraint/unique.h \
   operations/model/constraint/foreignkey.h \
@@ -109,6 +111,15 @@ HEADERS += \
   operations/query/update.h \
   repositories/crudrepository.h \
   repositories/readonlyrepository.h \
+  repositories/schemaversionrepository.h \
+  schema/creator.h \
+  schema/operator.h \
+  schema/schemaversioncreator.h \
+  schema/state.h \
+  schema/upgrader.h \
+  cache.h \
+  database.h \
+  observer.h \
   qormlite.h \
   utils.h
 

@@ -1,5 +1,4 @@
 #include "updatetest.h"
-#include <string>
 #include "operations/query/update.h"
 #include "operations/query/assignment.h"
 #include "operations/query/condition/equals.h"

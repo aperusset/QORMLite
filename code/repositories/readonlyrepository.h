@@ -4,21 +4,20 @@
 #include <algorithm>
 #include <list>
 #include <memory>
-#include <string>
 #include "./cache.h"
 #include "./database.h"
-#include "./entity.h"
 #include "./utils.h"
+#include "entities/baseentity.h"
 #include "operations/query/selection/count.h"
 #include "operations/query/condition/equals.h"
 
-namespace QORM {
+namespace QORM::Repositories {
 
 template<class Entity, typename Key = int>
 class ReadOnlyRepository {
     static_assert(
-        std::is_base_of<QORM::Entity<Key>, Entity>::value,
-        "Entity must extend QORM::Entity");
+        std::is_base_of<Entities::BaseEntity<Key>, Entity>::value,
+        "Entity must extend QORM::Entities::BaseEntity");
     using EntityCreator = std::function<Entity&(const QSqlRecord&)>;
     using EntityCache = Cache<Key, Entity>;
     inline static const QString DEFAULT_KEY_NAME = "id";
@@ -29,8 +28,7 @@ class ReadOnlyRepository {
     const EntityCreator entityCreator =
         [this](const auto &record) -> Entity& {
             return this->cache.get()->insert(
-                this->buildKey(record),
-                std::unique_ptr<Entity>(this->build(record)));
+                this->buildKey(record), this->build(record));
         };
 
  public:
@@ -39,8 +37,8 @@ class ReadOnlyRepository {
         database(database),
         cache(cache == nullptr ? std::make_unique<EntityCache>()
                                : std::unique_ptr<EntityCache>(cache)) {}
-    ReadOnlyRepository(const ReadOnlyRepository&) = delete;
-    ReadOnlyRepository(ReadOnlyRepository&&) = delete;
+    ReadOnlyRepository(const ReadOnlyRepository&) noexcept = delete;
+    ReadOnlyRepository(ReadOnlyRepository&&) noexcept = delete;
     ReadOnlyRepository& operator=(const ReadOnlyRepository&) = delete;
     ReadOnlyRepository& operator=(ReadOnlyRepository&&) = delete;
     virtual ~ReadOnlyRepository() {}
@@ -121,8 +119,8 @@ class ReadOnlyRepository {
     }
 
     void assertFieldValidity(const QString &field) const {
-        if (!QORM::Utils::contains(this->fields(), field) &&
-            !QORM::Utils::contains(this->qualifiedFields(), field)) {
+        if (!Utils::contains(this->fields(), field) &&
+            !Utils::contains(this->qualifiedFields(), field)) {
             throw std::logic_error(field.toStdString() +
                 " field is not part of " +
                 this->tableName().toStdString() + " table");
@@ -135,23 +133,24 @@ class ReadOnlyRepository {
 
     virtual auto keyCondition(const Key &key) const -> Condition {
         if constexpr (std::is_integral<Key>::value) {
-            return QORM::Equals::field(this->keyName(), key);
+            return Equals::field(this->keyName(), key);
         }
         throw std::runtime_error("keyCondition must be overriden");
     }
 
     virtual auto buildKey(const QSqlRecord &record) const -> Key {
         if constexpr (std::is_integral<Key>::value) {
-            return QORM::Utils::getIntOrThrow(record, this->keyName());
+            return Utils::getIntOrThrow(record, this->keyName());
         }
         throw std::runtime_error("buildKey must be overriden");
     }
 
     virtual auto tableName() const -> QString = 0;
     virtual auto fields() const -> std::list<QString> = 0;
-    virtual auto build(const QSqlRecord &record) const -> Entity* = 0;
+    virtual auto build(const QSqlRecord &record)
+        const -> std::unique_ptr<Entity> = 0;
 };
 
-}  // namespace QORM
+}  // namespace QORM::Repositories
 
 #endif  // REPOSITORIES_READONLYREPOSITORY_H

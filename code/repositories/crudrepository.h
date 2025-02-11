@@ -5,12 +5,11 @@
 #include <QString>
 #include <list>
 #include <memory>
-#include "./entity.h"
 #include "operations/query/update.h"
 #include "operations/query/delete.h"
 #include "repositories/readonlyrepository.h"
 
-namespace QORM {
+namespace QORM::Repositories {
 
 template<class Entity, typename Key = int>
 class CRUDRepository : public ReadOnlyRepository<Entity, Key> {
@@ -23,13 +22,13 @@ class CRUDRepository : public ReadOnlyRepository<Entity, Key> {
         const auto &assignmentsToDo = this->assignments(*entity);
         if (this->exists(entity->getKey())) {
             if (!assignmentsToDo.empty()) {
-                this->getDatabase().execute(QORM::Update(this->tableName(),
+                this->getDatabase().execute(Update(this->tableName(),
                                     assignmentsToDo,
                                     this->keyCondition(entity->getKey())));
             }
         } else {
             const auto &key = this->getDatabase().insertAndRetrieveKey(
-                QORM::Insert(this->tableName(), assignmentsToDo));
+                Insert(this->tableName(), assignmentsToDo));
             entity->setKey(key);
             this->getCache().insert(key, std::unique_ptr<Entity>(entity));
         }
@@ -46,7 +45,7 @@ class CRUDRepository : public ReadOnlyRepository<Entity, Key> {
     virtual void erase(const Key &key) const {
         if (this->exists(key)) {
             const auto &entity = this->get(key);
-            this->getDatabase().execute(QORM::Delete(this->tableName(),
+            this->getDatabase().execute(Delete(this->tableName(),
                                         this->keyCondition(key)));
             entity.notifyDelete();
             this->getCache().remove(key);
@@ -55,7 +54,7 @@ class CRUDRepository : public ReadOnlyRepository<Entity, Key> {
 
     virtual void eraseAll() const {
         if (const auto &allEntities = this->getAll(); !allEntities.empty()) {
-            this->getDatabase().execute(QORM::Delete(this->tableName()));
+            this->getDatabase().execute(Delete(this->tableName()));
             for (const auto &entity : allEntities) {
                 entity.get().notifyDelete();
             }
@@ -64,12 +63,11 @@ class CRUDRepository : public ReadOnlyRepository<Entity, Key> {
     }
 
     // override if Entity has more fields than an auto incremented primary key
-    virtual auto assignments(const Entity&)
-            const -> std::list<QORM::Assignment> {
+    virtual auto assignments(const Entity&) const -> std::list<Assignment> {
         return {};
     }
 };
 
-}  // namespace QORM
+}  // namespace QORM::Repositories
 
 #endif  // REPOSITORIES_CRUDREPOSITORY_H_

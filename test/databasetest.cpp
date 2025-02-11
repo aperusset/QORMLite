@@ -1,44 +1,91 @@
 #include "databasetest.h"
-#include <string>
+#include <memory>
 #include "./database.h"
 #include "operations/query/select.h"
 #include "operations/query/insert.h"
-#include "operations/query/delete.h"
 #include "operations/query/assignment.h"
 #include "operations/query/selection/sum.h"
 #include "operations/query/condition/equals.h"
 #include "fixture/testentity.h"
-#include "fixture/testconnector.h"
+#include "fixture/testupgrader.h"
+#include "repositories/schemaversionrepository.h"
 
 const int DEFAULT_VALUE = 42;
 
-void DatabaseTest::connectShouldReturnTrue() {
+void DatabaseTest::creationShouldFailWithSameVersions() {
     // Given
-    const auto &connector = TestConnector(this->databaseName());
-    QORM::Database database(connector, this->testCreator, false);
+    std::list<std::unique_ptr<QORM::Schema::Upgrader>> upgraders;
+    upgraders.emplace_back(std::make_unique<TestUpgrader>(1));
+    upgraders.emplace_back(std::make_unique<TestUpgrader>(2));
+    upgraders.emplace_back(std::make_unique<TestUpgrader>(2));
 
     // When / Then
-    QVERIFY(database.connect());
+    QVERIFY_EXCEPTION_THROWN(this->databaseWithCreator(std::move(upgraders)),
+                             std::logic_error);
+}
+
+void DatabaseTest::connectShouldConnect() {
+    // Given
+    auto database = this->databaseWithCreator();
+
+    // When
+    database.connect();
+
+    // Then
     QVERIFY(database.isConnected());
 }
 
-void DatabaseTest::subsequentConnectShouldReturnFalse() {
+void DatabaseTest::subsequentConnectShouldFail() {
     // Given
-    const auto &connector = TestConnector(this->databaseName());
-    QORM::Database database(connector, this->testCreator, false);
+    auto database = this->databaseWithCreator();
 
     // When
     database.connect();
 
     // When / Then
-    QVERIFY(!database.connect());
     QVERIFY(database.isConnected());
+    QVERIFY_EXCEPTION_THROWN(database.connect(), std::runtime_error);
+}
+
+void DatabaseTest::migrateShouldDoNothing() {
+    // Given
+    auto database = this->databaseWithCreator();
+    const auto &repository = QORM::Repositories::SchemaVersionRepository(
+        database);
+
+    // When
+    database.connect();
+    database.migrate();
+
+    // Then
+    QCOMPARE(0, repository.getCurrentSchemaVersion().getKey());
+}
+
+void DatabaseTest::migrateShouldInsertSchemaVersions() {
+    // Given
+    std::list<std::unique_ptr<QORM::Schema::Upgrader>> upgraders;
+    upgraders.emplace_back(std::make_unique<TestUpgrader>(1));
+    upgraders.emplace_back(std::make_unique<TestUpgrader>(2));
+    upgraders.emplace_back(std::make_unique<TestUpgrader>(3));
+    auto database = this->databaseWithCreator(std::move(upgraders));
+    const auto &repository = QORM::Repositories::SchemaVersionRepository(
+        database);
+
+    // When
+    database.connect();
+    database.migrate();
+
+    // Then
+    QVERIFY(repository.exists(0));
+    QVERIFY(repository.exists(1));
+    QVERIFY(repository.exists(2));
+    QVERIFY(repository.exists(3));
+    QCOMPARE(3, repository.getCurrentSchemaVersion().getKey());
 }
 
 void DatabaseTest::disconnectShouldSuccess() {
     // Given
-    const auto &connector = TestConnector(this->databaseName());
-    QORM::Database database(connector, this->testCreator, false);
+    auto database = this->databaseWithCreator();
 
     // When
     database.connect();
@@ -50,8 +97,7 @@ void DatabaseTest::disconnectShouldSuccess() {
 
 void DatabaseTest::optimizeShouldSuccess() {
     // Given
-    const auto &connector = TestConnector(this->databaseName());
-    QORM::Database database(connector, this->testCreator, false);
+    auto database = this->databaseWithCreator();
 
     // When
     database.connect();
@@ -60,13 +106,65 @@ void DatabaseTest::optimizeShouldSuccess() {
     database.optimize();
 }
 
-void DatabaseTest::prepareExecuteShouldFailWithInvalidQuery() {
+void DatabaseTest::getSchemaStateShouldFail() {
     // Given
-    const auto &connector = TestConnector(this->databaseName());
-    QORM::Database database(connector, this->testCreator, false);
+    auto database = this->databaseWithCreator();
+
+    // When / Then
+    QVERIFY_EXCEPTION_THROWN(database.getSchemaState(), std::runtime_error);
+}
+
+void DatabaseTest::getSchemaStateShouldReturnEmpty() {
+    // Given
+    auto database = this->databaseWithCreator();
 
     // When
     database.connect();
+
+    // Then
+    QVERIFY(database.isConnected());
+    QCOMPARE(database.getSchemaState(), QORM::Schema::State::EMPTY);
+}
+
+void DatabaseTest::getSchemaStateShouldReturnToBeUpgraded() {
+    // Given
+    auto database = this->databaseWithCreator();
+
+    // When
+    database.connect();
+    database.migrate();
+    database.disconnect();
+    std::list<std::unique_ptr<QORM::Schema::Upgrader>> upgraders;
+    upgraders.emplace_back(std::make_unique<TestUpgrader>());
+    auto databaseUpgrade = this->databaseWithCreator(std::move(upgraders));
+    databaseUpgrade.connect();
+
+    // Then
+    QVERIFY(databaseUpgrade.isConnected());
+    QCOMPARE(databaseUpgrade.getSchemaState(),
+             QORM::Schema::State::TO_BE_UPGRADED);
+}
+
+void DatabaseTest::getSchemaStateShouldReturnUpToDate() {
+    // Given
+    auto database = this->databaseWithCreator();
+
+    // When
+    database.connect();
+    database.migrate();
+
+    // Then
+    QVERIFY(database.isConnected());
+    QCOMPARE(database.getSchemaState(), QORM::Schema::State::UP_TO_DATE);
+}
+
+void DatabaseTest::prepareExecuteShouldFailWithInvalidQuery() {
+    // Given
+    auto database = this->databaseWithCreator();
+
+    // When
+    database.connect();
+    database.migrate();
 
     // Then
     QVERIFY_EXCEPTION_THROWN(database.execute("invalid query"),
@@ -75,11 +173,11 @@ void DatabaseTest::prepareExecuteShouldFailWithInvalidQuery() {
 
 void DatabaseTest::executeShouldSuccessWithTextQuery() {
     // Given
-    const auto &connector = TestConnector(this->databaseName());
-    QORM::Database database(connector, this->testCreator, false);
+    auto database = this->databaseWithCreator();
 
     // When
     database.connect();
+    database.migrate();
 
     // Then
     QVERIFY(database.execute(
@@ -88,11 +186,11 @@ void DatabaseTest::executeShouldSuccessWithTextQuery() {
 
 void DatabaseTest::executeShouldSuccessWithBuiltQuery() {
     // Given
-    const auto &connector = TestConnector(this->databaseName());
-    QORM::Database database(connector, this->testCreator, false);
+    auto database = this->databaseWithCreator();
 
     // When
     database.connect();
+    database.migrate();
 
     // Then
     QVERIFY(database.execute(QORM::Select(TestCreator::TEST_VIEW)).isSelect());
@@ -100,11 +198,11 @@ void DatabaseTest::executeShouldSuccessWithBuiltQuery() {
 
 void DatabaseTest::existsShouldReturnTrue() {
     // Given
-    const auto &connector = TestConnector(this->databaseName());
-    QORM::Database database(connector, this->testCreator, false);
+    auto database = this->databaseWithCreator();
 
     // When
     database.connect();
+    database.migrate();
     database.execute(QORM::Insert(TestCreator::TEST_TABLE));
 
     // Then
@@ -114,11 +212,11 @@ void DatabaseTest::existsShouldReturnTrue() {
 
 void DatabaseTest::existsShouldReturnFalse() {
     // Given
-    const auto &connector = TestConnector(this->databaseName());
-    QORM::Database database(connector, this->testCreator, false);
+    auto database = this->databaseWithCreator();
 
     // When
     database.connect();
+    database.migrate();
 
     // Then
     QVERIFY(!database.exists(TestCreator::TEST_TABLE,
@@ -127,11 +225,11 @@ void DatabaseTest::existsShouldReturnFalse() {
 
 void DatabaseTest::insertAndRetrieveKeyAsIntShouldSuccess() {
     // Given
-    const auto &connector = TestConnector(this->databaseName());
-    QORM::Database database(connector, this->testCreator, false);
+    auto database = this->databaseWithCreator();
 
     // When
     database.connect();
+    database.migrate();
     const auto key = database.insertAndRetrieveKey(
                 QORM::Insert(TestCreator::TEST_TABLE));
     // Then
@@ -140,11 +238,11 @@ void DatabaseTest::insertAndRetrieveKeyAsIntShouldSuccess() {
 
 void DatabaseTest::insertAndRetrieveKeyAsIntShouldFail() {
     // Given
-    const auto &connector = TestConnector(this->databaseName());
-    QORM::Database database(connector, this->testCreator, false);
+    auto database = this->databaseWithCreator();
 
     // When
     database.connect();
+    database.migrate();
 
     // Then
     QVERIFY_EXCEPTION_THROWN(
@@ -156,13 +254,13 @@ void DatabaseTest::insertAndRetrieveKeyAsIntShouldFail() {
 
 void DatabaseTest::entityShouldSuccess() {
     // Given
-    const auto &connector = TestConnector(this->databaseName());
-    QORM::Database database(connector, this->testCreator, false);
+    auto database = this->databaseWithCreator();
     TestEntity testEntity(DEFAULT_VALUE);
     bool convertible = false;
 
     // When
     database.connect();
+    database.migrate();
     database.execute(QORM::Insert(TestCreator::TEST_TABLE));
     const auto &entity = database.entity<TestEntity>(
                 QORM::Select(TestCreator::TEST_TABLE),
@@ -179,12 +277,12 @@ void DatabaseTest::entityShouldSuccess() {
 
 void DatabaseTest::entityShouldThrowWhenNothingFound() {
     // Given
-    const auto &connector = TestConnector(this->databaseName());
-    QORM::Database database(connector, this->testCreator, false);
+    auto database = this->databaseWithCreator();
     TestEntity testEntity(DEFAULT_VALUE);
 
     // When
     database.connect();
+    database.migrate();
 
     // Then
     QVERIFY_EXCEPTION_THROWN(
@@ -197,13 +295,13 @@ void DatabaseTest::entityShouldThrowWhenNothingFound() {
 
 void DatabaseTest::entitiesShouldReturnNonEmptyList() {
     // Given
-    const auto &connector = TestConnector(this->databaseName());
-    QORM::Database database(connector, this->testCreator, false);
+    auto database = this->databaseWithCreator();
     TestEntity testEntity(DEFAULT_VALUE);
     bool convertible = false;
 
     // When
     database.connect();
+    database.migrate();
     database.execute(QORM::Insert(TestCreator::TEST_TABLE));
     database.execute(QORM::Insert(TestCreator::TEST_TABLE));
     const auto list = database.entities<TestEntity>(
@@ -221,11 +319,11 @@ void DatabaseTest::entitiesShouldReturnNonEmptyList() {
 
 void DatabaseTest::entitiesShouldReturnEmptyList() {
     // Given
-    const auto &connector = TestConnector(this->databaseName());
-    QORM::Database database(connector, this->testCreator, false);
+    auto database = this->databaseWithCreator();
 
     // When
     database.connect();
+    database.migrate();
     const auto list = database.entities<TestEntity>(
                 QORM::Select(TestCreator::TEST_TABLE), {});
     // Then
@@ -234,11 +332,11 @@ void DatabaseTest::entitiesShouldReturnEmptyList() {
 
 void DatabaseTest::resultShouldReturnDefaultValueIfNoResult() {
     // Given
-    const auto &connector = TestConnector(this->databaseName());
-    QORM::Database database(connector, this->testCreator, false);
+    auto database = this->databaseWithCreator();
 
     // When
     database.connect();
+    database.migrate();
     const auto result = database.result<int>(
         QORM::Select(TestCreator::TEST_TABLE,
             {TestCreator::TEST_FIELD}).where(
@@ -253,11 +351,11 @@ void DatabaseTest::resultShouldReturnDefaultValueIfNoResult() {
 
 void DatabaseTest::resultShouldReturnQueryValue() {
     // Given
-    const auto &connector = TestConnector(this->databaseName());
-    QORM::Database database(connector, this->testCreator, false);
+    auto database = this->databaseWithCreator();
 
     // When
     database.connect();
+    database.migrate();
     database.execute(QORM::Insert(TestCreator::TEST_TABLE));
     const auto result = database.result<int>(
         QORM::Select(TestCreator::TEST_TABLE,
@@ -272,11 +370,11 @@ void DatabaseTest::resultShouldReturnQueryValue() {
 
 void DatabaseTest::resultsShouldReturnNonEmptyList() {
     // Given
-    const auto &connector = TestConnector(this->databaseName());
-    QORM::Database database(connector, this->testCreator, false);
+    auto database = this->databaseWithCreator();
 
     // When
     database.connect();
+    database.migrate();
     database.execute(QORM::Insert(TestCreator::TEST_TABLE));
     database.execute(QORM::Insert(TestCreator::TEST_TABLE));
     const auto results = database.results<int>(
@@ -291,11 +389,11 @@ void DatabaseTest::resultsShouldReturnNonEmptyList() {
 
 void DatabaseTest::resultsShouldReturnEmptyList() {
     // Given
-    const auto &connector = TestConnector(this->databaseName());
-    QORM::Database database(connector, this->testCreator, false);
+    auto database = this->databaseWithCreator();
 
     // When
     database.connect();
+    database.migrate();
     const auto results = database.results<int>(
         QORM::Select(TestCreator::TEST_TABLE, {TestCreator::TEST_FIELD}),
             [](const QSqlRecord &record) -> int {

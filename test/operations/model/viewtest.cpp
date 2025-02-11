@@ -1,5 +1,4 @@
 #include "viewtest.h"
-#include <string>
 #include "operations/model/view.h"
 #include "operations/query/select.h"
 #include "operations/query/condition/condition.h"

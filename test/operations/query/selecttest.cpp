@@ -1,5 +1,4 @@
 #include "selecttest.h"
-#include <string>
 #include "operations/query/select.h"
 #include "operations/query/selection/selection.h"
 #include "operations/query/join/innerjoin.h"

@@ -6,7 +6,6 @@
 #include "operations/model/field.h"
 #include "operations/model/view.h"
 #include "operations/query/select.h"
-#include "operations/query/insert.h"
 
 void TestCreator::createTables(const QORM::Database &database) const {
     const auto primaryKey = QORM::PrimaryKey(
@@ -16,12 +15,4 @@ void TestCreator::createTables(const QORM::Database &database) const {
 
 void TestCreator::createViews(const QORM::Database &database) const {
     database.execute(QORM::View(TEST_VIEW, QORM::Select(TEST_TABLE)));
-}
-
-auto TestCreator::tables() const -> std::list<QString> {
-    return { TEST_TABLE };
-}
-
-auto TestCreator::views() const -> std::list<QString> {
-    return { TEST_VIEW };
 }

@@ -2,9 +2,9 @@
 #define TEST_FIXTURE_TESTENTITY_H_
 
 #include <memory>
-#include "entity.h"
+#include "entities/baseentity.h"
 
-class TestEntity : public QORM::Entity<> {
+class TestEntity : public QORM::Entities::BaseEntity<> {
  public:
     explicit TestEntity(const int key);
 };

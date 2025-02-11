@@ -10,7 +10,7 @@ class Observer {
  public:
     virtual void onChange(const Key&, const std::type_index&) = 0;
     virtual void onDelete(const Key&, const std::type_index&) = 0;
-    virtual ~Observer() {}
+    virtual ~Observer() = default;
 };
 
 }  // namespace QORM

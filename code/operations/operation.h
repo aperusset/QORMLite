@@ -12,7 +12,7 @@ class Operation {
     Operation(Operation&&) = default;
     Operation& operator=(const Operation&) = delete;
     Operation& operator=(Operation&&) = delete;
-    virtual ~Operation() {}
+    virtual ~Operation() = default;
 
     operator QString() const { return this->generate(); }
     virtual auto generate() const -> QString = 0;

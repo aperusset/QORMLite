@@ -1,5 +1,4 @@
 #include "odbctest.h"
-#include <string>
 #include "connectors/odbc.h"
 
 void ODBCTest::initShouldFailWithEmptyName() {
@@ -27,7 +26,6 @@ void ODBCTest::initShouldSuccess() {
     const auto &odbc = QORM::ODBC(this->databaseName(),
                                   DEFAULT_DRIVER_DEFINITION,
                                   DEFAULT_CONNECTION_STRING);
-
     // When / Then
     QCOMPARE(odbc.getName(), this->databaseName());
     QCOMPARE(odbc.getDriverDefinition(), DEFAULT_DRIVER_DEFINITION);
@@ -39,19 +37,17 @@ void ODBCTest::driverNameShouldBeCompliant() {
     const auto &odbc = QORM::ODBC(this->databaseName(),
                                   DEFAULT_DRIVER_DEFINITION,
                                   DEFAULT_CONNECTION_STRING);
-
     // When / Then
     QCOMPARE(odbc.driverName(), "QODBC");
 }
 
-void ODBCTest::databaseNameShouldContainsDriverAndConnectionString() {
+void ODBCTest::connectionNameShouldContainDriverAndConnectionString() {
     // Given
     const auto &odbc = QORM::ODBC(this->databaseName(),
                                   DEFAULT_DRIVER_DEFINITION,
                                   DEFAULT_CONNECTION_STRING);
-
     // When / Then
-    QCOMPARE(odbc.databaseName(), "Driver={" + DEFAULT_DRIVER_DEFINITION +
+    QCOMPARE(odbc.connectionName(), "Driver={" + DEFAULT_DRIVER_DEFINITION +
              "};" + DEFAULT_CONNECTION_STRING);
 }
 
@@ -60,7 +56,6 @@ void ODBCTest::backupShouldFail() {
     const auto &odbc = QORM::ODBC(this->databaseName(),
                                   DEFAULT_DRIVER_DEFINITION,
                                   DEFAULT_CONNECTION_STRING);
-
     // When / Then
     QVERIFY_EXCEPTION_THROWN(odbc.backup(this->databaseBackupName()),
                              std::logic_error);

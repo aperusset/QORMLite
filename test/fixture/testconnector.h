@@ -4,9 +4,9 @@
 #include "connectors/connector.h"
 
 class TestConnector : public QORM::Connector {
-    static bool preConnectCalled;
-    static bool postConnectCalled;
-    static bool optimizeCalled;
+    inline static bool preConnectCalled = false;
+    inline static bool postConnectCalled = false;
+    inline static bool optimizeCalled = false;
 
  public:
     explicit TestConnector(const QString &name) : Connector(name) {}
@@ -25,12 +25,12 @@ class TestConnector : public QORM::Connector {
         optimizeCalled = true;
     }
 
-    auto driverName() const -> QString override {
-        return "QSQLITE";
+    auto connectionName() const -> QString override {
+        return this->getName();
     }
 
-    auto databaseName() const -> QString override {
-        return this->getName();
+    auto driverName() const -> QString override {
+        return "QSQLITE";
     }
 
     auto backup(const QString&) const -> bool override {
@@ -47,6 +47,12 @@ class TestConnector : public QORM::Connector {
 
     auto isOptimizeCalled() const -> bool {
         return optimizeCalled;
+    }
+
+    static void reset() {
+        preConnectCalled = false;
+        postConnectCalled = false;
+        optimizeCalled = false;
     }
 };
 

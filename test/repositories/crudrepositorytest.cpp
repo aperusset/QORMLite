@@ -1,7 +1,6 @@
 #include "crudrepositorytest.h"
-#include <string>
 #include "./utils.h"
-#include "fixture/testconnector.h"
+#include "fixture/testcreator.h"
 #include "fixture/testcrudrepository.h"
 #include "fixture/testobserver.h"
 #include "operations/query/select.h"
@@ -10,8 +9,7 @@
 
 void CRUDRepositoryTest::qualifiedFieldsShouldQualifyAllFields() {
     // Given
-    const auto &connector = TestConnector(this->databaseName());
-    QORM::Database database(connector, this->testCreator, false);
+    auto database = this->databaseWithCreator();
     const auto &testCRUDRepository = TestCRUDRepository(database);
 
     // When
@@ -30,12 +28,12 @@ void CRUDRepositoryTest::qualifiedFieldsShouldQualifyAllFields() {
 
 void CRUDRepositoryTest::getByKeyShouldFail() {
     // Given
-    const auto &connector = TestConnector(this->databaseName());
-    QORM::Database database(connector, this->testCreator, false);
+    auto database = this->databaseWithCreator();
     const auto &testCRUDRepository = TestCRUDRepository(database);
 
     // When
     database.connect();
+    database.migrate();
 
     // When / Then
     QVERIFY_EXCEPTION_THROWN(testCRUDRepository.get(0), std::logic_error);
@@ -43,12 +41,12 @@ void CRUDRepositoryTest::getByKeyShouldFail() {
 
 void CRUDRepositoryTest::getByKeyShouldReturnEntity() {
     // Given
-    const auto &connector = TestConnector(this->databaseName());
-    QORM::Database database(connector, this->testCreator, false);
+    auto database = this->databaseWithCreator();
     const auto &testCRUDRepository = TestCRUDRepository(database);
 
     // When
     database.connect();
+    database.migrate();
     const auto lastInsertedKey = testCRUDRepository.save(new TestEntity(-1));
     const auto &entity = testCRUDRepository.get(lastInsertedKey);
 
@@ -58,12 +56,12 @@ void CRUDRepositoryTest::getByKeyShouldReturnEntity() {
 
 void CRUDRepositoryTest::getShouldFail() {
     // Given
-    const auto &connector = TestConnector(this->databaseName());
-    QORM::Database database(connector, this->testCreator, false);
+    auto database = this->databaseWithCreator();
     const auto &testCRUDRepository = TestCRUDRepository(database);
 
     // When
     database.connect();
+    database.migrate();
 
     // When / Then
     QVERIFY_EXCEPTION_THROWN(
@@ -74,12 +72,12 @@ void CRUDRepositoryTest::getShouldFail() {
 
 void CRUDRepositoryTest::getShouldReturnEntity() {
     // Given
-    const auto &connector = TestConnector(this->databaseName());
-    QORM::Database database(connector, this->testCreator, false);
+    auto database = this->databaseWithCreator();
     const auto &testCRUDRepository = TestCRUDRepository(database);
 
     // When
     database.connect();
+    database.migrate();
     const auto lastInsertedKey = testCRUDRepository.save(new TestEntity(-1));
     const auto &entity = testCRUDRepository.get(
         {QORM::Equals::field(TestCreator::TEST_FIELD, lastInsertedKey)});
@@ -90,12 +88,12 @@ void CRUDRepositoryTest::getShouldReturnEntity() {
 
 void CRUDRepositoryTest::getAllShouldReturnAllExistingEntities() {
     // Given
-    const auto &connector = TestConnector(this->databaseName());
-    QORM::Database database(connector, this->testCreator, false);
+    auto database = this->databaseWithCreator();
     const auto &testCRUDRepository = TestCRUDRepository(database);
 
     // When
     database.connect();
+    database.migrate();
     testCRUDRepository.save(new TestEntity(-1));
     testCRUDRepository.save(new TestEntity(-1));
     testCRUDRepository.save(new TestEntity(-1));
@@ -106,12 +104,12 @@ void CRUDRepositoryTest::getAllShouldReturnAllExistingEntities() {
 
 void CRUDRepositoryTest::getAllShouldReturnEntitiesAccordingToConditions() {
     // Given
-    const auto &connector = TestConnector(this->databaseName());
-    QORM::Database database(connector, this->testCreator, false);
+    auto database = this->databaseWithCreator();
     const auto &testCRUDRepository = TestCRUDRepository(database);
 
     // When
     database.connect();
+    database.migrate();
     const auto id1 = testCRUDRepository.save(new TestEntity(-1));
     testCRUDRepository.save(new TestEntity(-1));
     testCRUDRepository.save(new TestEntity(-1));
@@ -123,12 +121,12 @@ void CRUDRepositoryTest::getAllShouldReturnEntitiesAccordingToConditions() {
 
 void CRUDRepositoryTest::selectShouldReturnExpectedEntities() {
     // Given
-    const auto &connector = TestConnector(this->databaseName());
-    QORM::Database database(connector, this->testCreator, false);
+    auto database = this->databaseWithCreator();
     const auto &testCRUDRepository = TestCRUDRepository(database);
 
     // When
     database.connect();
+    database.migrate();
     const auto id1 = testCRUDRepository.save(new TestEntity(-1));
     testCRUDRepository.save(new TestEntity(-1));
     const auto id3 = testCRUDRepository.save(new TestEntity(-1));
@@ -141,12 +139,12 @@ void CRUDRepositoryTest::selectShouldReturnExpectedEntities() {
 
 void CRUDRepositoryTest::countShouldCountAllEntities() {
     // Given
-    const auto &connector = TestConnector(this->databaseName());
-    QORM::Database database(connector, this->testCreator, false);
+    auto database = this->databaseWithCreator();
     const auto &testCRUDRepository = TestCRUDRepository(database);
 
     // When
     database.connect();
+    database.migrate();
     testCRUDRepository.save(new TestEntity(-1));
     testCRUDRepository.save(new TestEntity(-1));
     testCRUDRepository.save(new TestEntity(-1));
@@ -157,12 +155,12 @@ void CRUDRepositoryTest::countShouldCountAllEntities() {
 
 void CRUDRepositoryTest::countShouldCountEntitiesAccordingToConditions() {
     // Given
-    const auto &connector = TestConnector(this->databaseName());
-    QORM::Database database(connector, this->testCreator, false);
+    auto database = this->databaseWithCreator();
     const auto &testCRUDRepository = TestCRUDRepository(database);
 
     // When
     database.connect();
+    database.migrate();
     const auto id1 = testCRUDRepository.save(new TestEntity(-1));
     testCRUDRepository.save(new TestEntity(-1));
     const auto id3 = testCRUDRepository.save(new TestEntity(-1));;
@@ -174,12 +172,12 @@ void CRUDRepositoryTest::countShouldCountEntitiesAccordingToConditions() {
 
 void CRUDRepositoryTest::existsByKeyShouldReturnTrue() {
     // Given
-    const auto &connector = TestConnector(this->databaseName());
-    QORM::Database database(connector, this->testCreator, false);
+    auto database = this->databaseWithCreator();
     const auto &testCRUDRepository = TestCRUDRepository(database);
 
     // When
     database.connect();
+    database.migrate();
     const auto lastInsertedKey = testCRUDRepository.save(new TestEntity(-1));
 
     // Then
@@ -188,12 +186,12 @@ void CRUDRepositoryTest::existsByKeyShouldReturnTrue() {
 
 void CRUDRepositoryTest::existsByKeyShouldReturnFalse() {
     // Given
-    const auto &connector = TestConnector(this->databaseName());
-    QORM::Database database(connector, this->testCreator, false);
+    auto database = this->databaseWithCreator();
     const auto &testCRUDRepository = TestCRUDRepository(database);
 
     // When
     database.connect();
+    database.migrate();
 
     // Then
     QVERIFY(!testCRUDRepository.exists(0));
@@ -201,12 +199,12 @@ void CRUDRepositoryTest::existsByKeyShouldReturnFalse() {
 
 void CRUDRepositoryTest::existsShouldReturnTrue() {
     // Given
-    const auto &connector = TestConnector(this->databaseName());
-    QORM::Database database(connector, this->testCreator, false);
+    auto database = this->databaseWithCreator();
     const auto &testCRUDRepository = TestCRUDRepository(database);
 
     // When
     database.connect();
+    database.migrate();
     const auto lastInsertedKey = testCRUDRepository.save(new TestEntity(-1));
 
     // Then
@@ -216,12 +214,12 @@ void CRUDRepositoryTest::existsShouldReturnTrue() {
 
 void CRUDRepositoryTest::existsShouldReturnFalse() {
     // Given
-    const auto &connector = TestConnector(this->databaseName());
-    QORM::Database database(connector, this->testCreator, false);
+    auto database = this->databaseWithCreator();
     const auto &testCRUDRepository = TestCRUDRepository(database);
 
     // When
     database.connect();
+    database.migrate();
 
     // Then
     QVERIFY(!testCRUDRepository.exists(
@@ -230,8 +228,7 @@ void CRUDRepositoryTest::existsShouldReturnFalse() {
 
 void CRUDRepositoryTest::saveShouldInsertAndNotify() {
     // Given
-    const auto &connector = TestConnector(this->databaseName());
-    QORM::Database database(connector, this->testCreator, false);
+    auto database = this->databaseWithCreator();
     const auto &testCRUDRepository = TestCRUDRepository(database);
     auto * const newTestEntity = new TestEntity(-1);
     auto testObserver = TestObserver();
@@ -239,6 +236,7 @@ void CRUDRepositoryTest::saveShouldInsertAndNotify() {
 
     // When
     database.connect();
+    database.migrate();
     const auto lastInsertedKey = testCRUDRepository.save(newTestEntity);
 
     // Then
@@ -251,8 +249,7 @@ void CRUDRepositoryTest::saveShouldInsertAndNotify() {
 
 void CRUDRepositoryTest::saveShouldUpdateAndNotify() {
     // Given
-    const auto &connector = TestConnector(this->databaseName());
-    QORM::Database database(connector, this->testCreator, false);
+    auto database = this->databaseWithCreator();
     const auto &testCRUDRepository = TestCRUDRepository(database);
     auto * const newTestEntity = new TestEntity(-1);
     auto testObserver = TestObserver();
@@ -260,6 +257,7 @@ void CRUDRepositoryTest::saveShouldUpdateAndNotify() {
 
     // When
     database.connect();
+    database.migrate();
     const auto lastInsertedKey = testCRUDRepository.save(newTestEntity);
     testCRUDRepository.save(newTestEntity);
 
@@ -273,8 +271,7 @@ void CRUDRepositoryTest::saveShouldUpdateAndNotify() {
 
 void CRUDRepositoryTest::saveAllShouldInsertAndNotify() {
     // Given
-    const auto &connector = TestConnector(this->databaseName());
-    QORM::Database database(connector, this->testCreator, false);
+    auto database = this->databaseWithCreator();
     const auto &testCRUDRepository = TestCRUDRepository(database);
     auto * const newTestEntity1 = new TestEntity(-1);
     auto * const newTestEntity2 = new TestEntity(-1);
@@ -284,6 +281,7 @@ void CRUDRepositoryTest::saveAllShouldInsertAndNotify() {
 
     // When
     database.connect();
+    database.migrate();
     testCRUDRepository.saveAll({newTestEntity1, newTestEntity2});
 
     // Then
@@ -301,19 +299,18 @@ void CRUDRepositoryTest::saveAllShouldInsertAndNotify() {
 
 void CRUDRepositoryTest::eraseShouldNotFailIfNotExists() {
     // Given
-    const auto &connector = TestConnector(this->databaseName());
-    QORM::Database database(connector, this->testCreator, false);
+    auto database = this->databaseWithCreator();
     const auto &testCRUDRepository = TestCRUDRepository(database);
 
     // When / Then
     database.connect();
+    database.migrate();
     testCRUDRepository.erase(0);
 }
 
 void CRUDRepositoryTest::eraseShouldDeleteAndNotify() {
     // Given
-    const auto &connector = TestConnector(this->databaseName());
-    QORM::Database database(connector, this->testCreator, false);
+    auto database = this->databaseWithCreator();
     const auto &testCRUDRepository = TestCRUDRepository(database);
     auto * const newTestEntity = new TestEntity(-1);
     auto testObserver = TestObserver();
@@ -322,6 +319,7 @@ void CRUDRepositoryTest::eraseShouldDeleteAndNotify() {
 
     // When
     database.connect();
+    database.migrate();
     const auto lastInsertedKey = testCRUDRepository.save(newTestEntity);
     testCRUDRepository.erase(newTestEntity->getKey());
 
@@ -333,8 +331,7 @@ void CRUDRepositoryTest::eraseShouldDeleteAndNotify() {
 
 void CRUDRepositoryTest::eraseAllShouldDeleteAndNotify() {
     // Given
-    const auto &connector = TestConnector(this->databaseName());
-    QORM::Database database(connector, this->testCreator, false);
+    auto database = this->databaseWithCreator();
     const auto &testCRUDRepository = TestCRUDRepository(database);
     auto * const newTestEntity1 = new TestEntity(-1);
     auto * const newTestEntity2 = new TestEntity(-1);
@@ -346,6 +343,7 @@ void CRUDRepositoryTest::eraseAllShouldDeleteAndNotify() {
 
     // When
     database.connect();
+    database.migrate();
     const auto key1 = testCRUDRepository.save(newTestEntity1);
     const auto key2 = testCRUDRepository.save(newTestEntity2);
     testCRUDRepository.eraseAll();
@@ -361,8 +359,7 @@ void CRUDRepositoryTest::eraseAllShouldDeleteAndNotify() {
 
 void CRUDRepositoryTest::assertFieldValidityShouldThrow() {
     // Given
-    const auto &connector = TestConnector(this->databaseName());
-    QORM::Database database(connector, this->testCreator, false);
+    auto database = this->databaseWithCreator();
     const auto &testCRUDRepository = TestCRUDRepository(database);
 
     // When / Then
@@ -377,8 +374,7 @@ void CRUDRepositoryTest::assertFieldValidityShouldThrow() {
 
 void CRUDRepositoryTest::assertFieldValidityShouldNotThrow() {
     // Given
-    const auto &connector = TestConnector(this->databaseName());
-    QORM::Database database(connector, this->testCreator, false);
+    auto database = this->databaseWithCreator();
     const auto &testCRUDRepository = TestCRUDRepository(database);
 
     // When / Then

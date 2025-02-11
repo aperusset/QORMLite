@@ -1,5 +1,4 @@
 #include "connectortest.h"
-#include <string>
 #include "fixture/testconnector.h"
 #include "operations/model/table.h"
 #include "operations/model/view.h"
@@ -9,18 +8,6 @@ void ConnectorTest::initShouldFailIfNameIsEmpty() {
     QVERIFY_EXCEPTION_THROWN(
         TestConnector testConnector(""),
         std::invalid_argument);
-}
-
-void ConnectorTest::initShouldFailIfIfNameAlreadyUsed() {
-    // Given
-    const auto &testConnector = TestConnector(this->databaseName());
-    testConnector.connect();
-
-    // When / Then
-    QVERIFY_EXCEPTION_THROWN(
-        TestConnector testConnector(this->databaseName()),
-        std::invalid_argument);
-    QVERIFY(testConnector.isConnected());
 }
 
 void ConnectorTest::initShouldSuccessWithValidName() {
@@ -34,7 +21,7 @@ void ConnectorTest::getDatabaseNameShouldReturnName() {
     TestConnector testConnector(this->databaseName());
 
     // When / Then
-    QCOMPARE(testConnector.databaseName(), testConnector.getName());
+    QCOMPARE(testConnector.connectionName(), testConnector.getName());
     QVERIFY(!testConnector.isConnected());
 }
 

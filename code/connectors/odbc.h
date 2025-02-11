@@ -1,5 +1,5 @@
-#ifndef ODBC_H_
-#define ODBC_H_
+#ifndef CONNECTORS_ODBC_H_
+#define CONNECTORS_ODBC_H_
 
 #include "./connector.h"
 
@@ -15,7 +15,7 @@ class ODBC : public Connector {
 
     auto getDriverDefinition() const -> const QString&;
     auto getConnectionString() const -> const QString&;
-    auto databaseName() const -> QString override;
+    auto connectionName() const -> QString override;
     auto driverName() const -> QString override;
     auto backup(const QString &fileName) const -> bool override;
 };
@@ -28,10 +28,10 @@ inline auto ODBC::getConnectionString() const -> const QString& {
     return this->connectionString;
 }
 
-inline auto QORM::ODBC::driverName() const -> QString {
+inline auto ODBC::driverName() const -> QString {
     return "QODBC";
 }
 
 }  // namespace QORM
 
-#endif  // ODBC_H_
+#endif  // CONNECTORS_ODBC_H_

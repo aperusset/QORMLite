@@ -1,5 +1,5 @@
-#ifndef TEST_ENTITYTEST_H_
-#define TEST_ENTITYTEST_H_
+#ifndef TEST_ENTITIES_ENTITYTEST_H_
+#define TEST_ENTITIES_ENTITYTEST_H_
 
 #include <QtTest/QtTest>
 #include "fixture/testobserver.h"
@@ -18,4 +18,4 @@ class EntityTest : public QObject {
     void getTypeIndex();
 };
 
-#endif  // TEST_ENTITYTEST_H_
+#endif  // TEST_ENTITIES_ENTITYTEST_H_

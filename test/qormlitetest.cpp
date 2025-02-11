@@ -1,7 +1,8 @@
 #include "qormlitetest.h"
-#include <string>
+#include <memory>
 #include "./qormlite.h"
 #include "fixture/testconnector.h"
+#include "fixture/testcreator.h"
 
 void QORMLiteTest::isInitializedShouldReturnFalse() {
     // Given / When / Then
@@ -10,20 +11,21 @@ void QORMLiteTest::isInitializedShouldReturnFalse() {
 
 void QORMLiteTest::initializeShouldSuccessAndIsInitializedShouldReturnTrue() {
     // Given / When
-    QORM::initialize(*this->connector, this->creator, false);
-
+    QORM::initialize(std::make_unique<TestConnector>(this->databaseName()),
+                     std::make_unique<TestCreator>(), {}, false);
     // Then
     QVERIFY(QORM::isInitialized(this->databaseName()));
 }
 
 void QORMLiteTest::initializeShouldFailIfDatabaseAlreadyExists() {
     // Given
-    QORM::initialize(*this->connector, this->creator, false);
-
+    QORM::initialize(std::make_unique<TestConnector>(this->databaseName()),
+                     std::make_unique<TestCreator>(), {}, false);
     // When / Then
     QVERIFY(QORM::isInitialized(this->databaseName()));
     QVERIFY_EXCEPTION_THROWN(
-        QORM::initialize(*this->connector, this->creator, false),
+        QORM::initialize(std::make_unique<TestConnector>(this->databaseName()),
+                         std::make_unique<TestCreator>(), {}, false),
         std::logic_error);
 }
 
@@ -35,8 +37,8 @@ void QORMLiteTest::getShouldFailIfDatabaseNotExists() {
 
 void QORMLiteTest::getShouldSuccess() {
     // Given
-    QORM::initialize(*this->connector, this->creator, false);
-
+    QORM::initialize(std::make_unique<TestConnector>(this->databaseName()),
+                     std::make_unique<TestCreator>(), {}, false);
     // When
     const auto &database = QORM::get(this->databaseName());
 
@@ -47,8 +49,8 @@ void QORMLiteTest::getShouldSuccess() {
 
 void QORMLiteTest::destroyShouldSuccess() {
     // Given
-    QORM::initialize(*this->connector, this->creator, false);
-
+    QORM::initialize(std::make_unique<TestConnector>(this->databaseName()),
+                     std::make_unique<TestCreator>(), {}, false);
     // When
     QORM::destroy(this->databaseName());
 
@@ -58,17 +60,13 @@ void QORMLiteTest::destroyShouldSuccess() {
 
 void QORMLiteTest::destroyAllShouldSuccess() {
     // Given
-    QORM::initialize(*this->connector, this->creator, false);
-
+    QORM::initialize(std::make_unique<TestConnector>(this->databaseName()),
+                     std::make_unique<TestCreator>(), {}, false);
     // When
     QORM::destroyAll();
 
     // Then
     QVERIFY(!QORM::isInitialized(this->databaseName()));
-}
-
-void QORMLiteTest::initTestCase() {
-    this->connector = std::make_unique<TestConnector>(this->databaseName());
 }
 
 void QORMLiteTest::cleanup() {

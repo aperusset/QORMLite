@@ -1,5 +1,5 @@
-#ifndef ENTITY_H_
-#define ENTITY_H_
+#ifndef ENTITIES_BASEENTITY_H_
+#define ENTITIES_BASEENTITY_H_
 
 #include <algorithm>
 #include <list>
@@ -7,20 +7,20 @@
 #include <typeindex>
 #include "./observer.h"
 
-namespace QORM {
+namespace QORM::Entities {
 
 template<typename Key = int>
-class Entity {
+class BaseEntity {
     Key key;
     std::set<Observer<Key>*> observers;
 
  public:
-    explicit Entity(const Key &key) : key(key) {}
-    Entity(const Entity&) = delete;
-    Entity(Entity&&) = delete;
-    Entity& operator=(const Entity&) = delete;
-    Entity& operator=(Entity&&) = delete;
-    virtual ~Entity() {}
+    explicit BaseEntity(const Key &key) : key(key) {}
+    BaseEntity(const BaseEntity&) noexcept = delete;
+    BaseEntity(BaseEntity&&) noexcept = delete;
+    BaseEntity& operator=(const BaseEntity&) = delete;
+    BaseEntity& operator=(BaseEntity&&) = delete;
+    virtual ~BaseEntity() = default;
 
     auto getKey() const -> const Key& { return this->key; }
     void setKey(const Key &key) { this->key = key; }
@@ -68,6 +68,10 @@ class Entity {
     }
 };
 
+}  // namespace QORM::Entities
+
+namespace QORM {
+
 template<class Entity>
 using RefList = std::list<std::reference_wrapper<Entity>>;
 template<class Entity>
@@ -75,4 +79,4 @@ using ConstRefList = std::list<std::reference_wrapper<const Entity>>;
 
 }  // namespace QORM
 
-#endif  // ENTITY_H_
+#endif  // ENTITIES_BASEENTITY_H_

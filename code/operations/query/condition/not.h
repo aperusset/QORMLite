@@ -14,6 +14,6 @@ class Not : public Condition {
         Condition(" not ", {condition}, QString(), QString(), QVariant()) {}
 };
 
-}
+}  // namespace QORM
 
 #endif  // OPERATIONS_QUERY_CONDITION_NOT_H_

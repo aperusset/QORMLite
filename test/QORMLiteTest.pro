@@ -19,10 +19,10 @@ SOURCES +=  \
   connectors/connectortest.cpp \
   connectors/odbctest.cpp \
   connectors/sqlitetest.cpp \
-  creatortest.cpp \
+  repositories/schemaversionrepositorytest.cpp \
+  schema/creatortest.cpp \
   databasetest.cpp \
-  entitytest.cpp \
-  fixture/testconnector.cpp \
+  entities/entitytest.cpp \
   fixture/testcreator.cpp \
   fixture/testcrudrepository.cpp \
   fixture/testentity.cpp \
@@ -55,9 +55,11 @@ HEADERS += \
   connectors/connectortest.h \
   connectors/odbctest.h \
   connectors/sqlitetest.h \
-  creatortest.h \
+  fixture/testupgrader.h \
+  repositories/schemaversionrepositorytest.h \
+  schema/creatortest.h \
   databasetest.h \
-  entitytest.h \
+  entities/entitytest.h \
   fixture/maindatabasetest.h \
   fixture/testconnector.h \
   fixture/testcreator.h \

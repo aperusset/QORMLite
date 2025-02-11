@@ -1,5 +1,4 @@
 #include "odbc.h"
-#include <string>
 #include <utility>
 
 QORM::ODBC::ODBC(const QString &name, QString driverDefinition,
@@ -14,7 +13,7 @@ QORM::ODBC::ODBC(const QString &name, QString driverDefinition,
     }
 }
 
-auto QORM::ODBC::databaseName() const -> QString {
+auto QORM::ODBC::connectionName() const -> QString {
     return "Driver={" + this->driverDefinition + "};" + this->connectionString;
 }
 

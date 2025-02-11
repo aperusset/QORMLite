@@ -1,10 +1,9 @@
 #include "./utilstest.h"
-#include "./entitytest.h"
 #include "./observertest.h"
 #include "./cachetest.h"
 #include "./databasetest.h"
-#include "./creatortest.h"
 #include "./qormlitetest.h"
+#include "entities/entitytest.h"
 #include "connectors/connectortest.h"
 #include "connectors/sqlitetest.h"
 #include "connectors/odbctest.h"
@@ -26,6 +25,8 @@
 #include "operations/query/updatetest.h"
 #include "operations/query/deletetest.h"
 #include "repositories/crudrepositorytest.h"
+#include "repositories/schemaversionrepositorytest.h"
+#include "schema/creatortest.h"
 
 auto main(int argc, char *argv[]) -> int {
     std::list<std::unique_ptr<QObject>> tests;
@@ -57,6 +58,7 @@ auto main(int argc, char *argv[]) -> int {
     tests.emplace_back(std::make_unique<CreatorTest>());
     tests.emplace_back(std::make_unique<QORMLiteTest>());
     tests.emplace_back(std::make_unique<CRUDRepositoryTest>());
+    tests.emplace_back(std::make_unique<SchemaVersionRepositoryTest>());
 
     try {
         if (std::any_of(tests.begin(), tests.end(), [=](const auto &test) {

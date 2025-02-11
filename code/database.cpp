@@ -1,15 +1,26 @@
 #include "database.h"
-#include <algorithm>
+#include <utility>
+#include "schema/schemaversioncreator.h"
+#include "repositories/schemaversionrepository.h"
 
-QORM::Database::Database(const QORM::Connector &connector, bool verbose) :
-    databaseMutex(QMutex::RecursionMode::Recursive),
-    connector(connector), creator(nullptr), verbose(verbose) {
+QORM::Database::Database(ConnectorUPtr connector, bool verbose) :
+    Database(std::move(connector), nullptr, {}, verbose) {
 }
 
-QORM::Database::Database(const QORM::Connector &connector,
-                         const QORM::Creator &creator, bool verbose) :
-    databaseMutex(QMutex::RecursionMode::Recursive),
-    connector(connector), creator(&creator), verbose(verbose) {
+QORM::Database::Database(ConnectorUPtr connector, CreatorUPtr creator,
+                         UpgraderUPtrList upgraders, bool verbose) :
+        databaseMutex(QMutex::RecursionMode::Recursive),
+        connector(std::move(connector)), creator(std::move(creator)),
+        upgraders(std::move(upgraders)), verbose(verbose),
+        schemaVersionRepository(
+            std::make_unique<Repositories::SchemaVersionRepository>(*this)) {
+    std::set<int> upgraderVersions;
+    std::transform(this->upgraders.begin(), this->upgraders.end(),
+        std::inserter(upgraderVersions, upgraderVersions.begin()),
+        [](const auto &upgrader) { return upgrader->getVersion(); });
+    if (upgraderVersions.size() != this->upgraders.size()) {
+        throw std::logic_error("Duplicated upgrader version detected");
+    }
 }
 
 QORM::Database::~Database() {
@@ -17,7 +28,7 @@ QORM::Database::~Database() {
 }
 
 auto QORM::Database::prepare(const QString &query) const -> QSqlQuery {
-    QSqlQuery sqlQuery(connector.getDatabase());
+    QSqlQuery sqlQuery(connector->getDatabase());
     if (!sqlQuery.prepare(query + ";")) {
         throw std::runtime_error("Preparing error : " +
                 sqlQuery.lastError().text().toStdString() + " | Query : " +
@@ -54,43 +65,129 @@ auto QORM::Database::execute(QSqlQuery query) const -> QSqlQuery {
 }
 
 auto QORM::Database::getName() const -> const QString& {
-    return this->connector.getName();
+    return this->connector->getName();
 }
 
 auto QORM::Database::isConnected() const -> bool {
-    return connector.isConnected();
+    return connector->isConnected();
 }
 
-auto QORM::Database::connect() -> bool {
+auto QORM::Database::getSchemaState() const -> Schema::State {
+    if (!isConnected()) {
+        throw std::runtime_error("Not connected to database");
+    }
+    const auto tables = this->connector->tables();
+    const auto versioned = Utils::contains(tables,
+                                           Entities::SchemaVersion::TABLE);
+    if (!versioned && tables.empty()) {
+        return Schema::State::EMPTY;
+    } else if (!versioned && tables.size() > 0) {
+        return Schema::State::TO_BE_VERSIONED;
+    } else if (this->upgraders.empty()) {
+        return Schema::State::UP_TO_DATE;
+    }
+    const auto &version =
+        this->schemaVersionRepository->getCurrentSchemaVersion();
+    const auto toBeUpgraded = std::any_of(upgraders.begin(), upgraders.end(),
+        [&version](const auto &upgrader) {
+            return upgrader->getVersion() > version.getKey();
+        });
+    return toBeUpgraded ? Schema::State::TO_BE_UPGRADED
+                        : Schema::State::UP_TO_DATE;
+}
+
+void QORM::Database::connect() {
+    const QMutexLocker lock(&databaseMutex);
+    if (this->isConnected()) {
+        throw std::runtime_error("Already connected to database");
+    }
+    this->connector->connect();
+}
+
+void QORM::Database::migrate() {
     const QMutexLocker lock(&databaseMutex);
     if (!this->isConnected()) {
-        this->connector.connect();
-        if (this->creator != nullptr) {
-            const auto shouldBeCreated = !this->creator->isCreated(*this,
-                this->connector.tables(), this->connector.views());
-            if (shouldBeCreated) {
-                qDebug("Create database with name %s",
-                       qUtf8Printable(connector.getName()));
-                this->creator->createAllAndPopulate(*this);
+        throw std::runtime_error("Not connected to database");
+    }
+    switch (this->getSchemaState()) {
+        case Schema::State::EMPTY:
+            this->create();
+            this->createSchemaVersion();
+            this->upgrade();
+            break;
+        case Schema::State::TO_BE_VERSIONED:
+            this->createSchemaVersion();
+            this->upgrade();
+            break;
+        case Schema::State::TO_BE_UPGRADED:
+            this->upgrade();
+            break;
+        default:
+            if (this->verbose) {
+                qDebug("Database %s is up to date",
+                       qUtf8Printable(connector->getName()));
             }
-            return shouldBeCreated;
+    }
+}
+
+void QORM::Database::createSchemaVersion() {
+    Schema::SchemaVersionCreator().execute(*this);
+}
+
+void QORM::Database::create() {
+    if (this->creator != nullptr) {
+        qInfo("Create database with name %s",
+            qUtf8Printable(connector->getName()));
+        this->creator->execute(*this);
+    } else {
+        if (this->verbose) {
+            qDebug("No creation expected for database %s",
+                qUtf8Printable(connector->getName()));
         }
     }
-    return false;
+}
+
+void QORM::Database::upgrade() {
+    if (!this->upgraders.empty()) {
+        const auto &version =
+            this->schemaVersionRepository->getCurrentSchemaVersion();
+        this->upgraders.sort([](const auto &left, const auto &right) {
+            return left->getVersion() < right->getVersion();
+        });
+        std::for_each(this->upgraders.begin(), this->upgraders.end(),
+            [&](const auto &upgrader) {
+                const auto upgraderVersion = upgrader->getVersion();
+                if (upgraderVersion > version.getKey()) {
+                    qInfo("Upgrade database %s to version %s",
+                        qUtf8Printable(connector->getName()),
+                        qUtf8Printable(QString::number(upgraderVersion)));
+                    upgrader->execute(*this);
+                    this->schemaVersionRepository->save(
+                        new Entities::SchemaVersion(upgraderVersion,
+                            upgrader->getDescription(),
+                            QDateTime::currentDateTime()));
+                }
+            });
+    } else {
+        if (this->verbose) {
+            qDebug("No upgrade expected for database %s",
+                qUtf8Printable(connector->getName()));
+        }
+    }
 }
 
 void QORM::Database::disconnect() {
     const QMutexLocker lock(&databaseMutex);
-    connector.disconnect();
+    connector->disconnect();
 }
 
 void QORM::Database::optimize() const {
-    this->connector.optimize();
+    this->connector->optimize();
 }
 
 auto QORM::Database::backup(const QString &fileName) -> bool {
     const QMutexLocker lock(&databaseMutex);
-    return connector.backup(fileName);
+    return connector->backup(fileName);
 }
 
 auto QORM::Database::exists(const QString &table,

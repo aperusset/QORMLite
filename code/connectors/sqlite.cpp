@@ -1,8 +1,6 @@
 #include "sqlite.h"
 #include <QFile>
 #include <QSqlQuery>
-#include <algorithm>
-#include <string>
 
 namespace {
 
@@ -16,18 +14,22 @@ void deleteIfTestMode(const QString &fileName, bool test) {
 
 QORM::SQLite::SQLite(const QString &name, bool foreignKeysActivated,
                      bool test) :
-    Connector((test ? TEST_PREFIX : "") + name + FILE_EXTENSION),
+    Connector((test ? TEST_PREFIX : "") + name),
     foreignKeysActivated(foreignKeysActivated), test(test) {
-    if (name.isEmpty()) {
-        throw std::invalid_argument("Database must have a name");
+    if (name.trimmed().isEmpty()) {
+        throw std::invalid_argument("Database connector must have a name");
     }
-    deleteIfTestMode(this->getName(), this->test);
+}
+
+void QORM::SQLite::connect() const {
+    deleteIfTestMode(this->connectionName(), this->test);
+    Connector::connect();
 }
 
 void QORM::SQLite::disconnect() const {
-    const auto name = this->getName();
+    const auto fileName = this->connectionName();
     Connector::disconnect();
-    deleteIfTestMode(name, this->test);
+    deleteIfTestMode(fileName, this->test);
 }
 
 void QORM::SQLite::preConnect() const {
@@ -58,7 +60,7 @@ auto QORM::SQLite::tables() const -> std::list<QString> {
 auto QORM::SQLite::backup(const QString &fileName) const -> bool {
     this->optimize();
     this->disconnect();
-    const auto success = QFile::copy(this->getName(), fileName);
+    const auto success = QFile::copy(this->connectionName(), fileName);
     this->connect();
     return success;
 }

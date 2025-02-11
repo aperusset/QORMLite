@@ -1,5 +1,4 @@
 #include "jointest.h"
-#include <string>
 #include "operations/query/join/join.h"
 #include "operations/query/join/innerjoin.h"
 #include "operations/query/join/leftjoin.h"

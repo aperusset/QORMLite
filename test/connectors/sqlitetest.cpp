@@ -1,7 +1,6 @@
 #include "sqlitetest.h"
 #include <QSqlQuery>
 #include <QSqlRecord>
-#include <string>
 #include "connectors/sqlite.h"
 #include "operations/model/table.h"
 
@@ -17,7 +16,7 @@ void SQLiteTest::initShouldAddFileExtensionToName() {
 
     // When / Then
     QVERIFY(!sqlite.isTest());
-    QCOMPARE(sqlite.getName(), this->databaseName() + ".db");
+    QCOMPARE(sqlite.connectionName(), this->databaseName() + ".db");
 }
 
 void SQLiteTest::initShouldAddTestPrefixAndFileExtensionToName() {
@@ -26,10 +25,10 @@ void SQLiteTest::initShouldAddTestPrefixAndFileExtensionToName() {
 
     // When / Then
     QVERIFY(sqlite.isTest());
-    QCOMPARE(sqlite.getName(), "test_" + this->databaseName() + ".db");
+    QCOMPARE(sqlite.connectionName(), "test_" + this->databaseName() + ".db");
 }
 
-void SQLiteTest::initShouldDeleteDatabaseFile() {
+void SQLiteTest::connectShouldDeleteExistingDatabaseFile() {
     // Given
     const auto &sqlite = QORM::SQLite("test_" + this->databaseName(),
                                       true, false);
@@ -38,10 +37,11 @@ void SQLiteTest::initShouldDeleteDatabaseFile() {
     sqlite.disconnect();
 
     // Then
-    QVERIFY(QFile::exists(sqlite.getName()));
+    QVERIFY(QFile::exists(sqlite.connectionName()));
     const auto &sqliteTest = QORM::SQLite(this->databaseName(), true, true);
-    QCOMPARE(sqliteTest.getName(), sqlite.getName());
-    QVERIFY(!QFile::exists(sqliteTest.getName()));
+    sqliteTest.connect();
+    sqliteTest.disconnect();
+    QVERIFY(!QFile::exists(sqliteTest.connectionName()));
 }
 
 void SQLiteTest::driverNameShouldBeCompliant() {
@@ -99,7 +99,7 @@ void SQLiteTest::disconnectShouldNotDeleteDatabaseFile() {
     sqlite.disconnect();
 
     // Then
-    QVERIFY(QFile::exists(sqlite.getName()));
+    QVERIFY(QFile::exists(sqlite.connectionName()));
 }
 
 void SQLiteTest::disconnectShouldDeleteDatabaseFile() {
@@ -111,7 +111,7 @@ void SQLiteTest::disconnectShouldDeleteDatabaseFile() {
     sqlite.disconnect();
 
     // Then
-    QVERIFY(!QFile::exists(sqlite.getName()));
+    QVERIFY(!QFile::exists(sqlite.connectionName()));
 }
 
 void SQLiteTest::tablesShouldReturnWithoutSequence() {

@@ -2,37 +2,50 @@
 #define DATABASE_H_
 
 #include <QMutex>
+#include <QSqlError>
 #include <QSqlRecord>
-#include <QtSql>
 #include <list>
-#include <string>
-#include "./creator.h"
-#include "./entity.h"
-#include "./utils.h"
+#include <memory>
 #include "connectors/connector.h"
+#include "entities/baseentity.h"
 #include "operations/query.h"
-#include "operations/query/delete.h"
 #include "operations/query/insert.h"
 #include "operations/query/select.h"
-#include "operations/query/update.h"
+#include "schema/creator.h"
+#include "schema/upgrader.h"
+#include "schema/state.h"
 
 namespace QORM {
 
-class Database {
-    QMutex databaseMutex;
+namespace Repositories {
 
-    // TODO(aperusset) Database should take connector and creator ownership ?
-    const QORM::Connector &connector;
-    const QORM::Creator* const creator;
+class SchemaVersionRepository;
+
+}  // nameapce Repositories
+
+class Database {
+    using CreatorUPtr = std::unique_ptr<Schema::Creator>;
+    using UpgraderUPtr = std::unique_ptr<Schema::Upgrader>;
+    using UpgraderUPtrList = std::list<UpgraderUPtr>;
+    using ConnectorUPtr = std::unique_ptr<Connector>;
+
+    QMutex databaseMutex;
+    const ConnectorUPtr connector;
+    const CreatorUPtr creator;
+    UpgraderUPtrList upgraders;
     const bool verbose;
+    const std::unique_ptr<Repositories::SchemaVersionRepository> schemaVersionRepository;
 
     auto prepare(const QString&) const -> QSqlQuery;
     auto prepare(const Query&) const -> QSqlQuery;
     auto execute(QSqlQuery) const -> QSqlQuery;
+    void createSchemaVersion();
+    void create();
+    void upgrade();
 
  public:
-    Database(const QORM::Connector&, bool verbose);
-    Database(const QORM::Connector&, const QORM::Creator&, bool verbose);
+    Database(ConnectorUPtr, bool verbose);
+    Database(ConnectorUPtr, CreatorUPtr, UpgraderUPtrList, bool verbose);
     ~Database();
     Database(const Database&) = delete;
     Database(Database&&) = delete;
@@ -42,12 +55,10 @@ class Database {
     auto getName() const -> const QString&;
     auto isVerbose() const;
     auto isConnected() const -> bool;
+    auto getSchemaState() const -> Schema::State;
 
-    /**
-     * @brief connect
-     * @return true if the database has been created, false if already exists
-     */
-    auto connect() -> bool;
+    void connect();
+    void migrate();
     void disconnect();
     void optimize() const;
     auto backup(const QString &fileName) -> bool;

@@ -1,5 +1,5 @@
-#ifndef SQLITE_H_
-#define SQLITE_H_
+#ifndef CONNECTORS_SQLITE_H_
+#define CONNECTORS_SQLITE_H_
 
 #include <list>
 #include "./connector.h"
@@ -19,11 +19,13 @@ class SQLite : public Connector {
                     bool test = false);
     auto areForeignKeysActivated() const;
     auto isTest() const;
+    void connect() const override;
     void disconnect() const override;
     void preConnect() const override;
     void postConnect() const override;
     void optimize() const override;
     auto tables() const -> std::list<QString> override;
+    auto connectionName() const -> QString override;
     auto driverName() const -> QString override;
     auto backup(const QString &fileName) const -> bool override;
 };
@@ -36,10 +38,14 @@ inline auto SQLite::isTest() const {
     return this->test;
 }
 
-inline auto QORM::SQLite::driverName() const -> QString {
+inline auto SQLite::connectionName() const -> QString {
+    return this->getName() + FILE_EXTENSION;
+}
+
+inline auto SQLite::driverName() const -> QString {
     return "QSQLITE";
 }
 
 }  // namespace QORM
 
-#endif  // SQLITE_H_
+#endif  // CONNECTORS_SQLITE_H_
