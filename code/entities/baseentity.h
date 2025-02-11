@@ -20,7 +20,7 @@ class BaseEntity {
     BaseEntity(BaseEntity&&) noexcept = delete;
     BaseEntity& operator=(const BaseEntity&) = delete;
     BaseEntity& operator=(BaseEntity&&) = delete;
-    virtual ~BaseEntity() {}
+    virtual ~BaseEntity() = default;
 
     auto getKey() const -> const Key& { return this->key; }
     void setKey(const Key &key) { this->key = key; }

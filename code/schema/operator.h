@@ -27,7 +27,7 @@ class Operator {
     Operator(Operator&&) = delete;
     Operator& operator=(const Operator&) = delete;
     Operator& operator=(Operator&&) = delete;
-    virtual ~Operator() {}
+    virtual ~Operator() = default;
 
     virtual auto isAlreadyExecuted() const -> bool;
     virtual void setAlreadyExecuted(bool);

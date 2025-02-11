@@ -18,7 +18,7 @@ class Connector {
     Connector(Connector&&) = delete;
     Connector& operator=(const Connector&) = delete;
     Connector& operator=(Connector&&) = delete;
-    virtual ~Connector() {}
+    virtual ~Connector() = default;
 
     auto getName() const -> const QString&;
     auto getDatabase() const -> QSqlDatabase;

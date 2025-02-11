@@ -8,6 +8,7 @@ QORM::Schema::Creator::Creator(CreatorList requiredCreators) :
 }
 
 void QORM::Schema::Creator::addRequiredCreator(CreatorSPtr creator) {
+    const QMutexLocker lock(&this->creatorMutex);
     this->requiredCreators.emplace_back(std::move(creator));
 }
 

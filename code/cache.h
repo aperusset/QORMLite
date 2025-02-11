@@ -25,7 +25,7 @@ class Cache {
     Cache(Cache&&) = delete;
     Cache& operator=(const Cache&) = delete;
     Cache& operator=(Cache&&) = delete;
-    virtual ~Cache() {}
+    virtual ~Cache() = default;
 
     auto insert(const Key &key, std::unique_ptr<Entity> &&entity) -> Entity& {
         if (entity == nullptr) {

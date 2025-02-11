@@ -5,7 +5,6 @@
 #include <QString>
 #include <QVariant>
 #include <map>
-#include <utility>
 #include "query/bindable.h"
 #include "operations/operation.h"
 

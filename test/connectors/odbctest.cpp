@@ -41,7 +41,7 @@ void ODBCTest::driverNameShouldBeCompliant() {
     QCOMPARE(odbc.driverName(), "QODBC");
 }
 
-void ODBCTest::connectionNameShouldContainsDriverAndConnectionString() {
+void ODBCTest::connectionNameShouldContainDriverAndConnectionString() {
     // Given
     const auto &odbc = QORM::ODBC(this->databaseName(),
                                   DEFAULT_DRIVER_DEFINITION,

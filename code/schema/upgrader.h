@@ -18,7 +18,6 @@ class Upgrader : public Operator {
     Upgrader(Upgrader&&) = delete;
     Upgrader& operator=(const Upgrader&) = delete;
     Upgrader& operator=(Upgrader&&) = delete;
-    virtual ~Upgrader() {}
 
     auto getVersion() const -> int;
     auto getDescription() const -> QString;

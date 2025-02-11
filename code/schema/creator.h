@@ -22,7 +22,6 @@ class Creator : public Operator {
     Creator(Creator&&) = delete;
     Creator& operator=(const Creator&) = delete;
     Creator& operator=(Creator&&) = delete;
-    virtual ~Creator() {}
 
     auto getRequiredCreators() const -> const CreatorList&;
     void addRequiredCreator(CreatorSPtr);
