@@ -1,11 +1,9 @@
 #include "creatortest.h"
-#include <memory>
 #include "./database.h"
 #include "operations/model/constraint/primarykey.h"
 #include "operations/model/type/integer.h"
 #include "operations/query/select.h"
 #include "operations/query/insert.h"
-#include "fixture/testconnector.h"
 #include "fixture/testcreator.h"
 
 void CreatorTest::createTableShouldSuccess() {

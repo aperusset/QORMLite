@@ -7,6 +7,8 @@
 #include "operations/query/selection/sum.h"
 #include "operations/query/condition/equals.h"
 #include "fixture/testentity.h"
+#include "fixture/testupgrader.h"
+#include "repositories/schemaversionrepository.h"
 
 const int DEFAULT_VALUE = 42;
 
@@ -31,6 +33,42 @@ void DatabaseTest::subsequentConnectShouldFail() {
     // When / Then
     QVERIFY(database.isConnected());
     QVERIFY_EXCEPTION_THROWN(database.connect(), std::runtime_error);
+}
+
+void DatabaseTest::migrateShouldDoNothing() {
+    // Given
+    auto database = this->databaseWithCreator();
+    const auto &repository = QORM::Repositories::SchemaVersionRepository(
+        database);
+
+    // When
+    database.connect();
+    database.migrate();
+
+    // Then
+    QCOMPARE(0, repository.getCurrentSchemaVersion().getKey());
+}
+
+void DatabaseTest::migrateShouldInsertSchemaVersions() {
+    // Given
+    std::list<std::unique_ptr<QORM::Schema::Upgrader>> upgraders;
+    upgraders.emplace_back(std::make_unique<TestUpgrader>(1));
+    upgraders.emplace_back(std::make_unique<TestUpgrader>(2));
+    upgraders.emplace_back(std::make_unique<TestUpgrader>(3));
+    auto database = this->databaseWithCreator(std::move(upgraders));
+    const auto &repository = QORM::Repositories::SchemaVersionRepository(
+        database);
+
+    // When
+    database.connect();
+    database.migrate();
+
+    // Then
+    QVERIFY(repository.exists(0));
+    QVERIFY(repository.exists(1));
+    QVERIFY(repository.exists(2));
+    QVERIFY(repository.exists(3));
+    QCOMPARE(3, repository.getCurrentSchemaVersion().getKey());
 }
 
 void DatabaseTest::disconnectShouldSuccess() {
@@ -71,14 +109,14 @@ void DatabaseTest::getSchemaStateShouldReturnEmpty() {
 void DatabaseTest::getSchemaStateShouldReturnToBeUpgraded() {
     // Given
     auto database = this->databaseWithCreator();
-    std::list<std::unique_ptr<QORM::Schema::Upgrader>> upgraders;
-    upgraders.emplace_back(std::make_unique<TestUpgrader>());
-    auto databaseUpgrade = this->databaseWithCreator(std::move(upgraders));
 
     // When
     database.connect();
     database.migrate();
     database.disconnect();
+    std::list<std::unique_ptr<QORM::Schema::Upgrader>> upgraders;
+    upgraders.emplace_back(std::make_unique<TestUpgrader>());
+    auto databaseUpgrade = this->databaseWithCreator(std::move(upgraders));
     databaseUpgrade.connect();
 
     // Then
@@ -90,20 +128,14 @@ void DatabaseTest::getSchemaStateShouldReturnToBeUpgraded() {
 void DatabaseTest::getSchemaStateShouldReturnUpToDate() {
     // Given
     auto database = this->databaseWithCreator();
-    std::list<std::unique_ptr<QORM::Schema::Upgrader>> upgraders;
-    upgraders.emplace_back(std::make_unique<TestUpgrader>());
-    auto databaseUpgrade = this->databaseWithCreator(std::move(upgraders));
 
     // When
     database.connect();
     database.migrate();
-    database.disconnect();
-    databaseUpgrade.connect();
-    databaseUpgrade.migrate();
 
     // Then
-    QVERIFY(databaseUpgrade.isConnected());
-    QCOMPARE(databaseUpgrade.getSchemaState(), QORM::Schema::State::UP_TO_DATE);
+    QVERIFY(database.isConnected());
+    QCOMPARE(database.getSchemaState(), QORM::Schema::State::UP_TO_DATE);
 }
 
 void DatabaseTest::prepareExecuteShouldFailWithInvalidQuery() {

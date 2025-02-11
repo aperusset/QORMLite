@@ -10,7 +10,7 @@ void QORM::Schema::SchemaVersionCreator::createTables(
     const auto version = QORM::Field::notNull(Entities::SchemaVersion::VERSION,
                                               QORM::Integer());
     const auto description = QORM::Field::notNull(
-        Entities::SchemaVersion::DESCRIPTION, QORM::Varchar());
+        Entities::SchemaVersion::DESCRIPTION, QORM::Varchar(255));
     const auto execution = QORM::Field::notNull(
         Entities::SchemaVersion::EXECUTION, QORM::Date());
 
@@ -24,9 +24,9 @@ void QORM::Schema::SchemaVersionCreator::populate(
     database.execute(QORM::Insert(
         Entities::SchemaVersion::TABLE, {
             QORM::Assignment(Entities::SchemaVersion::VERSION,
-                             Entities::SchemaVersion::FIRST_VERSION),
+                             Entities::SchemaVersion::INITIAL_VERSION),
             QORM::Assignment(Entities::SchemaVersion::DESCRIPTION,
-                             "Initial version of schema"),
+                             Entities::SchemaVersion::INITIAL_DESCRIPTION),
             QORM::Assignment(Entities::SchemaVersion::EXECUTION,
                              QDateTime::currentDateTime())
     }));

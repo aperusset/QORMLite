@@ -3,8 +3,6 @@
 
 #include <QtTest/QtTest>
 #include "fixture/maindatabasetest.h"
-#include "fixture/testentity.h"
-#include "./cache.h"
 
 class CRUDRepositoryTest : public MainDatabaseTest {
     Q_OBJECT

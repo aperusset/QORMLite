@@ -9,9 +9,9 @@ class SchemaVersionCreator : public Creator {
  public:
     SchemaVersionCreator() {}
 
-    void createTables(const QORM::Database&) const override;
-    void createViews(const QORM::Database&) const override {}
-    void populate(const QORM::Database&) const override;
+    void createTables(const Database&) const override;
+    void createViews(const Database&) const override {}
+    void populate(const Database&) const override;
 };
 
 }  // namespace QORM::Schema

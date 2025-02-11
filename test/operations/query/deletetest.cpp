@@ -1,6 +1,5 @@
 #include "deletetest.h"
 #include "operations/query/delete.h"
-#include "operations/query/condition/condition.h"
 #include "operations/query/condition/equals.h"
 #include "operations/query/condition/and.h"
 

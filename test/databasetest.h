@@ -13,6 +13,8 @@ class DatabaseTest : public MainDatabaseTest {
  private slots:
     void connectShouldConnect();
     void subsequentConnectShouldFail();
+    void migrateShouldDoNothing();
+    void migrateShouldInsertSchemaVersions();
     void disconnectShouldSuccess();
     void optimizeShouldSuccess();
     void getSchemaStateShouldReturnEmpty();
@@ -33,6 +35,10 @@ class DatabaseTest : public MainDatabaseTest {
     void resultShouldReturnQueryValue();
     void resultsShouldReturnNonEmptyList();
     void resultsShouldReturnEmptyList();
+
+    void init() override {
+        MainDatabaseTest::init();
+    }
 };
 
 #endif  // TEST_DATABASETEST_H_

@@ -119,8 +119,8 @@ class ReadOnlyRepository {
     }
 
     void assertFieldValidity(const QString &field) const {
-        if (!QORM::Utils::contains(this->fields(), field) &&
-            !QORM::Utils::contains(this->qualifiedFields(), field)) {
+        if (!Utils::contains(this->fields(), field) &&
+            !Utils::contains(this->qualifiedFields(), field)) {
             throw std::logic_error(field.toStdString() +
                 " field is not part of " +
                 this->tableName().toStdString() + " table");
@@ -133,14 +133,14 @@ class ReadOnlyRepository {
 
     virtual auto keyCondition(const Key &key) const -> Condition {
         if constexpr (std::is_integral<Key>::value) {
-            return QORM::Equals::field(this->keyName(), key);
+            return Equals::field(this->keyName(), key);
         }
         throw std::runtime_error("keyCondition must be overriden");
     }
 
     virtual auto buildKey(const QSqlRecord &record) const -> Key {
         if constexpr (std::is_integral<Key>::value) {
-            return QORM::Utils::getIntOrThrow(record, this->keyName());
+            return Utils::getIntOrThrow(record, this->keyName());
         }
         throw std::runtime_error("buildKey must be overriden");
     }

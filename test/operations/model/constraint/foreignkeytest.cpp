@@ -1,5 +1,4 @@
 #include "foreignkeytest.h"
-#include <string>
 #include "operations/model/constraint/reference.h"
 #include "operations/model/constraint/foreignkey.h"
 #include "operations/model/type/type.h"

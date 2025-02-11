@@ -22,14 +22,14 @@ QORM::Connector::Connector(QString name) : name(std::move(name)) {
         throw std::invalid_argument("Database must have a name");
     }
     if (contains(this->name)) {
-        throw std::invalid_argument("A connector to database " +
+        throw std::invalid_argument("A connection to database " +
                  this->name.toStdString() + " already exists");
     }
 }
 
 auto QORM::Connector::getDatabase() const -> QSqlDatabase {
     if (!contains(this->name)) {
-        throw std::logic_error("A connector to database " +
+        throw std::logic_error("A connection to database " +
                 this->name.toStdString() +
                 " must be previously created");
     }
@@ -42,6 +42,7 @@ auto QORM::Connector::isConnected() const -> bool {
 
 void QORM::Connector::connect() const {
     if (!this->isConnected()) {
+        qDebug("Connect to database %s", qUtf8Printable(this->name));
         auto database = QSqlDatabase::addDatabase(this->driverName(),
                                                   this->name);
         this->preConnect();
@@ -53,14 +54,18 @@ void QORM::Connector::connect() const {
         }
         this->postConnect();
         this->optimize();
+    } else {
+        qDebug("Already connected to database %s", qUtf8Printable(this->name));
     }
 }
 
 void QORM::Connector::disconnect() const {
     if (this->isConnected()) {
+        qDebug("Close connection to database %s", qUtf8Printable(this->name));
         getDatabase().close();
     }
     if (contains(this->name)) {
+        qDebug("Remove connection to database %s", qUtf8Printable(this->name));
         QSqlDatabase::removeDatabase(this->name);
     }
 }

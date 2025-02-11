@@ -1,5 +1,4 @@
 #include "primarykeytest.h"
-#include <string>
 #include "operations/model/constraint/primarykey.h"
 #include "operations/model/field.h"
 #include "operations/model/type/type.h"

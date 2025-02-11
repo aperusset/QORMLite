@@ -1,5 +1,4 @@
 #include "odbc.h"
-#include <string>
 #include <utility>
 
 QORM::ODBC::ODBC(const QString &name, QString driverDefinition,

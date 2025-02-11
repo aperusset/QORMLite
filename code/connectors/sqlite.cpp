@@ -1,8 +1,6 @@
 #include "sqlite.h"
 #include <QFile>
 #include <QSqlQuery>
-#include <algorithm>
-#include <string>
 
 namespace {
 

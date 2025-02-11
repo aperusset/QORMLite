@@ -17,6 +17,6 @@ namespace QORM {
     auto get(const QString &name) -> Database&;
     void destroy(const QString &name);
     void destroyAll();
-}
+}  // namespace QORM
 
 #endif  // QORMLITE_H_

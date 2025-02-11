@@ -25,6 +25,7 @@
 #include "operations/query/updatetest.h"
 #include "operations/query/deletetest.h"
 #include "repositories/crudrepositorytest.h"
+#include "repositories/schemaversionrepositorytest.h"
 #include "schema/creatortest.h"
 
 auto main(int argc, char *argv[]) -> int {
@@ -57,6 +58,7 @@ auto main(int argc, char *argv[]) -> int {
     tests.emplace_back(std::make_unique<CreatorTest>());
     tests.emplace_back(std::make_unique<QORMLiteTest>());
     tests.emplace_back(std::make_unique<CRUDRepositoryTest>());
+    tests.emplace_back(std::make_unique<SchemaVersionRepositoryTest>());
 
     try {
         if (std::any_of(tests.begin(), tests.end(), [=](const auto &test) {

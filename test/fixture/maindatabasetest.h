@@ -6,7 +6,6 @@
 #include "./database.h"
 #include "fixture/testconnector.h"
 #include "fixture/testcreator.h"
-#include "fixture/testupgrader.h"
 
 class MainDatabaseTest : public QObject {
     Q_OBJECT

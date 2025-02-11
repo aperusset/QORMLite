@@ -1,7 +1,6 @@
 #ifndef TEST_CREATORTEST_H_
 #define TEST_CREATORTEST_H_
 
-#include <QtTest/QtTest>
 #include "fixture/maindatabasetest.h"
 
 class CreatorTest : public MainDatabaseTest {

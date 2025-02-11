@@ -1,7 +1,6 @@
 #include "sqlitetest.h"
 #include <QSqlQuery>
 #include <QSqlRecord>
-#include <string>
 #include "connectors/sqlite.h"
 #include "operations/model/table.h"
 

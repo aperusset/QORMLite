@@ -1,5 +1,4 @@
 #include "connectortest.h"
-#include <string>
 #include "fixture/testconnector.h"
 #include "operations/model/table.h"
 #include "operations/model/view.h"

@@ -1,7 +1,5 @@
 #include "crudrepositorytest.h"
-#include <memory>
 #include "./utils.h"
-#include "fixture/testconnector.h"
 #include "fixture/testcreator.h"
 #include "fixture/testcrudrepository.h"
 #include "fixture/testobserver.h"
@@ -11,10 +9,7 @@
 
 void CRUDRepositoryTest::qualifiedFieldsShouldQualifyAllFields() {
     // Given
-    const auto &connector = TestConnector(this->databaseName());
-    QORM::Database database(
-        std::make_unique<TestConnector>(this->databaseName()),
-        std::make_unique<TestCreator>(), {}, false);
+    auto database = this->databaseWithCreator();
     const auto &testCRUDRepository = TestCRUDRepository(database);
 
     // When
@@ -33,9 +28,7 @@ void CRUDRepositoryTest::qualifiedFieldsShouldQualifyAllFields() {
 
 void CRUDRepositoryTest::getByKeyShouldFail() {
     // Given
-    QORM::Database database(
-        std::make_unique<TestConnector>(this->databaseName()),
-        std::make_unique<TestCreator>(), {}, false);
+    auto database = this->databaseWithCreator();
     const auto &testCRUDRepository = TestCRUDRepository(database);
 
     // When
@@ -48,9 +41,7 @@ void CRUDRepositoryTest::getByKeyShouldFail() {
 
 void CRUDRepositoryTest::getByKeyShouldReturnEntity() {
     // Given
-    QORM::Database database(
-        std::make_unique<TestConnector>(this->databaseName()),
-        std::make_unique<TestCreator>(), {}, false);
+    auto database = this->databaseWithCreator();
     const auto &testCRUDRepository = TestCRUDRepository(database);
 
     // When
@@ -65,9 +56,7 @@ void CRUDRepositoryTest::getByKeyShouldReturnEntity() {
 
 void CRUDRepositoryTest::getShouldFail() {
     // Given
-    QORM::Database database(
-        std::make_unique<TestConnector>(this->databaseName()),
-        std::make_unique<TestCreator>(), {}, false);
+    auto database = this->databaseWithCreator();
     const auto &testCRUDRepository = TestCRUDRepository(database);
 
     // When
@@ -83,9 +72,7 @@ void CRUDRepositoryTest::getShouldFail() {
 
 void CRUDRepositoryTest::getShouldReturnEntity() {
     // Given
-    QORM::Database database(
-        std::make_unique<TestConnector>(this->databaseName()),
-        std::make_unique<TestCreator>(), {}, false);
+    auto database = this->databaseWithCreator();
     const auto &testCRUDRepository = TestCRUDRepository(database);
 
     // When
@@ -101,9 +88,7 @@ void CRUDRepositoryTest::getShouldReturnEntity() {
 
 void CRUDRepositoryTest::getAllShouldReturnAllExistingEntities() {
     // Given
-    QORM::Database database(
-        std::make_unique<TestConnector>(this->databaseName()),
-        std::make_unique<TestCreator>(), {}, false);
+    auto database = this->databaseWithCreator();
     const auto &testCRUDRepository = TestCRUDRepository(database);
 
     // When
@@ -119,9 +104,7 @@ void CRUDRepositoryTest::getAllShouldReturnAllExistingEntities() {
 
 void CRUDRepositoryTest::getAllShouldReturnEntitiesAccordingToConditions() {
     // Given
-    QORM::Database database(
-        std::make_unique<TestConnector>(this->databaseName()),
-        std::make_unique<TestCreator>(), {}, false);
+    auto database = this->databaseWithCreator();
     const auto &testCRUDRepository = TestCRUDRepository(database);
 
     // When
@@ -138,9 +121,7 @@ void CRUDRepositoryTest::getAllShouldReturnEntitiesAccordingToConditions() {
 
 void CRUDRepositoryTest::selectShouldReturnExpectedEntities() {
     // Given
-    QORM::Database database(
-        std::make_unique<TestConnector>(this->databaseName()),
-        std::make_unique<TestCreator>(), {}, false);
+    auto database = this->databaseWithCreator();
     const auto &testCRUDRepository = TestCRUDRepository(database);
 
     // When
@@ -158,9 +139,7 @@ void CRUDRepositoryTest::selectShouldReturnExpectedEntities() {
 
 void CRUDRepositoryTest::countShouldCountAllEntities() {
     // Given
-    QORM::Database database(
-        std::make_unique<TestConnector>(this->databaseName()),
-        std::make_unique<TestCreator>(), {}, false);
+    auto database = this->databaseWithCreator();
     const auto &testCRUDRepository = TestCRUDRepository(database);
 
     // When
@@ -176,9 +155,7 @@ void CRUDRepositoryTest::countShouldCountAllEntities() {
 
 void CRUDRepositoryTest::countShouldCountEntitiesAccordingToConditions() {
     // Given
-    QORM::Database database(
-        std::make_unique<TestConnector>(this->databaseName()),
-        std::make_unique<TestCreator>(), {}, false);
+    auto database = this->databaseWithCreator();
     const auto &testCRUDRepository = TestCRUDRepository(database);
 
     // When
@@ -195,9 +172,7 @@ void CRUDRepositoryTest::countShouldCountEntitiesAccordingToConditions() {
 
 void CRUDRepositoryTest::existsByKeyShouldReturnTrue() {
     // Given
-    QORM::Database database(
-        std::make_unique<TestConnector>(this->databaseName()),
-        std::make_unique<TestCreator>(), {}, false);
+    auto database = this->databaseWithCreator();
     const auto &testCRUDRepository = TestCRUDRepository(database);
 
     // When
@@ -211,9 +186,7 @@ void CRUDRepositoryTest::existsByKeyShouldReturnTrue() {
 
 void CRUDRepositoryTest::existsByKeyShouldReturnFalse() {
     // Given
-    QORM::Database database(
-        std::make_unique<TestConnector>(this->databaseName()),
-        std::make_unique<TestCreator>(), {}, false);
+    auto database = this->databaseWithCreator();
     const auto &testCRUDRepository = TestCRUDRepository(database);
 
     // When
@@ -226,9 +199,7 @@ void CRUDRepositoryTest::existsByKeyShouldReturnFalse() {
 
 void CRUDRepositoryTest::existsShouldReturnTrue() {
     // Given
-    QORM::Database database(
-        std::make_unique<TestConnector>(this->databaseName()),
-        std::make_unique<TestCreator>(), {}, false);
+    auto database = this->databaseWithCreator();
     const auto &testCRUDRepository = TestCRUDRepository(database);
 
     // When
@@ -243,9 +214,7 @@ void CRUDRepositoryTest::existsShouldReturnTrue() {
 
 void CRUDRepositoryTest::existsShouldReturnFalse() {
     // Given
-    QORM::Database database(
-        std::make_unique<TestConnector>(this->databaseName()),
-        std::make_unique<TestCreator>(), {}, false);
+    auto database = this->databaseWithCreator();
     const auto &testCRUDRepository = TestCRUDRepository(database);
 
     // When
@@ -259,9 +228,7 @@ void CRUDRepositoryTest::existsShouldReturnFalse() {
 
 void CRUDRepositoryTest::saveShouldInsertAndNotify() {
     // Given
-    QORM::Database database(
-        std::make_unique<TestConnector>(this->databaseName()),
-        std::make_unique<TestCreator>(), {}, false);
+    auto database = this->databaseWithCreator();
     const auto &testCRUDRepository = TestCRUDRepository(database);
     auto * const newTestEntity = new TestEntity(-1);
     auto testObserver = TestObserver();
@@ -282,9 +249,7 @@ void CRUDRepositoryTest::saveShouldInsertAndNotify() {
 
 void CRUDRepositoryTest::saveShouldUpdateAndNotify() {
     // Given
-    QORM::Database database(
-        std::make_unique<TestConnector>(this->databaseName()),
-        std::make_unique<TestCreator>(), {}, false);
+    auto database = this->databaseWithCreator();
     const auto &testCRUDRepository = TestCRUDRepository(database);
     auto * const newTestEntity = new TestEntity(-1);
     auto testObserver = TestObserver();
@@ -306,9 +271,7 @@ void CRUDRepositoryTest::saveShouldUpdateAndNotify() {
 
 void CRUDRepositoryTest::saveAllShouldInsertAndNotify() {
     // Given
-    QORM::Database database(
-        std::make_unique<TestConnector>(this->databaseName()),
-        std::make_unique<TestCreator>(), {}, false);
+    auto database = this->databaseWithCreator();
     const auto &testCRUDRepository = TestCRUDRepository(database);
     auto * const newTestEntity1 = new TestEntity(-1);
     auto * const newTestEntity2 = new TestEntity(-1);
@@ -336,9 +299,7 @@ void CRUDRepositoryTest::saveAllShouldInsertAndNotify() {
 
 void CRUDRepositoryTest::eraseShouldNotFailIfNotExists() {
     // Given
-    QORM::Database database(
-        std::make_unique<TestConnector>(this->databaseName()),
-        std::make_unique<TestCreator>(), {}, false);
+    auto database = this->databaseWithCreator();
     const auto &testCRUDRepository = TestCRUDRepository(database);
 
     // When / Then
@@ -349,9 +310,7 @@ void CRUDRepositoryTest::eraseShouldNotFailIfNotExists() {
 
 void CRUDRepositoryTest::eraseShouldDeleteAndNotify() {
     // Given
-    QORM::Database database(
-        std::make_unique<TestConnector>(this->databaseName()),
-        std::make_unique<TestCreator>(), {}, false);
+    auto database = this->databaseWithCreator();
     const auto &testCRUDRepository = TestCRUDRepository(database);
     auto * const newTestEntity = new TestEntity(-1);
     auto testObserver = TestObserver();
@@ -372,9 +331,7 @@ void CRUDRepositoryTest::eraseShouldDeleteAndNotify() {
 
 void CRUDRepositoryTest::eraseAllShouldDeleteAndNotify() {
     // Given
-    QORM::Database database(
-        std::make_unique<TestConnector>(this->databaseName()),
-        std::make_unique<TestCreator>(), {}, false);
+    auto database = this->databaseWithCreator();
     const auto &testCRUDRepository = TestCRUDRepository(database);
     auto * const newTestEntity1 = new TestEntity(-1);
     auto * const newTestEntity2 = new TestEntity(-1);
@@ -402,9 +359,7 @@ void CRUDRepositoryTest::eraseAllShouldDeleteAndNotify() {
 
 void CRUDRepositoryTest::assertFieldValidityShouldThrow() {
     // Given
-    QORM::Database database(
-        std::make_unique<TestConnector>(this->databaseName()),
-        std::make_unique<TestCreator>(), {}, false);
+    auto database = this->databaseWithCreator();
     const auto &testCRUDRepository = TestCRUDRepository(database);
 
     // When / Then
@@ -419,9 +374,7 @@ void CRUDRepositoryTest::assertFieldValidityShouldThrow() {
 
 void CRUDRepositoryTest::assertFieldValidityShouldNotThrow() {
     // Given
-    QORM::Database database(
-        std::make_unique<TestConnector>(this->databaseName()),
-        std::make_unique<TestCreator>(), {}, false);
+    auto database = this->databaseWithCreator();
     const auto &testCRUDRepository = TestCRUDRepository(database);
 
     // When / Then

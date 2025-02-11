@@ -1,6 +1,5 @@
 #include "conditiontest.h"
 #include <list>
-#include <string>
 #include "operations/query/condition/condition.h"
 #include "operations/query/condition/isnull.h"
 #include "operations/query/condition/isnotnull.h"

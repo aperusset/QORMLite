@@ -1,5 +1,5 @@
-#ifndef CONNECTOR_H_
-#define CONNECTOR_H_
+#ifndef CONNECTORS_CONNECTOR_H_
+#define CONNECTORS_CONNECTOR_H_
 
 #include <QString>
 #include <QSqlDatabase>
@@ -43,4 +43,4 @@ inline auto Connector::getName() const -> const QString& {
 
 }  // namespace QORM
 
-#endif  // CONNECTOR_H_
+#endif  // CONNECTORS_CONNECTOR_H_

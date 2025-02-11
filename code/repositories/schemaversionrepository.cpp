@@ -48,6 +48,9 @@ const -> std::list<Assignment> {
 
 auto QORM::Repositories::SchemaVersionRepository::getCurrentSchemaVersion()
 const -> const Entities::SchemaVersion& {
+    if (this->count() == 0) {
+        throw std::logic_error("No schema version found");
+    }
     return this->select(Select(Entities::SchemaVersion::TABLE)
         .orderBy({
             Desc(Entities::SchemaVersion::VERSION)
