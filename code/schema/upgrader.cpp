@@ -2,14 +2,13 @@
 #include <QMutex>
 #include <utility>
 
-QMutex upgraderMutex;
-
 QORM::Schema::Upgrader::Upgrader(int version, QString description) :
-    version(version), description(std::move(description)) {
+    version(version), description(std::move(description)),
+    upgraderMutex(QMutex::RecursionMode::Recursive) {
 }
 
 void QORM::Schema::Upgrader::execute(const Database &database) {
-    const QMutexLocker lock(&upgraderMutex);
+    const QMutexLocker lock(&this->upgraderMutex);
     if (!this->isAlreadyExecuted()) {
         this->upgrade(database);
         this->setAlreadyExecuted(true);

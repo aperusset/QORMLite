@@ -1,11 +1,9 @@
 #include "creator.h"
-#include <QMutex>
 #include <utility>
 #include "./database.h"
 
-QMutex creatorMutex;
-
 QORM::Schema::Creator::Creator(CreatorList requiredCreators) :
+    creatorMutex(QMutex::RecursionMode::Recursive),
     requiredCreators(std::move(requiredCreators)) {
 }
 
@@ -14,7 +12,7 @@ void QORM::Schema::Creator::addRequiredCreator(CreatorSPtr creator) {
 }
 
 void QORM::Schema::Creator::execute(const Database &database) {
-    const QMutexLocker lock(&creatorMutex);
+    const QMutexLocker lock(&this->creatorMutex);
     if (!this->isAlreadyExecuted()) {
         for (const auto &requiredCreator : this->requiredCreators) {
             requiredCreator->execute(database);
