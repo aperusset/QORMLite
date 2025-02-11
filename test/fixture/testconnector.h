@@ -25,12 +25,12 @@ class TestConnector : public QORM::Connector {
         optimizeCalled = true;
     }
 
-    auto driverName() const -> QString override {
-        return "QSQLITE";
+    auto connectionName() const -> QString override {
+        return this->getName();
     }
 
-    auto databaseName() const -> QString override {
-        return this->getName();
+    auto driverName() const -> QString override {
+        return "QSQLITE";
     }
 
     auto backup(const QString&) const -> bool override {

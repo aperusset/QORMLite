@@ -4,15 +4,16 @@
 #include "repositories/schemaversionrepository.h"
 
 QORM::Database::Database(ConnectorUPtr connector, bool verbose) :
-    databaseMutex(QMutex::RecursionMode::Recursive),
-    connector(std::move(connector)), creator(nullptr), verbose(verbose) {
+    Database(std::move(connector), nullptr, {}, verbose) {
 }
 
 QORM::Database::Database(ConnectorUPtr connector, CreatorUPtr creator,
                          UpgraderUPtrList upgraders, bool verbose) :
         databaseMutex(QMutex::RecursionMode::Recursive),
         connector(std::move(connector)), creator(std::move(creator)),
-        upgraders(std::move(upgraders)), verbose(verbose) {
+        upgraders(std::move(upgraders)), verbose(verbose),
+        schemaVersionRepository(
+            std::make_unique<Repositories::SchemaVersionRepository>(*this)) {
     std::set<int> upgraderVersions;
     std::transform(this->upgraders.begin(), this->upgraders.end(),
         std::inserter(upgraderVersions, upgraderVersions.begin()),
@@ -71,6 +72,8 @@ auto QORM::Database::isConnected() const -> bool {
     return connector->isConnected();
 }
 
+#include <QDebug>
+
 auto QORM::Database::getSchemaState() const -> Schema::State {
     if (!isConnected()) {
         throw std::invalid_argument("Not connected to database");
@@ -78,15 +81,15 @@ auto QORM::Database::getSchemaState() const -> Schema::State {
     const auto tables = this->connector->tables();
     const auto versioned = Utils::contains(tables,
                                            Entities::SchemaVersion::TABLE);
-    if (!versioned && tables.size() == 0) {
+    if (!versioned && tables.empty()) {
         return Schema::State::EMPTY;
     } else if (!versioned && tables.size() > 0) {
         return Schema::State::TO_BE_VERSIONED;
     } else if (this->upgraders.empty()) {
         return Schema::State::UP_TO_DATE;
     }
-    const auto &schemaVersionRepository = this->schemaVersionRepository();
-    const auto &version = schemaVersionRepository.getCurrentSchemaVersion();
+    const auto &version =
+        this->schemaVersionRepository->getCurrentSchemaVersion();
     const auto toBeUpgraded = std::any_of(upgraders.begin(), upgraders.end(),
         [&version](const auto &upgrader) {
             return upgrader->getVersion() > version.getKey();
@@ -155,8 +158,8 @@ void QORM::Database::upgrade() {
         throw std::invalid_argument("Database is not connected");
     }
     if (!this->upgraders.empty()) {
-        const auto &schemaVersionRepository = this->schemaVersionRepository();
-        const auto &version = schemaVersionRepository.getCurrentSchemaVersion();
+        const auto &version =
+            this->schemaVersionRepository->getCurrentSchemaVersion();
         this->upgraders.sort([](const auto &left, const auto &right) {
             return left->getVersion() < right->getVersion();
         });
@@ -168,24 +171,18 @@ void QORM::Database::upgrade() {
                         qUtf8Printable(connector->getName()),
                         qUtf8Printable(QString::number(upgraderVersion)));
                     upgrader->execute(*this);
-                    schemaVersionRepository.save(new Entities::SchemaVersion(
-                        upgraderVersion, upgrader->getDescription(),
-                        QDateTime::currentDateTime()));
+                    this->schemaVersionRepository->save(
+                        new Entities::SchemaVersion(upgraderVersion,
+                            upgrader->getDescription(),
+                            QDateTime::currentDateTime()));
                 }
             });
     } else {
         if (this->verbose) {
-            qDebug("No creation expected for database %s",
+            qDebug("No upgrade expected for database %s",
                 qUtf8Printable(connector->getName()));
         }
     }
-}
-
-auto QORM::Database::schemaVersionRepository()
-const -> const Repositories::SchemaVersionRepository& {
-    static const auto &repository = Repositories::SchemaVersionRepository(
-        *this);
-    return repository;
 }
 
 void QORM::Database::disconnect() {

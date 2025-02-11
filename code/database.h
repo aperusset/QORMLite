@@ -30,12 +30,11 @@ class Database {
     using ConnectorUPtr = std::unique_ptr<Connector>;
 
     QMutex databaseMutex;
-
     const ConnectorUPtr connector;
     const CreatorUPtr creator;
     UpgraderUPtrList upgraders;
-
     const bool verbose;
+    const std::unique_ptr<Repositories::SchemaVersionRepository> schemaVersionRepository;
 
     auto prepare(const QString&) const -> QSqlQuery;
     auto prepare(const Query&) const -> QSqlQuery;
@@ -43,8 +42,6 @@ class Database {
     void createSchemaVersion();
     void create();
     void upgrade();
-    auto schemaVersionRepository() const ->
-        const Repositories::SchemaVersionRepository&;
 
  public:
     Database(ConnectorUPtr, bool verbose);

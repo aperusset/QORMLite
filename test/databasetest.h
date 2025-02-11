@@ -36,8 +36,12 @@ class DatabaseTest : public MainDatabaseTest {
     void resultsShouldReturnNonEmptyList();
     void resultsShouldReturnEmptyList();
 
-    void init() override {
-        MainDatabaseTest::init();
+    void init() {
+        this->deleteAllDatabases();
+    }
+
+    void cleanup() {
+        this->deleteAllDatabases();
     }
 };
 

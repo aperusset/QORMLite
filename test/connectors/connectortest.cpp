@@ -10,18 +10,6 @@ void ConnectorTest::initShouldFailIfNameIsEmpty() {
         std::invalid_argument);
 }
 
-void ConnectorTest::initShouldFailIfIfNameAlreadyUsed() {
-    // Given
-    const auto &testConnector = TestConnector(this->databaseName());
-    testConnector.connect();
-
-    // When / Then
-    QVERIFY_EXCEPTION_THROWN(
-        TestConnector testConnector(this->databaseName()),
-        std::invalid_argument);
-    QVERIFY(testConnector.isConnected());
-}
-
 void ConnectorTest::initShouldSuccessWithValidName() {
     // Given / When / Then
     TestConnector testConnector(this->databaseName());
@@ -33,7 +21,7 @@ void ConnectorTest::getDatabaseNameShouldReturnName() {
     TestConnector testConnector(this->databaseName());
 
     // When / Then
-    QCOMPARE(testConnector.databaseName(), testConnector.getName());
+    QCOMPARE(testConnector.connectionName(), testConnector.getName());
     QVERIFY(!testConnector.isConnected());
 }
 

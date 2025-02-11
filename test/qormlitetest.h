@@ -20,7 +20,7 @@ class QORMLiteTest : public MainDatabaseTest {
     void destroyShouldSuccess();
     void destroyAllShouldSuccess();
 
-    void cleanup() override;
+    void cleanup();
 };
 
 #endif  // TEST_QORMLITETEST_H_

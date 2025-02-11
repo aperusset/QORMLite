@@ -36,8 +36,8 @@ class CRUDRepositoryTest : public MainDatabaseTest {
     void assertFieldValidityShouldThrow();
     void assertFieldValidityShouldNotThrow();
 
-    void init() override {
-        MainDatabaseTest::init();
+    void init() {
+        this->deleteAllDatabases();
     }
 };
 

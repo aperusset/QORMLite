@@ -30,9 +30,7 @@ class Connector {
     virtual void optimize() const {}
     virtual auto tables() const -> std::list<QString>;
     virtual auto views() const -> std::list<QString>;
-    virtual auto databaseName() const -> QString {
-        return this->name;
-    }
+    virtual auto connectionName() const -> QString = 0;
     virtual auto driverName() const -> QString = 0;
     virtual auto backup(const QString &fileName) const -> bool = 0;
 };

@@ -25,7 +25,7 @@ class ODBCTest : public MainDatabaseTest {
     void initShouldFailWithEmptyConnectionString();
     void initShouldSuccess();
     void driverNameShouldBeCompliant();
-    void databaseNameShouldContainsDriverAndConnectionString();
+    void connectionNameShouldContainsDriverAndConnectionString();
     void backupShouldFail();
 };
 

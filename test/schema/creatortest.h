@@ -17,6 +17,14 @@ class CreatorTest : public MainDatabaseTest {
     void createViewShouldFailIfTableNotExists();
     void insertShouldSuccess();
     void executeShouldSuccess();
+
+    void init() {
+        this->deleteAllDatabases();
+    }
+
+    void cleanup() {
+        this->deleteAllDatabases();
+    }
 };
 
 #endif  // QORMCREATORTEST_H_

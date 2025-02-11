@@ -20,7 +20,7 @@ class SQLiteTest : public MainDatabaseTest {
     void initShouldFailIfNameIsEmpty();
     void initShouldAddFileExtensionToName();
     void initShouldAddTestPrefixAndFileExtensionToName();
-    void initShouldDeleteDatabaseFile();
+    void connectShouldDeleteExistingDatabaseFile();
     void driverNameShouldBeCompliant();
     void connectShouldFailWithInvalidDatabaseName();
     void connectShouldEnableRegexpButNotForeignKeys();
@@ -29,6 +29,14 @@ class SQLiteTest : public MainDatabaseTest {
     void disconnectShouldDeleteDatabaseFile();
     void tablesShouldReturnWithoutSequence();
     void backupShouldSuccessAndCreateFile();
+
+    void init() {
+        this->deleteAllDatabases();
+    }
+
+    void cleanup() {
+        this->deleteAllDatabases();
+    }
 };
 
 #endif  // TEST_CONNECTORS_SQLITETEST_H_

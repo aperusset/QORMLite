@@ -20,8 +20,12 @@ class SchemaVersionRepositoryTest : public MainDatabaseTest {
     void getCurrentSchemaVersionShouldReturnInitial();
     void getCurrentSchemaVersionShouldReturnLatest();
 
-    void init() override {
-        MainDatabaseTest::init();
+    void init() {
+        this->deleteAllDatabases();
+    }
+
+    void cleanup() {
+        this->deleteAllDatabases();
     }
 };
 

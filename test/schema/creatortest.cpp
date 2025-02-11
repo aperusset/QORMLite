@@ -39,11 +39,12 @@ void CreatorTest::createViewShouldFailIfTableNotExists() {
     // Given
     auto database = this->databaseWithoutCreator();
     database.connect();
+    TestCreator testCreator;
 
     // When / Then
     QVERIFY_EXCEPTION_THROWN(
-        database.getCreator().createView(database, TestCreator::TEST_VIEW,
-                                         QORM::Select(TestCreator::TEST_TABLE)),
+        testCreator.createView(database, TestCreator::TEST_VIEW,
+                               QORM::Select(TestCreator::TEST_TABLE)),
         std::runtime_error);
 }
 

@@ -70,9 +70,13 @@ class BaseEntity {
 
 }  // namespace QORM::Entities
 
+namespace QORM {
+
 template<class Entity>
 using RefList = std::list<std::reference_wrapper<Entity>>;
 template<class Entity>
 using ConstRefList = std::list<std::reference_wrapper<const Entity>>;
+
+}  // namespace QORM
 
 #endif  // ENTITIES_BASEENTITY_H_

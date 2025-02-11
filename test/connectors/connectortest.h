@@ -14,7 +14,6 @@ class ConnectorTest : public MainDatabaseTest {
 
  private slots:
     void initShouldFailIfNameIsEmpty();
-    void initShouldFailIfIfNameAlreadyUsed();
     void initShouldSuccessWithValidName();
     void getDatabaseNameShouldReturnName();
     void getDatabaseShouldFailIfDatabaseClosed();
