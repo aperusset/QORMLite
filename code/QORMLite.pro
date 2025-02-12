@@ -14,8 +14,11 @@ SOURCES += \
   connectors/odbc.cpp \
   connectors/sqlite.cpp \
   entities/schemaversion.cpp \
+  operations/model/alter/addcolumn.cpp \
   operations/model/alter/altertable.cpp \
   operations/model/alter/clause.cpp \
+  operations/model/alter/dropcolumn.cpp \
+  operations/model/alter/renamecolumnto.cpp \
   operations/model/alter/renameto.cpp \
   operations/model/constraint/constraint.cpp \
   operations/model/constraint/unique.cpp \
@@ -59,8 +62,11 @@ HEADERS += \
   connectors/sqlite.h \
   entities/baseentity.h \
   entities/schemaversion.h \
+  operations/model/alter/addcolumn.h \
   operations/model/alter/altertable.h \
   operations/model/alter/clause.h \
+  operations/model/alter/dropcolumn.h \
+  operations/model/alter/renamecolumnto.h \
   operations/model/alter/renameto.h \
   operations/model/constraint/constraint.h \
   operations/model/constraint/unique.h \
