@@ -8,7 +8,7 @@ namespace QORM {
 
 class AddColumn : public Clause {
  public:
-    AddColumn(const Field&);
+    explicit AddColumn(const Field&);
 };
 
 }  // namespace QORM

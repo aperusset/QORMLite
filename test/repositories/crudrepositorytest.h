@@ -1,7 +1,7 @@
 #ifndef TEST_REPOSITORIES_CRUDREPOSITORYTEST_H_
 #define TEST_REPOSITORIES_CRUDREPOSITORYTEST_H_
 
-#include <QtTest/QtTest>
+#include <QTest>
 #include "fixture/maindatabasetest.h"
 
 class CRUDRepositoryTest : public MainDatabaseTest {

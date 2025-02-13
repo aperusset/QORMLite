@@ -7,7 +7,7 @@ namespace QORM {
 
 class RenameTo : public Clause {
  public:
-    RenameTo(const QString &tableName);
+    explicit RenameTo(const QString &renamedTo);
 };
 
 }  // namespace QORM

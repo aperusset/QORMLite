@@ -1,7 +1,7 @@
 #ifndef TEST_ENTITIES_ENTITYTEST_H_
 #define TEST_ENTITIES_ENTITYTEST_H_
 
-#include <QtTest/QtTest>
+#include <QTest>
 #include "fixture/testobserver.h"
 
 class EntityTest : public QObject {

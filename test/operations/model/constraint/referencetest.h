@@ -1,7 +1,7 @@
 #ifndef TEST_OPERATIONS_MODEL_CONSTRAINT_REFERENCETEST_H_
 #define TEST_OPERATIONS_MODEL_CONSTRAINT_REFERENCETEST_H_
 
-#include <QtTest/QtTest>
+#include <QTest>
 
 class ReferenceTest : public QObject {
     Q_OBJECT

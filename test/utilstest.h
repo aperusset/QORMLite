@@ -1,7 +1,7 @@
 #ifndef TEST_UTILSTEST_H_
 #define TEST_UTILSTEST_H_
 
-#include <QtTest/QtTest>
+#include <QTest>
 
 class UtilsTest : public QObject {
     Q_OBJECT

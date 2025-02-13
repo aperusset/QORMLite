@@ -1,7 +1,7 @@
 #ifndef TEST_OPERATIONS_MODEL_CONSTRAINT_UNIQUETEST_H_
 #define TEST_OPERATIONS_MODEL_CONSTRAINT_UNIQUETEST_H_
 
-#include <QtTest/QtTest>
+#include <QTest>
 
 class UniqueTest : public QObject {
     Q_OBJECT

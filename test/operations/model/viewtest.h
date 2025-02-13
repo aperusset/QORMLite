@@ -1,7 +1,7 @@
 #ifndef TEST_OPERATIONS_MODEL_VIEWTEST_H_
 #define TEST_OPERATIONS_MODEL_VIEWTEST_H_
 
-#include <QtTest/QtTest>
+#include <QTest>
 
 class ViewTest : public QObject {
     Q_OBJECT

@@ -1,7 +1,7 @@
 #ifndef TEST_OPERATIONS_QUERY_INSERTTEST_H_
 #define TEST_OPERATIONS_QUERY_INSERTTEST_H_
 
-#include <QtTest/QtTest>
+#include <QTest>
 
 class InsertTest : public QObject {
     Q_OBJECT

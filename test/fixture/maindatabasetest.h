@@ -2,7 +2,7 @@
 #define TEST_FIXTURE_MAINDATABASETEST_H_
 
 #include <QSqlDatabase>
-#include <QtTest/QtTest>
+#include <QTest>
 #include "./database.h"
 #include "fixture/testconnector.h"
 #include "fixture/testcreator.h"

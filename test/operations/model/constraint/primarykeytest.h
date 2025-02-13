@@ -1,7 +1,7 @@
 #ifndef TEST_OPERATIONS_MODEL_CONSTRAINT_PRIMARYKEYTEST_H_
 #define TEST_OPERATIONS_MODEL_CONSTRAINT_PRIMARYKEYTEST_H_
 
-#include <QtTest/QtTest>
+#include <QTest>
 
 class PrimaryKeyTest : public QObject {
     Q_OBJECT

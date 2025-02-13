@@ -1,7 +1,7 @@
 #ifndef TEST_OPERATIONS_QUERY_CONDITIONTEST_H_
 #define TEST_OPERATIONS_QUERY_CONDITIONTEST_H_
 
-#include <QtTest/QtTest>
+#include <QTest>
 
 class ConditionTest : public QObject {
     Q_OBJECT

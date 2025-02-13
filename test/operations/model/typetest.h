@@ -1,7 +1,7 @@
 #ifndef TEST_OPERATIONS_MODEL_TYPETEST_H_
 #define TEST_OPERATIONS_MODEL_TYPETEST_H_
 
-#include <QtTest/QtTest>
+#include <QTest>
 
 class TypeTest : public QObject {
     Q_OBJECT

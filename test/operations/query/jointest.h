@@ -1,7 +1,7 @@
 #ifndef TEST_OPERATIONS_QUERY_JOINTEST_H_
 #define TEST_OPERATIONS_QUERY_JOINTEST_H_
 
-#include <QtTest/QtTest>
+#include <QTest>
 
 class JoinTest : public QObject {
     Q_OBJECT

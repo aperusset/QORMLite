@@ -15,9 +15,9 @@ const int DEFAULT_VALUE = 42;
 void DatabaseTest::creationShouldFailWithSameVersions() {
     // Given
     std::list<std::unique_ptr<QORM::Schema::Upgrader>> upgraders;
-    upgraders.emplace_back(std::make_unique<TestUpgrader>(1));
     upgraders.emplace_back(std::make_unique<TestUpgrader>(2));
-    upgraders.emplace_back(std::make_unique<TestUpgrader>(2));
+    upgraders.emplace_back(std::make_unique<TestUpgrader>(3));
+    upgraders.emplace_back(std::make_unique<TestUpgrader>(3));
 
     // When / Then
     QVERIFY_EXCEPTION_THROWN(this->databaseWithCreator(std::move(upgraders)),
@@ -58,15 +58,15 @@ void DatabaseTest::migrateShouldDoNothing() {
     database.migrate();
 
     // Then
-    QCOMPARE(0, repository.getCurrentSchemaVersion().getKey());
+     QCOMPARE(1, repository.getCurrentSchemaVersion().getKey());
 }
 
 void DatabaseTest::migrateShouldInsertSchemaVersions() {
     // Given
     std::list<std::unique_ptr<QORM::Schema::Upgrader>> upgraders;
-    upgraders.emplace_back(std::make_unique<TestUpgrader>(1));
     upgraders.emplace_back(std::make_unique<TestUpgrader>(2));
     upgraders.emplace_back(std::make_unique<TestUpgrader>(3));
+    upgraders.emplace_back(std::make_unique<TestUpgrader>(4));
     auto database = this->databaseWithCreator(std::move(upgraders));
     const auto &repository = QORM::Repositories::SchemaVersionRepository(
         database);
@@ -76,11 +76,11 @@ void DatabaseTest::migrateShouldInsertSchemaVersions() {
     database.migrate();
 
     // Then
-    QVERIFY(repository.exists(0));
     QVERIFY(repository.exists(1));
     QVERIFY(repository.exists(2));
     QVERIFY(repository.exists(3));
-    QCOMPARE(3, repository.getCurrentSchemaVersion().getKey());
+    QVERIFY(repository.exists(4));
+    QCOMPARE(4, repository.getCurrentSchemaVersion().getKey());
 }
 
 void DatabaseTest::disconnectShouldSuccess() {
@@ -135,7 +135,7 @@ void DatabaseTest::getSchemaStateShouldReturnToBeUpgraded() {
     database.migrate();
     database.disconnect();
     std::list<std::unique_ptr<QORM::Schema::Upgrader>> upgraders;
-    upgraders.emplace_back(std::make_unique<TestUpgrader>());
+    upgraders.emplace_back(std::make_unique<TestUpgrader>(2));
     auto databaseUpgrade = this->databaseWithCreator(std::move(upgraders));
     databaseUpgrade.connect();
 

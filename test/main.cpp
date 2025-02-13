@@ -7,6 +7,7 @@
 #include "connectors/connectortest.h"
 #include "connectors/sqlitetest.h"
 #include "connectors/odbctest.h"
+#include "operations/model/altertest.h"
 #include "operations/model/typetest.h"
 #include "operations/model/fieldtest.h"
 #include "operations/model/constraint/primarykeytest.h"
@@ -36,6 +37,7 @@ auto main(int argc, char *argv[]) -> int {
     tests.emplace_back(std::make_unique<CacheTest>());
     tests.emplace_back(std::make_unique<TypeTest>());
     tests.emplace_back(std::make_unique<FieldTest>());
+    tests.emplace_back(std::make_unique<AlterTest>());
     tests.emplace_back(std::make_unique<PrimaryKeyTest>());
     tests.emplace_back(std::make_unique<ReferenceTest>());
     tests.emplace_back(std::make_unique<ForeignKeyTest>());

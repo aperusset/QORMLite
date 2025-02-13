@@ -5,7 +5,7 @@
 
 class TestUpgrader : public QORM::Schema::Upgrader {
  public:
-    TestUpgrader(int version = 1) : QORM::Schema::Upgrader(version,
+    TestUpgrader(int version = 2) : QORM::Schema::Upgrader(version,
                                         "A test upgrade") {}
     void upgrade(const QORM::Database&) const {}
 };

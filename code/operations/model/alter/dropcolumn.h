@@ -7,7 +7,7 @@ namespace QORM {
 
 class DropColumn : public Clause {
  public:
-    DropColumn(const QString &name);
+    explicit DropColumn(const QString &name);
 };
 
 }  // namespace QORM
