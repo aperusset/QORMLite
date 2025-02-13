@@ -1,7 +1,6 @@
 #ifndef TEST_CONNECTORS_ODBCTEST_H_
 #define TEST_CONNECTORS_ODBCTEST_H_
 
-#include <QtTest/QtTest>
 #include "fixture/maindatabasetest.h"
 
 class ODBCTest : public MainDatabaseTest {

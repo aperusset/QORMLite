@@ -1,7 +1,7 @@
 #ifndef TEST_OPERATIONS_MODEL_FIELDTEST_H_
 #define TEST_OPERATIONS_MODEL_FIELDTEST_H_
 
-#include <QtTest/QtTest>
+#include <QTest>
 #include "operations/model/type/type.h"
 #include "operations/model/type/integer.h"
 

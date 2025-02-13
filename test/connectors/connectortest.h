@@ -1,7 +1,6 @@
 #ifndef TEST_CONNECTORS_CONNECTORTEST_H_
 #define TEST_CONNECTORS_CONNECTORTEST_H_
 
-#include <QtTest/QtTest>
 #include "fixture/maindatabasetest.h"
 
 class ConnectorTest : public MainDatabaseTest {

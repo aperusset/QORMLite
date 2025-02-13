@@ -1,7 +1,7 @@
 #ifndef TEST_CACHETEST_H_
 #define TEST_CACHETEST_H_
 
-#include <QtTest/QtTest>
+#include <QTest>
 #include "cache.h"
 #include "fixture/testentity.h"
 

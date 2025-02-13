@@ -1,7 +1,7 @@
 #ifndef TEST_OBSERVERTEST_H_
 #define TEST_OBSERVERTEST_H_
 
-#include <QtTest/QtTest>
+#include <QTest>
 #include "fixture/testentity.h"
 #include "fixture/testobserver.h"
 

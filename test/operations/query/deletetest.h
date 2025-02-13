@@ -1,7 +1,7 @@
 #ifndef TEST_OPERATIONS_QUERY_DELETETEST_H_
 #define TEST_OPERATIONS_QUERY_DELETETEST_H_
 
-#include <QtTest/QtTest>
+#include <QTest>
 
 class DeleteTest : public QObject {
     Q_OBJECT

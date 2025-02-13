@@ -1,9 +1,7 @@
-#include "operations/query/condition/condition.h"
+#include "condition.h"
 #include <utility>
-#include <string>
-#include "operations/query/select.h"
 #include "operations/query/condition/and.h"
-#include "utils.h"
+#include "./utils.h"
 
 QORM::Condition::Condition(QString op, std::list<Condition> nestedConditions,
                            QString leftField, QString rightField,

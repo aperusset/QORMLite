@@ -1,7 +1,7 @@
 #ifndef TEST_OPERATIONS_QUERY_ORDERTEST_H_
 #define TEST_OPERATIONS_QUERY_ORDERTEST_H_
 
-#include <QtTest/QtTest>
+#include <QTest>
 
 class OrderTest : public QObject {
     Q_OBJECT

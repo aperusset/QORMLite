@@ -1,7 +1,7 @@
 #ifndef TEST_OPERATIONS_QUERY_UPDATETEST_H_
 #define TEST_OPERATIONS_QUERY_UPDATETEST_H_
 
-#include <QtTest/QtTest>
+#include <QTest>
 
 class UpdateTest : public QObject {
     Q_OBJECT

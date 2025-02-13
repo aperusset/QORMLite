@@ -1,7 +1,7 @@
 #ifndef TEST_OPERATIONS_QUERY_SELECTTEST_H_
 #define TEST_OPERATIONS_QUERY_SELECTTEST_H_
 
-#include <QtTest/QtTest>
+#include <QTest>
 
 class SelectTest : public QObject {
     Q_OBJECT

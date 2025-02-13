@@ -1,7 +1,7 @@
 #ifndef TEST_OPERATIONS_MODEL_CONSTRAINT_FOREIGNKEYTEST_H_
 #define TEST_OPERATIONS_MODEL_CONSTRAINT_FOREIGNKEYTEST_H_
 
-#include <QtTest/QtTest>
+#include <QTest>
 
 class ForeignKeyTest : public QObject {
     Q_OBJECT
