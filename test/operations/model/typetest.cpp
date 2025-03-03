@@ -4,6 +4,7 @@
 #include "operations/model/type/date.h"
 #include "operations/model/type/decimal.h"
 #include "operations/model/type/varchar.h"
+#include "operations/model/type/blob.h"
 
 void TypeTest::generate() {
     // Given
@@ -51,6 +52,14 @@ void TypeTest::varcharGenerate() {
     // Then
     QCOMPARE("varchar(" + QString::number(QORM::Varchar::DEFAULT_SIZE) + ")",
              generated);
+}
+
+void TypeTest::blobGenerate() {
+    // When
+    const auto generated = QORM::Blob().generate();
+
+    // Then
+    QCOMPARE("blob", generated);
 }
 
 void TypeTest::emptyIsCompliant() {

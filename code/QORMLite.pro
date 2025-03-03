@@ -26,6 +26,7 @@ SOURCES += \
   operations/model/constraint/primarykey.cpp \
   operations/model/field.cpp \
   operations/model/table.cpp \
+  operations/model/type/blob.cpp \
   operations/model/type/date.cpp \
   operations/model/type/type.cpp \
   operations/model/type/varchar.cpp \
@@ -75,6 +76,7 @@ HEADERS += \
   operations/model/constraint/reference.h \
   operations/model/field.h \
   operations/model/table.h \
+  operations/model/type/blob.h \
   operations/model/type/date.h \
   operations/model/type/decimal.h \
   operations/model/type/integer.h \
