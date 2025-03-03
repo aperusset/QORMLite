@@ -12,6 +12,7 @@ class TypeTest : public QObject {
     static void integerGenerate();
     static void decimalGenerate();
     static void varcharGenerate();
+    static void blobGenerate();
     static void emptyIsCompliant();
     static void dateGenerate();
     static void nowIsCompliant();
