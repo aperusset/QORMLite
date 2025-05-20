@@ -32,13 +32,13 @@ void UtilsTest::backupFileName() {
 
 void UtilsTest::parametrize() {
     // Given
-    const auto *const fieldName = "FieldName.(really funny at all)";
+    const auto *const fieldName = "Fi'eld,Na:me09.(re!ally\\-fu$nny.at%all[no?])";
 
     // When
     const auto parametrizedFieldName = QORM::Utils::parametrize(fieldName);
 
     // Then
-    QCOMPARE(":fieldnamereallyfunnyatall", parametrizedFieldName);
+    QCOMPARE(parametrizedFieldName, ":fieldname09reallyfunnyatallno");
 }
 
 void UtilsTest::dateToDay() {
