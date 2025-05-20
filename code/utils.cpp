@@ -22,7 +22,7 @@ auto QORM::Utils::backupFileName(const QString& databaseName) -> QString {
 }
 
 auto QORM::Utils::parametrize(const QString &field) -> QString {
-    static const auto regExp = QRegExp("[.() ]");
+    static const auto regExp = QRegExp("[.(): '%$,\\!\\?\\$\\-\\[\\]\\\\]");
     return ":" + field.toLower().remove(regExp);
 }
 

@@ -30,8 +30,8 @@ namespace QORM::Utils {
 
     /**
      * @brief Transform a field name so that it will be useable as parameter in
-     * aparametrized query. Convert to lower case, remove (). and space
-     * characters.
+     * a parametrized query. Convert to lower case and remove any characters
+     * like .()'%,-[]!?$\
      * @param field the field to parametrize
      * @return the parametrized field
      */
