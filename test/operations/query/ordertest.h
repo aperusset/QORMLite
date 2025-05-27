@@ -11,6 +11,8 @@ class OrderTest : public QObject {
  private slots:
     static void generateAsc();
     static void generateDesc();
+    static void generateAscNullsLast();
+    static void generateDescNullsLast();
 };
 
 #endif  // TEST_OPERATIONS_QUERY_ORDERTEST_H_
