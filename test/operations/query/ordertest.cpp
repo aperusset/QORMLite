@@ -12,7 +12,7 @@ void OrderTest::generateAsc() {
     // Then
     QCOMPARE(order.getFieldName(), DEFAULT_FIELD_NAME);
     QCOMPARE(order.getOrdering(), QORM::Ordering::Asc);
-    QCOMPARE(generated, DEFAULT_FIELD_NAME + " asc");
+    QCOMPARE(generated, DEFAULT_FIELD_NAME + " asc nulls first");
 }
 
 void OrderTest::generateDesc() {
@@ -25,5 +25,31 @@ void OrderTest::generateDesc() {
     // Then
     QCOMPARE(order.getFieldName(), DEFAULT_FIELD_NAME);
     QCOMPARE(order.getOrdering(), QORM::Ordering::Desc);
-    QCOMPARE(generated, DEFAULT_FIELD_NAME + " desc");
+    QCOMPARE(generated, DEFAULT_FIELD_NAME + " desc nulls first");
+}
+
+void OrderTest::generateAscNullsLast() {
+    // Given
+    const auto order = QORM::Asc(DEFAULT_FIELD_NAME, QORM::NullsOrdering::Last);
+
+    // When
+    const auto generated = order.generate();
+
+    // Then
+    QCOMPARE(order.getFieldName(), DEFAULT_FIELD_NAME);
+    QCOMPARE(order.getOrdering(), QORM::Ordering::Asc);
+    QCOMPARE(generated, DEFAULT_FIELD_NAME + " asc nulls last");
+}
+
+void OrderTest::generateDescNullsLast() {
+    // Given
+    const auto order = QORM::Desc(DEFAULT_FIELD_NAME,
+                                  QORM::NullsOrdering::Last);
+    // When
+    const auto generated = order.generate();
+
+    // Then
+    QCOMPARE(order.getFieldName(), DEFAULT_FIELD_NAME);
+    QCOMPARE(order.getOrdering(), QORM::Ordering::Desc);
+    QCOMPARE(generated, DEFAULT_FIELD_NAME + " desc nulls last");
 }

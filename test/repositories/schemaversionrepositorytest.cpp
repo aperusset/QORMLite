@@ -51,18 +51,19 @@ void SchemaVersionRepositoryTest::saveAndGet() {
         database);
     database.connect();
     database.migrate();
+    const auto description = "description";
+    const auto now = QDateTime::currentDateTime();
 
     // When
     QORM::Entities::SchemaVersion *schemaVersion =
-        new QORM::Entities::SchemaVersion(1, "description",
-                                          QDateTime::currentDateTime());
-    repository.save(schemaVersion);
+        new QORM::Entities::SchemaVersion(1, description, now);
+    const auto key = repository.save(schemaVersion);
 
     // Then
-    const auto &sv = repository.get(schemaVersion->getKey());
-    QCOMPARE(sv.getKey(), schemaVersion->getKey());
-    QCOMPARE(sv.getDescription(), schemaVersion->getDescription());
-    QCOMPARE(sv.getExecution(), schemaVersion->getExecution());
+    const auto &sv = repository.get(key);
+    QCOMPARE(sv.getKey(), key);
+    QCOMPARE(sv.getDescription(), description);
+    QCOMPARE(sv.getExecution(), now);
 }
 
 void SchemaVersionRepositoryTest::newSchemaVersionShouldFail() {
@@ -125,9 +126,9 @@ void SchemaVersionRepositoryTest::getCurrentSchemaVersionShouldReturnLatest() {
     QORM::Entities::SchemaVersion *schemaVersion =
         new QORM::Entities::SchemaVersion(1, "description",
                                           QDateTime::currentDateTime());
-    repository.save(schemaVersion);
+    const auto key = repository.save(schemaVersion);
     const auto &latestVersion = repository.getCurrentSchemaVersion();
 
     // Then
-    QCOMPARE(latestVersion.getKey(), schemaVersion->getKey());
+    QCOMPARE(latestVersion.getKey(), key);
 }

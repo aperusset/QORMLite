@@ -18,22 +18,24 @@ class CRUDRepository : public ReadOnlyRepository<Entity, Key> {
                             Cache<Key, Entity>* const cache = nullptr) :
         ReadOnlyRepository<Entity, Key>(database, cache) {}
 
-    virtual auto save(Entity* const entity) const -> const Key& {
+    virtual auto save(Entity* const entity) const -> const Key {
         const auto &assignmentsToDo = this->assignments(*entity);
         if (this->exists(entity->getKey())) {
             if (!assignmentsToDo.empty()) {
                 this->getDatabase().execute(Update(this->tableName(),
                                     assignmentsToDo,
                                     this->keyCondition(entity->getKey())));
+                entity->notifyChange();
             }
+            return entity->getKey();
         } else {
-            const auto &key = this->getDatabase().insertAndRetrieveKey(
+            const auto key = this->getDatabase().insertAndRetrieveKey(
                 Insert(this->tableName(), assignmentsToDo));
             entity->setKey(key);
-            this->getCache().insert(key, std::unique_ptr<Entity>(entity));
+            this->getCache().insert(key, std::unique_ptr<Entity>(entity))
+                .notifyChange();
+            return key;
         }
-        entity->notifyChange();
-        return entity->getKey();
     }
 
     virtual void saveAll(const std::list<Entity*> &entities) const {

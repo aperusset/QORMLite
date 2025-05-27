@@ -8,8 +8,9 @@ namespace QORM {
 
 class Desc : public Order {
  public:
-    explicit Desc(const QString &fieldName) :
-        Order(fieldName, Ordering::Desc) {}
+    explicit Desc(const QString &fieldName,
+                  const NullsOrdering &nullsOrdering = NullsOrdering::First) :
+        Order(fieldName, Ordering::Desc, nullsOrdering) {}
 };
 
 }  // namespace QORM
