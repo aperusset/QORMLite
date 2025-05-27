@@ -260,14 +260,14 @@ void CRUDRepositoryTest::saveShouldUpdateAndNotify() {
     database.connect();
     database.migrate();
     const auto lastInsertedKey = testCRUDRepository.save(newTestEntity);
-    testCRUDRepository.save(&testCRUDRepository.get(lastInsertedKey));
+    auto &savedEntity = testCRUDRepository.get(lastInsertedKey);
+    const auto typeIndex = savedEntity.getTypeIndex();
+    testCRUDRepository.save(&savedEntity);
 
     // Then
     QVERIFY(testCRUDRepository.exists(lastInsertedKey));
-    QVERIFY(testObserver.wasChanged(lastInsertedKey,
-                                    newTestEntity->getTypeIndex()));
-    QVERIFY(!testObserver.wasDeleted(lastInsertedKey,
-                                     newTestEntity->getTypeIndex()));
+    QVERIFY(testObserver.wasChanged(lastInsertedKey, typeIndex));
+    QVERIFY(!testObserver.wasDeleted(lastInsertedKey, typeIndex));
 }
 
 void CRUDRepositoryTest::saveAllShouldInsertAndNotify() {

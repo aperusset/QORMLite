@@ -30,8 +30,8 @@ void OrderTest::generateDesc() {
 
 void OrderTest::generateAscNullsLast() {
     // Given
-    const auto order = QORM::Asc(DEFAULT_FIELD_NAME, QORM::NullsOrdering::Last);
-
+    const auto order = QORM::Asc(DEFAULT_FIELD_NAME,
+                                 QORM::NullsOrdering::Last);
     // When
     const auto generated = order.generate();
 

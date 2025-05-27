@@ -19,10 +19,10 @@ auto QORM::Order::generate() const -> QString {
     }
     switch (this->nullsOrdering) {
     case NullsOrdering::First:
-        nullsOrder += " first ";
+        nullsOrder += " first";
         break;
     case NullsOrdering::Last:
-        nullsOrder += " last ";
+        nullsOrder += " last";
         break;
     }
     return (this->fieldName + order + nullsOrder).simplified();
