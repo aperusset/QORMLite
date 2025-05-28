@@ -1,7 +1,6 @@
 #include "unique.h"
 #include <QStringList>
 #include <utility>
-#include <string>
 
 QORM::Unique::Unique(const std::list<Field> &fields)
     : Unique(QString(), fields) {}
@@ -16,6 +15,7 @@ QORM::Unique::Unique(const QString &name, std::list<Field> fields) :
 
 auto QORM::Unique::generateConstraint() const -> QString {
     QStringList fieldNames;
+    fieldNames.reserve(this->fields.size());
     for (const auto &field : this->fields) {
         fieldNames << field.getName();
     }

@@ -1,7 +1,6 @@
 #include "primarykey.h"
 #include <QStringList>
 #include <utility>
-#include <string>
 
 QORM::PrimaryKey::PrimaryKey(Field field, bool autoIncrement) :
     Constraint(QString()), fields({std::move(field)}),
@@ -20,6 +19,7 @@ auto QORM::PrimaryKey::generateConstraint() const -> QString {
                 " primary key autoincrement").simplified();
     }
     QStringList constraintFields;
+    constraintFields.reserve(this->fields.size());
     for (const auto &field : this->fields) {
         constraintFields << field.getName();
     }

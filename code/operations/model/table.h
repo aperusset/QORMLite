@@ -21,31 +21,31 @@ class Table : public Query {
     Table(QString tableName, PrimaryKey,
           std::list<Field> = {}, std::list<ForeignKey> = {},
           std::list<Unique> = {});
-    auto getTableName() const -> const QString&;
-    auto getPrimaryKey() const -> const PrimaryKey&;
-    auto getFields() const -> const std::list<Field>&;
-    auto getForeignKeys() const -> const std::list<ForeignKey>&;
-    auto getUniques() const -> const std::list<Unique>&;
+    inline auto getTableName() const -> const QString&;
+    inline auto getPrimaryKey() const -> const PrimaryKey&;
+    inline auto getFields() const -> const std::list<Field>&;
+    inline auto getForeignKeys() const -> const std::list<ForeignKey>&;
+    inline auto getUniques() const -> const std::list<Unique>&;
     auto generate() const -> QString override;
 };
 
-inline auto Table::getTableName() const -> const QString& {
+auto Table::getTableName() const -> const QString& {
     return this->tableName;
 }
 
-inline auto Table::getPrimaryKey() const -> const PrimaryKey& {
+auto Table::getPrimaryKey() const -> const PrimaryKey& {
     return this->primaryKey;
 }
 
-inline auto Table::getFields() const -> const std::list<Field>& {
+auto Table::getFields() const -> const std::list<Field>& {
     return this->fields;
 }
 
-inline auto Table::getForeignKeys() const -> const std::list<ForeignKey>& {
+auto Table::getForeignKeys() const -> const std::list<ForeignKey>& {
     return this->foreignKeys;
 }
 
-inline auto Table::getUniques() const -> const std::list<Unique>& {
+auto Table::getUniques() const -> const std::list<Unique>& {
     return this->uniques;
 }
 

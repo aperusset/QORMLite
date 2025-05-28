@@ -13,8 +13,8 @@ class SchemaVersion : public BaseEntity<> {
 
  public:
     SchemaVersion(int version, QString description, QDateTime execution);
-    auto getDescription() const -> QString;
-    auto getExecution() const -> QDateTime;
+    inline auto getDescription() const -> QString;
+    inline auto getExecution() const -> QDateTime;
 
     inline static const QString TABLE = "schemaversion";
     inline static const QString VERSION = "version";
@@ -24,11 +24,11 @@ class SchemaVersion : public BaseEntity<> {
     inline static const QString INITIAL_DESCRIPTION = "V1 - Initial version";
 };
 
-inline auto SchemaVersion::getDescription() const -> QString {
+auto SchemaVersion::getDescription() const -> QString {
     return this->description;
 }
 
-inline auto SchemaVersion::getExecution() const -> QDateTime {
+auto SchemaVersion::getExecution() const -> QDateTime {
     return this->execution;
 }
 

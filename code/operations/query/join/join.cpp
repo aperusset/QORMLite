@@ -1,7 +1,5 @@
 #include "operations/query/join/join.h"
 #include <utility>
-#include <string>
-#include "operations/query/condition/and.h"
 
 QORM::Join::Join(JoinType joinType, QString table,
                  std::list<Condition> conditions) :

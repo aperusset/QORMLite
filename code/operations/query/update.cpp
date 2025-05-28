@@ -1,7 +1,5 @@
 #include "operations/query/update.h"
 #include <utility>
-#include <string>
-#include "operations/query/condition/and.h"
 
 QORM::Update::Update(const QString &tableName,
                      const std::list<Assignment> &assignments) :
@@ -34,6 +32,7 @@ QORM::Update::Update(const QString &tableName,
 auto QORM::Update::generate() const -> QString {
     QString update = "update " + this->getTableName() + " set ";
     QStringList assignments;
+    assignments.reserve(this->assignments.size());
     for (const auto &assignment : this->assignments) {
         assignments << assignment.generate();
     }

@@ -18,6 +18,8 @@ auto QORM::Insert::generate() const -> QString {
     } else {
         QStringList names;
         QStringList values;
+        names.reserve(this->assignments.size());
+        values.reserve(this->assignments.size());
         for (const auto &assignement : this->assignments) {
             names << assignement.getFieldName();
             values << assignement.getParameter();

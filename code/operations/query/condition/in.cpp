@@ -1,5 +1,4 @@
 #include "operations/query/condition/in.h"
-#include <string>
 #include "utils.h"
 
 namespace {
