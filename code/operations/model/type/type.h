@@ -10,11 +10,11 @@ class Type : public Operation {
 
  public:
     explicit Type(QString name);
-    auto getName() const -> const QString&;
+    inline auto getName() const -> const QString&;
     auto generate() const -> QString override;
 };
 
-inline auto Type::getName() const -> const QString& {
+auto Type::getName() const -> const QString& {
     return this->name;
 }
 

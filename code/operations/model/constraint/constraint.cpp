@@ -1,6 +1,5 @@
 #include "constraint.h"
 #include <utility>
-#include <string>
 
 QORM::Constraint::Constraint(QString name) : name(std::move(name)) {
     if (!this->name.isNull() && this->name.isEmpty()) {

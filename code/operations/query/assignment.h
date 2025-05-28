@@ -13,21 +13,21 @@ class Assignment : public Operation, public Bindable {
 
  public:
     Assignment(QString fieldName, QVariant value);
-    auto getFieldName() const -> const QString&;
-    auto getParameter() const -> const QString& override;
-    auto getValue() const -> const QVariant& override;
+    inline auto getFieldName() const -> const QString&;
+    inline auto getParameter() const -> const QString& override;
+    inline auto getValue() const -> const QVariant& override;
     auto generate() const -> QString override;
 };
 
-inline auto Assignment::getFieldName() const -> const QString& {
+auto Assignment::getFieldName() const -> const QString& {
     return this->fieldName;
 }
 
-inline auto Assignment::getParameter() const -> const QString& {
+auto Assignment::getParameter() const -> const QString& {
     return this->parameter;
 }
 
-inline auto Assignment::getValue() const -> const QVariant& {
+auto Assignment::getValue() const -> const QVariant& {
     return this->value;
 }
 

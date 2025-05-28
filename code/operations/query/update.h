@@ -18,16 +18,16 @@ class Update : public TableQuery {
            const Condition&);
     Update(const QString &tableName, std::list<Assignment>,
            std::list<Condition>);
-    auto getAssignments() const -> const std::list<Assignment>&;
-    auto getConditions() const -> const std::list<Condition>&;
+    inline auto getAssignments() const -> const std::list<Assignment>&;
+    inline auto getConditions() const -> const std::list<Condition>&;
     auto generate() const -> QString override;
 };
 
-inline auto Update::getAssignments() const -> const std::list<Assignment>& {
+auto Update::getAssignments() const -> const std::list<Assignment>& {
     return this->assignments;
 }
 
-inline auto Update::getConditions() const -> const std::list<Condition>& {
+auto Update::getConditions() const -> const std::list<Condition>& {
     return this->conditions;
 }
 

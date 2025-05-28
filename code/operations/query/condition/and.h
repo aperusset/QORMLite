@@ -4,7 +4,6 @@
 #include <QString>
 #include <QVariant>
 #include <list>
-#include <string>
 #include "operations/query/condition/condition.h"
 
 namespace QORM {

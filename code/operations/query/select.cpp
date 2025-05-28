@@ -1,9 +1,7 @@
 #include "operations/query/select.h"
-#include <string>
 #include <algorithm>
 #include <utility>
 #include "utils.h"
-#include "operations/query/condition/and.h"
 
 namespace {
 

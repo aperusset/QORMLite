@@ -1,7 +1,6 @@
 #include "foreignkey.h"
 #include <QStringList>
 #include <utility>
-#include <string>
 
 QORM::ForeignKey::ForeignKey(std::list<Reference> references,
                              QString targetTable, OnAction onAction) :
@@ -19,6 +18,8 @@ QORM::ForeignKey::ForeignKey(std::list<Reference> references,
 auto QORM::ForeignKey::generateConstraint() const -> QString {
     QStringList fromFieldNames;
     QStringList toFieldNames;
+    fromFieldNames.reserve(this->references.size());
+    toFieldNames.reserve(this->references.size());
     for (const auto &reference : this->references) {
         fromFieldNames << reference.getFrom().getName();
         toFieldNames << reference.getTo().getName();

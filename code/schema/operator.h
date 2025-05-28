@@ -29,7 +29,7 @@ class Operator {
     Operator& operator=(Operator&&) = delete;
     virtual ~Operator() = default;
 
-    virtual auto isAlreadyExecuted() const -> bool;
+    virtual inline auto isAlreadyExecuted() const -> bool;
     virtual void setAlreadyExecuted(bool);
     virtual void execute(const Database&) = 0;
 
@@ -41,7 +41,7 @@ class Operator {
     static void insert(const Database&, const Insert&);
 };
 
-inline auto Operator::isAlreadyExecuted() const -> bool {
+auto Operator::isAlreadyExecuted() const -> bool {
     return this->alreadyExecuted;
 }
 

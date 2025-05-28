@@ -20,7 +20,7 @@ class Connector {
     Connector& operator=(Connector&&) = delete;
     virtual ~Connector() = default;
 
-    auto getName() const -> const QString&;
+    inline auto getName() const -> const QString&;
     auto getDatabase() const -> QSqlDatabase;
     auto isConnected() const -> bool;
     virtual void connect() const;
@@ -35,7 +35,7 @@ class Connector {
     virtual auto backup(const QString &fileName) const -> bool = 0;
 };
 
-inline auto Connector::getName() const -> const QString& {
+auto Connector::getName() const -> const QString& {
     return this->name;
 }
 

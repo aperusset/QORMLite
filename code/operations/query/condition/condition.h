@@ -3,7 +3,6 @@
 
 #include <list>
 #include "operations/operation.h"
-#include "operations/query/selection/selection.h"
 #include "operations/query/bindable.h"
 
 namespace QORM {
@@ -22,12 +21,12 @@ class Condition : public Operation, public Bindable {
  public:
     Condition(QString op, std::list<Condition> nestedConditions,
               QString leftField, QString rightField, QVariant value);
-    auto getNestedConditions() const -> const std::list<Condition>&;
-    auto getOperator() const -> const QString&;
-    auto getLeftField() const -> const QString&;
-    auto getRightField() const -> const QString&;
-    auto getParameter() const -> const QString& override;
-    auto getValue() const -> const QVariant& override;
+    inline auto getNestedConditions() const -> const std::list<Condition>&;
+    inline auto getOperator() const -> const QString&;
+    inline auto getLeftField() const -> const QString&;
+    inline auto getRightField() const -> const QString&;
+    inline auto getParameter() const -> const QString& override;
+    inline auto getValue() const -> const QVariant& override;
     auto getParametrizedConditions() const -> std::list<Condition>;
     auto generate() const -> QString override;
 
@@ -35,28 +34,27 @@ class Condition : public Operation, public Bindable {
                                  const std::list<Condition>&) -> QString;
 };
 
-inline auto Condition::getNestedConditions()
-const -> const std::list<Condition>& {
+auto Condition::getNestedConditions() const -> const std::list<Condition>& {
     return this->nestedConditions;
 }
 
-inline auto Condition::getOperator() const -> const QString& {
+auto Condition::getOperator() const -> const QString& {
     return this->op;
 }
 
-inline auto Condition::getLeftField() const -> const QString& {
+auto Condition::getLeftField() const -> const QString& {
     return this->leftField;
 }
 
-inline auto Condition::getRightField() const -> const QString& {
+auto Condition::getRightField() const -> const QString& {
     return this->rightField;
 }
 
-inline auto Condition::getParameter() const -> const QString& {
+auto Condition::getParameter() const -> const QString& {
     return this->getRightField();
 }
 
-inline auto Condition::getValue() const -> const QVariant& {
+auto Condition::getValue() const -> const QVariant& {
     return this->value;
 }
 

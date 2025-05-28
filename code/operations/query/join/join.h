@@ -20,21 +20,21 @@ class Join : public Operation {
     Join(JoinType joinType, QString table, std::list<Condition> conditions);
 
  public:
-    auto getJoinType() const -> const JoinType&;
-    auto getTable() const -> const QString&;
-    auto getConditions() const -> const std::list<Condition>&;
+    inline auto getJoinType() const -> const JoinType&;
+    inline auto getTable() const -> const QString&;
+    inline auto getConditions() const -> const std::list<Condition>&;
     auto generate() const -> QString override;
 };
 
-inline auto Join::getJoinType() const -> const JoinType& {
+auto Join::getJoinType() const -> const JoinType& {
     return this->joinType;
 }
 
-inline auto Join::getTable() const -> const QString& {
+auto Join::getTable() const -> const QString& {
     return this->table;
 }
 
-inline auto Join::getConditions() const -> const std::list<Condition>& {
+auto Join::getConditions() const -> const std::list<Condition>& {
     return this->conditions;
 }
 

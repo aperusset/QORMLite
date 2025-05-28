@@ -19,10 +19,10 @@ class TableQuery : public Query {
     }
 
  public:
-    auto getTableName() const -> const QString&;
+    inline auto getTableName() const -> const QString&;
 };
 
-inline auto TableQuery::getTableName() const -> const QString& {
+auto TableQuery::getTableName() const -> const QString& {
     return this->tableName;
 }
 

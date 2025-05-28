@@ -19,17 +19,17 @@ class Upgrader : public Operator {
     Upgrader& operator=(const Upgrader&) = delete;
     Upgrader& operator=(Upgrader&&) = delete;
 
-    auto getVersion() const -> int;
-    auto getDescription() const -> QString;
+    inline auto getVersion() const -> int;
+    inline auto getDescription() const -> QString;
     void execute(const Database&) override;
     virtual void upgrade(const Database&) const = 0;
 };
 
-inline auto Upgrader::getVersion() const -> int {
+auto Upgrader::getVersion() const -> int {
     return this->version;
 }
 
-inline auto Upgrader::getDescription() const -> QString {
+auto Upgrader::getDescription() const -> QString {
     return this->description;
 }
 

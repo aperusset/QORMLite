@@ -14,21 +14,21 @@ class ForeignKey : public Constraint {
 
  public:
     ForeignKey(std::list<Reference>, QString targetTable, OnAction);
-    auto getReferences() const -> const std::list<Reference>&;
-    auto getTargetTable() const -> const QString&;
-    auto getOnAction() const -> const OnAction&;
+    inline auto getReferences() const -> const std::list<Reference>&;
+    inline auto getTargetTable() const -> const QString&;
+    inline auto getOnAction() const -> const OnAction&;
     auto generateConstraint() const -> QString override;
 };
 
-inline auto ForeignKey::getReferences() const -> const std::list<Reference>& {
+auto ForeignKey::getReferences() const -> const std::list<Reference>& {
     return this->references;
 }
 
-inline auto ForeignKey::getTargetTable() const -> const QString& {
+auto ForeignKey::getTargetTable() const -> const QString& {
     return this->targetTable;
 }
 
-inline auto ForeignKey::getOnAction() const -> const OnAction& {
+auto ForeignKey::getOnAction() const -> const OnAction& {
     return this->onAction;
 }
 
