@@ -1,6 +1,5 @@
 #include "operations/model/view.h"
 #include <utility>
-#include <string>
 
 QORM::View::View(QString viewName, Select select) :
     viewName(std::move(viewName)), select(std::move(select)) {
