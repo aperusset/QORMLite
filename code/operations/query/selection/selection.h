@@ -11,18 +11,18 @@ class Selection : public Operation {
 
  public:
     explicit Selection(QString fieldName, QString renamedTo = QString());
-    inline auto getFieldName() const -> const QString&;
-    inline auto getRenamedTo() const -> const QString&;
+    auto getFieldName() const -> const QString&;
+    auto getRenamedTo() const -> const QString&;
     auto generate() const -> QString override;
     auto operator == (const Selection&) const -> bool;
     auto operator != (const Selection&) const -> bool;
 };
 
-auto Selection::getFieldName() const -> const QString& {
+inline auto Selection::getFieldName() const -> const QString& {
     return this->fieldName;
 }
 
-auto Selection::getRenamedTo() const -> const QString& {
+inline auto Selection::getRenamedTo() const -> const QString& {
     return this->renamedTo;
 }
 

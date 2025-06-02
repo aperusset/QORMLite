@@ -24,13 +24,13 @@ class Select : public TableQuery {
  public:
     explicit Select(const QString &tableName);
     Select(const QString &tableName, const std::list<QString>&);
-    inline auto getSelections() const -> const std::list<Selection>&;
-    inline auto getJoins() const -> const std::list<Join>&;
-    inline auto getConditions() const -> const std::list<Condition>&;
-    inline auto getOrders() const -> const std::list<Order>&;
-    inline auto getMaxResults() const -> const QVariant&;
-    inline auto getSkippedResults() const -> const QVariant&;
-    inline auto getMergedSelects() const -> const std::list<Select>&;
+    auto getSelections() const -> const std::list<Selection>&;
+    auto getJoins() const -> const std::list<Join>&;
+    auto getConditions() const -> const std::list<Condition>&;
+    auto getOrders() const -> const std::list<Order>&;
+    auto getMaxResults() const -> const QVariant&;
+    auto getSkippedResults() const -> const QVariant&;
+    auto getMergedSelects() const -> const std::list<Select>&;
     auto generate() const -> QString override;
 
     auto join(const std::list<Join>&) -> Select&;
@@ -43,31 +43,31 @@ class Select : public TableQuery {
     auto merge(Select) -> Select&;
 };
 
-auto Select::getSelections() const -> const std::list<Selection>& {
+inline auto Select::getSelections() const -> const std::list<Selection>& {
     return this->selections;
 }
 
-auto Select::getJoins() const -> const std::list<Join>& {
+inline auto Select::getJoins() const -> const std::list<Join>& {
     return this->joins;
 }
 
-auto Select::getConditions() const -> const std::list<Condition>& {
+inline auto Select::getConditions() const -> const std::list<Condition>& {
     return this->conditions;
 }
 
-auto Select::getOrders() const -> const std::list<Order>& {
+inline auto Select::getOrders() const -> const std::list<Order>& {
     return this->orders;
 }
 
-auto Select::getMaxResults() const -> const QVariant& {
+inline auto Select::getMaxResults() const -> const QVariant& {
     return this->maxResults;
 }
 
-auto Select::getSkippedResults() const -> const QVariant& {
+inline auto Select::getSkippedResults() const -> const QVariant& {
     return this->skippedResults;
 }
 
-auto Select::getMergedSelects() const -> const std::list<Select>& {
+inline auto Select::getMergedSelects() const -> const std::list<Select>& {
     return this->mergedSelects;
 }
 

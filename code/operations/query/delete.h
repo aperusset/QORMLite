@@ -14,11 +14,11 @@ class Delete : public TableQuery {
     explicit Delete(const QString &tableName);
     Delete(const QString &tableName, Condition);
     Delete(const QString &tableName, std::list<Condition>);
-    inline auto getConditions() const -> const std::list<Condition>&;
+    auto getConditions() const -> const std::list<Condition>&;
     auto generate() const -> QString override;
 };
 
-auto Delete::getConditions() const -> const std::list<Condition>& {
+inline auto Delete::getConditions() const -> const std::list<Condition>& {
     return this->conditions;
 }
 

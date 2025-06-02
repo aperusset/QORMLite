@@ -13,11 +13,11 @@ class Unique : public Constraint {
  public:
     explicit Unique(const std::list<Field>&);
     Unique(const QString&, std::list<Field>);
-    inline auto getFields() const -> const std::list<Field>&;
+    auto getFields() const -> const std::list<Field>&;
     auto generateConstraint() const -> QString override;
 };
 
-auto Unique::getFields() const -> const std::list<Field>& {
+inline auto Unique::getFields() const -> const std::list<Field>& {
     return this->fields;
 }
 

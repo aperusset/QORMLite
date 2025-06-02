@@ -22,21 +22,21 @@ class Order : public Operation {
     Order(QString fieldName, const Ordering&, const NullsOrdering&);
 
  public:
-    inline auto getFieldName() const -> const QString&;
-    inline auto getOrdering() const -> const Ordering&;
-    inline auto getNullsOrdering() const -> const NullsOrdering&;
+    auto getFieldName() const -> const QString&;
+    auto getOrdering() const -> const Ordering&;
+    auto getNullsOrdering() const -> const NullsOrdering&;
     auto generate() const -> QString override;
 };
 
-auto Order::getFieldName() const -> const QString& {
+inline auto Order::getFieldName() const -> const QString& {
     return this->fieldName;
 }
 
-auto Order::getOrdering() const -> const Ordering& {
+inline auto Order::getOrdering() const -> const Ordering& {
     return this->ordering;
 }
 
-auto Order::getNullsOrdering() const -> const NullsOrdering& {
+inline auto Order::getNullsOrdering() const -> const NullsOrdering& {
     return this->nullsOrdering;
 }
 

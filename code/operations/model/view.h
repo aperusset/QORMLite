@@ -12,16 +12,16 @@ class View : public Query {
 
  public:
     View(QString viewName, Select select);
-    inline auto getViewName() const -> const QString&;
-    inline auto getSelect() const -> const Select&;
+    auto getViewName() const -> const QString&;
+    auto getSelect() const -> const Select&;
     auto generate() const -> QString override;
 };
 
-auto View::getViewName() const -> const QString& {
+inline auto View::getViewName() const -> const QString& {
     return this->viewName;
 }
 
-auto View::getSelect() const -> const Select& {
+inline auto View::getSelect() const -> const Select& {
     return this->select;
 }
 

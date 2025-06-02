@@ -53,7 +53,7 @@ class Database {
     Database& operator=(Database&&) = delete;
 
     auto getName() const -> const QString&;
-    inline auto isVerbose() const;
+    auto isVerbose() const;
     auto isConnected() const -> bool;
     auto getSchemaState() const -> Schema::State;
 
@@ -123,7 +123,7 @@ class Database {
     }
 };
 
-auto Database::isVerbose() const {
+inline auto Database::isVerbose() const {
     return this->verbose;
 }
 

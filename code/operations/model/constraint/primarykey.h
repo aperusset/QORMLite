@@ -14,16 +14,16 @@ class PrimaryKey : public Constraint {
  public:
     explicit PrimaryKey(Field, bool autoIncrement = true);
     explicit PrimaryKey(std::list<Field>);
-    inline auto getFields() const -> const std::list<Field>&;
-    inline auto isAutoIncrement() const;
+    auto getFields() const -> const std::list<Field>&;
+    auto isAutoIncrement() const;
     auto generateConstraint() const -> QString override;
 };
 
-auto PrimaryKey::getFields() const -> const std::list<Field>& {
+inline auto PrimaryKey::getFields() const -> const std::list<Field>& {
     return this->fields;
 }
 
-auto PrimaryKey::isAutoIncrement() const {
+inline auto PrimaryKey::isAutoIncrement() const {
     return this->autoIncrement;
 }
 

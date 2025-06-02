@@ -13,22 +13,22 @@ class ODBC : public Connector {
     ODBC(const QString &name, QString driverDefinition,
          QString connectionString);
 
-    inline auto getDriverDefinition() const -> const QString&;
-    inline auto getConnectionString() const -> const QString&;
-    inline auto driverName() const -> QString override;
+    auto getDriverDefinition() const -> const QString&;
+    auto getConnectionString() const -> const QString&;
     auto connectionName() const -> QString override;
+    auto driverName() const -> QString override;
     auto backup(const QString &fileName) const -> bool override;
 };
 
-auto ODBC::getDriverDefinition() const -> const QString& {
+inline auto ODBC::getDriverDefinition() const -> const QString& {
     return this->driverDefinition;
 }
 
-auto ODBC::getConnectionString() const -> const QString& {
+inline auto ODBC::getConnectionString() const -> const QString& {
     return this->connectionString;
 }
 
-auto ODBC::driverName() const -> QString {
+inline auto ODBC::driverName() const -> QString {
     return "QODBC";
 }
 
