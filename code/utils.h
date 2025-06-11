@@ -98,7 +98,23 @@ namespace QORM::Utils {
      */
     template<typename T>
     auto joinToString(const std::list<T> &elements, const QString &separator,
-              const std::function<QString(const T&)> &transformer) {
+            const std::function<QString(const T&)> &transformer) {
+        QStringList transformed;
+        std::transform(elements.begin(), elements.end(),
+                       std::back_inserter(transformed), transformer);
+        return transformed.join(separator);
+    }
+
+    /**
+     * @brief Join a map of elements into a QString with a separator
+     * @param elements the elements to join
+     * @param separator the separator to use
+     * @param transformer the function that transform from <K,T> to QString
+     * @return the elements joined into a single QString with the separator
+     */
+    template<typename K, typename T>
+    auto joinToString(const std::map<K, T> &elements, const QString &separator,
+            const std::function<QString(const std::pair<K, T>&)> &transformer) {
         QStringList transformed;
         std::transform(elements.begin(), elements.end(),
                        std::back_inserter(transformed), transformer);

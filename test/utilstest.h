@@ -19,7 +19,8 @@ class UtilsTest : public QObject {
     static void qualifyFieldName();
     static void containsShouldReturnTrue();
     static void containsShouldReturnFalse();
-    static void joinToStringShouldJoinWithSeparator();
+    static void joinToStringShouldJoinListWithSeparator();
+    static void joinToStringShouldJoinMapWithSeparator();
     static void getOrThrowShouldReturnValue();
     static void getOrThrowShouldThrow();
     static void getOrDefaultShouldReturnValue();

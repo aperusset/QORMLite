@@ -116,7 +116,7 @@ void UtilsTest::containsShouldReturnFalse() {
     QVERIFY(!QORM::Utils::contains(empty, 1));
 }
 
-void UtilsTest::joinToStringShouldJoinWithSeparator() {
+void UtilsTest::joinToStringShouldJoinListWithSeparator() {
     // Given
     const std::list<int> values{0, 1, 2};
 
@@ -128,6 +128,20 @@ void UtilsTest::joinToStringShouldJoinWithSeparator() {
 
     // Then
     QCOMPARE(joined, "0-1-2");
+}
+
+void UtilsTest::joinToStringShouldJoinMapWithSeparator() {
+    // Given
+    const std::map<int, int> values{{0, 1}, {1, 2}, {2, 3}};
+
+    // When
+    const auto joined = QORM::Utils::joinToString<int, int>(values, "-",
+        [](const auto &pair) -> QString {
+            return QString::number(pair.first) + QString::number(pair.second);
+        });
+
+    // Then
+    QCOMPARE(joined, "01-12-23");
 }
 
 void UtilsTest::getOrThrowShouldReturnValue() {
