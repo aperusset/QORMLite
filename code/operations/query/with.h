@@ -12,11 +12,11 @@ class With : public Operation {
 
  public:
     explicit With(std::map<QString, Select>);
-    auto getSelects() const -> const std::map<QString, Select>;
+    auto getSelects() const -> const std::map<QString, Select>&;
     auto generate() const -> QString override;
 };
 
-inline auto With::getSelects() const -> const std::map<QString, Select> {
+inline auto With::getSelects() const -> const std::map<QString, Select>& {
     return this->selects;
 }
 
