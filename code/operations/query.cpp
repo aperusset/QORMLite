@@ -5,8 +5,8 @@ void QORM::Query::addBindable(const Bindable &bindable) {
 }
 
 void QORM::Query::bind(QSqlQuery &query) const {
-    for (const auto &bindable : this->bindables) {
-        query.bindValue(bindable.first, bindable.second);
+    for (const auto &[key, value] : this->bindables) {
+        query.bindValue(key, value);
     }
 }
 

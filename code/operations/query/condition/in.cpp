@@ -16,7 +16,7 @@ QORM::In::In(const QString &field, const Select &select, bool include) :
 QORM::In::In(const QString &field, const std::list<QString> &elements,
              bool include) :
     Condition(buildOperator(include), {}, field,
-              "(" + QORM::Utils::joinToString<QString>(elements, ", ",
+              "(" + Utils::joinToString(elements, ", ",
                     [](const auto &element) {
                         return "'" + element + "'";
                     }) + ")", QVariant())  {
@@ -28,7 +28,7 @@ QORM::In::In(const QString &field, const std::list<QString> &elements,
 QORM::In::In(const QString &field, const std::list<int> &elements,
              bool include) :
     Condition(buildOperator(include), {}, field,
-              "(" + QORM::Utils::joinToString<int>(elements, ", ",
+              "(" + Utils::joinToString(elements, ", ",
                     [](const auto &element) {
                         return QString::number(element);
                     }) + ")", QVariant())  {
