@@ -8,6 +8,7 @@
 #include "./database.h"
 #include "./utils.h"
 #include "entities/baseentity.h"
+#include "operations/query/cte.h"
 #include "operations/query/selection/count.h"
 #include "operations/query/condition/equals.h"
 
@@ -93,6 +94,10 @@ class ReadOnlyRepository {
 
     auto select(const Select &select) const {
         return database.entities(select, entityCreator);
+    }
+
+    auto select(const CTE<Select> &cte) const {
+        return database.entities(cte, entityCreator);
     }
 
     auto count() const -> size_t {

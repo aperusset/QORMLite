@@ -3,6 +3,7 @@
 #include "fixture/testcreator.h"
 #include "fixture/testcrudrepository.h"
 #include "fixture/testobserver.h"
+#include "operations/query/cte.h"
 #include "operations/query/select.h"
 #include "operations/query/condition/in.h"
 #include "operations/query/condition/equals.h"
@@ -135,6 +136,27 @@ void CRUDRepositoryTest::selectShouldReturnExpectedEntities() {
     QCOMPARE(2U, testCRUDRepository.select(
         QORM::Select(TestCreator::TEST_TABLE, {TestCreator::TEST_FIELD})
             .where({QORM::In(TestCreator::TEST_FIELD, {id1, id3})})).size());
+}
+
+void CRUDRepositoryTest::selectCTEShouldReturnExpectedEntities() {
+    // Given
+    auto database = this->databaseWithCreator();
+    const auto &testCRUDRepository = TestCRUDRepository(database);
+    const QString withCTEName = "withTableName";
+
+    // When
+    database.connect();
+    database.migrate();
+    const auto id1 = testCRUDRepository.save(new TestEntity(-1));
+    testCRUDRepository.save(new TestEntity(-1));
+    const auto id3 = testCRUDRepository.save(new TestEntity(-1));
+
+    // Then
+    QCOMPARE(2U, testCRUDRepository.select(
+        QORM::CTE<QORM::Select>({{withCTEName,
+            QORM::Select(TestCreator::TEST_TABLE, {TestCreator::TEST_FIELD})
+                .where({QORM::In(TestCreator::TEST_FIELD, {id1, id3})})}
+        }, QORM::Select(withCTEName))).size());
 }
 
 void CRUDRepositoryTest::countShouldCountAllEntities() {

@@ -2,12 +2,12 @@
 #define OPERATIONS_QUERY_INSERT_H_
 
 #include <list>
-#include "operations/query/tablequery.h"
+#include "operations/query/tabledataquery.h"
 #include "operations/query/assignment.h"
 
 namespace QORM {
 
-class Insert : public TableQuery {
+class Insert : public TableDataQuery {
     const std::list<Assignment> assignments;
 
  public:

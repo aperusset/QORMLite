@@ -1,4 +1,4 @@
-#include "operations/query/update.h"
+#include "update.h"
 #include <utility>
 
 QORM::Update::Update(const QString &tableName,
@@ -13,7 +13,7 @@ QORM::Update::Update(const QString &tableName,
 QORM::Update::Update(const QString &tableName,
                      std::list<Assignment> assignments,
                      std::list<Condition> conditions) :
-    TableQuery(tableName), assignments(std::move(assignments)),
+    TableDataQuery(tableName), assignments(std::move(assignments)),
     conditions(std::move(conditions)) {
     if (this->assignments.empty()) {
         throw std::invalid_argument("Update must have at least one assignment");

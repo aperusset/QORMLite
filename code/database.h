@@ -9,6 +9,7 @@
 #include "connectors/connector.h"
 #include "entities/baseentity.h"
 #include "operations/query.h"
+#include "operations/query/cte.h"
 #include "operations/query/insert.h"
 #include "operations/query/select.h"
 #include "schema/creator.h"
@@ -42,6 +43,13 @@ class Database {
     void createSchemaVersion();
     void create();
     void upgrade();
+
+    template<class Selector>
+    static void assertSelector() {
+        static_assert(std::is_base_of<Select, Selector>::value ||
+                      std::is_base_of<CTE<Select>, Selector>::value,
+                      "Selector must be Select || CTE<Select>");
+    }
 
  public:
     Database(ConnectorUPtr, bool verbose);
@@ -80,42 +88,46 @@ class Database {
         return keyExtractor(this->execute(insert));
     }
 
-    template<class Entity>
-    auto entity(const Select &select,
+    template<class Entity, class Selector = Select>
+    auto entity(const Selector &selector,
                 const std::function<Entity&(const QSqlRecord&)> &extractor)
     const -> Entity& {
-        if (const auto all = entities(select, extractor); !all.empty()) {
+        assertSelector<Selector>();
+        if (const auto all = entities(selector, extractor); !all.empty()) {
             return all.front().get();
         }
         throw std::logic_error("No entity found with given query : " +
-                               select.generate().toStdString());
+                               selector.generate().toStdString());
     }
 
-    template<class Entity>
-    auto entities(const Select &select,
+    template<class Entity, class Selector = Select>
+    auto entities(const Selector &selector,
             const std::function<Entity&(const QSqlRecord&)> &extractor) const {
+        assertSelector<Selector>();
         RefList<Entity> entities;
-        auto qSqlQuery = this->execute(select);
+        auto qSqlQuery = this->execute(selector);
         while (qSqlQuery.next()) {
             entities.push_back(extractor(qSqlQuery.record()));
         }
         return entities;
     }
 
-    template<typename Result>
-    auto result(const Select &select, const Result &defaultValue,
+    template<typename Result, class Selector = Select>
+    auto result(const Selector &selector, const Result &defaultValue,
             const std::function<Result(const QSqlRecord&)> &extractor) const {
-        if (const auto all = results(select, extractor); !all.empty()) {
+        assertSelector<Selector>();
+        if (const auto all = results(selector, extractor); !all.empty()) {
             return all.front();
         }
         return defaultValue;
     }
 
-    template<typename Result>
-    auto results(const Select &select,
+    template<typename Result, class Selector = Select>
+    auto results(const Selector &selector,
             const std::function<Result(const QSqlRecord&)> &extractor) const {
+        assertSelector<Selector>();
         std::list<Result> results;
-        auto qSqlQuery = this->execute(select);
+        auto qSqlQuery = this->execute(selector);
         while (qSqlQuery.next()) {
             results.push_back(extractor(qSqlQuery.record()));
         }

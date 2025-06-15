@@ -1,4 +1,4 @@
-#include "operations/query/select.h"
+#include "select.h"
 #include <algorithm>
 #include <utility>
 #include "utils.h"
@@ -22,7 +22,7 @@ QORM::Select::Select(const QString &tableName) : Select(tableName, {" * "}) {}
 
 QORM::Select::Select(const QString &tableName,
                      const std::list<QString> &fields) :
-    TableQuery(tableName) {
+    TableDataQuery(tableName) {
     for (const auto &field : fields) {
         this->selections.emplace_back(Selection(field));
     }

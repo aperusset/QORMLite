@@ -1,4 +1,4 @@
-#include "operations/query/delete.h"
+#include "delete.h"
 #include <utility>
 
 QORM::Delete::Delete(const QString &tableName) : Delete(tableName, {}) {}
@@ -8,7 +8,7 @@ QORM::Delete::Delete(const QString &tableName, Condition condition) :
 
 QORM::Delete::Delete(const QString &tableName,
                      std::list<Condition> conditions) :
-    TableQuery(tableName), conditions(std::move(conditions)) {
+    TableDataQuery(tableName), conditions(std::move(conditions)) {
     for (const auto &condition : this->conditions) {
         for (const auto &bindable : condition.getParametrizedConditions()) {
             this->addBindable(bindable);

@@ -9,7 +9,9 @@
 #include <QVariant>
 #include <algorithm>
 #include <list>
+#include <map>
 #include <string>
+#include <utility>
 #include "operations/query/selection/selection.h"
 
 namespace QORM::Utils {
@@ -96,12 +98,30 @@ namespace QORM::Utils {
      * @param transformer the function that transform from T to QString
      * @return the elements joined into a single QString with the separator
      */
-    template<typename T>
+    template<typename T, typename Transformer>
     auto joinToString(const std::list<T> &elements, const QString &separator,
-              const std::function<QString(const T&)> &transformer) {
+                      Transformer &&transformer) {
         QStringList transformed;
         std::transform(elements.begin(), elements.end(),
-                       std::back_inserter(transformed), transformer);
+                       std::back_inserter(transformed),
+                       std::forward<Transformer>(transformer));
+        return transformed.join(separator);
+    }
+
+    /**
+     * @brief Join a map of elements into a QString with a separator
+     * @param elements the elements to join
+     * @param separator the separator to use
+     * @param transformer the function that transform from <K, T> to QString
+     * @return the elements joined into a single QString with the separator
+     */
+    template<typename K, typename T, typename Transformer>
+    auto joinToString(const std::map<K, T> &elements, const QString &separator,
+                      Transformer &&transformer) {
+        QStringList transformed;
+        std::transform(elements.begin(), elements.end(),
+                       std::back_inserter(transformed),
+                       std::forward<Transformer>(transformer));
         return transformed.join(separator);
     }
 

@@ -101,6 +101,7 @@ HEADERS += \
   operations/query/condition/or.h \
   operations/query/condition/smaller.h \
   operations/query/condition/smallerorequals.h \
+  operations/query/cte.h \
   operations/query/delete.h \
   operations/query/insert.h \
   operations/query/join/crossjoin.h \
@@ -121,6 +122,7 @@ HEADERS += \
   operations/query/selection/selection.h \
   operations/query/selection/sum.h \
   operations/query/selection/upper.h \
+  operations/query/tabledataquery.h \
   operations/query/tablequery.h \
   operations/query/update.h \
   repositories/crudrepository.h \
