@@ -48,7 +48,6 @@ SOURCES += \
   operations/query/select.cpp \
   operations/query/selection/selection.cpp \
   operations/query/update.cpp \
-  operations/query/with.cpp \
   repositories/schemaversionrepository.cpp \
   schema/creator.cpp \
   database.cpp \
@@ -102,6 +101,7 @@ HEADERS += \
   operations/query/condition/or.h \
   operations/query/condition/smaller.h \
   operations/query/condition/smallerorequals.h \
+  operations/query/cte.h \
   operations/query/delete.h \
   operations/query/insert.h \
   operations/query/join/crossjoin.h \
@@ -122,9 +122,9 @@ HEADERS += \
   operations/query/selection/selection.h \
   operations/query/selection/sum.h \
   operations/query/selection/upper.h \
+  operations/query/tabledataquery.h \
   operations/query/tablequery.h \
   operations/query/update.h \
-  operations/query/with.h \
   repositories/crudrepository.h \
   repositories/readonlyrepository.h \
   repositories/schemaversionrepository.h \

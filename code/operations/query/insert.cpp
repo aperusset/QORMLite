@@ -1,11 +1,11 @@
-#include "operations/query/insert.h"
+#include "insert.h"
 #include <utility>
 
 QORM::Insert::Insert(const QString &tableName) : Insert(tableName, {}) {}
 
 QORM::Insert::Insert(const QString &tableName,
                      std::list<Assignment> assignments) :
-    TableQuery(tableName), assignments(std::move(assignments)) {
+    TableDataQuery(tableName), assignments(std::move(assignments)) {
     for (const auto &assignement : this->assignments) {
         this->addBindable(assignement);
     }
