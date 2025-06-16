@@ -42,11 +42,12 @@ class CTE : public Query {  // Common Table Expression
             })).simplified() + " " + query.generate();
     }
 
-    void bind(QSqlQuery &query) const override {
-        Query::bind(query);
-        for (const auto &[key, value] : this->withs) {
-            value.bind(query);
+    void bind(QSqlQuery &qSqlQuery) const override {
+        Query::bind(qSqlQuery);
+        for (const auto &[_, value] : this->withs) {
+            value.bind(qSqlQuery);
         }
+        this->query.bind(qSqlQuery);
     }
 };
 
