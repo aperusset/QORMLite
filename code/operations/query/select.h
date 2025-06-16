@@ -2,7 +2,7 @@
 #define OPERATIONS_QUERY_SELECT_H_
 
 #include <list>
-#include "operations/query/tablequery.h"
+#include "operations/query/tabledataquery.h"
 #include "operations/query/selection/selection.h"
 #include "operations/query/join/join.h"
 #include "operations/query/condition/condition.h"
@@ -10,7 +10,7 @@
 
 namespace QORM {
 
-class Select : public TableQuery {
+class Select : public TableDataQuery {
     std::list<Selection> selections;
     std::list<Join> joins;
     std::list<Condition> conditions;

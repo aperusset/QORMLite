@@ -2,12 +2,12 @@
 #define OPERATIONS_QUERY_DELETE_H_
 
 #include <list>
-#include "operations/query/tablequery.h"
+#include "operations/query/tabledataquery.h"
 #include "operations/query/condition/condition.h"
 
 namespace QORM {
 
-class Delete : public TableQuery {
+class Delete : public TableDataQuery {
     const std::list<Condition> conditions;
 
  public:

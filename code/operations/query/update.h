@@ -2,13 +2,13 @@
 #define OPERATIONS_QUERY_UPDATE_H_
 
 #include <list>
-#include "operations/query/tablequery.h"
+#include "operations/query/tabledataquery.h"
 #include "operations/query/assignment.h"
 #include "operations/query/condition/condition.h"
 
 namespace QORM {
 
-class Update : public TableQuery {
+class Update : public TableDataQuery {
     const std::list<Assignment> assignments;
     const std::list<Condition> conditions;
 

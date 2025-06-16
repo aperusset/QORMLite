@@ -2,6 +2,7 @@
 #include <QSqlField>
 #include <QSqlRecord>
 #include <list>
+#include <map>
 #include <string>
 #include "./utils.h"
 #include "operations/query/selection/selection.h"
@@ -32,7 +33,7 @@ void UtilsTest::backupFileName() {
 
 void UtilsTest::parametrize() {
     // Given
-    const auto *const fieldName = "Fi'eld,Na:me09.(re!ally\\-fu$nny.at%all[no?])";
+    const QString fieldName = "Fi'eld,Na:me09.(re!ally\\-fu$nny.at%all[no?])";
 
     // When
     const auto parametrizedFieldName = QORM::Utils::parametrize(fieldName);
@@ -116,18 +117,32 @@ void UtilsTest::containsShouldReturnFalse() {
     QVERIFY(!QORM::Utils::contains(empty, 1));
 }
 
-void UtilsTest::joinToStringShouldJoinWithSeparator() {
+void UtilsTest::joinToStringShouldJoinListWithSeparator() {
     // Given
     const std::list<int> values{0, 1, 2};
 
     // When
-    const auto joined = QORM::Utils::joinToString<int>(values, "-",
+    const auto joined = QORM::Utils::joinToString(values, "-",
         [](const auto &value) -> QString {
             return QString::number(value);
         });
 
     // Then
     QCOMPARE(joined, "0-1-2");
+}
+
+void UtilsTest::joinToStringShouldJoinMapWithSeparator() {
+    // Given
+    const std::map<int, int> values{{0, 1}, {1, 2}, {2, 3}};
+
+    // When
+    const auto joined = QORM::Utils::joinToString(values, "-",
+        [](const auto &pair) -> QString {
+            return QString::number(pair.first) + QString::number(pair.second);
+        });
+
+    // Then
+    QCOMPARE(joined, "01-12-23");
 }
 
 void UtilsTest::getOrThrowShouldReturnValue() {

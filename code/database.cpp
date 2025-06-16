@@ -1,4 +1,6 @@
 #include "database.h"
+#include <algorithm>
+#include <set>
 #include <utility>
 #include "schema/schemaversioncreator.h"
 #include "repositories/schemaversionrepository.h"
@@ -12,7 +14,7 @@ QORM::Database::Database(ConnectorUPtr connector, CreatorUPtr creator,
         databaseMutex(QMutex::RecursionMode::Recursive),
         connector(std::move(connector)), creator(std::move(creator)),
         upgraders(std::move(upgraders)), verbose(verbose),
-        schemaVersionRepository(
+        svRepository(
             std::make_unique<Repositories::SchemaVersionRepository>(*this)) {
     std::set<int> upgraderVersions;
     std::transform(this->upgraders.begin(), this->upgraders.end(),
@@ -86,8 +88,7 @@ auto QORM::Database::getSchemaState() const -> Schema::State {
     } else if (this->upgraders.empty()) {
         return Schema::State::UP_TO_DATE;
     }
-    const auto &version =
-        this->schemaVersionRepository->getCurrentSchemaVersion();
+    const auto &version = this->svRepository->getCurrentSchemaVersion();
     const auto toBeUpgraded = std::any_of(upgraders.begin(), upgraders.end(),
         [&version](const auto &upgrader) {
             return upgrader->getVersion() > version.getKey();
@@ -149,8 +150,7 @@ void QORM::Database::create() {
 
 void QORM::Database::upgrade() {
     if (!this->upgraders.empty()) {
-        const auto &version =
-            this->schemaVersionRepository->getCurrentSchemaVersion();
+        const auto &version = this->svRepository->getCurrentSchemaVersion();
         this->upgraders.sort([](const auto &left, const auto &right) {
             return left->getVersion() < right->getVersion();
         });
@@ -162,7 +162,7 @@ void QORM::Database::upgrade() {
                         qUtf8Printable(connector->getName()),
                         qUtf8Printable(QString::number(upgraderVersion)));
                     upgrader->execute(*this);
-                    this->schemaVersionRepository->save(
+                    this->svRepository->save(
                         new Entities::SchemaVersion(upgraderVersion,
                             upgrader->getDescription(),
                             QDateTime::currentDateTime()));

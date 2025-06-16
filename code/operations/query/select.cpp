@@ -22,7 +22,7 @@ QORM::Select::Select(const QString &tableName) : Select(tableName, {" * "}) {}
 
 QORM::Select::Select(const QString &tableName,
                      const std::list<QString> &fields) :
-    TableQuery(tableName) {
+    TableDataQuery(tableName) {
     for (const auto &field : fields) {
         this->selections.emplace_back(Selection(field));
     }
