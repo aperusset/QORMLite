@@ -41,6 +41,14 @@ class CTE : public Query {  // Common Table Expression
                        pair.second.generate() + ")";
             })).simplified() + " " + query.generate();
     }
+
+    void bind(QSqlQuery &qSqlQuery) const override {
+        Query::bind(qSqlQuery);
+        for (const auto &[_, value] : this->withs) {
+            value.bind(qSqlQuery);
+        }
+        this->query.bind(qSqlQuery);
+    }
 };
 
 }  // namespace QORM

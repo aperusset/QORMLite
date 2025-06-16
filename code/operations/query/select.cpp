@@ -124,6 +124,13 @@ auto QORM::Select::generate() const -> QString {
     return select.simplified();
 }
 
+void QORM::Select::bind(QSqlQuery &query) const {
+    TableDataQuery::bind(query);
+    for (const auto &select : this->mergedSelects) {
+        select.bind(query);
+    }
+}
+
 auto QORM::LastInsertedId::generate() const -> QString {
     return "select last_insert_rowid()";
 }

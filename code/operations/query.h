@@ -15,7 +15,7 @@ class Query : public Operation {
 
  public:
     void addBindable(const Bindable&);
-    void bind(QSqlQuery&) const;
+    virtual void bind(QSqlQuery&) const;
     auto hasBindables() const -> bool;
     auto willBind(const Bindable&) const -> bool;
 };
