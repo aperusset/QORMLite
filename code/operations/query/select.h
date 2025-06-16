@@ -10,9 +10,6 @@
 
 namespace QORM {
 
-// TODO(aperusset) override bind(QSqlQuery&) - open bug ?
-// -> to apply binding to mergedSelects and withClause
-
 class Select : public TableDataQuery {
     std::list<Selection> selections;
     std::list<Join> joins;

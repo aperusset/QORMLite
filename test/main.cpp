@@ -25,6 +25,7 @@
 #include "operations/query/inserttest.h"
 #include "operations/query/updatetest.h"
 #include "operations/query/deletetest.h"
+#include "operations/query/ctetest.h"
 #include "repositories/crudrepositorytest.h"
 #include "repositories/schemaversionrepositorytest.h"
 #include "schema/creatortest.h"
@@ -53,6 +54,7 @@ auto main(int argc, char *argv[]) -> int {
     tests.emplace_back(std::make_unique<InsertTest>());
     tests.emplace_back(std::make_unique<UpdateTest>());
     tests.emplace_back(std::make_unique<DeleteTest>());
+    tests.emplace_back(std::make_unique<CTETest>());
     tests.emplace_back(std::make_unique<ConnectorTest>());
     tests.emplace_back(std::make_unique<SQLiteTest>());
     tests.emplace_back(std::make_unique<ODBCTest>());

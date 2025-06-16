@@ -1,4 +1,4 @@
-#include "delete.h"
+#include "operations/query/delete.h"
 #include <utility>
 
 QORM::Delete::Delete(const QString &tableName) : Delete(tableName, {}) {}
