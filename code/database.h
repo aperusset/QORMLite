@@ -35,7 +35,7 @@ class Database {
     const CreatorUPtr creator;
     UpgraderUPtrList upgraders;
     const bool verbose;
-    const std::unique_ptr<Repositories::SchemaVersionRepository> schemaVersionRepository;
+    const std::unique_ptr<Repositories::SchemaVersionRepository> svRepository;
 
     auto prepare(const QString&) const -> QSqlQuery;
     auto prepare(const Query&) const -> QSqlQuery;
