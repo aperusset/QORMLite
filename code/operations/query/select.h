@@ -32,6 +32,7 @@ class Select : public TableDataQuery {
     auto getSkippedResults() const -> const QVariant&;
     auto getMergedSelects() const -> const std::list<Select>&;
     auto generate() const -> QString override;
+    void bind(QSqlQuery&) const override;
 
     auto join(const std::list<Join>&) -> Select&;
     auto where(const std::list<Condition>&) -> Select&;
