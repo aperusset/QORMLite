@@ -3,11 +3,11 @@
 #include <utility>
 
 QORM::PrimaryKey::PrimaryKey(Field field, bool autoIncrement) :
-    Constraint(QString()), fields({std::move(field)}),
+    Constraint(std::nullopt), fields({std::move(field)}),
     autoIncrement(autoIncrement) {}
 
-QORM::PrimaryKey::PrimaryKey(std::list<Field> fields) : Constraint(QString()),
-    fields(std::move(fields)), autoIncrement(false) {
+QORM::PrimaryKey::PrimaryKey(std::list<Field> fields) :
+    Constraint(std::nullopt), fields(std::move(fields)), autoIncrement(false) {
     if (this->fields.empty()) {
         throw std::invalid_argument("A primary key must have field(s).");
     }

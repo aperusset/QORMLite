@@ -17,8 +17,8 @@ class Select : public TableDataQuery {
     std::list<QString> groupedBy;
     std::list<Condition> havings;
     std::list<Order> orders;
-    QVariant maxResults;
-    QVariant skippedResults;
+    std::optional<unsigned int> maxResults;
+    std::optional<unsigned int> skippedResults;
     std::list<Select> mergedSelects;
 
  public:
@@ -28,8 +28,8 @@ class Select : public TableDataQuery {
     auto getJoins() const -> const std::list<Join>&;
     auto getConditions() const -> const std::list<Condition>&;
     auto getOrders() const -> const std::list<Order>&;
-    auto getMaxResults() const -> const QVariant&;
-    auto getSkippedResults() const -> const QVariant&;
+    auto getMaxResults() const -> unsigned int;
+    auto getSkippedResults() const -> unsigned int;
     auto getMergedSelects() const -> const std::list<Select>&;
     auto generate() const -> QString override;
     void bind(QSqlQuery&) const override;
@@ -60,12 +60,12 @@ inline auto Select::getOrders() const -> const std::list<Order>& {
     return this->orders;
 }
 
-inline auto Select::getMaxResults() const -> const QVariant& {
-    return this->maxResults;
+inline auto Select::getMaxResults() const -> unsigned int {
+    return this->maxResults.value();
 }
 
-inline auto Select::getSkippedResults() const -> const QVariant& {
-    return this->skippedResults;
+inline auto Select::getSkippedResults() const -> unsigned int {
+    return this->skippedResults.value_or(0U);
 }
 
 inline auto Select::getMergedSelects() const -> const std::list<Select>& {

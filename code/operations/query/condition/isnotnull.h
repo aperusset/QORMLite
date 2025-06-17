@@ -9,7 +9,7 @@ namespace QORM {
 class IsNotNull : public Condition {
  public:
     explicit IsNotNull(const QString &field) :
-        Condition(" is not null ", {}, field, QString(), QVariant()) {}
+        Condition(" is not null ", {}, field, std::nullopt, QVariant()) {}
 };
 
 }  // namespace QORM

@@ -7,6 +7,14 @@
 #include "operations/query/order/asc.h"
 #include "operations/query/order/desc.h"
 
+void SelectTest::selectEmptyOrBlankTableNameShouldFail() {
+    // Given
+
+    // Given / When / Then
+    QVERIFY_EXCEPTION_THROWN(QORM::Select(""), std::invalid_argument);
+    QVERIFY_EXCEPTION_THROWN(QORM::Select("  "), std::invalid_argument);
+}
+
 void SelectTest::selectAll() {
     // Given
     const QORM::Select select(DEFAULT_TABLE_NAME);
@@ -202,7 +210,7 @@ void SelectTest::selectFieldWithOrdersNotSelected() {
 
 void SelectTest::selectAllWithLimit() {
     // Given
-    const auto limit = 10;
+    const auto limit = 10U;
     const auto select = QORM::Select(DEFAULT_TABLE_NAME).limit(limit);
 
     // When
@@ -210,14 +218,15 @@ void SelectTest::selectAllWithLimit() {
 
     // Then
     QCOMPARE(select.getTableName(), DEFAULT_TABLE_NAME);
-    QCOMPARE(select.getMaxResults().toInt(), limit);
+    QCOMPARE(select.getMaxResults(), limit);
+    QCOMPARE(select.getSkippedResults(), 0U);
     QCOMPARE(generated, "select distinct * from " + DEFAULT_TABLE_NAME +
                         " limit " + QString::number(limit));
 }
 
 void SelectTest::selectAllWithOffset() {
     // Given
-    const auto offset = 10;
+    const auto offset = 10U;
     const auto select = QORM::Select(DEFAULT_TABLE_NAME).offset(offset);
 
     // When
@@ -225,7 +234,7 @@ void SelectTest::selectAllWithOffset() {
 
     // Then
     QCOMPARE(select.getTableName(), DEFAULT_TABLE_NAME);
-    QCOMPARE(select.getSkippedResults().toInt(), offset);
+    QCOMPARE(select.getSkippedResults(), offset);
     QCOMPARE(generated, "select distinct * from " + DEFAULT_TABLE_NAME +
                         " offset " + QString::number(offset));
 }

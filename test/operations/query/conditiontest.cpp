@@ -22,14 +22,14 @@ void ConditionTest::withoutOperatorShouldFail() {
     // When / Then
     QVERIFY_EXCEPTION_THROWN(
         QORM::Condition("", {QORM::IsNull(DEFAULT_FIELD_NAME)},
-                        DEFAULT_FIELD_NAME, QString(), QVariant()),
+                        DEFAULT_FIELD_NAME, std::nullopt, QVariant()),
         std::invalid_argument);
 }
 
 void ConditionTest::withoutLeftOperandAndNestedConditionShouldFail() {
     // When / Then
     QVERIFY_EXCEPTION_THROWN(
-        QORM::Condition("op", {}, QString(), QString(), QVariant()),
+        QORM::Condition("op", {}, std::nullopt, std::nullopt, QVariant()),
         std::invalid_argument);
 }
 
@@ -54,7 +54,8 @@ void ConditionTest::isNull() {
     // Then
     QCOMPARE(generated, DEFAULT_FIELD_NAME + " is null");
     QVERIFY(isNull.getNestedConditions().empty());
-    QVERIFY(isNull.getRightField().isNull());
+    QCOMPARE(DEFAULT_FIELD_NAME, isNull.getLeftField());
+    QVERIFY_EXCEPTION_THROWN(isNull.getRightField(), std::runtime_error);
     QVERIFY(isNull.getValue().isNull());
     QVERIFY(isNull.getParametrizedConditions().empty());
 }
@@ -69,7 +70,8 @@ void ConditionTest::isNotNull() {
     // Then
     QCOMPARE(generated, DEFAULT_FIELD_NAME + " is not null");
     QVERIFY(isNotNull.getNestedConditions().empty());
-    QVERIFY(isNotNull.getRightField().isNull());
+    QCOMPARE(DEFAULT_FIELD_NAME, isNotNull.getLeftField());
+    QVERIFY_EXCEPTION_THROWN(isNotNull.getRightField(), std::runtime_error);
     QVERIFY(isNotNull.getValue().isNull());
     QVERIFY(isNotNull.getParametrizedConditions().empty());
 }
@@ -122,7 +124,7 @@ void ConditionTest::equalsFields() {
 
 void ConditionTest::equalsSelection() {
     // Given
-    const auto sum = QORM::Sum(DEFAULT_FIELD_NAME, QString());
+    const auto sum = QORM::Sum(DEFAULT_FIELD_NAME);
     const auto equals = QORM::Equals::selection(sum, DEFAULT_VALUE);
 
     // When
@@ -138,7 +140,7 @@ void ConditionTest::equalsSelection() {
 
 void ConditionTest::equalsSelections() {
     // Given
-    const auto sum = QORM::Sum(DEFAULT_FIELD_NAME, QString());
+    const auto sum = QORM::Sum(DEFAULT_FIELD_NAME);
     const auto equals = QORM::Equals::selections(sum, sum);
 
     // When
@@ -183,7 +185,7 @@ void ConditionTest::notEqualsFields() {
 
 void ConditionTest::notEqualsSelection() {
     // Given
-    const auto sum = QORM::Sum(DEFAULT_FIELD_NAME, QString());
+    const auto sum = QORM::Sum(DEFAULT_FIELD_NAME);
     const auto notEquals = QORM::NotEquals::selection(sum, DEFAULT_VALUE);
 
     // When
@@ -199,7 +201,7 @@ void ConditionTest::notEqualsSelection() {
 
 void ConditionTest::notEqualsSelections() {
     // Given
-    const auto sum = QORM::Sum(DEFAULT_FIELD_NAME, QString());
+    const auto sum = QORM::Sum(DEFAULT_FIELD_NAME);
     const auto notEquals = QORM::NotEquals::selections(sum, sum);
 
     // When
@@ -244,7 +246,7 @@ void ConditionTest::greaterFields() {
 
 void ConditionTest::greaterSelection() {
     // Given
-    const auto sum = QORM::Sum(DEFAULT_FIELD_NAME, QString());
+    const auto sum = QORM::Sum(DEFAULT_FIELD_NAME);
     const auto greater = QORM::Greater::selection(sum, DEFAULT_VALUE);
 
     // When
@@ -260,7 +262,7 @@ void ConditionTest::greaterSelection() {
 
 void ConditionTest::greaterSelections() {
     // Given
-    const auto sum = QORM::Sum(DEFAULT_FIELD_NAME, QString());
+    const auto sum = QORM::Sum(DEFAULT_FIELD_NAME);
     const auto greater = QORM::Greater::selections(sum, sum);
 
     // When
@@ -305,7 +307,7 @@ void ConditionTest::greaterOrEqualsFields() {
 
 void ConditionTest::greaterOrEqualsSelection() {
     // Given
-    const auto sum = QORM::Sum(DEFAULT_FIELD_NAME, QString());
+    const auto sum = QORM::Sum(DEFAULT_FIELD_NAME);
     const auto greaterOrEquals = QORM::GreaterOrEquals::selection(sum,
                                     DEFAULT_VALUE);
     // When
@@ -321,7 +323,7 @@ void ConditionTest::greaterOrEqualsSelection() {
 
 void ConditionTest::greaterOrEqualsSelections() {
     // Given
-    const auto sum = QORM::Sum(DEFAULT_FIELD_NAME, QString());
+    const auto sum = QORM::Sum(DEFAULT_FIELD_NAME);
     const auto greaterOrEquals = QORM::GreaterOrEquals::selections(sum, sum);
 
     // When
@@ -366,7 +368,7 @@ void ConditionTest::smallerFields() {
 
 void ConditionTest::smallerSelection() {
     // Given
-    const auto sum = QORM::Sum(DEFAULT_FIELD_NAME, QString());
+    const auto sum = QORM::Sum(DEFAULT_FIELD_NAME);
     const auto smaller = QORM::Smaller::selection(sum, DEFAULT_VALUE);
 
     // When
@@ -382,7 +384,7 @@ void ConditionTest::smallerSelection() {
 
 void ConditionTest::smallerSelections() {
     // Given
-    const auto sum = QORM::Sum(DEFAULT_FIELD_NAME, QString());
+    const auto sum = QORM::Sum(DEFAULT_FIELD_NAME);
     const auto smaller = QORM::Smaller::selections(sum, sum);
 
     // When
@@ -427,7 +429,7 @@ void ConditionTest::smallerOrEqualsFields() {
 
 void ConditionTest::smallerOrEqualsSelection() {
     // Given
-    const auto sum = QORM::Sum(DEFAULT_FIELD_NAME, QString());
+    const auto sum = QORM::Sum(DEFAULT_FIELD_NAME);
     const auto smallerOrEquals = QORM::SmallerOrEquals::selection(sum,
                                     DEFAULT_VALUE);
     // When
@@ -443,7 +445,7 @@ void ConditionTest::smallerOrEqualsSelection() {
 
 void ConditionTest::smallerOrEqualsSelections() {
     // Given
-    const auto sum = QORM::Sum(DEFAULT_FIELD_NAME, QString());
+    const auto sum = QORM::Sum(DEFAULT_FIELD_NAME);
     const auto smallerOrEquals = QORM::SmallerOrEquals::selections(sum, sum);
 
     // When
@@ -562,8 +564,8 @@ void ConditionTest::andMultipleConditions() {
     QCOMPARE(generated, "(" + equals.generate() + " and " + equals.generate() +
                         " and " + equals.generate() + ")");
     QCOMPARE(andCondition.getNestedConditions().size(), 3U);
-    QVERIFY(andCondition.getRightField().isNull());
-    QVERIFY(andCondition.getLeftField().isNull());
+    QVERIFY_EXCEPTION_THROWN(andCondition.getRightField(), std::runtime_error);
+    QVERIFY_EXCEPTION_THROWN(andCondition.getLeftField(), std::runtime_error);
     QVERIFY(andCondition.getValue().isNull());
     QVERIFY(andCondition.getParametrizedConditions().empty());
 }
@@ -589,8 +591,8 @@ void ConditionTest::orMultipleCondition() {
     QCOMPARE(generated, "(" + equals.generate() + " or " + equals.generate() +
                         " or " + equals.generate() + ")");
     QCOMPARE(orCondition.getNestedConditions().size(), 3U);
-    QVERIFY(orCondition.getRightField().isNull());
-    QVERIFY(orCondition.getLeftField().isNull());
+    QVERIFY_EXCEPTION_THROWN(orCondition.getRightField(), std::runtime_error);
+    QVERIFY_EXCEPTION_THROWN(orCondition.getLeftField(), std::runtime_error);
     QVERIFY(orCondition.getValue().isNull());
     QVERIFY(orCondition.getParametrizedConditions().empty());
 }
@@ -637,8 +639,8 @@ void ConditionTest::recursiveParametrized() {
                         " and " + equalsParameter.generate() + " and " +
                         equalsParameter.generate() + "))");
     QCOMPARE(condition.getNestedConditions().size(), 2U);
-    QVERIFY(condition.getRightField().isNull());
-    QVERIFY(condition.getLeftField().isNull());
+    QVERIFY_EXCEPTION_THROWN(condition.getRightField(), std::runtime_error);
+    QVERIFY_EXCEPTION_THROWN(condition.getLeftField(), std::runtime_error);
     QVERIFY(condition.getValue().isNull());
     QCOMPARE(condition.getParametrizedConditions().size(), 2U);
 }
@@ -656,8 +658,8 @@ void ConditionTest::recursiveNotParametrized() {
     QCOMPARE(generated, "(" + equals.generate() + " or (" + equals.generate() +
                         " and " + equals.generate() + "))");
     QCOMPARE(condition.getNestedConditions().size(), 2U);
-    QVERIFY(condition.getRightField().isNull());
-    QVERIFY(condition.getLeftField().isNull());
+    QVERIFY_EXCEPTION_THROWN(condition.getRightField(), std::runtime_error);
+    QVERIFY_EXCEPTION_THROWN(condition.getLeftField(), std::runtime_error);
     QVERIFY(condition.getValue().isNull());
     QCOMPARE(condition.getParametrizedConditions().size(), 0U);
 }

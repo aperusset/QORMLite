@@ -63,12 +63,12 @@ auto QORM::Select::orderBy(const std::list<Order> &orders) -> Select& {
 }
 
 auto QORM::Select::limit(const unsigned int limit) -> Select& {
-    this->maxResults = QVariant(limit);
+    this->maxResults = limit;
     return *this;
 }
 
 auto QORM::Select::offset(const unsigned int offset) -> Select& {
-    this->skippedResults = QVariant(offset);
+    this->skippedResults = offset;
     return *this;
 }
 
@@ -110,11 +110,11 @@ auto QORM::Select::generate() const -> QString {
     select += Condition::generateMultiple(" having ", this->havings);
     select += generatedOrders.isEmpty() ? "" : " order by " +
                                           generatedOrders.join(", ");
-    if (this->maxResults.isValid()) {
-        select += " limit " + this->maxResults.toString();
+    if (this->maxResults.has_value()) {
+        select += " limit " + QString::number(this->maxResults.value());
     }
-    if (this->skippedResults.isValid()) {
-        select += " offset " + this->skippedResults.toString();
+    if (this->skippedResults.has_value()) {
+        select += " offset " + QString::number(this->skippedResults.value());
     }
     select += std::accumulate(this->mergedSelects.begin(),
                               this->mergedSelects.end(), QString(""),

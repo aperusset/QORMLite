@@ -13,8 +13,8 @@ class TableQuery : public Query {
  protected:
     explicit TableQuery(QString tableName) :
         tableName(std::move(tableName).simplified()) {
-        if (this->tableName.isEmpty()) {
-            throw std::invalid_argument("Table name must not be empty");
+        if (this->tableName.simplified().isEmpty()) {
+            throw std::invalid_argument("Table name must not be blank");
         }
     }
 

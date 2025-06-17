@@ -11,7 +11,8 @@ namespace QORM {
 class Not : public Condition {
  public:
     explicit Not(Condition condition) :
-        Condition(" not ", {condition}, QString(), QString(), QVariant()) {}
+        Condition(" not ", {condition}, std::nullopt, std::nullopt,
+                  QVariant()) {}
 };
 
 }  // namespace QORM

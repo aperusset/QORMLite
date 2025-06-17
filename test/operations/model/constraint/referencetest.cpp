@@ -6,8 +6,8 @@
 void ReferenceTest::getFrom() {
     // Given
     const auto type = QORM::Type("type");
-    const auto field1 = QORM::Field("field1", type, false, QString());
-    const auto field2 = QORM::Field("field2", type, false, QString());
+    const auto field1 = QORM::Field("field1", type, false, std::nullopt);
+    const auto field2 = QORM::Field("field2", type, false, std::nullopt);
     const auto reference = QORM::Reference(field1, field2);
 
     // When
@@ -20,8 +20,8 @@ void ReferenceTest::getFrom() {
 void ReferenceTest::getTo() {
     // Given
     const auto type = QORM::Type("type");
-    const auto field1 = QORM::Field("field1", type, false, QString());
-    const auto field2 = QORM::Field("field2", type, false, QString());
+    const auto field1 = QORM::Field("field1", type, false, std::nullopt);
+    const auto field2 = QORM::Field("field2", type, false, std::nullopt);
     const auto reference = QORM::Reference(field1, field2);
 
     // When

@@ -10,7 +10,8 @@ class AssignmentTest : public QObject {
     inline static const QVariant DEFAULT_VALUE = QVariant::fromValue(1);
 
  private slots:
-    static void generate();
+    void emptyOrBlankFieldNameShouldFail();
+    void generate();
 };
 
 #endif  // TEST_OPERATIONS_QUERY_ASSIGNMENTTEST_H_

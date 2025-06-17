@@ -4,19 +4,20 @@
 #include "./utils.h"
 
 QORM::Condition::Condition(QString op, std::list<Condition> nestedConditions,
-                           QString leftField, QString rightField,
-                           QVariant value) :
+        std::optional<QString> leftField, std::optional<QString> rightField,
+        QVariant value) :
     op(std::move(op)), nestedConditions(std::move(nestedConditions)),
     leftField(std::move(leftField)),
     rightField(value.isValid() ?
-            QORM::Utils::parametrize(this->leftField) :
+            std::optional(QORM::Utils::parametrize(this->leftField.value())) :
             std::move(rightField)),
     value(std::move(value)) {
-    if (this->op.isNull() || this->op.isEmpty()) {
+    if (this->op.isNull() || this->op.simplified().isEmpty()) {
         throw std::invalid_argument("A condition must have an operator.");
     }
 
-    if ((this->leftField.isNull() || this->leftField.isEmpty()) &&
+    if ((!this->leftField.has_value() ||
+          this->leftField.value().simplified().isEmpty()) &&
             this->nestedConditions.empty()) {
         throw std::invalid_argument(
                     "A condition must have a left operand or be nested.");
@@ -27,6 +28,20 @@ auto QORM::Condition::isParametrized() const -> bool {
     return this->value.isValid() || std::any_of(
         nestedConditions.begin(), nestedConditions.end(),
         std::bind(&Condition::isParametrized, std::placeholders::_1));
+}
+
+auto QORM::Condition::getLeftField() const -> const QString& {
+    if (!this->leftField.has_value()) {
+        throw std::runtime_error("Condition has not any left field.");
+    }
+    return this->leftField.value();
+}
+
+auto QORM::Condition::getRightField() const -> const QString& {
+    if (!this->rightField.has_value()) {
+        throw std::runtime_error("Condition has not any right field.");
+    }
+    return this->rightField.value();
 }
 
 auto QORM::Condition::getParametrizedConditions()
@@ -46,13 +61,15 @@ const -> std::list<Condition> {
 
 auto QORM::Condition::generate() const -> QString {
     if (this->nestedConditions.empty()) {
-        return (this->leftField + this->op + this->rightField).simplified();
+        return (this->leftField.value() + this->op +
+                this->rightField.value_or("")).simplified();
     }
     if (this->nestedConditions.size() == 1) {  // recursivity stop condition
         return (this->op +
                 this->nestedConditions.front().generate()).simplified();
     }
     QStringList conditions;
+    conditions.reserve(this->nestedConditions.size());
     for (const auto &condition : this->nestedConditions) {
         conditions << condition.generate();
     }

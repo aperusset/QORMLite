@@ -9,7 +9,7 @@ namespace QORM {
 class Sum : public Selection {
  public:
     explicit Sum(const QString &fieldToSum,
-                 const QString &renameTo = QString()) :
+                 const std::optional<QString> &renameTo = std::nullopt) :
         Selection("sum(" + fieldToSum + ")", renameTo) {}
 };
 

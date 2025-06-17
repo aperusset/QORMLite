@@ -2,7 +2,7 @@
 
 auto QORM::SmallerOrEquals::field(const QString &field,
                                   const QVariant &value) -> Condition {
-    return Condition(" <= ", {}, field, QString(), value);
+    return Condition(" <= ", {}, field, std::nullopt, value);
 }
 
 auto QORM::SmallerOrEquals::fields(const QString &left,
@@ -12,7 +12,7 @@ auto QORM::SmallerOrEquals::fields(const QString &left,
 
 auto QORM::SmallerOrEquals::selection(const Selection &selection,
                                       const QVariant &value) -> Condition {
-    return Condition(" <= ", {}, selection, QString(), value);
+    return Condition(" <= ", {}, selection, std::nullopt, value);
 }
 
 auto QORM::SmallerOrEquals::selections(const Selection &right,

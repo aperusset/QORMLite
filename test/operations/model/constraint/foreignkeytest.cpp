@@ -14,9 +14,9 @@ void ForeignKeyTest::emptyReferencesListShouldFail() {
 void ForeignKeyTest::generateCascade() {
     // Given
     const auto fieldFrom = QORM::Field("field1", QORM::Integer(), false,
-                                       QString());
+                                       std::nullopt);
     const auto fieldTo = QORM::Field("field2", QORM::Integer(), false,
-                                     QString());
+                                     std::nullopt);
     const auto reference = QORM::Reference(fieldFrom, fieldTo);
     const auto foreignKey = QORM::ForeignKey({reference}, DEFAULT_TARGET_TABLE,
                                              QORM::OnAction::Cascade);
@@ -24,6 +24,7 @@ void ForeignKeyTest::generateCascade() {
     const auto generated = foreignKey.generate();
 
     // Then
+    QCOMPARE(foreignKey.getName(), "targettable_fk");
     QCOMPARE(generated, QString("constraint targettable_fk foreign ") +
              "key (field1) references [targetTable](field2) on delete cascade");
 }
@@ -31,9 +32,9 @@ void ForeignKeyTest::generateCascade() {
 void ForeignKeyTest::generateRestrict() {
     // Given
     const auto fieldFrom = QORM::Field("field1", QORM::Integer(), false,
-                                       QString());
+                                       std::nullopt);
     const auto fieldTo = QORM::Field("field2", QORM::Integer(), false,
-                                     QString());
+                                     std::nullopt);
     const auto reference = QORM::Reference(fieldFrom, fieldTo);
     const auto foreignKey = QORM::ForeignKey({reference}, DEFAULT_TARGET_TABLE,
                                              QORM::OnAction::Restrict);
@@ -41,6 +42,7 @@ void ForeignKeyTest::generateRestrict() {
     const auto generated = foreignKey.generate();
 
     // Then
+    QCOMPARE(foreignKey.getName(), "targettable_fk");
     QCOMPARE(generated, QString("constraint targettable_fk foreign key") +
              " (field1) references [targetTable](field2) on delete restrict");
 }
@@ -48,9 +50,9 @@ void ForeignKeyTest::generateRestrict() {
 void ForeignKeyTest::generateSetNull() {
     // Given
     const auto fieldFrom = QORM::Field("field1", QORM::Integer(), false,
-                                       QString());
+                                       std::nullopt);
     const auto fieldTo = QORM::Field("field2", QORM::Integer(), false,
-                                     QString());
+                                     std::nullopt);
     const auto reference = QORM::Reference(fieldFrom, fieldTo);
     const auto foreignKey = QORM::ForeignKey({reference}, DEFAULT_TARGET_TABLE,
                                              QORM::OnAction::SetNull);
@@ -58,6 +60,7 @@ void ForeignKeyTest::generateSetNull() {
     const auto generated = foreignKey.generate();
 
     // Then
+    QCOMPARE(foreignKey.getName(), "targettable_fk");
     QCOMPARE(generated, QString("constraint targettable_fk foreign key") +
              " (field1) references [targetTable](field2) on delete set null");
 }
@@ -65,9 +68,9 @@ void ForeignKeyTest::generateSetNull() {
 void ForeignKeyTest::generateSetDefault() {
     // Given
     const auto fieldFrom = QORM::Field("field1", QORM::Integer(), false,
-                                       QString());
+                                       std::nullopt);
     const auto fieldTo = QORM::Field("field2", QORM::Integer(), false,
-                                     QString());
+                                     std::nullopt);
     const auto reference = QORM::Reference(fieldFrom, fieldTo);
     const auto foreignKey = QORM::ForeignKey({reference}, DEFAULT_TARGET_TABLE,
                                              QORM::OnAction::SetDefault);
@@ -75,6 +78,7 @@ void ForeignKeyTest::generateSetDefault() {
     const auto generated = foreignKey.generate();
 
     // Then
+    QCOMPARE(foreignKey.getName(), "targettable_fk");
     QCOMPARE(generated, QString("constraint targettable_fk foreign key") +
             " (field1) references [targetTable](field2) on delete set default");
 }
@@ -82,9 +86,9 @@ void ForeignKeyTest::generateSetDefault() {
 void ForeignKeyTest::generateMultipleFields() {
     // Given
     const auto fieldFrom = QORM::Field("field1", QORM::Integer(), false,
-                                       QString());
+                                       std::nullopt);
     const auto fieldTo = QORM::Field("field2", QORM::Integer(), false,
-                                     QString());
+                                     std::nullopt);
     const auto reference1 = QORM::Reference(fieldFrom, fieldTo);
     const auto reference2 = QORM::Reference(fieldTo, fieldFrom);
     const auto foreignKey = QORM::ForeignKey({reference1, reference2},
@@ -93,6 +97,7 @@ void ForeignKeyTest::generateMultipleFields() {
     const auto generated = foreignKey.generate();
 
     // Then
+    QCOMPARE(foreignKey.getName(), "targettable_fk");
     QCOMPARE(generated, QString("constraint targettable_fk foreign key") +
             " (field1, field2) references [targetTable](field2, field1) on" +
              " delete cascade");
