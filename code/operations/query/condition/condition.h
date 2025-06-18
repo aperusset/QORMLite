@@ -2,6 +2,7 @@
 #define OPERATIONS_QUERY_CONDITION_CONDITION_H_
 
 #include <list>
+#include <optional>
 #include "operations/operation.h"
 #include "operations/query/bindable.h"
 
@@ -24,7 +25,9 @@ class Condition : public Operation, public Bindable {
               std::optional<QString> rightField, QVariant value);
     auto getNestedConditions() const -> const std::list<Condition>&;
     auto getOperator() const -> const QString&;
+    auto hasLeftField() const -> bool;
     auto getLeftField() const -> const QString&;
+    auto hasRightField() const -> bool;
     auto getRightField() const -> const QString&;
     auto getParameter() const -> const QString& override;
     auto getValue() const -> const QVariant& override;
@@ -42,6 +45,14 @@ const -> const std::list<Condition>& {
 
 inline auto Condition::getOperator() const -> const QString& {
     return this->op;
+}
+
+inline auto Condition::hasLeftField() const -> bool {
+    return this->leftField.has_value();
+}
+
+inline auto Condition::hasRightField() const -> bool {
+    return this->rightField.has_value();
 }
 
 inline auto Condition::getParameter() const -> const QString& {

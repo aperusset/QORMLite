@@ -9,10 +9,10 @@ QORM::Constraint::Constraint(std::optional<QString> name) :
 }
 
 auto QORM::Constraint::getName() const -> const QString& {
-    if (this->name.has_value()) {
+    if (this->hasName()) {
         return this->name.value();
     }
-    throw std::logic_error("Constaint does not have a name.");
+    throw std::logic_error("Constraint does not have a name.");
 }
 
 auto QORM::Constraint::generate() const -> QString {

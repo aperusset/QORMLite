@@ -54,8 +54,10 @@ void ConditionTest::isNull() {
     // Then
     QCOMPARE(generated, DEFAULT_FIELD_NAME + " is null");
     QVERIFY(isNull.getNestedConditions().empty());
-    QCOMPARE(DEFAULT_FIELD_NAME, isNull.getLeftField());
-    QVERIFY_EXCEPTION_THROWN(isNull.getRightField(), std::runtime_error);
+    QVERIFY(isNull.hasLeftField());
+    QCOMPARE(isNull.getLeftField(), DEFAULT_FIELD_NAME);
+    QVERIFY(!isNull.hasRightField());
+    QVERIFY_EXCEPTION_THROWN(isNull.getRightField(), std::logic_error);
     QVERIFY(isNull.getValue().isNull());
     QVERIFY(isNull.getParametrizedConditions().empty());
 }
@@ -70,8 +72,10 @@ void ConditionTest::isNotNull() {
     // Then
     QCOMPARE(generated, DEFAULT_FIELD_NAME + " is not null");
     QVERIFY(isNotNull.getNestedConditions().empty());
-    QCOMPARE(DEFAULT_FIELD_NAME, isNotNull.getLeftField());
-    QVERIFY_EXCEPTION_THROWN(isNotNull.getRightField(), std::runtime_error);
+    QVERIFY(isNotNull.hasLeftField());
+    QCOMPARE(isNotNull.getLeftField(), DEFAULT_FIELD_NAME);
+    QVERIFY(!isNotNull.hasRightField());
+    QVERIFY_EXCEPTION_THROWN(isNotNull.getRightField(), std::logic_error);
     QVERIFY(isNotNull.getValue().isNull());
     QVERIFY(isNotNull.getParametrizedConditions().empty());
 }
@@ -564,8 +568,10 @@ void ConditionTest::andMultipleConditions() {
     QCOMPARE(generated, "(" + equals.generate() + " and " + equals.generate() +
                         " and " + equals.generate() + ")");
     QCOMPARE(andCondition.getNestedConditions().size(), 3U);
-    QVERIFY_EXCEPTION_THROWN(andCondition.getRightField(), std::runtime_error);
-    QVERIFY_EXCEPTION_THROWN(andCondition.getLeftField(), std::runtime_error);
+    QVERIFY(!andCondition.hasRightField());
+    QVERIFY_EXCEPTION_THROWN(andCondition.getRightField(), std::logic_error);
+    QVERIFY(!andCondition.hasLeftField());
+    QVERIFY_EXCEPTION_THROWN(andCondition.getLeftField(), std::logic_error);
     QVERIFY(andCondition.getValue().isNull());
     QVERIFY(andCondition.getParametrizedConditions().empty());
 }
@@ -591,8 +597,10 @@ void ConditionTest::orMultipleCondition() {
     QCOMPARE(generated, "(" + equals.generate() + " or " + equals.generate() +
                         " or " + equals.generate() + ")");
     QCOMPARE(orCondition.getNestedConditions().size(), 3U);
-    QVERIFY_EXCEPTION_THROWN(orCondition.getRightField(), std::runtime_error);
-    QVERIFY_EXCEPTION_THROWN(orCondition.getLeftField(), std::runtime_error);
+    QVERIFY(!orCondition.hasRightField());
+    QVERIFY_EXCEPTION_THROWN(orCondition.getRightField(), std::logic_error);
+    QVERIFY(!orCondition.hasLeftField());
+    QVERIFY_EXCEPTION_THROWN(orCondition.getLeftField(), std::logic_error);
     QVERIFY(orCondition.getValue().isNull());
     QVERIFY(orCondition.getParametrizedConditions().empty());
 }
@@ -639,8 +647,10 @@ void ConditionTest::recursiveParametrized() {
                         " and " + equalsParameter.generate() + " and " +
                         equalsParameter.generate() + "))");
     QCOMPARE(condition.getNestedConditions().size(), 2U);
-    QVERIFY_EXCEPTION_THROWN(condition.getRightField(), std::runtime_error);
-    QVERIFY_EXCEPTION_THROWN(condition.getLeftField(), std::runtime_error);
+    QVERIFY(!condition.hasRightField());
+    QVERIFY_EXCEPTION_THROWN(condition.getRightField(), std::logic_error);
+    QVERIFY(!condition.hasLeftField());
+    QVERIFY_EXCEPTION_THROWN(condition.getLeftField(), std::logic_error);
     QVERIFY(condition.getValue().isNull());
     QCOMPARE(condition.getParametrizedConditions().size(), 2U);
 }
@@ -658,8 +668,10 @@ void ConditionTest::recursiveNotParametrized() {
     QCOMPARE(generated, "(" + equals.generate() + " or (" + equals.generate() +
                         " and " + equals.generate() + "))");
     QCOMPARE(condition.getNestedConditions().size(), 2U);
-    QVERIFY_EXCEPTION_THROWN(condition.getRightField(), std::runtime_error);
-    QVERIFY_EXCEPTION_THROWN(condition.getLeftField(), std::runtime_error);
+    QVERIFY(!condition.hasRightField());
+    QVERIFY_EXCEPTION_THROWN(condition.getRightField(), std::logic_error);
+    QVERIFY(!condition.hasLeftField());
+    QVERIFY_EXCEPTION_THROWN(condition.getLeftField(), std::logic_error);
     QVERIFY(condition.getValue().isNull());
     QCOMPARE(condition.getParametrizedConditions().size(), 0U);
 }

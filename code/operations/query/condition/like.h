@@ -2,7 +2,7 @@
 #define OPERATIONS_QUERY_CONDITION_LIKE_H_
 
 #include <QString>
-#include <QVariant>
+#include <optional>
 #include "operations/query/condition/condition.h"
 
 namespace QORM {

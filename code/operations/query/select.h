@@ -19,7 +19,7 @@ class Select : public TableDataQuery {
     std::list<Order> orders;
     std::optional<unsigned int> maxResults;
     std::optional<unsigned int> skippedResults;
-    std::list<Select> mergedSelects;
+    std::list<Select> unions;
 
  public:
     explicit Select(const QString &tableName);
@@ -30,7 +30,7 @@ class Select : public TableDataQuery {
     auto getOrders() const -> const std::list<Order>&;
     auto getMaxResults() const -> unsigned int;
     auto getSkippedResults() const -> unsigned int;
-    auto getMergedSelects() const -> const std::list<Select>&;
+    auto getUnions() const -> const std::list<Select>&;
     auto generate() const -> QString override;
     void bind(QSqlQuery&) const override;
 
@@ -41,7 +41,7 @@ class Select : public TableDataQuery {
     auto orderBy(const std::list<Order>&) -> Select&;
     auto limit(const unsigned int limit) -> Select&;
     auto offset(const unsigned int offset) -> Select&;
-    auto merge(Select) -> Select&;
+    auto unite(Select) -> Select&;
 };
 
 inline auto Select::getSelections() const -> const std::list<Selection>& {
@@ -68,8 +68,8 @@ inline auto Select::getSkippedResults() const -> unsigned int {
     return this->skippedResults.value_or(0U);
 }
 
-inline auto Select::getMergedSelects() const -> const std::list<Select>& {
-    return this->mergedSelects;
+inline auto Select::getUnions() const -> const std::list<Select>& {
+    return this->unions;
 }
 
 class LastInsertedId : public Query {

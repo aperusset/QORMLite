@@ -63,20 +63,26 @@ auto QORM::Select::orderBy(const std::list<Order> &orders) -> Select& {
 }
 
 auto QORM::Select::limit(const unsigned int limit) -> Select& {
+    if (limit == 0) {
+        throw std::invalid_argument("Limit must be strictly positive.");
+    }
     this->maxResults = limit;
     return *this;
 }
 
 auto QORM::Select::offset(const unsigned int offset) -> Select& {
+    if (offset == 0) {
+        throw std::invalid_argument("Offset must be strictly positive.");
+    }
     this->skippedResults = offset;
     return *this;
 }
 
-auto QORM::Select::merge(Select select) -> Select& {
+auto QORM::Select::unite(Select select) -> Select& {
     if (this->selections.size() != select.selections.size()) {
         throw std::logic_error("Selects must have same number of selections.");
     }
-    this->mergedSelects.emplace_back(std::move(select));
+    this->unions.emplace_back(std::move(select));
     return *this;
 }
 
@@ -112,13 +118,13 @@ auto QORM::Select::generate() const -> QString {
                                           generatedOrders.join(", ");
     if (this->maxResults.has_value()) {
         select += " limit " + QString::number(this->maxResults.value());
+        if (this->skippedResults.has_value()) {
+            select += " offset " +
+                      QString::number(this->skippedResults.value());
+        }
     }
-    if (this->skippedResults.has_value()) {
-        select += " offset " + QString::number(this->skippedResults.value());
-    }
-    select += std::accumulate(this->mergedSelects.begin(),
-                              this->mergedSelects.end(), QString(""),
-        [](const auto &acc, const auto &mergedSelect) {
+    select += std::accumulate(this->unions.begin(), this->unions.end(),
+        QString(""), [](const auto &acc, const auto &mergedSelect) {
             return acc + " union " + mergedSelect.generate();
         });
     return select.simplified();
@@ -126,7 +132,7 @@ auto QORM::Select::generate() const -> QString {
 
 void QORM::Select::bind(QSqlQuery &query) const {
     TableDataQuery::bind(query);
-    for (const auto &select : this->mergedSelects) {
+    for (const auto &select : this->unions) {
         select.bind(query);
     }
 }

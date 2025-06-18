@@ -11,6 +11,8 @@ class SelectTest : public QObject {
 
  private slots:
     void selectEmptyOrBlankTableNameShouldFail();
+    void selectWith0LimitShouldFail();
+    void selectWith0OffsetShouldFail();
     void selectAll();
     void selectOneField();
     void selectMultipleFields();

@@ -2,6 +2,7 @@
 #define OPERATIONS_QUERY_SELECTION_UPPER_H_
 
 #include <QString>
+#include <optional>
 #include "operations/query/selection/selection.h"
 
 namespace QORM {
@@ -9,7 +10,7 @@ namespace QORM {
 class Upper : public Selection {
  public:
     explicit Upper(const QString &fieldToUpper,
-                   const std::optional<QString> &renameTo = std::nullopt) :
+                   const std::optional<QString> renameTo = std::nullopt) :
         Selection("upper(" +  fieldToUpper + ")", renameTo) {}
 };
 

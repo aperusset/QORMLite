@@ -12,10 +12,10 @@ QORM::Field::Field(QString name, Type type, bool nullable,
 }
 
 auto QORM::Field::getDefaultValue() const -> const QString& {
-    if (this->defaultValue.has_value()) {
+    if (this->hasDefaultValue()) {
         return this->defaultValue.value();
     }
-    throw std::runtime_error("Field has no default value.");
+    throw std::logic_error("Field has no default value.");
 }
 
 auto QORM::Field::generate() const -> QString {

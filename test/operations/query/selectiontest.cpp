@@ -24,7 +24,8 @@ void SelectionTest::generate() {
 
     // Then
     QCOMPARE(selection.getFieldName(), DEFAULT_FIELD_NAME);
-    QVERIFY_EXCEPTION_THROWN(selection.getRenamedTo(), std::runtime_error);
+    QVERIFY(!selection.hasRenamedTo());
+    QVERIFY_EXCEPTION_THROWN(selection.getRenamedTo(), std::logic_error);
     QCOMPARE(generated, DEFAULT_FIELD_NAME);
 }
 
@@ -37,6 +38,7 @@ void SelectionTest::generateRenamed() {
 
     // Then
     QCOMPARE(selection.getFieldName(), DEFAULT_FIELD_NAME);
+    QVERIFY(selection.hasRenamedTo());
     QCOMPARE(selection.getRenamedTo(), DEFAULT_RENAMED_TO);
     QCOMPARE(generated, DEFAULT_FIELD_NAME + " as " + DEFAULT_RENAMED_TO);
 }

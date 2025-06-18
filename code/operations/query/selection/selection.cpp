@@ -14,10 +14,10 @@ QORM::Selection::Selection(QString fieldName,
 }
 
 auto QORM::Selection::getRenamedTo() const -> const QString& {
-    if (!this->renamedTo.has_value()) {
-        throw std::runtime_error("Selection is not renamed.");
+    if (this->hasRenamedTo()) {
+        return this->renamedTo.value();
     }
-    return this->renamedTo.value();
+    throw std::logic_error("Selection is not renamed.");
 }
 
 auto QORM::Selection::generate() const -> QString {

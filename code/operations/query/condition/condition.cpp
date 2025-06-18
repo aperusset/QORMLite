@@ -8,7 +8,7 @@ QORM::Condition::Condition(QString op, std::list<Condition> nestedConditions,
         QVariant value) :
     op(std::move(op)), nestedConditions(std::move(nestedConditions)),
     leftField(std::move(leftField)),
-    rightField(value.isValid() ?
+    rightField(value.isValid() && this->leftField.has_value() ?
             std::optional(QORM::Utils::parametrize(this->leftField.value())) :
             std::move(rightField)),
     value(std::move(value)) {
@@ -31,17 +31,17 @@ auto QORM::Condition::isParametrized() const -> bool {
 }
 
 auto QORM::Condition::getLeftField() const -> const QString& {
-    if (!this->leftField.has_value()) {
-        throw std::runtime_error("Condition has not any left field.");
+    if (this->hasLeftField()) {
+        return this->leftField.value();
     }
-    return this->leftField.value();
+    throw std::logic_error("Condition has not any left field.");
 }
 
 auto QORM::Condition::getRightField() const -> const QString& {
-    if (!this->rightField.has_value()) {
-        throw std::runtime_error("Condition has not any right field.");
+    if (this->hasRightField()) {
+        return this->rightField.value();
     }
-    return this->rightField.value();
+    throw std::logic_error("Condition has not any right field.");
 }
 
 auto QORM::Condition::getParametrizedConditions()

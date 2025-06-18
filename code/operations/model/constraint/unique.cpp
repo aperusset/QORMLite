@@ -1,5 +1,6 @@
 #include "unique.h"
 #include <QStringList>
+#include <optional>
 #include <utility>
 
 QORM::Unique::Unique(const std::list<Field> &fields)

@@ -1,5 +1,6 @@
 #include "primarykey.h"
 #include <QStringList>
+#include <optional>
 #include <utility>
 
 QORM::PrimaryKey::PrimaryKey(Field field, bool autoIncrement) :

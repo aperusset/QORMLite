@@ -18,6 +18,7 @@ class Field : public Operation {
           std::optional<QString> defaultValue);
     auto getName() const -> const QString&;
     auto getType() const -> const Type&;
+    auto hasDefaultValue() const -> bool;
     auto getDefaultValue() const -> const QString&;
     auto isNullable() const -> bool;
     auto generate() const -> QString override;
@@ -38,6 +39,10 @@ inline auto Field::getName() const -> const QString& {
 
 inline auto Field::getType() const -> const Type& {
     return this->type;
+}
+
+inline auto Field::hasDefaultValue() const -> bool {
+    return this->defaultValue.has_value();
 }
 
 inline auto Field::isNullable() const -> bool {

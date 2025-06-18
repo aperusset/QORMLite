@@ -2,6 +2,7 @@
 #define OPERATIONS_QUERY_SELECTION_MAX_H_
 
 #include <QString>
+#include <optional>
 #include "operations/query/selection/selection.h"
 
 namespace QORM {
@@ -9,7 +10,7 @@ namespace QORM {
 class Max : public Selection {
  public:
     explicit Max(const QString &fieldToMax,
-                 const std::optional<QString> &renameTo = std::nullopt) :
+                 const std::optional<QString> renameTo = std::nullopt) :
         Selection("max(" + fieldToMax + ")", renameTo) {}
 };
 
