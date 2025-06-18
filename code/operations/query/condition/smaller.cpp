@@ -1,4 +1,5 @@
 #include "operations/query/condition/smaller.h"
+#include <optional>
 
 auto QORM::Smaller::field(const QString &field,
                           const QVariant &value) -> Condition {

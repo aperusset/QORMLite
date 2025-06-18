@@ -1,4 +1,5 @@
 #include "operations/query/condition/smallerorequals.h"
+#include <optional>
 
 auto QORM::SmallerOrEquals::field(const QString &field,
                                   const QVariant &value) -> Condition {

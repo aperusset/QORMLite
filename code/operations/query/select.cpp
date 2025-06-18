@@ -63,7 +63,7 @@ auto QORM::Select::orderBy(const std::list<Order> &orders) -> Select& {
 }
 
 auto QORM::Select::limit(const unsigned int limit) -> Select& {
-    if (limit == 0) {
+    if (limit == 0U) {
         throw std::invalid_argument("Limit must be strictly positive.");
     }
     this->maxResults = limit;
@@ -71,7 +71,7 @@ auto QORM::Select::limit(const unsigned int limit) -> Select& {
 }
 
 auto QORM::Select::offset(const unsigned int offset) -> Select& {
-    if (offset == 0) {
+    if (offset == 0U) {
         throw std::invalid_argument("Offset must be strictly positive.");
     }
     this->skippedResults = offset;

@@ -1,4 +1,5 @@
 #include "operations/query/condition/equals.h"
+#include <optional>
 
 auto QORM::Equals::field(const QString &field,
                          const QVariant &value) -> Condition {

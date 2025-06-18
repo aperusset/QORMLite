@@ -1,4 +1,5 @@
 #include "operations/query/condition/greater.h"
+#include <optional>
 
 auto QORM::Greater::field(const QString &field,
                           const QVariant &value) -> Condition {
