@@ -28,6 +28,20 @@ QORM::Select::Select(const QString &tableName,
     }
 }
 
+auto QORM::Select::getMaxResults() const -> unsigned int {
+    if (this->hasMaxResults()) {
+        return this->maxResults.value();
+    }
+    throw std::logic_error("Select has no limit");
+}
+
+auto QORM::Select::getSkippedResults() const -> unsigned int {
+    if (this->hasSkippedResults()) {
+        return this->skippedResults.value();
+    }
+    throw std::logic_error("Select has no offset");
+}
+
 auto QORM::Select::join(const std::list<Join> &joins) -> Select& {
     std::copy(joins.begin(), joins.end(), std::back_inserter(this->joins));
     for (const auto &join : joins) {
@@ -116,9 +130,9 @@ auto QORM::Select::generate() const -> QString {
     select += Condition::generateMultiple(" having ", this->havings);
     select += generatedOrders.isEmpty() ? "" : " order by " +
                                           generatedOrders.join(", ");
-    if (this->maxResults.has_value()) {
+    if (this->hasMaxResults()) {
         select += " limit " + QString::number(this->maxResults.value());
-        if (this->skippedResults.has_value()) {
+        if (this->hasSkippedResults()) {
             select += " offset " +
                       QString::number(this->skippedResults.value());
         }

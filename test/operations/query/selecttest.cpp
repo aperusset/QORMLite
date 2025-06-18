@@ -228,8 +228,10 @@ void SelectTest::selectAllWithLimit() {
 
     // Then
     QCOMPARE(select.getTableName(), DEFAULT_TABLE_NAME);
+    QVERIFY(select.hasMaxResults());
     QCOMPARE(select.getMaxResults(), limit);
-    QCOMPARE(select.getSkippedResults(), 0U);
+    QVERIFY(!select.hasSkippedResults());
+    QVERIFY_EXCEPTION_THROWN(select.getSkippedResults(), std::logic_error);
     QCOMPARE(generated, "select distinct * from " + DEFAULT_TABLE_NAME +
                         " limit " + QString::number(limit));
 }
@@ -246,7 +248,9 @@ void SelectTest::selectAllWithOffset() {
 
     // Then
     QCOMPARE(select.getTableName(), DEFAULT_TABLE_NAME);
+    QVERIFY(select.hasMaxResults());
     QCOMPARE(select.getMaxResults(), limit);
+    QVERIFY(select.hasSkippedResults());
     QCOMPARE(select.getSkippedResults(), offset);
     QCOMPARE(generated, "select distinct * from " + DEFAULT_TABLE_NAME);
     QCOMPARE(generatedWithLimit, "select distinct * from " +
