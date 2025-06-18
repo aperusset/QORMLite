@@ -2,7 +2,7 @@
 #define OPERATIONS_QUERY_CONDITION_LIKE_H_
 
 #include <QString>
-#include <QVariant>
+#include <optional>
 #include "operations/query/condition/condition.h"
 
 namespace QORM {
@@ -10,7 +10,7 @@ namespace QORM {
 class Like : public Condition {
  public:
     Like(const QString &field, const QString &likePattern) :
-        Condition(" like ", {}, field, QString(), likePattern) {}
+        Condition(" like ", {}, field, std::nullopt, likePattern) {}
 };
 
 }  // namespace QORM

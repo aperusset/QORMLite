@@ -67,7 +67,7 @@ namespace QORM::Utils {
                     const QString &renameTo) -> Selection;
 
     /**
-     * @brief Generate a null SQL value for specified type
+     * @brief Generate a null QVariant SQL value
      * @return the null value
      */
     auto null() -> QVariant;

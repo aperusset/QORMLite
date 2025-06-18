@@ -2,6 +2,7 @@
 #define OPERATIONS_QUERY_SELECTION_COUNT_H_
 
 #include <QString>
+#include <optional>
 #include "operations/query/selection/selection.h"
 
 namespace QORM {
@@ -9,8 +10,8 @@ namespace QORM {
 class Count : public Selection {
  public:
     explicit Count(const QString &fieldToCount,
-                   const QString &renameTo = QString()) :
-        Selection("count(" + fieldToCount + ")", renameTo) {}
+                   const std::optional<QString> &renamedTo = std::nullopt) :
+        Selection("count(" + fieldToCount + ")", renamedTo) {}
 };
 
 }  // namespace QORM

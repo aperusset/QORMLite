@@ -2,6 +2,14 @@
 #include "operations/query/assignment.h"
 #include "./utils.h"
 
+void AssignmentTest::emptyOrBlankFieldNameShouldFail() {
+    // Given / When / Then
+    QVERIFY_EXCEPTION_THROWN(QORM::Assignment("", DEFAULT_VALUE),
+                             std::invalid_argument);
+    QVERIFY_EXCEPTION_THROWN(QORM::Assignment("  ", DEFAULT_VALUE),
+                             std::invalid_argument);
+}
+
 void AssignmentTest::generate() {
     // Given
     const auto assignment = QORM::Assignment(DEFAULT_FIELD_NAME, DEFAULT_VALUE);

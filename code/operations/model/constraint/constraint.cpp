@@ -1,16 +1,24 @@
 #include "constraint.h"
 #include <utility>
 
-QORM::Constraint::Constraint(QString name) : name(std::move(name)) {
-    if (!this->name.isNull() && this->name.isEmpty()) {
-        throw std::invalid_argument("Constraint name null or not empty.");
+QORM::Constraint::Constraint(std::optional<QString> name) :
+    name(std::move(name)) {
+    if (this->name.has_value() && this->name.value().simplified().isEmpty()) {
+        throw std::invalid_argument("Name must be null or not blank.");
     }
 }
 
-auto QORM::Constraint::generate() const -> QString {
-    if (this->name.isNull()) {
-        return this->generateConstraint();
+auto QORM::Constraint::getName() const -> const QString& {
+    if (this->hasName()) {
+        return this->name.value();
     }
-    return ("constraint " + this->name + " " +
+    throw std::logic_error("Constraint does not have a name.");
+}
+
+auto QORM::Constraint::generate() const -> QString {
+    if (this->name.has_value()) {
+        return ("constraint " + this->name.value() + " " +
             this->generateConstraint()).simplified();
+    }
+    return this->generateConstraint();
 }

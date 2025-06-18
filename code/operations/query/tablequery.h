@@ -14,7 +14,7 @@ class TableQuery : public Query {
     explicit TableQuery(QString tableName) :
         tableName(std::move(tableName).simplified()) {
         if (this->tableName.isEmpty()) {
-            throw std::invalid_argument("Table name must not be empty");
+            throw std::invalid_argument("Table name must not be blank");
         }
     }
 

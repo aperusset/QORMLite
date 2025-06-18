@@ -1,8 +1,9 @@
 #include "notequals.h"
+#include <optional>
 
 auto QORM::NotEquals::field(const QString &field,
                             const QVariant &value) -> Condition {
-    return Condition(" <> ", {}, field, QString(), value);
+    return Condition(" <> ", {}, field, std::nullopt, value);
 }
 
 auto QORM::NotEquals::fields(const QString &left,
@@ -12,7 +13,7 @@ auto QORM::NotEquals::fields(const QString &left,
 
 auto QORM::NotEquals::selection(const Selection &selection,
                                 const QVariant &value) -> Condition {
-    return Condition(" <> ", {}, selection, QString(), value);
+    return Condition(" <> ", {}, selection, std::nullopt, value);
 }
 
 auto QORM::NotEquals::selections(const Selection &right,

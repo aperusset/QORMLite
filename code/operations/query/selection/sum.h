@@ -2,6 +2,7 @@
 #define OPERATIONS_QUERY_SELECTION_SUM_H_
 
 #include <QString>
+#include <optional>
 #include "operations/query/selection/selection.h"
 
 namespace QORM {
@@ -9,8 +10,8 @@ namespace QORM {
 class Sum : public Selection {
  public:
     explicit Sum(const QString &fieldToSum,
-                 const QString &renameTo = QString()) :
-        Selection("sum(" + fieldToSum + ")", renameTo) {}
+                 const std::optional<QString> &renamedTo = std::nullopt) :
+        Selection("sum(" + fieldToSum + ")", renamedTo) {}
 };
 
 }  // namespace QORM

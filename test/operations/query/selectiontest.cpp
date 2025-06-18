@@ -9,6 +9,12 @@
 #include "operations/query/selection/lower.h"
 #include "operations/query/selection/upper.h"
 
+void SelectionTest::emptyOrBlankFieldNameShouldFail() {
+    // Given / When / Then
+    QVERIFY_EXCEPTION_THROWN(QORM::Selection(""), std::invalid_argument);
+    QVERIFY_EXCEPTION_THROWN(QORM::Selection("  "), std::invalid_argument);
+}
+
 void SelectionTest::generate() {
     // Given
     const auto selection = QORM::Selection(DEFAULT_FIELD_NAME);
@@ -18,7 +24,8 @@ void SelectionTest::generate() {
 
     // Then
     QCOMPARE(selection.getFieldName(), DEFAULT_FIELD_NAME);
-    QVERIFY(selection.getRenamedTo().isNull());
+    QVERIFY(!selection.hasRenamedTo());
+    QVERIFY_EXCEPTION_THROWN(selection.getRenamedTo(), std::logic_error);
     QCOMPARE(generated, DEFAULT_FIELD_NAME);
 }
 
@@ -31,6 +38,7 @@ void SelectionTest::generateRenamed() {
 
     // Then
     QCOMPARE(selection.getFieldName(), DEFAULT_FIELD_NAME);
+    QVERIFY(selection.hasRenamedTo());
     QCOMPARE(selection.getRenamedTo(), DEFAULT_RENAMED_TO);
     QCOMPARE(generated, DEFAULT_FIELD_NAME + " as " + DEFAULT_RENAMED_TO);
 }

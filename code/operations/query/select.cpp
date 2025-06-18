@@ -28,6 +28,20 @@ QORM::Select::Select(const QString &tableName,
     }
 }
 
+auto QORM::Select::getMaxResults() const -> unsigned int {
+    if (this->hasMaxResults()) {
+        return this->maxResults.value();
+    }
+    throw std::logic_error("Select has no limit");
+}
+
+auto QORM::Select::getSkippedResults() const -> unsigned int {
+    if (this->hasSkippedResults()) {
+        return this->skippedResults.value();
+    }
+    throw std::logic_error("Select has no offset");
+}
+
 auto QORM::Select::join(const std::list<Join> &joins) -> Select& {
     std::copy(joins.begin(), joins.end(), std::back_inserter(this->joins));
     for (const auto &join : joins) {
@@ -63,20 +77,26 @@ auto QORM::Select::orderBy(const std::list<Order> &orders) -> Select& {
 }
 
 auto QORM::Select::limit(const unsigned int limit) -> Select& {
-    this->maxResults = QVariant(limit);
+    if (limit == 0U) {
+        throw std::invalid_argument("Limit must be strictly positive.");
+    }
+    this->maxResults = limit;
     return *this;
 }
 
 auto QORM::Select::offset(const unsigned int offset) -> Select& {
-    this->skippedResults = QVariant(offset);
+    if (offset == 0U) {
+        throw std::invalid_argument("Offset must be strictly positive.");
+    }
+    this->skippedResults = offset;
     return *this;
 }
 
-auto QORM::Select::merge(Select select) -> Select& {
+auto QORM::Select::unite(Select select) -> Select& {
     if (this->selections.size() != select.selections.size()) {
         throw std::logic_error("Selects must have same number of selections.");
     }
-    this->mergedSelects.emplace_back(std::move(select));
+    this->unions.emplace_back(std::move(select));
     return *this;
 }
 
@@ -110,15 +130,15 @@ auto QORM::Select::generate() const -> QString {
     select += Condition::generateMultiple(" having ", this->havings);
     select += generatedOrders.isEmpty() ? "" : " order by " +
                                           generatedOrders.join(", ");
-    if (this->maxResults.isValid()) {
-        select += " limit " + this->maxResults.toString();
+    if (this->hasMaxResults()) {
+        select += " limit " + QString::number(this->maxResults.value());
+        if (this->hasSkippedResults()) {
+            select += " offset " +
+                      QString::number(this->skippedResults.value());
+        }
     }
-    if (this->skippedResults.isValid()) {
-        select += " offset " + this->skippedResults.toString();
-    }
-    select += std::accumulate(this->mergedSelects.begin(),
-                              this->mergedSelects.end(), QString(""),
-        [](const auto &acc, const auto &mergedSelect) {
+    select += std::accumulate(this->unions.begin(), this->unions.end(),
+        QString(""), [](const auto &acc, const auto &mergedSelect) {
             return acc + " union " + mergedSelect.generate();
         });
     return select.simplified();
@@ -126,7 +146,7 @@ auto QORM::Select::generate() const -> QString {
 
 void QORM::Select::bind(QSqlQuery &query) const {
     TableDataQuery::bind(query);
-    for (const auto &select : this->mergedSelects) {
+    for (const auto &select : this->unions) {
         select.bind(query);
     }
 }

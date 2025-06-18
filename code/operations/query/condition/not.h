@@ -4,14 +4,16 @@
 #include <QString>
 #include <QVariant>
 #include <list>
+#include <optional>
 #include "operations/query/condition/condition.h"
 
 namespace QORM {
 
 class Not : public Condition {
  public:
-    explicit Not(Condition condition) :
-        Condition(" not ", {condition}, QString(), QString(), QVariant()) {}
+    explicit Not(const Condition &condition) :
+        Condition(" not ", {condition}, std::nullopt, std::nullopt,
+                  QVariant()) {}
 };
 
 }  // namespace QORM

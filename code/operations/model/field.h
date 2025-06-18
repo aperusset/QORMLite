@@ -1,6 +1,7 @@
 #ifndef OPERATIONS_MODEL_FIELD_H_
 #define OPERATIONS_MODEL_FIELD_H_
 
+#include <optional>
 #include "operations/operation.h"
 #include "operations/model/type/type.h"
 
@@ -10,12 +11,14 @@ class Field : public Operation {
     const QString name;
     const Type type;
     const bool nullable;
-    const QString defaultValue;
+    const std::optional<QString> defaultValue;
 
  public:
-    Field(QString name, Type, bool nullable, QString defaultValue);
+    Field(QString name, Type type, bool nullable,
+          std::optional<QString> defaultValue = std::nullopt);
     auto getName() const -> const QString&;
     auto getType() const -> const Type&;
+    auto hasDefaultValue() const -> bool;
     auto getDefaultValue() const -> const QString&;
     auto isNullable() const -> bool;
     auto generate() const -> QString override;
@@ -38,8 +41,8 @@ inline auto Field::getType() const -> const Type& {
     return this->type;
 }
 
-inline auto Field::getDefaultValue() const -> const QString& {
-    return this->defaultValue;
+inline auto Field::hasDefaultValue() const -> bool {
+    return this->defaultValue.has_value();
 }
 
 inline auto Field::isNullable() const -> bool {

@@ -7,6 +7,24 @@
 #include "operations/query/order/asc.h"
 #include "operations/query/order/desc.h"
 
+void SelectTest::selectEmptyOrBlankTableNameShouldFail() {
+    // When / Then
+    QVERIFY_EXCEPTION_THROWN(QORM::Select(""), std::invalid_argument);
+    QVERIFY_EXCEPTION_THROWN(QORM::Select("  "), std::invalid_argument);
+}
+
+void SelectTest::selectWith0LimitShouldFail() {
+    // When / Then
+    QVERIFY_EXCEPTION_THROWN(QORM::Select(DEFAULT_TABLE_NAME).limit(0U),
+                             std::invalid_argument);
+}
+
+void SelectTest::selectWith0OffsetShouldFail() {
+    // When / Then
+    QVERIFY_EXCEPTION_THROWN(QORM::Select(DEFAULT_TABLE_NAME).offset(0U),
+                             std::invalid_argument);
+}
+
 void SelectTest::selectAll() {
     // Given
     const QORM::Select select(DEFAULT_TABLE_NAME);
@@ -202,7 +220,7 @@ void SelectTest::selectFieldWithOrdersNotSelected() {
 
 void SelectTest::selectAllWithLimit() {
     // Given
-    const auto limit = 10;
+    const auto limit = 10U;
     const auto select = QORM::Select(DEFAULT_TABLE_NAME).limit(limit);
 
     // When
@@ -210,23 +228,34 @@ void SelectTest::selectAllWithLimit() {
 
     // Then
     QCOMPARE(select.getTableName(), DEFAULT_TABLE_NAME);
-    QCOMPARE(select.getMaxResults().toInt(), limit);
+    QVERIFY(select.hasMaxResults());
+    QCOMPARE(select.getMaxResults(), limit);
+    QVERIFY(!select.hasSkippedResults());
+    QVERIFY_EXCEPTION_THROWN(select.getSkippedResults(), std::logic_error);
     QCOMPARE(generated, "select distinct * from " + DEFAULT_TABLE_NAME +
                         " limit " + QString::number(limit));
 }
 
 void SelectTest::selectAllWithOffset() {
     // Given
-    const auto offset = 10;
-    const auto select = QORM::Select(DEFAULT_TABLE_NAME).offset(offset);
+    const auto limit = 5U;
+    const auto offset = 10U;
+    auto select = QORM::Select(DEFAULT_TABLE_NAME).offset(offset);
 
     // When
     const auto generated = select.generate();
+    const auto generatedWithLimit = select.limit(limit).generate();
 
     // Then
     QCOMPARE(select.getTableName(), DEFAULT_TABLE_NAME);
-    QCOMPARE(select.getSkippedResults().toInt(), offset);
-    QCOMPARE(generated, "select distinct * from " + DEFAULT_TABLE_NAME +
+    QVERIFY(select.hasMaxResults());
+    QCOMPARE(select.getMaxResults(), limit);
+    QVERIFY(select.hasSkippedResults());
+    QCOMPARE(select.getSkippedResults(), offset);
+    QCOMPARE(generated, "select distinct * from " + DEFAULT_TABLE_NAME);
+    QCOMPARE(generatedWithLimit, "select distinct * from " +
+                        DEFAULT_TABLE_NAME +
+                        " limit " + QString::number(limit) +
                         " offset " + QString::number(offset));
 }
 
@@ -236,7 +265,7 @@ void SelectTest::selectWithIncompatibleUnionsShouldFail() {
     const auto select2 = QORM::Select(DEFAULT_TABLE_NAME,
                                       {DEFAULT_FIELD_NAME, DEFAULT_FIELD_NAME});
     // When / Then
-    QVERIFY_EXCEPTION_THROWN(select1.merge(select2), std::logic_error);
+    QVERIFY_EXCEPTION_THROWN(select1.unite(select2), std::logic_error);
 }
 
 void SelectTest::selectAllWithUnions() {
@@ -247,10 +276,10 @@ void SelectTest::selectAllWithUnions() {
 
     // When
     const auto select1Generated = select1.generate();
-    const auto generated = select1.merge(select2).merge(select3).generate();
+    const auto generated = select1.unite(select2).unite(select3).generate();
 
     // Then
-    QCOMPARE(select1.getMergedSelects().size(), 2U);
+    QCOMPARE(select1.getUnions().size(), 2U);
     QCOMPARE(generated, select1Generated + " union " + select2.generate() +
                         " union " + select3.generate());
 }

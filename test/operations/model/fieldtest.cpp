@@ -12,7 +12,8 @@ void FieldTest::generateNotNullWithoutDefaultValue() {
     QCOMPARE(field.getName(), DEFAULT_NAME);
     QCOMPARE(field.getType().generate(), DEFAULT_TYPE.generate());
     QVERIFY(!field.isNullable());
-    QVERIFY(field.getDefaultValue().isNull());
+    QVERIFY(!field.hasDefaultValue());
+    QVERIFY_EXCEPTION_THROWN(field.getDefaultValue(), std::logic_error);
     QCOMPARE(generated, DEFAULT_NAME + " integer not null");
 }
 
@@ -27,6 +28,7 @@ void FieldTest::generateNotNullWithDefaultValue() {
     QCOMPARE(field.getName(), DEFAULT_NAME);
     QCOMPARE(field.getType().generate(), DEFAULT_TYPE.generate());
     QVERIFY(!field.isNullable());
+    QVERIFY(field.hasDefaultValue());
     QCOMPARE(field.getDefaultValue(), DEFAULT_VALUE);
     QCOMPARE(generated,
         DEFAULT_NAME + " integer not null default (" + DEFAULT_VALUE + ")");
@@ -43,7 +45,8 @@ void FieldTest::generateNullableWithoutDefaultValue() {
     QCOMPARE(field.getName(), DEFAULT_NAME);
     QCOMPARE(field.getType().generate(), DEFAULT_TYPE.generate());
     QVERIFY(field.isNullable());
-    QVERIFY(field.getDefaultValue().isNull());
+    QVERIFY(!field.hasDefaultValue());
+    QVERIFY_EXCEPTION_THROWN(field.getDefaultValue(), std::logic_error);
     QCOMPARE(generated, DEFAULT_NAME + " integer null");
 }
 
@@ -58,6 +61,7 @@ void FieldTest::generateNullableWithDefaultValue() {
     QCOMPARE(field.getName(), DEFAULT_NAME);
     QCOMPARE(field.getType().generate(), DEFAULT_TYPE.generate());
     QVERIFY(field.isNullable());
+    QVERIFY(field.hasDefaultValue());
     QCOMPARE(field.getDefaultValue(), DEFAULT_VALUE);
     QCOMPARE(generated,
         DEFAULT_NAME + " integer null default (" + DEFAULT_VALUE + ")");

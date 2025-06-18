@@ -1,8 +1,9 @@
 #include "operations/query/condition/greaterorequals.h"
+#include <optional>
 
 auto QORM::GreaterOrEquals::field(const QString &field,
                                   const QVariant &value) -> Condition {
-    return Condition(" >= ", {}, field, QString(), value);
+    return Condition(" >= ", {}, field, std::nullopt, value);
 }
 
 auto QORM::GreaterOrEquals::fields(const QString &left,
@@ -12,7 +13,7 @@ auto QORM::GreaterOrEquals::fields(const QString &left,
 
 auto QORM::GreaterOrEquals::selection(const Selection &selection,
                                       const QVariant &value) -> Condition {
-    return Condition(" >= ", {}, selection, QString(), value);
+    return Condition(" >= ", {}, selection, std::nullopt, value);
 }
 
 auto QORM::GreaterOrEquals::selections(const Selection &right,

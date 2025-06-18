@@ -1,8 +1,9 @@
 #include "operations/query/condition/equals.h"
+#include <optional>
 
 auto QORM::Equals::field(const QString &field,
                          const QVariant &value) -> Condition {
-    return Condition(" = ", {}, field, QString(), value);
+    return Condition(" = ", {}, field, std::nullopt, value);
 }
 
 auto QORM::Equals::fields(const QString &left,
@@ -12,7 +13,7 @@ auto QORM::Equals::fields(const QString &left,
 
 auto QORM::Equals::selection(const Selection &selection,
                              const QVariant &value) -> Condition {
-    return Condition(" = ", {}, selection, QString(), value);
+    return Condition(" = ", {}, selection, std::nullopt, value);
 }
 
 auto QORM::Equals::selections(const Selection &right,

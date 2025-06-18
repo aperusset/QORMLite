@@ -3,6 +3,7 @@
 
 #include <QString>
 #include <QVariant>
+#include <optional>
 #include "operations/query/condition/condition.h"
 
 namespace QORM {
@@ -10,7 +11,7 @@ namespace QORM {
 class IsNull : public Condition {
  public:
     explicit IsNull(const QString &field) :
-        Condition(" is null ", {}, field, QString(), QVariant()) {}
+        Condition(" is null ", {}, field, std::nullopt, QVariant()) {}
 };
 
 }  // namespace QORM

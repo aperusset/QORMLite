@@ -4,7 +4,7 @@
 #include <QString>
 #include <QVariant>
 #include <list>
-#include <string>
+#include <optional>
 #include "operations/query/condition/condition.h"
 
 namespace QORM {
@@ -12,7 +12,7 @@ namespace QORM {
 class Or : public Condition {
  public:
     explicit Or(const std::list<Condition> &conditions) :
-        Condition(" or ", conditions, QString(), QString(), QVariant()) {
+        Condition(" or ", conditions, std::nullopt, std::nullopt, QVariant()) {
         if (conditions.size() < 2) {
             throw std::invalid_argument("Or must wrap at least 2 conditions");
         }
