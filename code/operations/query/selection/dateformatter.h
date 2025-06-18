@@ -2,6 +2,7 @@
 #define OPERATIONS_QUERY_SELECTION_DATEFORMATTER_H_
 
 #include <QString>
+#include <optional>
 #include "operations/query/selection/selection.h"
 
 namespace QORM {
@@ -9,9 +10,9 @@ namespace QORM {
 class DateFormatter : public Selection {
  public:
     DateFormatter(const QString &format, const QString &fieldToFormat,
-                  const QString &renameTo) :
+                  const std::optional<QString> renamedTo = std::nullopt) :
         Selection("strftime('" + format + "', " + fieldToFormat + ")",
-                  renameTo) {}
+                  renamedTo) {}
 };
 
 }  // namespace QORM

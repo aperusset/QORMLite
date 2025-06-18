@@ -10,8 +10,8 @@ namespace QORM {
 class Count : public Selection {
  public:
     explicit Count(const QString &fieldToCount,
-                   const std::optional<QString> renameTo = std::nullopt) :
-        Selection("count(" + fieldToCount + ")", renameTo) {}
+                   const std::optional<QString> renamedTo = std::nullopt) :
+        Selection("count(" + fieldToCount + ")", renamedTo) {}
 };
 
 }  // namespace QORM

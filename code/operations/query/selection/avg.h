@@ -10,8 +10,8 @@ namespace QORM {
 class Avg : public Selection {
  public:
     explicit Avg(const QString &fieldToAvg,
-                 const std::optional<QString> renameTo = std::nullopt) :
-        Selection("avg(" + fieldToAvg + ")", renameTo) {}
+                 const std::optional<QString> renamedTo = std::nullopt) :
+        Selection("avg(" + fieldToAvg + ")", renamedTo) {}
 };
 
 }  // namespace QORM

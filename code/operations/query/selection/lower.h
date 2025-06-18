@@ -10,8 +10,8 @@ namespace QORM {
 class Lower : public Selection {
  public:
     explicit Lower(const QString &fieldToLower,
-                   const std::optional<QString> renameTo = std::nullopt) :
-        Selection("lower(" +  fieldToLower + ")", renameTo) {}
+                   const std::optional<QString> renamedTo = std::nullopt) :
+        Selection("lower(" +  fieldToLower + ")", renamedTo) {}
 };
 
 }  // namespace QORM

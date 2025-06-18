@@ -10,8 +10,8 @@ namespace QORM {
 class Min : public Selection {
  public:
     explicit Min(const QString &fieldToMin,
-                 const std::optional<QString> renameTo = std::nullopt) :
-        Selection("min(" + fieldToMin + ")", renameTo) {}
+                 const std::optional<QString> renamedTo = std::nullopt) :
+        Selection("min(" + fieldToMin + ")", renamedTo) {}
 };
 
 }  // namespace QORM
