@@ -14,8 +14,8 @@ class Field : public Operation {
     const std::optional<QString> defaultValue;
 
  public:
-    Field(QString name, Type, bool nullable,
-          std::optional<QString> defaultValue);
+    Field(QString name, Type type, bool nullable,
+          std::optional<QString> defaultValue = std::nullopt);
     auto getName() const -> const QString&;
     auto getType() const -> const Type&;
     auto hasDefaultValue() const -> bool;
