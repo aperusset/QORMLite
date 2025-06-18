@@ -12,7 +12,7 @@ class Selection : public Operation {
 
  public:
     explicit Selection(QString fieldName,
-                       const std::optional<QString> renamedTo = std::nullopt);
+                       std::optional<QString> renamedTo = std::nullopt);
     auto getFieldName() const -> const QString&;
     auto hasRenamedTo() const -> bool;
     auto getRenamedTo() const -> const QString&;

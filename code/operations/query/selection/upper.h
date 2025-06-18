@@ -10,7 +10,7 @@ namespace QORM {
 class Upper : public Selection {
  public:
     explicit Upper(const QString &fieldToUpper,
-                   const std::optional<QString> renamedTo = std::nullopt) :
+                   const std::optional<QString> &renamedTo = std::nullopt) :
         Selection("upper(" +  fieldToUpper + ")", renamedTo) {}
 };
 

@@ -10,7 +10,7 @@ namespace QORM {
 class DateFormatter : public Selection {
  public:
     DateFormatter(const QString &format, const QString &fieldToFormat,
-                  const std::optional<QString> renamedTo = std::nullopt) :
+                  const std::optional<QString> &renamedTo = std::nullopt) :
         Selection("strftime('" + format + "', " + fieldToFormat + ")",
                   renamedTo) {}
 };

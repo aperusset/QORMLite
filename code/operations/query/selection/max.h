@@ -10,7 +10,7 @@ namespace QORM {
 class Max : public Selection {
  public:
     explicit Max(const QString &fieldToMax,
-                 const std::optional<QString> renamedTo = std::nullopt) :
+                 const std::optional<QString> &renamedTo = std::nullopt) :
         Selection("max(" + fieldToMax + ")", renamedTo) {}
 };
 
