@@ -19,6 +19,8 @@ class Selection : public Operation {
     auto generate() const -> QString override;
     auto operator == (const Selection&) const -> bool;
     auto operator != (const Selection&) const -> bool;
+
+    inline static const QString ALL = "*";
 };
 
 inline auto Selection::getFieldName() const -> const QString& {
