@@ -1,6 +1,7 @@
 #ifndef OPERATIONS_QUERY_SELECTION_SELECTION_H_
 #define OPERATIONS_QUERY_SELECTION_SELECTION_H_
 
+#include <QString>
 #include <optional>
 #include "operations/operation.h"
 
@@ -20,7 +21,7 @@ class Selection : public Operation {
     auto operator == (const Selection&) const -> bool;
     auto operator != (const Selection&) const -> bool;
 
-    inline static const QString ALL = "*";
+    inline static const QString ALL = QStringLiteral("*");
 };
 
 inline auto Selection::getFieldName() const -> const QString& {

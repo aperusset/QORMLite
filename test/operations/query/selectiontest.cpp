@@ -124,6 +124,9 @@ void SelectionTest::countDistinctShouldFail() {
     QVERIFY_EXCEPTION_THROWN(
         QORM::Count(QORM::Selection::ALL, DEFAULT_RENAMED_TO, true),
         std::invalid_argument);
+    QVERIFY_EXCEPTION_THROWN(
+        QORM::Count(" " + QORM::Selection::ALL + " ", DEFAULT_RENAMED_TO, true),
+        std::invalid_argument);
 }
 
 void SelectionTest::min() {
