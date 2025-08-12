@@ -107,7 +107,7 @@ class ReadOnlyRepository {
     virtual auto count(const std::list<Condition> &conditions) const -> size_t {
         const auto total = "total";
         return database.result<size_t>(
-            Select(this->tableName(), {Count("*", total)})
+            Select(this->tableName(), {Count(Selection::ALL, total)})
                     .where(conditions), 0,
             [&total](const auto &record) -> size_t {
                 return record.value(total).toUInt();

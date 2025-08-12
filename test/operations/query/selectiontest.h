@@ -19,6 +19,8 @@ class SelectionTest : public QObject {
     void sum();
     void avg();
     void count();
+    void countDistinct();
+    void countDistinctShouldFail();
     void min();
     void max();
     void dateFormatter();

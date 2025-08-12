@@ -97,14 +97,36 @@ void SelectionTest::avg() {
 
 void SelectionTest::count() {
     // Given
-    const auto count = QORM::Count(DEFAULT_FIELD_NAME, DEFAULT_RENAMED_TO);
-
+    const auto count = QORM::Count(DEFAULT_FIELD_NAME,
+                                   DEFAULT_RENAMED_TO, false);
     // When
     const auto generated = count.generate();
 
     // Then
     QCOMPARE(generated, "count(" + DEFAULT_FIELD_NAME + ") as " +
                         DEFAULT_RENAMED_TO);
+}
+
+void SelectionTest::countDistinct() {
+    // Given
+    const auto count = QORM::Count(DEFAULT_FIELD_NAME,
+                                   DEFAULT_RENAMED_TO, true);
+    // When
+    const auto generated = count.generate();
+
+    // Then
+    QCOMPARE(generated, "count(distinct " + DEFAULT_FIELD_NAME + ") as " +
+                        DEFAULT_RENAMED_TO);
+}
+
+void SelectionTest::countDistinctShouldFail() {
+    // Given / When / Then
+    QVERIFY_EXCEPTION_THROWN(
+        QORM::Count(QORM::Selection::ALL, DEFAULT_RENAMED_TO, true),
+        std::invalid_argument);
+    QVERIFY_EXCEPTION_THROWN(
+        QORM::Count(" " + QORM::Selection::ALL + " ", DEFAULT_RENAMED_TO, true),
+        std::invalid_argument);
 }
 
 void SelectionTest::min() {

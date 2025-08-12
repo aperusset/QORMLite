@@ -9,9 +9,18 @@ namespace QORM {
 
 class Count : public Selection {
  public:
-    explicit Count(const QString &fieldToCount,
-                   const std::optional<QString> &renamedTo = std::nullopt) :
-        Selection("count(" + fieldToCount + ")", renamedTo) {}
+    explicit Count(const QString &fieldToCount = Selection::ALL,
+                   const std::optional<QString> &renamedTo = std::nullopt,
+                   bool distinct = false) :
+        Selection([&]() -> QString {
+            const auto simplifiedCount = fieldToCount.simplified();
+            if (distinct && simplifiedCount == Selection::ALL) {
+                throw std::invalid_argument("Cannot count distinctly on " +
+                                            Selection::ALL.toStdString());
+            }
+            return QString("count(") + (distinct ? "distinct " : "") +
+                   simplifiedCount + ")";
+        }(), renamedTo) {}
 };
 
 }  // namespace QORM
