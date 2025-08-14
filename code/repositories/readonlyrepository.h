@@ -56,12 +56,14 @@ class ReadOnlyRepository {
         return this->entityCreator;
     }
 
-    auto qualifiedFields() const {
+    auto qualifiedFields(
+        const std::optional<QString> tableName = std::nullopt) const {
         const auto tableFields = this->fields();
         std::list<QString> qualifiedFields;
         std::transform(tableFields.begin(), tableFields.end(),
             std::back_inserter(qualifiedFields),
-            std::bind(&Utils::qualifyFieldName, this->tableName(),
+            std::bind(&Utils::qualifyFieldName,
+                      tableName.value_or(this->tableName()),
                       std::placeholders::_1));
         return qualifiedFields;
     }

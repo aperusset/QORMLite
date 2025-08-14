@@ -27,6 +27,27 @@ void CRUDRepositoryTest::qualifiedFieldsShouldQualifyAllFields() {
     }
 }
 
+void CRUDRepositoryTest::qualifiedFieldsShouldQualifyOverrideAllFields() {
+    // Given
+    auto database = this->databaseWithCreator();
+    const auto tableNameOverride = "test-override";
+    const auto &testCRUDRepository = TestCRUDRepository(database);
+
+    // When
+    const auto qualifiedFields = testCRUDRepository
+        .qualifiedFields(tableNameOverride);
+
+    // Then
+    for (const auto &field : testCRUDRepository.fields()) {
+        const auto expectedQualifiedFieldName = QORM::Utils::qualifyFieldName(
+                    tableNameOverride, field);
+        QVERIFY2(
+            std::find(qualifiedFields.begin(), qualifiedFields.end(),
+                      expectedQualifiedFieldName) != qualifiedFields.end(),
+            qPrintable("Qualified fields does not contains : " + field));
+    }
+}
+
 void CRUDRepositoryTest::getByKeyShouldFail() {
     // Given
     auto database = this->databaseWithCreator();

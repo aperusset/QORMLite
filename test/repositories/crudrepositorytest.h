@@ -14,6 +14,7 @@ class CRUDRepositoryTest : public MainDatabaseTest {
 
  private slots:
     void qualifiedFieldsShouldQualifyAllFields();
+    void qualifiedFieldsShouldQualifyOverrideAllFields();
     void getByKeyShouldFail();
     void getByKeyShouldReturnEntity();
     void getShouldFail();
