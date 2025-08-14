@@ -2,9 +2,10 @@
 #include <utility>
 
 QORM::Join::Join(JoinType joinType, QString table,
-                 std::list<Condition> conditions) :
+                 std::list<Condition> conditions,
+                 std::optional<QString> renamedTo) :
     joinType(joinType), table(std::move(table)),
-    conditions(std::move(conditions)) {
+    conditions(std::move(conditions)), renamedTo(std::move(renamedTo)) {
     if (this->joinType != JoinType::Cross && this->conditions.empty()) {
         throw std::invalid_argument("Join must have at least one condition.");
     }
@@ -26,6 +27,6 @@ auto QORM::Join::generate() const -> QString {
             query += "cross join ";
             break;
     }
-    return (query + this->table + Condition::generateMultiple(" on ",
-                                                this->conditions)).simplified();
+    return (query + this->table + " " + this->renamedTo.value_or("") +
+            Condition::generateMultiple(" on ", this->conditions)).simplified();
 }
