@@ -12,11 +12,15 @@ class JoinTest : public QObject {
  private slots:
     static void innerJoinShouldFailWithoutConditions();
     static void innerJoinGenerate();
+    static void innerJoinRenamedGenerate();
     static void leftJoinShouldFailWithoutConditions();
     static void leftJoinGenerate();
+    static void leftJoinRenamedGenerate();
     static void rightJoinShouldFailWithoutConditions();
     static void rightJoinGenerate();
+    static void rightJoinRenamedGenerate();
     static void crossJoinGenerate();
+    static void crossJoinRenamedGenerate();
 };
 
 #endif  // TEST_OPERATIONS_QUERY_JOINTEST_H_

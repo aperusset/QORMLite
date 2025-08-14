@@ -9,8 +9,9 @@ namespace QORM {
 
 class InnerJoin : public Join {
  public:
-    InnerJoin(const QString &table, const std::list<Condition> &conditions) :
-        Join(JoinType::Inner, table, conditions) {}
+    InnerJoin(const QString &table, const std::list<Condition> &conditions,
+              const std::optional<QString> &renamedTo = std::nullopt) :
+        Join(JoinType::Inner, table, conditions, renamedTo) {}
 };
 
 }  // namespace QORM

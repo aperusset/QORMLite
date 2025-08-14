@@ -10,8 +10,9 @@ namespace QORM {
 
 class RightJoin : public Join {
  public:
-    RightJoin(const QString &table, const std::list<Condition> &conditions) :
-        Join(JoinType::Right, table, conditions) {}
+    RightJoin(const QString &table, const std::list<Condition> &conditions,
+              const std::optional<QString> &renamedTo = std::nullopt) :
+        Join(JoinType::Right, table, conditions, renamedTo) {}
 };
 
 }  // namespace QORM
