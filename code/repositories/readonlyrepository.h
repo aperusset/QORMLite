@@ -5,6 +5,7 @@
 #include <algorithm>
 #include <list>
 #include <memory>
+#include <typeinfo>
 #include "./cache.h"
 #include "./database.h"
 #include "./utils.h"
