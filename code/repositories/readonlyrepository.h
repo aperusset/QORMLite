@@ -1,6 +1,7 @@
 #ifndef REPOSITORIES_READONLYREPOSITORY_H
 #define REPOSITORIES_READONLYREPOSITORY_H
 
+#include <QRegularExpression>
 #include <algorithm>
 #include <list>
 #include <memory>
@@ -152,7 +153,11 @@ class ReadOnlyRepository {
         throw std::runtime_error("buildKey must be overriden");
     }
 
-    virtual auto tableName() const -> QString = 0;
+    virtual auto tableName() const -> QString {
+        static const auto regexp = QRegularExpression("-?\\d+");
+        return QString(typeid(Entity).name()).replace(regexp, "").toLower();
+    }
+
     virtual auto fields() const -> std::list<QString> = 0;
     virtual auto build(const QSqlRecord &record)
         const -> std::unique_ptr<Entity> = 0;

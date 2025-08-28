@@ -427,3 +427,12 @@ void CRUDRepositoryTest::assertFieldValidityShouldNotThrow() {
         QORM::Utils::qualifyFieldName(testCRUDRepository.tableName(),
                                       TestCreator::TEST_FIELD));
 }
+
+void CRUDRepositoryTest::tableNameShouldReturnExpectedName() {
+    // Given
+    auto database = this->databaseWithCreator();
+    const auto &testCRUDRepository = TestCRUDRepository(database);
+
+    // When / Then
+    QCOMPARE(testCRUDRepository.tableName(), "testentity");
+}

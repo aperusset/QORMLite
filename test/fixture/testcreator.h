@@ -9,7 +9,7 @@ class TestCreator : public QORM::Schema::Creator {
     void createViews(const QORM::Database&) const override;
     void populate(const QORM::Database&) const override {}
 
-    inline static const QString TEST_TABLE = "test_table";
+    inline static const QString TEST_TABLE = "testentity";
     inline static const QString TEST_VIEW = "test_view";
     inline static const QString TEST_FIELD = "test_field";
 };

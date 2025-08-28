@@ -6,10 +6,6 @@
 TestCRUDRepository::TestCRUDRepository(const QORM::Database &database) :
     QORM::Repositories::CRUDRepository<TestEntity>(database) {}
 
-auto TestCRUDRepository::tableName() const -> QString {
-    return TestCreator::TEST_TABLE;
-}
-
 auto TestCRUDRepository::keyCondition(const int &key) const -> QORM::Condition {
     return QORM::Equals::field(TestCreator::TEST_FIELD, key);
 }
