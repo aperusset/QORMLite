@@ -2,9 +2,12 @@
 #define REPOSITORIES_READONLYREPOSITORY_H
 
 #include <QRegularExpression>
+#include <QString>
 #include <algorithm>
+#include <functional>
 #include <list>
 #include <memory>
+#include <optional>
 #include <typeinfo>
 #include "./cache.h"
 #include "./database.h"
@@ -160,8 +163,9 @@ class ReadOnlyRepository {
     // is incorrect.
     virtual auto tableName() const -> QString {
         static const auto regexp = QRegularExpression(
-            "(^\\d+|^class\\s+|^struct\\s+|::|<[^>]*>|[^a-zA-Z0-9_])");
-        return QString(typeid(Entity).name()).replace(regexp, "").toLower();
+            "(^\\d+|^class\\s+|^struct\\s+|^.*::|<[^>]*>|[^a-zA-Z0-9_])");
+        return QString::fromLatin1(typeid(Entity).name())
+                    .replace(regexp, "").toLower();
     }
 
     virtual auto fields() const -> std::list<QString> = 0;
