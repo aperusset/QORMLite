@@ -153,8 +153,13 @@ class ReadOnlyRepository {
         throw std::runtime_error("buildKey must be overriden");
     }
 
+    // WARNING: typeid(Entity).name() is implementation-defined and
+    // non-portable. This default implementation attempts basic cleanup but may
+    // not work across all compilers. Override this method if the inferred name
+    // is incorrect.
     virtual auto tableName() const -> QString {
-        static const auto regexp = QRegularExpression("-?\\d+");
+        static const auto regexp = QRegularExpression(
+            "(^\\d+|^class\\s+|^struct\\s+|::|<[^>]*>|[^a-zA-Z0-9_])");
         return QString(typeid(Entity).name()).replace(regexp, "").toLower();
     }
 
