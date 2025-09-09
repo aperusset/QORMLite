@@ -2,7 +2,7 @@
 #define SCHEMA_CREATOR_H_
 
 #include <QString>
-#include <QMutex>
+#include <QRecursiveMutex>
 #include <list>
 #include <memory>
 #include "schema/operator.h"
@@ -13,7 +13,7 @@ class Creator : public Operator {
     using CreatorSPtr = std::shared_ptr<Creator>;
     using CreatorList = std::list<CreatorSPtr>;
 
-    QMutex creatorMutex;
+    QRecursiveMutex creatorMutex;
     CreatorList requiredCreators;
 
  public:

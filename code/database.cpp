@@ -11,7 +11,6 @@ QORM::Database::Database(ConnectorUPtr connector, bool verbose) :
 
 QORM::Database::Database(ConnectorUPtr connector, CreatorUPtr creator,
                          UpgraderUPtrList upgraders, bool verbose) :
-        databaseMutex(QMutex::RecursionMode::Recursive),
         connector(std::move(connector)), creator(std::move(creator)),
         upgraders(std::move(upgraders)), verbose(verbose),
         svRepository(

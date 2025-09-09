@@ -3,7 +3,6 @@
 #include "./database.h"
 
 QORM::Schema::Creator::Creator(CreatorList requiredCreators) :
-    creatorMutex(QMutex::RecursionMode::Recursive),
     requiredCreators(std::move(requiredCreators)) {
 }
 

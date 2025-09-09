@@ -1,7 +1,7 @@
 #ifndef DATABASE_H_
 #define DATABASE_H_
 
-#include <QMutex>
+#include <QRecursiveMutex>
 #include <QSqlError>
 #include <QSqlRecord>
 #include <list>
@@ -30,7 +30,7 @@ class Database {
     using UpgraderUPtrList = std::list<UpgraderUPtr>;
     using ConnectorUPtr = std::unique_ptr<Connector>;
 
-    QMutex databaseMutex;
+    QRecursiveMutex databaseMutex;
     const ConnectorUPtr connector;
     const CreatorUPtr creator;
     UpgraderUPtrList upgraders;

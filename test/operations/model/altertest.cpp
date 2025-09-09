@@ -18,8 +18,8 @@ void AlterTest::addColumn() {
 
 void AlterTest::dropColumnShouldFailWithEmptyName() {
     // Given / When / Then
-    QVERIFY_EXCEPTION_THROWN(QORM::DropColumn(""), std::invalid_argument);
-    QVERIFY_EXCEPTION_THROWN(QORM::DropColumn("  "), std::invalid_argument);
+    QVERIFY_THROWS_EXCEPTION(std::invalid_argument, QORM::DropColumn(""));
+    QVERIFY_THROWS_EXCEPTION(std::invalid_argument, QORM::DropColumn("  "));
 }
 
 void AlterTest::dropColumn() {
@@ -32,18 +32,18 @@ void AlterTest::dropColumn() {
 
 void AlterTest::renameColumnToShouldFailWithEmptyFieldName() {
     // Given / When / Then
-    QVERIFY_EXCEPTION_THROWN(QORM::RenameColumnTo("", FIELD_NAME),
-                             std::invalid_argument);
-    QVERIFY_EXCEPTION_THROWN(QORM::RenameColumnTo("  ", FIELD_NAME),
-                             std::invalid_argument);
+    QVERIFY_THROWS_EXCEPTION(std::invalid_argument,
+                             QORM::RenameColumnTo("", FIELD_NAME));
+    QVERIFY_THROWS_EXCEPTION(std::invalid_argument,
+                             QORM::RenameColumnTo("  ", FIELD_NAME));
 }
 
 void AlterTest::renameColumnToShouldFailWithEmptyRenamedTo() {
     // Given / When / Then
-    QVERIFY_EXCEPTION_THROWN(QORM::RenameColumnTo(FIELD_NAME, ""),
-                             std::invalid_argument);
-    QVERIFY_EXCEPTION_THROWN(QORM::RenameColumnTo(FIELD_NAME, "  "),
-                             std::invalid_argument);
+    QVERIFY_THROWS_EXCEPTION(std::invalid_argument,
+                             QORM::RenameColumnTo(FIELD_NAME, ""));
+    QVERIFY_THROWS_EXCEPTION(std::invalid_argument,
+                             QORM::RenameColumnTo(FIELD_NAME, "  "));
 }
 
 void AlterTest::renameColumnTo() {

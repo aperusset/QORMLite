@@ -1,7 +1,7 @@
 #ifndef SCHEMA_UPGRADER_H_
 #define SCHEMA_UPGRADER_H_
 
-#include <QMutex>
+#include <QRecursiveMutex>
 #include "schema/operator.h"
 
 namespace QORM::Schema {
@@ -10,7 +10,7 @@ class Upgrader : public Operator {
     const int version;
     const QString description;
 
-    QMutex upgraderMutex;
+    QRecursiveMutex upgraderMutex;
 
  public:
     Upgrader(int version, QString description);

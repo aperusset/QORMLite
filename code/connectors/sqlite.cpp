@@ -41,14 +41,14 @@ void QORM::SQLite::preConnect() const {
 void QORM::SQLite::postConnect() const {
     Connector::postConnect();
     if (this->foreignKeysActivated) {
-        this->getDatabase().exec("pragma foreign_keys = on;");
+        QSqlQuery("pragma foreign_keys = on;", this->getDatabase()).exec();
     }
 }
 
 void QORM::SQLite::optimize() const {
     auto database = this->getDatabase();
-    database.exec("vacuum;");
-    database.exec("reindex;");
+    QSqlQuery("vacuum;", database).exec();
+    QSqlQuery("reindex;", database).exec();
 }
 
 auto QORM::SQLite::tables() const -> std::list<QString> {
