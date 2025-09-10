@@ -22,7 +22,7 @@ void CacheTest::insert() {
 
 void CacheTest::insertShouldFail() {
     // Given / When / Then
-    QVERIFY_EXCEPTION_THROWN(cache.insert(0, nullptr), std::invalid_argument);
+    QVERIFY_THROWS_EXCEPTION(std::invalid_argument, cache.insert(0, nullptr));
 }
 
 void CacheTest::contains() {
@@ -56,8 +56,8 @@ void CacheTest::getShouldFail() {
     auto entity = aTestEntity();
 
     // When / Then
-    QVERIFY_EXCEPTION_THROWN(cache.get(entity->getKey()),
-                             std::invalid_argument);
+    QVERIFY_THROWS_EXCEPTION(std::invalid_argument,
+                             cache.get(entity->getKey()));
 }
 
 void CacheTest::getOrCreate() {

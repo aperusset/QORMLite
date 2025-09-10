@@ -4,7 +4,7 @@
 #include <utility>
 
 QMutex poolMutex;
-std::map<QString, std::unique_ptr<QORM::Database>> pool;
+std::map<QString, std::shared_ptr<QORM::Database>> pool;
 
 namespace {
 
@@ -46,20 +46,18 @@ void QORM::initialize(std::unique_ptr<Connector> connector,
         verbose)));
 }
 
-auto QORM::get(const QString &name) -> Database& {
+auto QORM::get(const QString &name) -> std::shared_ptr<Database> {
     const QMutexLocker lock(&poolMutex);
     if (!initialized(name)) {
         throw std::invalid_argument("You must initialize database " +
                                     name.toStdString() + " before using it");
     }
-    return *pool[name];
+    return pool[name];
 }
 
 void QORM::destroy(const QString &name) {
     const QMutexLocker lock(&poolMutex);
-    if (initialized(name)) {
-        pool.erase(name);
-    }
+    pool.erase(name);
 }
 
 void QORM::destroyAll() {

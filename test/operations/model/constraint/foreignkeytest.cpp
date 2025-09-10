@@ -6,9 +6,8 @@
 
 void ForeignKeyTest::emptyReferencesListShouldFail() {
     // When / Then
-    QVERIFY_EXCEPTION_THROWN(
-        QORM::ForeignKey({}, "targetTable", QORM::OnAction::Cascade),
-        std::invalid_argument);
+    QVERIFY_THROWS_EXCEPTION(std::invalid_argument,
+        QORM::ForeignKey({}, "targetTable", QORM::OnAction::Cascade));
 }
 
 void ForeignKeyTest::generateCascade() {

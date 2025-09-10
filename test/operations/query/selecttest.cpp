@@ -9,20 +9,20 @@
 
 void SelectTest::selectEmptyOrBlankTableNameShouldFail() {
     // When / Then
-    QVERIFY_EXCEPTION_THROWN(QORM::Select(""), std::invalid_argument);
-    QVERIFY_EXCEPTION_THROWN(QORM::Select("  "), std::invalid_argument);
+    QVERIFY_THROWS_EXCEPTION(std::invalid_argument, QORM::Select(""));
+    QVERIFY_THROWS_EXCEPTION(std::invalid_argument, QORM::Select("  "));
 }
 
 void SelectTest::selectWith0LimitShouldFail() {
     // When / Then
-    QVERIFY_EXCEPTION_THROWN(QORM::Select(DEFAULT_TABLE_NAME).limit(0U),
-                             std::invalid_argument);
+    QVERIFY_THROWS_EXCEPTION(std::invalid_argument,
+                             QORM::Select(DEFAULT_TABLE_NAME).limit(0U));
 }
 
 void SelectTest::selectWith0OffsetShouldFail() {
     // When / Then
-    QVERIFY_EXCEPTION_THROWN(QORM::Select(DEFAULT_TABLE_NAME).offset(0U),
-                             std::invalid_argument);
+    QVERIFY_THROWS_EXCEPTION(std::invalid_argument,
+                             QORM::Select(DEFAULT_TABLE_NAME).offset(0U));
 }
 
 void SelectTest::selectAll() {
@@ -128,9 +128,8 @@ void SelectTest::selectAllWithoutGroupByWithHavingShouldFail() {
     const auto fieldCondition = QORM::Equals::field(DEFAULT_FIELD_NAME, 0);
 
     // When / Then
-    QVERIFY_EXCEPTION_THROWN(
-        QORM::Select(DEFAULT_TABLE_NAME).having({fieldCondition}),
-        std::invalid_argument);
+    QVERIFY_THROWS_EXCEPTION(std::invalid_argument,
+        QORM::Select(DEFAULT_TABLE_NAME).having({fieldCondition}));
 }
 
 void SelectTest::selectAllWithGroupByAndHaving() {
@@ -231,7 +230,7 @@ void SelectTest::selectAllWithLimit() {
     QVERIFY(select.hasMaxResults());
     QCOMPARE(select.getMaxResults(), limit);
     QVERIFY(!select.hasSkippedResults());
-    QVERIFY_EXCEPTION_THROWN(select.getSkippedResults(), std::logic_error);
+    QVERIFY_THROWS_EXCEPTION(std::logic_error, select.getSkippedResults());
     QCOMPARE(generated, "select distinct * from " + DEFAULT_TABLE_NAME +
                         " limit " + QString::number(limit));
 }
@@ -265,7 +264,7 @@ void SelectTest::selectWithIncompatibleUnionsShouldFail() {
     const auto select2 = QORM::Select(DEFAULT_TABLE_NAME,
                                       {DEFAULT_FIELD_NAME, DEFAULT_FIELD_NAME});
     // When / Then
-    QVERIFY_EXCEPTION_THROWN(select1.unite(select2), std::logic_error);
+    QVERIFY_THROWS_EXCEPTION(std::logic_error, select1.unite(select2));
 }
 
 void SelectTest::selectAllWithUnions() {

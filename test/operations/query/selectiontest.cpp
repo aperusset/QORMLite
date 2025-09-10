@@ -11,8 +11,8 @@
 
 void SelectionTest::emptyOrBlankFieldNameShouldFail() {
     // Given / When / Then
-    QVERIFY_EXCEPTION_THROWN(QORM::Selection(""), std::invalid_argument);
-    QVERIFY_EXCEPTION_THROWN(QORM::Selection("  "), std::invalid_argument);
+    QVERIFY_THROWS_EXCEPTION(std::invalid_argument, QORM::Selection(""));
+    QVERIFY_THROWS_EXCEPTION(std::invalid_argument, QORM::Selection("  "));
 }
 
 void SelectionTest::generate() {
@@ -25,7 +25,7 @@ void SelectionTest::generate() {
     // Then
     QCOMPARE(selection.getFieldName(), DEFAULT_FIELD_NAME);
     QVERIFY(!selection.hasRenamedTo());
-    QVERIFY_EXCEPTION_THROWN(selection.getRenamedTo(), std::logic_error);
+    QVERIFY_THROWS_EXCEPTION(std::logic_error, selection.getRenamedTo());
     QCOMPARE(generated, DEFAULT_FIELD_NAME);
 }
 
@@ -48,13 +48,10 @@ void SelectionTest::equals() {
     const auto selection1 = QORM::Selection(DEFAULT_FIELD_NAME);
     const auto selection2 = QORM::Selection(DEFAULT_FIELD_NAME,
                                             DEFAULT_RENAMED_TO);
-    // When
-    const auto equals = selection1 == selection2;
-    const auto notEquals = selection1 != selection2;
 
-    // Then
-    QVERIFY(equals);
-    QVERIFY(!notEquals);
+    // When / Then
+    QVERIFY(selection1 == selection2);
+    QVERIFY(!(selection1 != selection2));
 }
 
 void SelectionTest::notEquals() {
@@ -62,13 +59,9 @@ void SelectionTest::notEquals() {
     const auto selection1 = QORM::Selection(DEFAULT_FIELD_NAME);
     const auto selection2 = QORM::Selection("anotherName");
 
-    // When
-    const auto equals = selection1 == selection2;
-    const auto notEquals = selection1 != selection2;
-
-    // Then
-    QVERIFY(!equals);
-    QVERIFY(notEquals);
+    // When / Then
+    QVERIFY(!(selection1 == selection2));
+    QVERIFY(selection1 != selection2);
 }
 
 void SelectionTest::sum() {
@@ -109,10 +102,10 @@ void SelectionTest::count() {
 
 void SelectionTest::countDistinct() {
     // Given
-    const auto count = QORM::Count(DEFAULT_FIELD_NAME,
-                                   DEFAULT_RENAMED_TO, true);
+    const auto countDistinct = QORM::Count(DEFAULT_FIELD_NAME,
+                                           DEFAULT_RENAMED_TO, true);
     // When
-    const auto generated = count.generate();
+    const auto generated = countDistinct.generate();
 
     // Then
     QCOMPARE(generated, "count(distinct " + DEFAULT_FIELD_NAME + ") as " +
@@ -121,12 +114,10 @@ void SelectionTest::countDistinct() {
 
 void SelectionTest::countDistinctShouldFail() {
     // Given / When / Then
-    QVERIFY_EXCEPTION_THROWN(
-        QORM::Count(QORM::Selection::ALL, DEFAULT_RENAMED_TO, true),
-        std::invalid_argument);
-    QVERIFY_EXCEPTION_THROWN(
-        QORM::Count(" " + QORM::Selection::ALL + " ", DEFAULT_RENAMED_TO, true),
-        std::invalid_argument);
+    QVERIFY_THROWS_EXCEPTION(std::invalid_argument,
+        QORM::Count(QORM::Selection::ALL, DEFAULT_RENAMED_TO, true));
+    QVERIFY_THROWS_EXCEPTION(std::invalid_argument,
+        QORM::Count(" " + QORM::Selection::ALL + " ", DEFAULT_RENAMED_TO, true));
 }
 
 void SelectionTest::min() {

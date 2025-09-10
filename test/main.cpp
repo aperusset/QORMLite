@@ -30,7 +30,13 @@
 #include "repositories/schemaversionrepositorytest.h"
 #include "schema/creatortest.h"
 
+auto quit(QCoreApplication &application, int exitCode) -> int {
+    application.quit();
+    return exitCode;
+}
+
 auto main(int argc, char *argv[]) -> int {
+    QCoreApplication application(argc, argv);
     std::list<std::unique_ptr<QObject>> tests;
     tests.emplace_back(std::make_unique<UtilsTest>());
     tests.emplace_back(std::make_unique<EntityTest>());
@@ -68,12 +74,12 @@ auto main(int argc, char *argv[]) -> int {
         if (std::any_of(tests.begin(), tests.end(), [=](const auto &test) {
             return static_cast<bool>(QTest::qExec(test.get(), argc, argv));
         })) {
-            return EXIT_FAILURE;
+            return quit(application, EXIT_FAILURE);
         }
     } catch (std::exception &exception) {
         qFatal("Unexpected exception : %s", exception.what());
-        return EXIT_FAILURE;
+        return quit(application, EXIT_FAILURE);
     }
 
-    return EXIT_SUCCESS;
+    return quit(application, EXIT_SUCCESS);
 }

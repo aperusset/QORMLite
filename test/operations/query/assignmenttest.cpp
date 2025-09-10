@@ -4,10 +4,10 @@
 
 void AssignmentTest::emptyOrBlankFieldNameShouldFail() {
     // Given / When / Then
-    QVERIFY_EXCEPTION_THROWN(QORM::Assignment("", DEFAULT_VALUE),
-                             std::invalid_argument);
-    QVERIFY_EXCEPTION_THROWN(QORM::Assignment("  ", DEFAULT_VALUE),
-                             std::invalid_argument);
+    QVERIFY_THROWS_EXCEPTION(std::invalid_argument,
+                             QORM::Assignment("", DEFAULT_VALUE));
+    QVERIFY_THROWS_EXCEPTION(std::invalid_argument,
+                             QORM::Assignment("  ", DEFAULT_VALUE));
 }
 
 void AssignmentTest::generate() {

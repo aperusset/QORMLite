@@ -9,7 +9,7 @@ void CTETest::shouldFailWithoutAnyWith() {
     const QORM::Select select(DEFAULT_TABLE_NAME);
 
     // Given / When / Then
-    QVERIFY_EXCEPTION_THROWN(QORM::CTE({}, select), std::invalid_argument);
+    QVERIFY_THROWS_EXCEPTION(std::invalid_argument, QORM::CTE({}, select));
 }
 
 void CTETest::shouldFailWithEmptyName() {
@@ -17,12 +17,12 @@ void CTETest::shouldFailWithEmptyName() {
     const QORM::Select select(DEFAULT_TABLE_NAME);
 
     // When / Then
-    QVERIFY_EXCEPTION_THROWN(QORM::CTE({
+    QVERIFY_THROWS_EXCEPTION(std::invalid_argument, QORM::CTE({
         {"", select}
-    }, select), std::invalid_argument);
-    QVERIFY_EXCEPTION_THROWN(QORM::CTE({
+    }, select));
+    QVERIFY_THROWS_EXCEPTION(std::invalid_argument, QORM::CTE({
         {"  ", select}
-    }, select), std::invalid_argument);
+    }, select));
 }
 
 void CTETest::shouldGenerateExpectedSelectQuery() {

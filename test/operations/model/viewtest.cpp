@@ -10,8 +10,8 @@ void ViewTest::selectWithBindableShouldFail() {
     const auto select = QORM::Select(DEFAULT_TABLE_NAME).where({bindable});
 
     // When / Then
-    QVERIFY_EXCEPTION_THROWN(
-                QORM::View(DEFAULT_VIEW_NAME, select), std::invalid_argument);
+    QVERIFY_THROWS_EXCEPTION(std::invalid_argument,
+                QORM::View(DEFAULT_VIEW_NAME, select));
 }
 
 void ViewTest::generate() {

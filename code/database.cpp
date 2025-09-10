@@ -130,7 +130,7 @@ void QORM::Database::migrate() {
     }
 }
 
-void QORM::Database::createSchemaVersion() {
+void QORM::Database::createSchemaVersion() const {
     Schema::SchemaVersionCreator().execute(*this);
 }
 

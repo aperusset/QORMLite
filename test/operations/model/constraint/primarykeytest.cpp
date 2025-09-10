@@ -14,7 +14,7 @@ void PrimaryKeyTest::getSingleField() {
 
     // Then
     QCOMPARE(fields.size(), 1U);
-    QVERIFY_EXCEPTION_THROWN(primaryKey.getName(), std::logic_error);
+    QVERIFY_THROWS_EXCEPTION(std::logic_error, primaryKey.getName());
 }
 
 void PrimaryKeyTest::getMultipleFields() {
@@ -29,7 +29,7 @@ void PrimaryKeyTest::getMultipleFields() {
     // Then
     QCOMPARE(fields.size(), 2U);
     QVERIFY(!primaryKey.isAutoIncrement());
-    QVERIFY_EXCEPTION_THROWN(primaryKey.getName(), std::logic_error);
+    QVERIFY_THROWS_EXCEPTION(std::logic_error, primaryKey.getName());
 }
 
 void PrimaryKeyTest::isAutoIncrement() {
@@ -41,7 +41,7 @@ void PrimaryKeyTest::isAutoIncrement() {
 
     // Then
     QVERIFY(isAutoIncrement);
-    QVERIFY_EXCEPTION_THROWN(primaryKey.getName(), std::logic_error);
+    QVERIFY_THROWS_EXCEPTION(std::logic_error, primaryKey.getName());
 }
 
 void PrimaryKeyTest::isNotAutoIncrement() {
@@ -49,11 +49,11 @@ void PrimaryKeyTest::isNotAutoIncrement() {
     const auto primaryKey = QORM::PrimaryKey(QORM::Field("name",
                     QORM::Type("type"), false, std::nullopt), false);
     // When
-    const auto isAutoIncrement = primaryKey.isAutoIncrement();
+    const auto autoIncrement = primaryKey.isAutoIncrement();
 
     // Then
-    QVERIFY(!isAutoIncrement);
-    QVERIFY_EXCEPTION_THROWN(primaryKey.getName(), std::logic_error);
+    QVERIFY(!autoIncrement);
+    QVERIFY_THROWS_EXCEPTION(std::logic_error, primaryKey.getName());
 }
 
 void PrimaryKeyTest::generateSingleField() {
@@ -67,7 +67,7 @@ void PrimaryKeyTest::generateSingleField() {
 
     // Then
     QCOMPARE(generated, "primary key (name)");
-    QVERIFY_EXCEPTION_THROWN(primaryKey.getName(), std::logic_error);
+    QVERIFY_THROWS_EXCEPTION(std::logic_error, primaryKey.getName());
 }
 
 void PrimaryKeyTest::generateSingleFieldAutoIncrement() {
@@ -82,7 +82,7 @@ void PrimaryKeyTest::generateSingleFieldAutoIncrement() {
 
     // Then
     QCOMPARE(generated, generatedField + " primary key autoincrement");
-    QVERIFY_EXCEPTION_THROWN(primaryKey.getName(), std::logic_error);
+    QVERIFY_THROWS_EXCEPTION(std::logic_error, primaryKey.getName());
 }
 
 void PrimaryKeyTest::generateMultipleFields() {
@@ -96,10 +96,10 @@ void PrimaryKeyTest::generateMultipleFields() {
 
     // Then
     QCOMPARE(generated, "primary key (name, name)");
-    QVERIFY_EXCEPTION_THROWN(primaryKey.getName(), std::logic_error);
+    QVERIFY_THROWS_EXCEPTION(std::logic_error, primaryKey.getName());
 }
 
 void PrimaryKeyTest::noFieldsShouldFail() {
     // When / Then
-    QVERIFY_EXCEPTION_THROWN(QORM::PrimaryKey({}), std::invalid_argument);
+    QVERIFY_THROWS_EXCEPTION(std::invalid_argument, QORM::PrimaryKey({}));
 }

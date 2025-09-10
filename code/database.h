@@ -40,7 +40,7 @@ class Database {
     auto prepare(const QString&) const -> QSqlQuery;
     auto prepare(const Query&) const -> QSqlQuery;
     auto execute(QSqlQuery) const -> QSqlQuery;
-    void createSchemaVersion();
+    void createSchemaVersion() const;
     void create();
     void upgrade();
 
@@ -48,7 +48,7 @@ class Database {
     static void assertSelector() {
         static_assert(std::is_base_of<Select, Selector>::value ||
                       std::is_base_of<CTE<Select>, Selector>::value,
-                      "Selector must be Select || CTE<Select>");
+                      "Selector must be Select or CTE<Select>");
     }
 
  public:

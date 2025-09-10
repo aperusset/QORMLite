@@ -71,15 +71,12 @@ void SchemaVersionRepositoryTest::newSchemaVersionShouldFail() {
     const auto now = QDateTime::currentDateTime();
 
     // When / Then
-    QVERIFY_EXCEPTION_THROWN(
-        QORM::Entities::SchemaVersion(-1, "description", now),
-        std::invalid_argument);
-    QVERIFY_EXCEPTION_THROWN(
-        QORM::Entities::SchemaVersion(0, "", now),
-        std::invalid_argument);
-    QVERIFY_EXCEPTION_THROWN(
-        QORM::Entities::SchemaVersion(0, "   ", now),
-        std::invalid_argument);
+    QVERIFY_THROWS_EXCEPTION(std::invalid_argument,
+        QORM::Entities::SchemaVersion(-1, "description", now));
+    QVERIFY_THROWS_EXCEPTION(std::invalid_argument,
+        QORM::Entities::SchemaVersion(0, "", now));
+    QVERIFY_THROWS_EXCEPTION(std::invalid_argument,
+        QORM::Entities::SchemaVersion(0, "   ", now));
 }
 
 void SchemaVersionRepositoryTest::getCurrentSchemaVersionShouldFail() {
@@ -94,8 +91,8 @@ void SchemaVersionRepositoryTest::getCurrentSchemaVersionShouldFail() {
     repository.erase(QORM::Entities::SchemaVersion::INITIAL_VERSION);
 
     // Then
-    QVERIFY_EXCEPTION_THROWN(repository.getCurrentSchemaVersion(),
-                             std::logic_error);
+    QVERIFY_THROWS_EXCEPTION(std::logic_error,
+                             repository.getCurrentSchemaVersion());
 }
 
 void SchemaVersionRepositoryTest::getCurrentSchemaVersionShouldReturnInitial() {

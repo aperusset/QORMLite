@@ -14,7 +14,7 @@ namespace QORM {
                     std::unique_ptr<Schema::Creator>,
                     std::list<std::unique_ptr<Schema::Upgrader>> = {},
                     bool verbose = false);
-    auto get(const QString &name) -> Database&;
+    auto get(const QString &name) -> std::shared_ptr<Database>;
     void destroy(const QString &name);
     void destroyAll();
 }  // namespace QORM
