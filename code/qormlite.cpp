@@ -1,9 +1,10 @@
 #include "qormlite.h"
-#include <QMutex>
+#include <QRecursiveMutex>
 #include <map>
+#include <memory>
 #include <utility>
 
-QMutex poolMutex;
+QRecursiveMutex poolMutex;
 std::map<QString, std::shared_ptr<QORM::Database>> pool;
 
 namespace {
@@ -25,13 +26,14 @@ auto initializeChecks(const QORM::Connector &connector) -> QString {
 }  // namespace
 
 auto QORM::isInitialized(const QString &name) -> bool {
+    const QMutexLocker lock(&poolMutex);
     return initialized(name);
 }
 
 void QORM::initialize(std::unique_ptr<Connector> connector, bool verbose) {
     const QMutexLocker lock(&poolMutex);
     const auto connectorName = initializeChecks(*connector);
-    pool.insert(std::pair(connectorName, std::make_unique<Database>(
+    pool.emplace(std::pair(connectorName, std::make_shared<Database>(
         std::move(connector), verbose)));
 }
 
@@ -41,7 +43,7 @@ void QORM::initialize(std::unique_ptr<Connector> connector,
         bool verbose) {
     const QMutexLocker lock(&poolMutex);
     const auto connectorName = initializeChecks(*connector);
-    pool.insert(std::pair(connectorName, std::make_unique<Database>(
+    pool.emplace(std::pair(connectorName, std::make_shared<Database>(
         std::move(connector), std::move(creator), std::move(upgraders),
         verbose)));
 }
@@ -52,7 +54,7 @@ auto QORM::get(const QString &name) -> std::shared_ptr<Database> {
         throw std::invalid_argument("You must initialize database " +
                                     name.toStdString() + " before using it");
     }
-    return pool[name];
+    return pool.at(name);
 }
 
 void QORM::destroy(const QString &name) {

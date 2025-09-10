@@ -69,7 +69,6 @@ void SQLiteTest::connectShouldEnableRegexpButNotForeignKeys() {
     auto query = QSqlQuery("pragma foreign_keys;", sqlite.getDatabase());
 
     // Then
-    QVERIFY(query.exec());
     QVERIFY(!sqlite.areForeignKeysActivated());
     QCOMPARE(sqlite.getDatabase().connectOptions(), "QSQLITE_ENABLE_REGEXP");
     QVERIFY(query.next());
@@ -85,7 +84,6 @@ void SQLiteTest::connectShouldEnableRegexpAndForeignKeys() {
     auto query = QSqlQuery("pragma foreign_keys;", sqlite.getDatabase());
 
     // Then
-    QVERIFY(query.exec());
     QVERIFY(sqlite.areForeignKeysActivated());
     QCOMPARE(sqlite.getDatabase().connectOptions(), "QSQLITE_ENABLE_REGEXP");
     QVERIFY(query.next());
@@ -125,7 +123,7 @@ void SQLiteTest::tablesShouldReturnWithoutSequence() {
     sqlite.connect();
 
     // When
-    QSqlQuery(table.generate() + ";", sqlite.getDatabase()).exec();
+    QSqlQuery(table.generate() + ";", sqlite.getDatabase());
     const auto tables = sqlite.tables();
 
     // Then

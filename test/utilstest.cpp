@@ -1,4 +1,5 @@
 #include "utilstest.h"
+#include <QMetaType>
 #include <QSqlField>
 #include <QSqlRecord>
 #include <list>
@@ -147,7 +148,7 @@ void UtilsTest::joinToStringShouldJoinMapWithSeparator() {
 
 void UtilsTest::getOrThrowShouldReturnValue() {
     // Given
-    auto field = QSqlField(FIELD_NAME, QMetaType(QMetaType::Type::QString));
+    auto field = QSqlField(FIELD_NAME, QMetaType::fromType<QString>());
     const auto value = QString("value");
     field.setValue(QVariant::fromValue(value));
     auto record = QSqlRecord();
@@ -164,7 +165,7 @@ void UtilsTest::getOrThrowShouldReturnValue() {
 
 void UtilsTest::getOrThrowShouldThrow() {
     // Given
-    auto field = QSqlField(FIELD_NAME, QMetaType(QMetaType::Type::QString));
+    auto field = QSqlField(FIELD_NAME, QMetaType::fromType<QString>());
     auto record = QSqlRecord();
     record.append(field);
 
@@ -178,7 +179,7 @@ void UtilsTest::getOrThrowShouldThrow() {
 
 void UtilsTest::getOrDefaultShouldReturnValue() {
     // Given
-    auto field = QSqlField(FIELD_NAME, QMetaType(QMetaType::Type::QString));
+    auto field = QSqlField(FIELD_NAME, QMetaType::fromType<QString>());
     const auto value = QString("value");
     field.setValue(QVariant::fromValue(value));
     auto record = QSqlRecord();
@@ -195,7 +196,7 @@ void UtilsTest::getOrDefaultShouldReturnValue() {
 
 void UtilsTest::getOrDefaultShouldReturnDefault() {
     // Given
-    auto field = QSqlField(FIELD_NAME, QMetaType(QMetaType::Type::QString));
+    auto field = QSqlField(FIELD_NAME, QMetaType::fromType<QString>());
     const auto defaultValue = QString("default");
     auto record = QSqlRecord();
     record.append(field);
@@ -224,7 +225,7 @@ void UtilsTest::getOrDefaultShouldReturnDefaultIfNotExists() {
 
 void UtilsTest::getOrNullShouldReturnPointer() {
     // Given
-    auto field = QSqlField(FIELD_NAME, QMetaType(QMetaType::Type::Int));
+    auto field = QSqlField(FIELD_NAME, QMetaType::fromType<int>());
     int32_t value = 42;
     field.setValue(QVariant::fromValue(value));
     auto record = QSqlRecord();
@@ -241,7 +242,7 @@ void UtilsTest::getOrNullShouldReturnPointer() {
 
 void UtilsTest::getOrNullShouldReturnNullptr() {
     // Given
-    auto field = QSqlField(FIELD_NAME, QMetaType(QMetaType::Type::Int));
+    auto field = QSqlField(FIELD_NAME, QMetaType::fromType<int>());
     int32_t value = 42;
     auto record = QSqlRecord();
     record.append(field);
@@ -257,7 +258,7 @@ void UtilsTest::getOrNullShouldReturnNullptr() {
 
 void UtilsTest::getBoolOrDefaultShouldReturnValue() {
     // Given
-    auto field = QSqlField(FIELD_NAME, QMetaType(QMetaType::Type::Bool));
+    auto field = QSqlField(FIELD_NAME, QMetaType::fromType<bool>());
     const auto value = true;
     field.setValue(QVariant::fromValue(value));
     auto record = QSqlRecord();
@@ -272,7 +273,7 @@ void UtilsTest::getBoolOrDefaultShouldReturnValue() {
 
 void UtilsTest::getBoolOrThrowShouldReturnValue() {
     // Given
-    auto field = QSqlField(FIELD_NAME, QMetaType(QMetaType::Type::Bool));
+    auto field = QSqlField(FIELD_NAME, QMetaType::fromType<bool>());
     const auto value = true;
     field.setValue(QVariant::fromValue(value));
     auto record = QSqlRecord();
@@ -287,7 +288,7 @@ void UtilsTest::getBoolOrThrowShouldReturnValue() {
 
 void UtilsTest::getStringOrDefaultShouldReturnValue() {
     // Given
-    auto field = QSqlField(FIELD_NAME, QMetaType(QMetaType::Type::QString));
+    auto field = QSqlField(FIELD_NAME, QMetaType::fromType<QString>());
     const auto value = QString("value");
     field.setValue(QVariant::fromValue(value));
     auto record = QSqlRecord();
@@ -302,7 +303,7 @@ void UtilsTest::getStringOrDefaultShouldReturnValue() {
 
 void UtilsTest::getStringOrThrowShouldReturnValue() {
     // Given
-    auto field = QSqlField(FIELD_NAME, QMetaType(QMetaType::Type::QString));
+    auto field = QSqlField(FIELD_NAME, QMetaType::fromType<QString>());
     const auto value = QString("value");
     field.setValue(QVariant::fromValue(value));
     auto record = QSqlRecord();
@@ -317,7 +318,7 @@ void UtilsTest::getStringOrThrowShouldReturnValue() {
 
 void UtilsTest::getDateOrDefaultShouldReturnValue() {
     // Given
-    auto field = QSqlField(FIELD_NAME, QMetaType(QMetaType::Type::QDate));
+    auto field = QSqlField(FIELD_NAME, QMetaType::fromType<QDate>());
     const auto value = QDate::currentDate();
     field.setValue(QVariant::fromValue(value));
     auto record = QSqlRecord();
@@ -332,7 +333,7 @@ void UtilsTest::getDateOrDefaultShouldReturnValue() {
 
 void UtilsTest::getDateOrThrowShouldReturnValue() {
     // Given
-    auto field = QSqlField(FIELD_NAME, QMetaType(QMetaType::Type::QDate));
+    auto field = QSqlField(FIELD_NAME, QMetaType::fromType<QDate>());
     const auto value = QDate::currentDate();
     field.setValue(QVariant::fromValue(value));
     auto record = QSqlRecord();
@@ -347,7 +348,7 @@ void UtilsTest::getDateOrThrowShouldReturnValue() {
 
 void UtilsTest::getDateTimeOrDefaultShouldReturnValue() {
     // Given
-    auto field = QSqlField(FIELD_NAME, QMetaType(QMetaType::Type::QDateTime));
+    auto field = QSqlField(FIELD_NAME, QMetaType::fromType<QDateTime>());
     const auto value = QDateTime::currentDateTime();
     field.setValue(QVariant::fromValue(value));
     auto record = QSqlRecord();
@@ -362,7 +363,7 @@ void UtilsTest::getDateTimeOrDefaultShouldReturnValue() {
 
 void UtilsTest::getDateTimeOrThrowShouldReturnValue() {
     // Given
-    auto field = QSqlField(FIELD_NAME, QMetaType(QMetaType::Type::QDateTime));
+    auto field = QSqlField(FIELD_NAME, QMetaType::fromType<QDateTime>());
     const auto value = QDateTime::currentDateTime();
     field.setValue(QVariant::fromValue(value));
     auto record = QSqlRecord();
@@ -376,7 +377,7 @@ void UtilsTest::getDateTimeOrThrowShouldReturnValue() {
 
 void UtilsTest::getUIntOrDefaultShouldReturnValue() {
     // Given
-    auto field = QSqlField(FIELD_NAME, QMetaType(QMetaType::Type::UInt));
+    auto field = QSqlField(FIELD_NAME, QMetaType::fromType<unsigned int>());
     const auto value = 42U;
     field.setValue(QVariant::fromValue(value));
     auto record = QSqlRecord();
@@ -391,7 +392,7 @@ void UtilsTest::getUIntOrDefaultShouldReturnValue() {
 
 void UtilsTest::getUIntOrThrowShouldReturnValue() {
     // Given
-    auto field = QSqlField(FIELD_NAME, QMetaType(QMetaType::Type::UInt));
+    auto field = QSqlField(FIELD_NAME, QMetaType::fromType<unsigned int>());
     const auto value = 42U;
     field.setValue(QVariant::fromValue(value));
     auto record = QSqlRecord();
@@ -406,7 +407,7 @@ void UtilsTest::getUIntOrThrowShouldReturnValue() {
 
 void UtilsTest::getIntOrDefaultShouldReturnValue() {
     // Given
-    auto field = QSqlField(FIELD_NAME, QMetaType(QMetaType::Type::Int));
+    auto field = QSqlField(FIELD_NAME, QMetaType::fromType<int>());
     const auto value = 42;
     field.setValue(QVariant::fromValue(value));
     auto record = QSqlRecord();
@@ -421,7 +422,7 @@ void UtilsTest::getIntOrDefaultShouldReturnValue() {
 
 void UtilsTest::getIntOrThrowShouldReturnValue() {
     // Given
-    auto field = QSqlField(FIELD_NAME, QMetaType(QMetaType::Type::Int));
+    auto field = QSqlField(FIELD_NAME, QMetaType::fromType<int>());
     const auto value = 42;
     field.setValue(QVariant::fromValue(value));
     auto record = QSqlRecord();
@@ -436,7 +437,7 @@ void UtilsTest::getIntOrThrowShouldReturnValue() {
 
 void UtilsTest::getDoubleOrDefaultShouldReturnValue() {
     // Given
-    auto field = QSqlField(FIELD_NAME, QMetaType(QMetaType::Type::Double));
+    auto field = QSqlField(FIELD_NAME, QMetaType::fromType<double>());
     const auto value = 42.0;
     field.setValue(QVariant::fromValue(value));
     auto record = QSqlRecord();
@@ -451,7 +452,7 @@ void UtilsTest::getDoubleOrDefaultShouldReturnValue() {
 
 void UtilsTest::getDoubleOrThrowShouldReturnValue() {
     // Given
-    auto field = QSqlField(FIELD_NAME, QMetaType(QMetaType::Type::Double));
+    auto field = QSqlField(FIELD_NAME, QMetaType::fromType<double>());
     const auto value = 42.0;
     field.setValue(QVariant::fromValue(value));
     auto record = QSqlRecord();

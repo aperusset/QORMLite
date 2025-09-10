@@ -2,6 +2,7 @@
 #define SCHEMA_UPGRADER_H_
 
 #include <QRecursiveMutex>
+#include <QString>
 #include "schema/operator.h"
 
 namespace QORM::Schema {

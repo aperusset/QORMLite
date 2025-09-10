@@ -39,7 +39,7 @@ void QORMLiteTest::getShouldSuccess() {
     QORM::initialize(std::make_unique<TestConnector>(this->databaseName()),
                      std::make_unique<TestCreator>(), {}, false);
     // When
-    const auto &database = QORM::get(this->databaseName());
+    auto database = QORM::get(this->databaseName());
 
     // Then
     QVERIFY(QORM::isInitialized(this->databaseName()));

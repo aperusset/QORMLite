@@ -1,5 +1,5 @@
 #include "upgrader.h"
-#include <QMutex>
+#include <QMutexLocker>
 #include <utility>
 
 QORM::Schema::Upgrader::Upgrader(int version, QString description) :

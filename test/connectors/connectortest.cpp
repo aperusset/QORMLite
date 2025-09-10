@@ -1,4 +1,5 @@
 #include "connectortest.h"
+#include <QSqlQuery>
 #include "fixture/testconnector.h"
 #include "operations/model/table.h"
 #include "operations/model/view.h"
@@ -83,7 +84,7 @@ void ConnectorTest::shouldReturnListOfAvailableTables() {
     testConnector.connect();
 
     // When
-    QSqlQuery(table.generate() + ";", testConnector.getDatabase()).exec();
+    QSqlQuery(table.generate() + ";", testConnector.getDatabase());
     const auto tables = testConnector.tables();
 
     // Then
@@ -103,8 +104,8 @@ void ConnectorTest::shouldReturnListOfAvailableViews() {
     const auto &database = testConnector.getDatabase();
 
     // When
-    QSqlQuery(table.generate() + ";", database).exec();
-    QSqlQuery(view.generate() + ";", database).exec();
+    QSqlQuery(table.generate() + ";", database);
+    QSqlQuery(view.generate() + ";", database);
     const auto views = testConnector.views();
 
     // Then

@@ -1,5 +1,5 @@
-QMAKE_CXXFLAGS += -std=c++17 -std=gnu++17 -Wall -Wextra -Wpedantic -Werror
+QMAKE_CXXFLAGS += -Wall -Wextra -Wpedantic -Werror
 CONFIG += c++17
 QT += sql
-DEFINES += QT_DEPRECATED_WARNINGS
+DEFINES += QT_DEPRECATED_WARNINGS QT_DISABLE_DEPRECATED_UP_TO=0x060700
 VERSION = 3.0

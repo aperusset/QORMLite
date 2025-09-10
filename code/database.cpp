@@ -1,4 +1,5 @@
 #include "database.h"
+
 #include <algorithm>
 #include <set>
 #include <utility>
@@ -96,7 +97,7 @@ auto QORM::Database::getSchemaState() const -> Schema::State {
                         : Schema::State::UP_TO_DATE;
 }
 
-void QORM::Database::connect() {
+void QORM::Database::connect() const {
     const QMutexLocker lock(&databaseMutex);
     if (this->isConnected()) {
         throw std::runtime_error("Already connected to database");

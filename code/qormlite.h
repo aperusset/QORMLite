@@ -2,6 +2,8 @@
 #define QORMLITE_H_
 
 #include <QString>
+#include <list>
+#include <memory>
 #include "connectors/connector.h"
 #include "schema/creator.h"
 #include "./database.h"

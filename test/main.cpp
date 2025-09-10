@@ -77,7 +77,7 @@ auto main(int argc, char *argv[]) -> int {
             return quit(application, EXIT_FAILURE);
         }
     } catch (std::exception &exception) {
-        qFatal("Unexpected exception : %s", exception.what());
+        qCritical("Unexpected exception : %s", exception.what());
         return quit(application, EXIT_FAILURE);
     }
 

@@ -22,7 +22,7 @@ namespace Repositories {
 
 class SchemaVersionRepository;
 
-}  // nameapce Repositories
+}  // namespace Repositories
 
 class Database {
     using CreatorUPtr = std::unique_ptr<Schema::Creator>;
@@ -30,7 +30,7 @@ class Database {
     using UpgraderUPtrList = std::list<UpgraderUPtr>;
     using ConnectorUPtr = std::unique_ptr<Connector>;
 
-    QRecursiveMutex databaseMutex;
+    mutable QRecursiveMutex databaseMutex;
     const ConnectorUPtr connector;
     const CreatorUPtr creator;
     UpgraderUPtrList upgraders;
@@ -65,7 +65,7 @@ class Database {
     auto isConnected() const -> bool;
     auto getSchemaState() const -> Schema::State;
 
-    void connect();
+    void connect() const;
     void migrate();
     void disconnect();
     void optimize() const;
@@ -80,8 +80,8 @@ class Database {
         const std::function<Key(const QSqlQuery&)> &keyExtractor =
             [](const auto &query) -> Key {
                 if (const auto &result = query.lastInsertId();
-                        result.isValid() & result.template canConvert<Key>()) {
-                    return result.toInt();
+                        result.isValid() && result.template canConvert<Key>()) {
+                    return result.template value<Key>();
                 }
                 throw std::logic_error("Failed to get last id as Key");
             }) const {

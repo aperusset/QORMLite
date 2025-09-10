@@ -58,7 +58,7 @@ void DatabaseTest::migrateShouldDoNothing() {
     database.migrate();
 
     // Then
-    QCOMPARE(1, repository.getCurrentSchemaVersion().getKey());
+    QCOMPARE(repository.getCurrentSchemaVersion().getKey(), 1);
 }
 
 void DatabaseTest::migrateShouldInsertSchemaVersions() {
@@ -265,7 +265,7 @@ void DatabaseTest::entityShouldSuccess() {
                 QORM::Select(TestCreator::TEST_TABLE),
         [&testEntity, &convertible](const QSqlRecord &record) -> TestEntity& {
             convertible = record.value(TestCreator::TEST_FIELD)
-                                                .canConvert<int>();
+                .convert(QMetaType(QMetaType::Type::Int));
             return testEntity;
         });
 
