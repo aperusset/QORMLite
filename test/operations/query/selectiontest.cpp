@@ -1,4 +1,5 @@
 #include "selectiontest.h"
+#include <stdexcept>
 #include "operations/query/selection/selection.h"
 #include "operations/query/selection/sum.h"
 #include "operations/query/selection/avg.h"

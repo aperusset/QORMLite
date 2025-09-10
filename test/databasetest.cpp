@@ -80,7 +80,7 @@ void DatabaseTest::migrateShouldInsertSchemaVersions() {
     QVERIFY(repository.exists(2));
     QVERIFY(repository.exists(3));
     QVERIFY(repository.exists(4));
-    QCOMPARE(4, repository.getCurrentSchemaVersion().getKey());
+    QCOMPARE(repository.getCurrentSchemaVersion().getKey(), 4);
 }
 
 void DatabaseTest::disconnectShouldSuccess() {
@@ -314,7 +314,7 @@ void DatabaseTest::entitiesShouldReturnNonEmptyList() {
 
     // Then
     QVERIFY(convertible);
-    QCOMPARE(2U, list.size());
+    QCOMPARE(list.size(), 2U);
 }
 
 void DatabaseTest::entitiesShouldReturnEmptyList() {

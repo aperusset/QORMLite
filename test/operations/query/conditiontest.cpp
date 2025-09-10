@@ -1,5 +1,8 @@
 #include "conditiontest.h"
+#include <QString>
 #include <list>
+#include <optional>
+#include <stdexcept>
 #include "operations/query/condition/condition.h"
 #include "operations/query/condition/isnull.h"
 #include "operations/query/condition/isnotnull.h"
@@ -490,13 +493,13 @@ void ConditionTest::notInWithSelect() {
 void ConditionTest::inWithEmptyIntegersShouldFail() {
     // Given / When / Then
     QVERIFY_THROWS_EXCEPTION(std::invalid_argument,
-        QORM::In(DEFAULT_FIELD_NAME, std::list<int>()));
+        QORM::In(DEFAULT_FIELD_NAME, std::list<int>{}));
 }
 
 void ConditionTest::inWithEmptyStringsShouldFail() {
     // Given / When / Then
     QVERIFY_THROWS_EXCEPTION(std::invalid_argument,
-        QORM::In(DEFAULT_FIELD_NAME, std::list<QString>()));
+        QORM::In(DEFAULT_FIELD_NAME, std::list<QString>{}));
 }
 
 void ConditionTest::inWithIntegers() {

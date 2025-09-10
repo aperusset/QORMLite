@@ -1,13 +1,16 @@
 #include "qormlite.h"
+#include <QDebug>
+#include <QMutexLocker>
 #include <QRecursiveMutex>
 #include <map>
 #include <memory>
+#include <stdexcept>
 #include <utility>
+
+namespace {
 
 QRecursiveMutex poolMutex;
 std::map<QString, std::shared_ptr<QORM::Database>> pool;
-
-namespace {
 
 auto initialized(const QString &name) {
     return static_cast<bool>(pool.count(name));

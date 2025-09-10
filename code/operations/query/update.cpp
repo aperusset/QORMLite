@@ -36,6 +36,6 @@ auto QORM::Update::generate() const -> QString {
     for (const auto &assignment : this->assignments) {
         generatedAssignments << assignment.generate();
     }
-    return (update + generatedAssignments.join(",") +
+    return (update + generatedAssignments.join(u',') +
         Condition::generateMultiple(" where ", this->conditions)).simplified();
 }

@@ -11,7 +11,7 @@ class Upgrader : public Operator {
     const int version;
     const QString description;
 
-    QRecursiveMutex upgraderMutex;
+    mutable QRecursiveMutex upgraderMutex;
 
  public:
     Upgrader(int version, QString description);

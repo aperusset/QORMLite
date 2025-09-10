@@ -1,4 +1,5 @@
 #include "altertest.h"
+#include <stdexcept>
 #include "operations/model/alter/addcolumn.h"
 #include "operations/model/alter/dropcolumn.h"
 #include "operations/model/alter/renamecolumnto.h"
