@@ -1,5 +1,4 @@
 #include "database.h"
-
 #include <algorithm>
 #include <set>
 #include <utility>
@@ -176,7 +175,7 @@ void QORM::Database::upgrade() {
     }
 }
 
-void QORM::Database::disconnect() {
+void QORM::Database::disconnect() const {
     const QMutexLocker lock(&databaseMutex);
     connector->disconnect();
 }

@@ -225,7 +225,7 @@ void UtilsTest::getOrDefaultShouldReturnDefaultIfNotExists() {
 
 void UtilsTest::getOrNullShouldReturnPointer() {
     // Given
-    auto field = QSqlField(FIELD_NAME, QMetaType::fromType<int>());
+    auto field = QSqlField(FIELD_NAME, QMetaType::fromType<int32_t>());
     int32_t value = 42;
     field.setValue(QVariant::fromValue(value));
     auto record = QSqlRecord();
@@ -242,7 +242,7 @@ void UtilsTest::getOrNullShouldReturnPointer() {
 
 void UtilsTest::getOrNullShouldReturnNullptr() {
     // Given
-    auto field = QSqlField(FIELD_NAME, QMetaType::fromType<int>());
+    auto field = QSqlField(FIELD_NAME, QMetaType::fromType<int32_t>());
     int32_t value = 42;
     auto record = QSqlRecord();
     record.append(field);

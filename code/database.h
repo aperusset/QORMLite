@@ -67,7 +67,7 @@ class Database {
 
     void connect() const;
     void migrate();
-    void disconnect();
+    void disconnect() const;
     void optimize() const;
     auto backup(const QString &fileName) -> bool;
     auto execute(const QString&) const -> QSqlQuery;

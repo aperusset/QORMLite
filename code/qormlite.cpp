@@ -33,8 +33,8 @@ auto QORM::isInitialized(const QString &name) -> bool {
 void QORM::initialize(std::unique_ptr<Connector> connector, bool verbose) {
     const QMutexLocker lock(&poolMutex);
     const auto connectorName = initializeChecks(*connector);
-    pool.emplace(std::pair(connectorName, std::make_shared<Database>(
-        std::move(connector), verbose)));
+    pool.try_emplace(connectorName, std::make_shared<Database>(
+        std::move(connector), verbose));
 }
 
 void QORM::initialize(std::unique_ptr<Connector> connector,
@@ -43,9 +43,9 @@ void QORM::initialize(std::unique_ptr<Connector> connector,
         bool verbose) {
     const QMutexLocker lock(&poolMutex);
     const auto connectorName = initializeChecks(*connector);
-    pool.emplace(std::pair(connectorName, std::make_shared<Database>(
+    pool.try_emplace(connectorName, std::make_shared<Database>(
         std::move(connector), std::move(creator), std::move(upgraders),
-        verbose)));
+        verbose));
 }
 
 auto QORM::get(const QString &name) -> std::shared_ptr<Database> {

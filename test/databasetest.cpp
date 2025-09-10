@@ -265,7 +265,7 @@ void DatabaseTest::entityShouldSuccess() {
                 QORM::Select(TestCreator::TEST_TABLE),
         [&testEntity, &convertible](const QSqlRecord &record) -> TestEntity& {
             convertible = record.value(TestCreator::TEST_FIELD)
-                .convert(QMetaType(QMetaType::Type::Int));
+                .convert(QMetaType::fromType<int>());
             return testEntity;
         });
 
@@ -288,7 +288,7 @@ void DatabaseTest::entityShouldThrowWhenNothingFound() {
         database.entity<TestEntity>(QORM::Select(TestCreator::TEST_TABLE),
             [&testEntity](const QSqlRecord &record) -> TestEntity& {
                 record.value(TestCreator::TEST_FIELD)
-                    .convert(QMetaType(QMetaType::Type::Int));
+                    .convert(QMetaType::fromType<int>());
                 return testEntity;
             }));
 }
@@ -308,7 +308,7 @@ void DatabaseTest::entitiesShouldReturnNonEmptyList() {
                 QORM::Select(TestCreator::TEST_TABLE),
         [&testEntity, &convertible](const QSqlRecord &record) -> TestEntity& {
             convertible = record.value(TestCreator::TEST_FIELD)
-                .convert(QMetaType(QMetaType::Type::Int));
+                .convert(QMetaType::fromType<int>());
             return testEntity;
         });
 
