@@ -6,8 +6,8 @@
 
 void SQLiteTest::initShouldFailIfNameIsEmpty() {
     // Given / When / Then
-    QVERIFY_EXCEPTION_THROWN(QORM::SQLite sqLite("", true, false),
-                             std::invalid_argument);
+    QVERIFY_THROWS_EXCEPTION(std::invalid_argument,
+                             QORM::SQLite sqLite("", true, false));
 }
 
 void SQLiteTest::initShouldAddFileExtensionToName() {
@@ -57,7 +57,7 @@ void SQLiteTest::connectShouldFailWithInvalidDatabaseName() {
     const auto &sqlite = QORM::SQLite("data/base.db", true, false);
 
     // When / Then
-    QVERIFY_EXCEPTION_THROWN(sqlite.connect(), std::logic_error);
+    QVERIFY_THROWS_EXCEPTION(std::logic_error, sqlite.connect());
 }
 
 void SQLiteTest::connectShouldEnableRegexpButNotForeignKeys() {
@@ -66,13 +66,13 @@ void SQLiteTest::connectShouldEnableRegexpButNotForeignKeys() {
                                       false, false);
     // When
     sqlite.connect();
-    auto result = sqlite.getDatabase().exec("pragma foreign_keys;");
+    auto query = QSqlQuery("pragma foreign_keys;", sqlite.getDatabase());
 
     // Then
     QVERIFY(!sqlite.areForeignKeysActivated());
     QCOMPARE(sqlite.getDatabase().connectOptions(), "QSQLITE_ENABLE_REGEXP");
-    QVERIFY(result.next());
-    QCOMPARE(result.record().value(0).toInt(), 0);
+    QVERIFY(query.next());
+    QCOMPARE(query.record().value(0).toInt(), 0);
 }
 
 void SQLiteTest::connectShouldEnableRegexpAndForeignKeys() {
@@ -81,13 +81,13 @@ void SQLiteTest::connectShouldEnableRegexpAndForeignKeys() {
                                       true, false);
     // When
     sqlite.connect();
-    auto result = sqlite.getDatabase().exec("pragma foreign_keys;");
+    auto query = QSqlQuery("pragma foreign_keys;", sqlite.getDatabase());
 
     // Then
     QVERIFY(sqlite.areForeignKeysActivated());
     QCOMPARE(sqlite.getDatabase().connectOptions(), "QSQLITE_ENABLE_REGEXP");
-    QVERIFY(result.next());
-    QCOMPARE(result.record().value(0).toInt(), 1);
+    QVERIFY(query.next());
+    QCOMPARE(query.record().value(0).toInt(), 1);
 }
 
 void SQLiteTest::disconnectShouldNotDeleteDatabaseFile() {
@@ -123,7 +123,7 @@ void SQLiteTest::tablesShouldReturnWithoutSequence() {
     sqlite.connect();
 
     // When
-    sqlite.getDatabase().exec(table.generate() + ";");
+    QSqlQuery(table.generate() + ";", sqlite.getDatabase());
     const auto tables = sqlite.tables();
 
     // Then

@@ -9,8 +9,8 @@
 
 void JoinTest::innerJoinShouldFailWithoutConditions() {
     // Given / When / Then
-    QVERIFY_EXCEPTION_THROWN(QORM::InnerJoin(DEFAULT_TABLE_NAME, {}),
-                             std::invalid_argument);
+    QVERIFY_THROWS_EXCEPTION(std::invalid_argument,
+                             QORM::InnerJoin(DEFAULT_TABLE_NAME, {}));
 }
 
 void JoinTest::innerJoinGenerate() {
@@ -49,8 +49,8 @@ void JoinTest::innerJoinRenamedGenerate() {
 
 void JoinTest::leftJoinShouldFailWithoutConditions() {
     // Given / When / Then
-    QVERIFY_EXCEPTION_THROWN(QORM::LeftJoin(DEFAULT_TABLE_NAME, {}),
-                             std::invalid_argument);
+    QVERIFY_THROWS_EXCEPTION(std::invalid_argument,
+                             QORM::LeftJoin(DEFAULT_TABLE_NAME, {}));
 }
 
 void JoinTest::leftJoinGenerate() {
@@ -89,8 +89,8 @@ void JoinTest::leftJoinRenamedGenerate() {
 
 void JoinTest::rightJoinShouldFailWithoutConditions() {
     // Given / When / Then
-    QVERIFY_EXCEPTION_THROWN(QORM::RightJoin(DEFAULT_TABLE_NAME, {}),
-                             std::invalid_argument);
+    QVERIFY_THROWS_EXCEPTION(std::invalid_argument,
+                             QORM::RightJoin(DEFAULT_TABLE_NAME, {}));
 }
 
 void JoinTest::rightJoinGenerate() {

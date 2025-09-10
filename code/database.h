@@ -1,7 +1,7 @@
 #ifndef DATABASE_H_
 #define DATABASE_H_
 
-#include <QMutex>
+#include <QRecursiveMutex>
 #include <QSqlError>
 #include <QSqlRecord>
 #include <list>
@@ -22,7 +22,7 @@ namespace Repositories {
 
 class SchemaVersionRepository;
 
-}  // nameapce Repositories
+}  // namespace Repositories
 
 class Database {
     using CreatorUPtr = std::unique_ptr<Schema::Creator>;
@@ -30,7 +30,7 @@ class Database {
     using UpgraderUPtrList = std::list<UpgraderUPtr>;
     using ConnectorUPtr = std::unique_ptr<Connector>;
 
-    QMutex databaseMutex;
+    mutable QRecursiveMutex databaseMutex;
     const ConnectorUPtr connector;
     const CreatorUPtr creator;
     UpgraderUPtrList upgraders;
@@ -40,7 +40,7 @@ class Database {
     auto prepare(const QString&) const -> QSqlQuery;
     auto prepare(const Query&) const -> QSqlQuery;
     auto execute(QSqlQuery) const -> QSqlQuery;
-    void createSchemaVersion();
+    void createSchemaVersion() const;
     void create();
     void upgrade();
 
@@ -48,7 +48,7 @@ class Database {
     static void assertSelector() {
         static_assert(std::is_base_of<Select, Selector>::value ||
                       std::is_base_of<CTE<Select>, Selector>::value,
-                      "Selector must be Select || CTE<Select>");
+                      "Selector must be Select or CTE<Select>");
     }
 
  public:
@@ -65,9 +65,9 @@ class Database {
     auto isConnected() const -> bool;
     auto getSchemaState() const -> Schema::State;
 
-    void connect();
+    void connect() const;
     void migrate();
-    void disconnect();
+    void disconnect() const;
     void optimize() const;
     auto backup(const QString &fileName) -> bool;
     auto execute(const QString&) const -> QSqlQuery;
@@ -80,8 +80,8 @@ class Database {
         const std::function<Key(const QSqlQuery&)> &keyExtractor =
             [](const auto &query) -> Key {
                 if (const auto &result = query.lastInsertId();
-                        result.isValid() & result.template canConvert<Key>()) {
-                    return result.toInt();
+                        result.isValid() && result.template canConvert<Key>()) {
+                    return result.template value<Key>();
                 }
                 throw std::logic_error("Failed to get last id as Key");
             }) const {

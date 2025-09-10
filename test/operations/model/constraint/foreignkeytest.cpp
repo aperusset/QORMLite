@@ -1,4 +1,5 @@
 #include "foreignkeytest.h"
+#include <stdexcept>
 #include "operations/model/constraint/reference.h"
 #include "operations/model/constraint/foreignkey.h"
 #include "operations/model/type/type.h"
@@ -6,9 +7,8 @@
 
 void ForeignKeyTest::emptyReferencesListShouldFail() {
     // When / Then
-    QVERIFY_EXCEPTION_THROWN(
-        QORM::ForeignKey({}, "targetTable", QORM::OnAction::Cascade),
-        std::invalid_argument);
+    QVERIFY_THROWS_EXCEPTION(std::invalid_argument,
+        QORM::ForeignKey({}, "targetTable", QORM::OnAction::Cascade));
 }
 
 void ForeignKeyTest::generateCascade() {

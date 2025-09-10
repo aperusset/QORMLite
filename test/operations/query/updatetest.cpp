@@ -6,8 +6,8 @@
 
 void UpdateTest::withoutAssignmentsShouldFail() {
     // When / Then
-    QVERIFY_EXCEPTION_THROWN(QORM::Update(DEFAULT_TABLE_NAME, {}, {}),
-                             std::invalid_argument);
+    QVERIFY_THROWS_EXCEPTION(std::invalid_argument,
+                             QORM::Update(DEFAULT_TABLE_NAME, {}, {}));
 }
 
 void UpdateTest::generateWithoutConditions() {

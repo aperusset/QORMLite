@@ -11,7 +11,6 @@ QORM::Database::Database(ConnectorUPtr connector, bool verbose) :
 
 QORM::Database::Database(ConnectorUPtr connector, CreatorUPtr creator,
                          UpgraderUPtrList upgraders, bool verbose) :
-        databaseMutex(QMutex::RecursionMode::Recursive),
         connector(std::move(connector)), creator(std::move(creator)),
         upgraders(std::move(upgraders)), verbose(verbose),
         svRepository(
@@ -97,7 +96,7 @@ auto QORM::Database::getSchemaState() const -> Schema::State {
                         : Schema::State::UP_TO_DATE;
 }
 
-void QORM::Database::connect() {
+void QORM::Database::connect() const {
     const QMutexLocker lock(&databaseMutex);
     if (this->isConnected()) {
         throw std::runtime_error("Already connected to database");
@@ -131,7 +130,7 @@ void QORM::Database::migrate() {
     }
 }
 
-void QORM::Database::createSchemaVersion() {
+void QORM::Database::createSchemaVersion() const {
     Schema::SchemaVersionCreator().execute(*this);
 }
 
@@ -176,7 +175,7 @@ void QORM::Database::upgrade() {
     }
 }
 
-void QORM::Database::disconnect() {
+void QORM::Database::disconnect() const {
     const QMutexLocker lock(&databaseMutex);
     connector->disconnect();
 }

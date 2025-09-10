@@ -20,8 +20,8 @@ void DatabaseTest::creationShouldFailWithSameVersions() {
     upgraders.emplace_back(std::make_unique<TestUpgrader>(3));
 
     // When / Then
-    QVERIFY_EXCEPTION_THROWN(this->databaseWithCreator(std::move(upgraders)),
-                             std::logic_error);
+    QVERIFY_THROWS_EXCEPTION(std::logic_error,
+                             this->databaseWithCreator(std::move(upgraders)));
 }
 
 void DatabaseTest::connectShouldConnect() {
@@ -44,7 +44,7 @@ void DatabaseTest::subsequentConnectShouldFail() {
 
     // When / Then
     QVERIFY(database.isConnected());
-    QVERIFY_EXCEPTION_THROWN(database.connect(), std::runtime_error);
+    QVERIFY_THROWS_EXCEPTION(std::runtime_error, database.connect());
 }
 
 void DatabaseTest::migrateShouldDoNothing() {
@@ -58,7 +58,7 @@ void DatabaseTest::migrateShouldDoNothing() {
     database.migrate();
 
     // Then
-     QCOMPARE(1, repository.getCurrentSchemaVersion().getKey());
+    QCOMPARE(repository.getCurrentSchemaVersion().getKey(), 1);
 }
 
 void DatabaseTest::migrateShouldInsertSchemaVersions() {
@@ -80,7 +80,7 @@ void DatabaseTest::migrateShouldInsertSchemaVersions() {
     QVERIFY(repository.exists(2));
     QVERIFY(repository.exists(3));
     QVERIFY(repository.exists(4));
-    QCOMPARE(4, repository.getCurrentSchemaVersion().getKey());
+    QCOMPARE(repository.getCurrentSchemaVersion().getKey(), 4);
 }
 
 void DatabaseTest::disconnectShouldSuccess() {
@@ -111,7 +111,7 @@ void DatabaseTest::getSchemaStateShouldFail() {
     auto database = this->databaseWithCreator();
 
     // When / Then
-    QVERIFY_EXCEPTION_THROWN(database.getSchemaState(), std::runtime_error);
+    QVERIFY_THROWS_EXCEPTION(std::runtime_error, database.getSchemaState());
 }
 
 void DatabaseTest::getSchemaStateShouldReturnEmpty() {
@@ -167,8 +167,8 @@ void DatabaseTest::prepareExecuteShouldFailWithInvalidQuery() {
     database.migrate();
 
     // Then
-    QVERIFY_EXCEPTION_THROWN(database.execute("invalid query"),
-                             std::runtime_error);
+    QVERIFY_THROWS_EXCEPTION(std::runtime_error,
+                             database.execute("invalid query"));
 }
 
 void DatabaseTest::executeShouldSuccessWithTextQuery() {
@@ -245,11 +245,10 @@ void DatabaseTest::insertAndRetrieveKeyAsIntShouldFail() {
     database.migrate();
 
     // Then
-    QVERIFY_EXCEPTION_THROWN(
+    QVERIFY_THROWS_EXCEPTION(std::logic_error,
         database.insertAndRetrieveKey(
             QORM::Insert(TestCreator::TEST_TABLE,
-                        {QORM::Assignment(TestCreator::TEST_FIELD, 0)})),
-        std::logic_error);
+                        {QORM::Assignment(TestCreator::TEST_FIELD, 0)})));
 }
 
 void DatabaseTest::entityShouldSuccess() {
@@ -266,7 +265,7 @@ void DatabaseTest::entityShouldSuccess() {
                 QORM::Select(TestCreator::TEST_TABLE),
         [&testEntity, &convertible](const QSqlRecord &record) -> TestEntity& {
             convertible = record.value(TestCreator::TEST_FIELD)
-                                                .canConvert<int>();
+                .convert(QMetaType::fromType<int>());
             return testEntity;
         });
 
@@ -285,12 +284,13 @@ void DatabaseTest::entityShouldThrowWhenNothingFound() {
     database.migrate();
 
     // Then
-    QVERIFY_EXCEPTION_THROWN(
+    QVERIFY_THROWS_EXCEPTION(std::logic_error,
         database.entity<TestEntity>(QORM::Select(TestCreator::TEST_TABLE),
             [&testEntity](const QSqlRecord &record) -> TestEntity& {
-                record.value(TestCreator::TEST_FIELD).canConvert<int>();
+                record.value(TestCreator::TEST_FIELD)
+                    .convert(QMetaType::fromType<int>());
                 return testEntity;
-            }), std::logic_error);
+            }));
 }
 
 void DatabaseTest::entitiesShouldReturnNonEmptyList() {
@@ -308,13 +308,13 @@ void DatabaseTest::entitiesShouldReturnNonEmptyList() {
                 QORM::Select(TestCreator::TEST_TABLE),
         [&testEntity, &convertible](const QSqlRecord &record) -> TestEntity& {
             convertible = record.value(TestCreator::TEST_FIELD)
-                                                .canConvert<int>();
+                .convert(QMetaType::fromType<int>());
             return testEntity;
         });
 
     // Then
     QVERIFY(convertible);
-    QCOMPARE(2U, list.size());
+    QCOMPARE(list.size(), 2U);
 }
 
 void DatabaseTest::entitiesShouldReturnEmptyList() {

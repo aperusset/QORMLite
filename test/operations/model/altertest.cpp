@@ -1,4 +1,5 @@
 #include "altertest.h"
+#include <stdexcept>
 #include "operations/model/alter/addcolumn.h"
 #include "operations/model/alter/dropcolumn.h"
 #include "operations/model/alter/renamecolumnto.h"
@@ -18,8 +19,8 @@ void AlterTest::addColumn() {
 
 void AlterTest::dropColumnShouldFailWithEmptyName() {
     // Given / When / Then
-    QVERIFY_EXCEPTION_THROWN(QORM::DropColumn(""), std::invalid_argument);
-    QVERIFY_EXCEPTION_THROWN(QORM::DropColumn("  "), std::invalid_argument);
+    QVERIFY_THROWS_EXCEPTION(std::invalid_argument, QORM::DropColumn(""));
+    QVERIFY_THROWS_EXCEPTION(std::invalid_argument, QORM::DropColumn("  "));
 }
 
 void AlterTest::dropColumn() {
@@ -32,18 +33,18 @@ void AlterTest::dropColumn() {
 
 void AlterTest::renameColumnToShouldFailWithEmptyFieldName() {
     // Given / When / Then
-    QVERIFY_EXCEPTION_THROWN(QORM::RenameColumnTo("", FIELD_NAME),
-                             std::invalid_argument);
-    QVERIFY_EXCEPTION_THROWN(QORM::RenameColumnTo("  ", FIELD_NAME),
-                             std::invalid_argument);
+    QVERIFY_THROWS_EXCEPTION(std::invalid_argument,
+                             QORM::RenameColumnTo("", FIELD_NAME));
+    QVERIFY_THROWS_EXCEPTION(std::invalid_argument,
+                             QORM::RenameColumnTo("  ", FIELD_NAME));
 }
 
 void AlterTest::renameColumnToShouldFailWithEmptyRenamedTo() {
     // Given / When / Then
-    QVERIFY_EXCEPTION_THROWN(QORM::RenameColumnTo(FIELD_NAME, ""),
-                             std::invalid_argument);
-    QVERIFY_EXCEPTION_THROWN(QORM::RenameColumnTo(FIELD_NAME, "  "),
-                             std::invalid_argument);
+    QVERIFY_THROWS_EXCEPTION(std::invalid_argument,
+                             QORM::RenameColumnTo(FIELD_NAME, ""));
+    QVERIFY_THROWS_EXCEPTION(std::invalid_argument,
+                             QORM::RenameColumnTo(FIELD_NAME, "  "));
 }
 
 void AlterTest::renameColumnTo() {
@@ -57,8 +58,8 @@ void AlterTest::renameColumnTo() {
 
 void AlterTest::renameToShouldFailWithEmptyRenameTo() {
     // Given / When / Then
-    QVERIFY_EXCEPTION_THROWN(QORM::RenameTo(""), std::invalid_argument);
-    QVERIFY_EXCEPTION_THROWN(QORM::RenameTo("  "), std::invalid_argument);
+    QVERIFY_THROWS_EXCEPTION(std::invalid_argument, QORM::RenameTo(""));
+    QVERIFY_THROWS_EXCEPTION(std::invalid_argument, QORM::RenameTo("  "));
 }
 
 void AlterTest::renameTo() {
@@ -74,10 +75,10 @@ void AlterTest::alterTableShouldFailWithEmptyTableName() {
     const auto clause = QORM::DropColumn(FIELD_NAME);
 
     // When / Then
-    QVERIFY_EXCEPTION_THROWN(QORM::AlterTable("", clause),
-                             std::invalid_argument);
-    QVERIFY_EXCEPTION_THROWN(QORM::AlterTable("  ", clause),
-                             std::invalid_argument);
+    QVERIFY_THROWS_EXCEPTION(std::invalid_argument,
+                             QORM::AlterTable("", clause));
+    QVERIFY_THROWS_EXCEPTION(std::invalid_argument,
+                             QORM::AlterTable("  ", clause));
 }
 
 void AlterTest::alterTable() {

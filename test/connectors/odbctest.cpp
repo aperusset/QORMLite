@@ -3,22 +3,21 @@
 
 void ODBCTest::initShouldFailWithEmptyName() {
     // Given / When / Then
-    QVERIFY_EXCEPTION_THROWN(QORM::ODBC odbc("", DEFAULT_DRIVER_DEFINITION,
-                             DEFAULT_CONNECTION_STRING), std::invalid_argument);
+    QVERIFY_THROWS_EXCEPTION(std::invalid_argument,
+        QORM::ODBC odbc("", DEFAULT_DRIVER_DEFINITION,
+                        DEFAULT_CONNECTION_STRING));
 }
 
 void ODBCTest::initShouldFailWithEmptyDriverDefinition() {
     // Given / When / Then
-    QVERIFY_EXCEPTION_THROWN(
-        QORM::ODBC odbc(this->databaseName(), "", DEFAULT_CONNECTION_STRING),
-        std::invalid_argument);
+    QVERIFY_THROWS_EXCEPTION(std::invalid_argument,
+        QORM::ODBC odbc(this->databaseName(), "", DEFAULT_CONNECTION_STRING));
 }
 
 void ODBCTest::initShouldFailWithEmptyConnectionString() {
     // Given / When / Then
-    QVERIFY_EXCEPTION_THROWN(
-        QORM::ODBC odbc(this->databaseName(), DEFAULT_DRIVER_DEFINITION, ""),
-        std::invalid_argument);
+    QVERIFY_THROWS_EXCEPTION(std::invalid_argument,
+        QORM::ODBC odbc(this->databaseName(), DEFAULT_DRIVER_DEFINITION, ""));
 }
 
 void ODBCTest::initShouldSuccess() {
@@ -57,6 +56,6 @@ void ODBCTest::backupShouldFail() {
                                   DEFAULT_DRIVER_DEFINITION,
                                   DEFAULT_CONNECTION_STRING);
     // When / Then
-    QVERIFY_EXCEPTION_THROWN(odbc.backup(this->databaseBackupName()),
-                             std::logic_error);
+    QVERIFY_THROWS_EXCEPTION(std::logic_error,
+                             odbc.backup(this->databaseBackupName()));
 }

@@ -31,11 +31,11 @@ QORM::Update::Update(const QString &tableName,
 
 auto QORM::Update::generate() const -> QString {
     QString update = "update " + this->getTableName() + " set ";
-    QStringList assignments;
-    assignments.reserve(this->assignments.size());
+    QStringList generatedAssignments;
+    generatedAssignments.reserve(this->assignments.size());
     for (const auto &assignment : this->assignments) {
-        assignments << assignment.generate();
+        generatedAssignments << assignment.generate();
     }
-    return (update + assignments.join(",") +
+    return (update + generatedAssignments.join(u',') +
         Condition::generateMultiple(" where ", this->conditions)).simplified();
 }
