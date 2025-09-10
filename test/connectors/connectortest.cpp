@@ -5,9 +5,8 @@
 
 void ConnectorTest::initShouldFailIfNameIsEmpty() {
     // Given / When / Then
-    QVERIFY_EXCEPTION_THROWN(
-        TestConnector testConnector(""),
-        std::invalid_argument);
+    QVERIFY_THROWS_EXCEPTION(std::invalid_argument,
+                             TestConnector testConnector(""));
 }
 
 void ConnectorTest::initShouldSuccessWithValidName() {
@@ -30,7 +29,7 @@ void ConnectorTest::getDatabaseShouldFailIfDatabaseClosed() {
     const auto &testConnector = TestConnector(this->databaseName());
 
     // When / Then
-    QVERIFY_EXCEPTION_THROWN(testConnector.getDatabase(), std::logic_error);
+    QVERIFY_THROWS_EXCEPTION(std::logic_error, testConnector.getDatabase());
 }
 
 void ConnectorTest::connectShouldSuccessPreOpenPostAndOptimize() {
@@ -84,7 +83,7 @@ void ConnectorTest::shouldReturnListOfAvailableTables() {
     testConnector.connect();
 
     // When
-    testConnector.getDatabase().exec(table.generate() + ";");
+    QSqlQuery(table.generate() + ";", testConnector.getDatabase()).exec();
     const auto tables = testConnector.tables();
 
     // Then
@@ -101,10 +100,11 @@ void ConnectorTest::shouldReturnListOfAvailableViews() {
     const auto select = QORM::Select(table.getTableName());
     const auto view = QORM::View("test_view", select);
     testConnector.connect();
+    const auto &database = testConnector.getDatabase();
 
     // When
-    testConnector.getDatabase().exec(table.generate() + ";");
-    testConnector.getDatabase().exec(view.generate() + ";");
+    QSqlQuery(table.generate() + ";", database).exec();
+    QSqlQuery(view.generate() + ";", database).exec();
     const auto views = testConnector.views();
 
     // Then
