@@ -25,6 +25,7 @@ QORM::Database::Database(ConnectorUPtr connector, CreatorUPtr creator,
 }
 
 QORM::Database::~Database() {
+    qDebug("Disconnect database %s.", qUtf8Printable(connector->getName()));
     this->disconnect();
 }
 
