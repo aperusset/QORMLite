@@ -6,7 +6,7 @@
 class TestUpgrader : public QORM::Schema::Upgrader {
  public:
     TestUpgrader(int version = 2) : QORM::Schema::Upgrader(version,
-                                        "A test upgrade") {}
+                                        "A test upgrade", false) {}
     void upgradeSchema(const QORM::Database&) const override {}
     void migrateData(const QORM::Database&) const override {}
 };

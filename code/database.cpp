@@ -162,20 +162,21 @@ void QORM::Database::upgrade() {
                         qUtf8Printable(connector->getName()),
                         qUtf8Printable(QString::number(upgraderVersion)));
                     upgrader->execute(*this);
+                    this->svRepository->save(
+                        new Entities::SchemaVersion(upgraderVersion,
+                            upgrader->getDescription(),
+                            QDateTime::currentDateTime()));
                 }
             });
         std::for_each(this->upgraders.begin(), this->upgraders.end(),
             [&](const auto &upgrader) {
                 const auto upgraderVersion = upgrader->getVersion();
-                if (upgraderVersion > version.getKey()) {
-                    qInfo("Migrate database %s data to version %s",
+                if (upgrader->isAlreadyExecuted() &&
+                    upgrader->isDataMigrationDelayed()) {
+                    qInfo("Migrate %s data to version %s (was delayed)",
                         qUtf8Printable(connector->getName()),
                         qUtf8Printable(QString::number(upgraderVersion)));
                     upgrader->migrateData(*this);
-                    this->svRepository->save(
-                        new Entities::SchemaVersion(upgraderVersion,
-                            upgrader->getDescription(),
-                            QDateTime::currentDateTime()));
                 }
             });
     } else {
