@@ -1,4 +1,5 @@
 #include "database.h"
+#include <QDateTime>
 #include <algorithm>
 #include <set>
 #include <utility>
@@ -162,9 +163,7 @@ void QORM::Database::upgrade() {
                         qUtf8Printable(connector->getName()),
                         qUtf8Printable(QString::number(upgraderVersion)));
                     upgrader->execute(*this);
-                    if (!upgrader->isDataMigrationDelayed()) {
-                        this->registerUpgrade(*upgrader);
-                    }
+                    this->registerUpgrade(*upgrader);
                 }
             });
         std::for_each(this->upgraders.begin(), this->upgraders.end(),
@@ -176,7 +175,6 @@ void QORM::Database::upgrade() {
                         qUtf8Printable(connector->getName()),
                         qUtf8Printable(QString::number(upgraderVersion)));
                     upgrader->executeDelayed(*this);
-                    this->registerUpgrade(*upgrader);
                 }
             });
     } else {
@@ -187,7 +185,7 @@ void QORM::Database::upgrade() {
     }
 }
 
-void QORM::Database::registerUpgrade(const Schema::Upgrader &upgrader) {
+void QORM::Database::registerUpgrade(const Schema::Upgrader &upgrader) const {
     this->svRepository->save(
         new Entities::SchemaVersion(upgrader.getVersion(),
                                     upgrader.getDescription(),

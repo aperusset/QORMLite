@@ -43,7 +43,7 @@ class Database {
     void createSchemaVersion() const;
     void create();
     void upgrade();
-    void registerUpgrade(const Schema::Upgrader&);
+    void registerUpgrade(const Schema::Upgrader&) const;
 
     template<class Selector>
     static void assertSelector() {
