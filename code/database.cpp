@@ -162,10 +162,21 @@ void QORM::Database::upgrade() {
                         qUtf8Printable(connector->getName()),
                         qUtf8Printable(QString::number(upgraderVersion)));
                     upgrader->execute(*this);
-                    this->svRepository->save(
-                        new Entities::SchemaVersion(upgraderVersion,
-                            upgrader->getDescription(),
-                            QDateTime::currentDateTime()));
+                    if (!upgrader->isDataMigrationDelayed()) {
+                        this->registerUpgrade(*upgrader);
+                    }
+                }
+            });
+        std::for_each(this->upgraders.begin(), this->upgraders.end(),
+            [&](const auto &upgrader) {
+                const auto upgraderVersion = upgrader->getVersion();
+                if (upgrader->isAlreadyExecuted() &&
+                    upgrader->isDataMigrationDelayed()) {
+                    qInfo("Migrate %s data to version %s (was delayed)",
+                        qUtf8Printable(connector->getName()),
+                        qUtf8Printable(QString::number(upgraderVersion)));
+                    upgrader->executeDelayed(*this);
+                    this->registerUpgrade(*upgrader);
                 }
             });
     } else {
@@ -174,6 +185,13 @@ void QORM::Database::upgrade() {
                 qUtf8Printable(connector->getName()));
         }
     }
+}
+
+void QORM::Database::registerUpgrade(const Schema::Upgrader &upgrader) {
+    this->svRepository->save(
+        new Entities::SchemaVersion(upgrader.getVersion(),
+                                    upgrader.getDescription(),
+                                    QDateTime::currentDateTime()));
 }
 
 void QORM::Database::disconnect() const {

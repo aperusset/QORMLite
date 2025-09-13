@@ -6,6 +6,7 @@
 #include <memory>
 #include <stdexcept>
 #include <string>
+#include <typeinfo>
 #include <type_traits>
 #include <utility>
 #include "entities/baseentity.h"
@@ -32,11 +33,7 @@ class Cache {
         if (entity == nullptr) {
             throw std::invalid_argument("Cannot store a null entity");
         }
-        if (!this->contains(key)) {
-            entities.insert(std::pair(key,
-                std::forward<std::unique_ptr<Entity>>(entity)));
-        }
-        return this->get(key);
+        return *entities.try_emplace(key, std::move(entity)).first->second;
     }
 
     auto contains(const Key &key) const {
@@ -48,7 +45,7 @@ class Cache {
             return *entities.at(key).get();
         }
         throw std::invalid_argument("Cannot retrieve an entity of type " +
-                                    std::string(typeid(this).name()));
+                                    std::string(typeid(Entity).name()));
     }
 
     auto getOrCreate(const Key &key,
