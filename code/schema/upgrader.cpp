@@ -18,3 +18,8 @@ void QORM::Schema::Upgrader::execute(const Database &database) {
         this->setAlreadyExecuted(true);
     }
 }
+
+void QORM::Schema::Upgrader::executeDelayed(const Database &database) {
+    QMutexLocker lock(&this->upgraderMutex);
+    this->migrateData(database);
+}

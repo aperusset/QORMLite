@@ -25,6 +25,7 @@ class Upgrader : public Operator {
     auto getDescription() const -> QString;
     auto isDataMigrationDelayed() const -> bool;
     void execute(const Database&) override;
+    void executeDelayed(const Database&);
     virtual void upgradeSchema(const Database&) const = 0;
     virtual void migrateData(const Database&) const {};
 };
