@@ -162,6 +162,16 @@ void QORM::Database::upgrade() {
                         qUtf8Printable(connector->getName()),
                         qUtf8Printable(QString::number(upgraderVersion)));
                     upgrader->execute(*this);
+                }
+            });
+        std::for_each(this->upgraders.begin(), this->upgraders.end(),
+            [&](const auto &upgrader) {
+                const auto upgraderVersion = upgrader->getVersion();
+                if (upgraderVersion > version.getKey()) {
+                    qInfo("Migrate database %s data to version %s",
+                        qUtf8Printable(connector->getName()),
+                        qUtf8Printable(QString::number(upgraderVersion)));
+                    upgrader->migrateData(*this);
                     this->svRepository->save(
                         new Entities::SchemaVersion(upgraderVersion,
                             upgrader->getDescription(),

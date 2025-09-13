@@ -9,7 +9,7 @@ QORM::Schema::Upgrader::Upgrader(int version, QString description) :
 void QORM::Schema::Upgrader::execute(const Database &database) {
     QMutexLocker lock(&this->upgraderMutex);
     if (!this->isAlreadyExecuted()) {
-        this->upgrade(database);
+        this->upgradeSchema(database);
         this->setAlreadyExecuted(true);
     }
 }

@@ -23,7 +23,8 @@ class Upgrader : public Operator {
     auto getVersion() const -> int;
     auto getDescription() const -> QString;
     void execute(const Database&) override;
-    virtual void upgrade(const Database&) const = 0;
+    virtual void upgradeSchema(const Database&) const = 0;
+    virtual void migrateData(const Database&) const {};
 };
 
 inline auto Upgrader::getVersion() const -> int {
