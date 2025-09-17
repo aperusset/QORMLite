@@ -19,7 +19,7 @@
 
 namespace QORM::Repositories {
 
-template<class Entity, typename Key = int>
+template<class Entity, typename Key = long>
 class ReadOnlyRepository {
     static_assert(
         std::is_base_of<Entities::BaseEntity<Key>, Entity>::value,
@@ -127,7 +127,7 @@ class ReadOnlyRepository {
     }
 
     virtual auto exists(const std::list<Condition> &conditions) const -> bool {
-        return this->count(conditions) > 0;
+        return this->count(conditions) > 0U;
     }
 
     void assertFieldValidity(const QString &field) const {

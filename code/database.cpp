@@ -186,10 +186,10 @@ void QORM::Database::upgrade() {
 }
 
 void QORM::Database::registerUpgrade(const Schema::Upgrader &upgrader) const {
-    this->svRepository->save(
-        new Entities::SchemaVersion(upgrader.getVersion(),
-                                    upgrader.getDescription(),
-                                    QDateTime::currentDateTime()));
+    this->svRepository->create(
+        std::make_unique<Entities::SchemaVersion>(
+            upgrader.getVersion(), upgrader.getDescription(),
+            QDateTime::currentDateTime()));
 }
 
 void QORM::Database::disconnect() const {

@@ -19,28 +19,34 @@ class CRUDRepository : public ReadOnlyRepository<Entity, Key> {
         ReadOnlyRepository<Entity, Key>(database, cache) {}
 
     virtual auto save(Entity* const entity) const -> const Key {
-        const auto &assignmentsToDo = this->assignments(*entity);
         if (this->exists(entity->getKey())) {
-            if (!assignmentsToDo.empty()) {
-                this->getDatabase().execute(Update(this->tableName(),
-                                    assignmentsToDo,
-                                    this->keyCondition(entity->getKey())));
-                entity->notifyChange();
-            }
+            this->update(*entity);
             return entity->getKey();
         } else {
-            const auto key = this->getDatabase().insertAndRetrieveKey(
-                Insert(this->tableName(), assignmentsToDo));
-            entity->setKey(key);
-            this->getCache().insert(key, std::unique_ptr<Entity>(entity))
-                .notifyChange();
-            return key;
+            return this->create(std::unique_ptr<Entity>(entity));
+        }
+    }
+
+    virtual auto create(std::unique_ptr<Entity> &&entity) const -> const Key {
+        const auto key = this->getDatabase().insertAndRetrieveKey(
+                Insert(this->tableName(), this->assignments(*entity)));
+        entity->setKey(key);
+        this->getCache().insert(key, std::move(entity)).notifyChange();
+        return key;
+    }
+
+    virtual void update(const Entity &entity) const {
+        const auto &assignmentsToDo = this->assignments(entity);
+        if (!assignmentsToDo.empty()) {
+            this->getDatabase().execute(Update(this->tableName(),
+                assignmentsToDo, this->keyCondition(entity.getKey())));
+            entity.notifyChange();
         }
     }
 
     virtual void saveAll(const std::list<Entity*> &entities) const {
         for (auto *entity : entities) {
-            this->save(entity);
+            this->create(std::unique_ptr<Entity>(entity));
         }
     }
 
