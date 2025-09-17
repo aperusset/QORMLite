@@ -19,7 +19,7 @@
 
 namespace QORM::Repositories {
 
-template<class Entity, typename Key = long>
+template<class Entity, typename Key = int>
 class ReadOnlyRepository {
     static_assert(
         std::is_base_of<Entities::BaseEntity<Key>, Entity>::value,
