@@ -34,6 +34,7 @@ class CRUDRepository : public ReadOnlyRepository<Entity, Key> {
         }
     }
 
+    [[nodiscard]]
     virtual auto create(std::unique_ptr<Entity> entity) const -> Entity& {
         const auto key = this->getDatabase().insertAndRetrieveKey(
                 Insert(this->tableName(), this->assignments(*entity)));
@@ -54,10 +55,12 @@ class CRUDRepository : public ReadOnlyRepository<Entity, Key> {
 
     virtual void saveAll(const std::list<Entity*> &entities) const {
         for (auto *entity : entities) {
-            if (this->exists(entity->getKey())) {
-                this->update(*entity);
-            } else {
-                this->create(std::unique_ptr<Entity>(entity));
+            if (entity != nullptr) {
+                if (this->exists(entity->getKey())) {
+                    this->update(*entity);
+                } else {
+                    this->create(std::unique_ptr<Entity>(entity));
+                }
             }
         }
     }
