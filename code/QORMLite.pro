@@ -4,6 +4,7 @@ TEMPLATE = lib
 
 CONFIG += skip_target_version_ext plugin
 DEFINES += QORMLITE_LIBRARY
+QMAKE_CXXFLAGS += -Werror
 
 win32:CONFIG(release, debug|release): DESTDIR = $$OUT_PWD/../lib/release/$$VERSION
 else:win32:CONFIG(debug, debug|release): DESTDIR = $$OUT_PWD/../lib/debug/$$VERSION
