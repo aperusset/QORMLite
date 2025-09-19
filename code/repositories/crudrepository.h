@@ -34,7 +34,6 @@ class CRUDRepository : public ReadOnlyRepository<Entity, Key> {
         }
     }
 
-    [[nodiscard]]
     virtual auto create(std::unique_ptr<Entity> entity) const -> Entity& {
         const auto key = this->getDatabase().insertAndRetrieveKey(
                 Insert(this->tableName(), this->assignments(*entity)));
