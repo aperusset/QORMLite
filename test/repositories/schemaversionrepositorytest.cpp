@@ -1,4 +1,5 @@
 #include "schemaversionrepositorytest.h"
+#include <memory>
 #include "repositories/schemaversionrepository.h"
 #include "./utils.h"
 
@@ -55,9 +56,9 @@ void SchemaVersionRepositoryTest::saveAndGet() {
     const auto now = QDateTime::currentDateTime();
 
     // When
-    QORM::Entities::SchemaVersion *schemaVersion =
-        new QORM::Entities::SchemaVersion(1, description, now);
-    const auto key = repository.save(schemaVersion);
+    const auto key = repository.create(
+        std::make_unique<QORM::Entities::SchemaVersion>(
+            1, description, now)).getKey();
 
     // Then
     const auto &sv = repository.get(key);
@@ -120,10 +121,9 @@ void SchemaVersionRepositoryTest::getCurrentSchemaVersionShouldReturnLatest() {
     database.migrate();
 
     // When
-    QORM::Entities::SchemaVersion *schemaVersion =
-        new QORM::Entities::SchemaVersion(1, "description",
-                                          QDateTime::currentDateTime());
-    const auto key = repository.save(schemaVersion);
+    const auto key = repository.create(
+        std::make_unique<QORM::Entities::SchemaVersion>(
+            1, "description", QDateTime::currentDateTime())).getKey();
     const auto &latestVersion = repository.getCurrentSchemaVersion();
 
     // Then

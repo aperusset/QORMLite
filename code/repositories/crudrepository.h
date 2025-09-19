@@ -21,6 +21,7 @@ class CRUDRepository : public ReadOnlyRepository<Entity, Key> {
                             Cache<Key, Entity>* const cache = nullptr) :
         ReadOnlyRepository<Entity, Key>(database, cache) {}
 
+    [[deprecated("Use create(std::unique_ptr) or update(&) instead")]]
     virtual auto save(Entity* const entity) const -> Key {
         if (entity == nullptr) {
             throw std::invalid_argument("Cannot save nullptr");
@@ -29,16 +30,17 @@ class CRUDRepository : public ReadOnlyRepository<Entity, Key> {
             this->update(*entity);
             return entity->getKey();
         } else {
-            return this->create(std::unique_ptr<Entity>(entity));
+            return this->create(std::unique_ptr<Entity>(entity)).getKey();
         }
     }
 
-    virtual auto create(std::unique_ptr<Entity> &&entity) const -> Key {
+    virtual auto create(std::unique_ptr<Entity> entity) const -> Entity& {
         const auto key = this->getDatabase().insertAndRetrieveKey(
                 Insert(this->tableName(), this->assignments(*entity)));
         entity->setKey(key);
-        this->getCache().insert(key, std::move(entity)).notifyChange();
-        return key;
+        auto &cachedEntity = this->getCache().insert(key, std::move(entity));
+        cachedEntity.notifyChange();
+        return cachedEntity;
     }
 
     virtual void update(const Entity &entity) const {
@@ -52,7 +54,13 @@ class CRUDRepository : public ReadOnlyRepository<Entity, Key> {
 
     virtual void saveAll(const std::list<Entity*> &entities) const {
         for (auto *entity : entities) {
-            this->save(entity);
+            if (entity != nullptr) {
+                if (this->exists(entity->getKey())) {
+                    this->update(*entity);
+                } else {
+                    this->create(std::unique_ptr<Entity>(entity));
+                }
+            }
         }
     }
 

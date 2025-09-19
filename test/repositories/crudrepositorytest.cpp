@@ -71,11 +71,12 @@ void CRUDRepositoryTest::getByKeyShouldReturnEntity() {
     // When
     database.connect();
     database.migrate();
-    const auto lastInsertedKey = testCRUDRepository.save(new TestEntity(-1));
-    const auto &entity = testCRUDRepository.get(lastInsertedKey);
+    const auto &savedEntity = testCRUDRepository.create(
+        std::make_unique<TestEntity>(-1));
+    const auto &entity = testCRUDRepository.get(savedEntity.getKey());
 
     // When / Then
-    QCOMPARE(entity.getKey(), lastInsertedKey);
+    QCOMPARE(entity.getKey(), savedEntity.getKey());
 }
 
 void CRUDRepositoryTest::getShouldFail() {
@@ -101,7 +102,8 @@ void CRUDRepositoryTest::getShouldReturnEntity() {
     // When
     database.connect();
     database.migrate();
-    const auto lastInsertedKey = testCRUDRepository.save(new TestEntity(-1));
+    const auto lastInsertedKey = testCRUDRepository.create(
+        std::make_unique<TestEntity>(-1)).getKey();
     const auto &entity = testCRUDRepository.get(
         {QORM::Equals::field(TestCreator::TEST_FIELD, lastInsertedKey)});
 
@@ -117,9 +119,9 @@ void CRUDRepositoryTest::getAllShouldReturnAllExistingEntities() {
     // When
     database.connect();
     database.migrate();
-    testCRUDRepository.save(new TestEntity(-1));
-    testCRUDRepository.save(new TestEntity(-1));
-    testCRUDRepository.save(new TestEntity(-1));
+    testCRUDRepository.create(std::make_unique<TestEntity>(-1));
+    testCRUDRepository.create(std::make_unique<TestEntity>(-1));
+    testCRUDRepository.create(std::make_unique<TestEntity>(-1));
 
     // Then
     QCOMPARE(testCRUDRepository.getAll().size(), 3U);
@@ -133,9 +135,10 @@ void CRUDRepositoryTest::getAllShouldReturnEntitiesAccordingToConditions() {
     // When
     database.connect();
     database.migrate();
-    const auto id1 = testCRUDRepository.save(new TestEntity(-1));
-    testCRUDRepository.save(new TestEntity(-1));
-    testCRUDRepository.save(new TestEntity(-1));
+    const auto id1 = testCRUDRepository.create(
+        std::make_unique<TestEntity>(-1)).getKey();
+    testCRUDRepository.create(std::make_unique<TestEntity>(-1));
+    testCRUDRepository.create(std::make_unique<TestEntity>(-1));
 
     // Then
     QCOMPARE(1U, testCRUDRepository.getAll(
@@ -150,9 +153,11 @@ void CRUDRepositoryTest::selectShouldReturnExpectedEntities() {
     // When
     database.connect();
     database.migrate();
-    const auto id1 = testCRUDRepository.save(new TestEntity(-1));
-    testCRUDRepository.save(new TestEntity(-1));
-    const auto id3 = testCRUDRepository.save(new TestEntity(-1));
+    const auto id1 = testCRUDRepository.create(
+        std::make_unique<TestEntity>(-1)).getKey();
+    testCRUDRepository.create(std::make_unique<TestEntity>(-1));
+    const auto id3 = testCRUDRepository.create(
+        std::make_unique<TestEntity>(-1)).getKey();
 
     // Then
     QCOMPARE(2U, testCRUDRepository.select(
@@ -169,9 +174,11 @@ void CRUDRepositoryTest::selectCTEShouldReturnExpectedEntities() {
     // When
     database.connect();
     database.migrate();
-    const auto id1 = testCRUDRepository.save(new TestEntity(-1));
-    testCRUDRepository.save(new TestEntity(-1));
-    const auto id3 = testCRUDRepository.save(new TestEntity(-1));
+    const auto id1 = testCRUDRepository.create(
+        std::make_unique<TestEntity>(-1)).getKey();
+    testCRUDRepository.create(std::make_unique<TestEntity>(-1));
+    const auto id3 = testCRUDRepository.create(
+        std::make_unique<TestEntity>(-1)).getKey();
 
     // Then
     QCOMPARE(2U, testCRUDRepository.select(
@@ -189,9 +196,9 @@ void CRUDRepositoryTest::countShouldCountAllEntities() {
     // When
     database.connect();
     database.migrate();
-    testCRUDRepository.save(new TestEntity(-1));
-    testCRUDRepository.save(new TestEntity(-1));
-    testCRUDRepository.save(new TestEntity(-1));
+    testCRUDRepository.create(std::make_unique<TestEntity>(-1));
+    testCRUDRepository.create(std::make_unique<TestEntity>(-1));
+    testCRUDRepository.create(std::make_unique<TestEntity>(-1));
 
     // Then
     QCOMPARE(testCRUDRepository.count(), 3U);
@@ -205,9 +212,11 @@ void CRUDRepositoryTest::countShouldCountEntitiesAccordingToConditions() {
     // When
     database.connect();
     database.migrate();
-    const auto id1 = testCRUDRepository.save(new TestEntity(-1));
-    testCRUDRepository.save(new TestEntity(-1));
-    const auto id3 = testCRUDRepository.save(new TestEntity(-1));;
+    const auto id1 = testCRUDRepository.create(
+        std::make_unique<TestEntity>(-1)).getKey();
+    testCRUDRepository.create(std::make_unique<TestEntity>(-1));
+    const auto id3 = testCRUDRepository.create(
+        std::make_unique<TestEntity>(-1)).getKey();
 
     // Then
     QCOMPARE(2U, testCRUDRepository.count(
@@ -222,7 +231,8 @@ void CRUDRepositoryTest::existsByKeyShouldReturnTrue() {
     // When
     database.connect();
     database.migrate();
-    const auto lastInsertedKey = testCRUDRepository.save(new TestEntity(-1));
+    const auto lastInsertedKey = testCRUDRepository.create(
+        std::make_unique<TestEntity>(-1)).getKey();
 
     // Then
     QVERIFY(testCRUDRepository.exists(lastInsertedKey));
@@ -249,7 +259,8 @@ void CRUDRepositoryTest::existsShouldReturnTrue() {
     // When
     database.connect();
     database.migrate();
-    const auto lastInsertedKey = testCRUDRepository.save(new TestEntity(-1));
+    const auto lastInsertedKey = testCRUDRepository.create(
+        std::make_unique<TestEntity>(-1)).getKey();
 
     // Then
     QVERIFY(testCRUDRepository.exists(
@@ -339,15 +350,14 @@ void CRUDRepositoryTest::createShouldInsertAndNotify() {
     // When
     database.connect();
     database.migrate();
-    const auto lastInsertedKey = testCRUDRepository.create(
+    const auto &savedEntity = testCRUDRepository.create(
         std::move(newTestEntity));
-    const auto &savedEntity = testCRUDRepository.get(lastInsertedKey);
 
     // Then
-    QVERIFY(testCRUDRepository.exists(lastInsertedKey));
-    QVERIFY(testObserver.wasChanged(lastInsertedKey,
+    QVERIFY(testCRUDRepository.exists(savedEntity.getKey()));
+    QVERIFY(testObserver.wasChanged(savedEntity.getKey(),
                                     savedEntity.getTypeIndex()));
-    QVERIFY(!testObserver.wasDeleted(lastInsertedKey,
+    QVERIFY(!testObserver.wasDeleted(savedEntity.getKey(),
                                      savedEntity.getTypeIndex()));
 }
 
@@ -360,17 +370,16 @@ void CRUDRepositoryTest::updateShouldUpdateAndNotify() {
     // When
     database.connect();
     database.migrate();
-    const auto lastInsertedKey = testCRUDRepository.create(
+    auto &savedEntity = testCRUDRepository.create(
         std::make_unique<TestEntity>(-1));
-    auto &savedEntity = testCRUDRepository.get(lastInsertedKey);
     savedEntity.attach(&testObserver);
     const auto typeIndex = savedEntity.getTypeIndex();
     testCRUDRepository.update(savedEntity);
 
     // Then
-    QVERIFY(testCRUDRepository.exists(lastInsertedKey));
-    QVERIFY(testObserver.wasChanged(lastInsertedKey, typeIndex));
-    QVERIFY(!testObserver.wasDeleted(lastInsertedKey, typeIndex));
+    QVERIFY(testCRUDRepository.exists(savedEntity.getKey()));
+    QVERIFY(testObserver.wasChanged(savedEntity.getKey(), typeIndex));
+    QVERIFY(!testObserver.wasDeleted(savedEntity.getKey(), typeIndex));
 }
 
 void CRUDRepositoryTest::saveAllShouldInsertAndNotify() {
@@ -416,7 +425,7 @@ void CRUDRepositoryTest::eraseShouldDeleteAndNotify() {
     // Given
     auto database = this->databaseWithCreator();
     const auto &testCRUDRepository = TestCRUDRepository(database);
-    auto * const newTestEntity = new TestEntity(-1);
+    auto newTestEntity = std::make_unique<TestEntity>(-1);
     auto testObserver = TestObserver();
     newTestEntity->attach(&testObserver);
     const auto newTestEntityTypeIndex = newTestEntity->getTypeIndex();
@@ -424,8 +433,9 @@ void CRUDRepositoryTest::eraseShouldDeleteAndNotify() {
     // When
     database.connect();
     database.migrate();
-    const auto lastInsertedKey = testCRUDRepository.save(newTestEntity);
-    testCRUDRepository.erase(newTestEntity->getKey());
+    const auto lastInsertedKey = testCRUDRepository.create(
+        std::move(newTestEntity)).getKey();
+    testCRUDRepository.erase(lastInsertedKey);
 
     // Then
     QVERIFY(!testCRUDRepository.exists(lastInsertedKey));
@@ -437,8 +447,8 @@ void CRUDRepositoryTest::eraseAllShouldDeleteAndNotify() {
     // Given
     auto database = this->databaseWithCreator();
     const auto &testCRUDRepository = TestCRUDRepository(database);
-    auto * const newTestEntity1 = new TestEntity(-1);
-    auto * const newTestEntity2 = new TestEntity(-1);
+    auto newTestEntity1 = std::make_unique<TestEntity>(-1);
+    auto newTestEntity2 = std::make_unique<TestEntity>(-1);
     auto testObserver = TestObserver();
     newTestEntity1->attach(&testObserver);
     newTestEntity2->attach(&testObserver);
@@ -448,8 +458,10 @@ void CRUDRepositoryTest::eraseAllShouldDeleteAndNotify() {
     // When
     database.connect();
     database.migrate();
-    const auto key1 = testCRUDRepository.save(newTestEntity1);
-    const auto key2 = testCRUDRepository.save(newTestEntity2);
+    const auto key1 = testCRUDRepository.create(
+        std::move(newTestEntity1)).getKey();
+    const auto key2 = testCRUDRepository.create(
+        std::move(newTestEntity2)).getKey();
     testCRUDRepository.eraseAll();
 
     // Then

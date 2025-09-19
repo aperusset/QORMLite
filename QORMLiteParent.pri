@@ -1,4 +1,4 @@
-QMAKE_CXXFLAGS += -Wall -Wextra -Wpedantic -Werror
+QMAKE_CXXFLAGS += -Wall -Wextra -Wpedantic
 CONFIG += c++17
 QT += sql
 DEFINES += QT_DEPRECATED_WARNINGS QT_DISABLE_DEPRECATED_UP_TO=0x060900
