@@ -29,8 +29,11 @@ class CRUDRepositoryTest : public MainDatabaseTest {
     void existsByKeyShouldReturnFalse();
     void existsShouldReturnTrue();
     void existsShouldReturnFalse();
+    void saveShouldFail();
     void saveShouldInsertAndNotify();
     void saveShouldUpdateAndNotify();
+    void createShouldInsertAndNotify();
+    void updateShouldUpdateAndNotify();
     void saveAllShouldInsertAndNotify();
     void eraseShouldNotFailIfNotExists();
     void eraseShouldDeleteAndNotify();

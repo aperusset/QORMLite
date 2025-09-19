@@ -1,4 +1,6 @@
 #include "crudrepositorytest.h"
+#include <memory>
+#include <utility>
 #include "./utils.h"
 #include "fixture/testcreator.h"
 #include "fixture/testcrudrepository.h"
@@ -268,6 +270,20 @@ void CRUDRepositoryTest::existsShouldReturnFalse() {
         {QORM::Equals::field(TestCreator::TEST_FIELD, 0)}));
 }
 
+void CRUDRepositoryTest::saveShouldFail() {
+    // Given
+    auto database = this->databaseWithCreator();
+    const auto &testCRUDRepository = TestCRUDRepository(database);
+
+    // When
+    database.connect();
+    database.migrate();
+
+    // Then
+    QVERIFY_THROWS_EXCEPTION(std::invalid_argument,
+        testCRUDRepository.save(nullptr));
+}
+
 void CRUDRepositoryTest::saveShouldInsertAndNotify() {
     // Given
     auto database = this->databaseWithCreator();
@@ -296,15 +312,60 @@ void CRUDRepositoryTest::saveShouldUpdateAndNotify() {
     const auto &testCRUDRepository = TestCRUDRepository(database);
     auto * const newTestEntity = new TestEntity(-1);
     auto testObserver = TestObserver();
-    newTestEntity->attach(&testObserver);
 
     // When
     database.connect();
     database.migrate();
     const auto lastInsertedKey = testCRUDRepository.save(newTestEntity);
     auto &savedEntity = testCRUDRepository.get(lastInsertedKey);
+    savedEntity.attach(&testObserver);
     const auto typeIndex = savedEntity.getTypeIndex();
     testCRUDRepository.save(&savedEntity);
+
+    // Then
+    QVERIFY(testCRUDRepository.exists(lastInsertedKey));
+    QVERIFY(testObserver.wasChanged(lastInsertedKey, typeIndex));
+    QVERIFY(!testObserver.wasDeleted(lastInsertedKey, typeIndex));
+}
+
+void CRUDRepositoryTest::createShouldInsertAndNotify() {
+    // Given
+    auto database = this->databaseWithCreator();
+    const auto &testCRUDRepository = TestCRUDRepository(database);
+    auto newTestEntity = std::make_unique<TestEntity>(-1);
+    auto testObserver = TestObserver();
+    newTestEntity->attach(&testObserver);
+
+    // When
+    database.connect();
+    database.migrate();
+    const auto lastInsertedKey = testCRUDRepository.create(
+        std::move(newTestEntity));
+    const auto &savedEntity = testCRUDRepository.get(lastInsertedKey);
+
+    // Then
+    QVERIFY(testCRUDRepository.exists(lastInsertedKey));
+    QVERIFY(testObserver.wasChanged(lastInsertedKey,
+                                    savedEntity.getTypeIndex()));
+    QVERIFY(!testObserver.wasDeleted(lastInsertedKey,
+                                     savedEntity.getTypeIndex()));
+}
+
+void CRUDRepositoryTest::updateShouldUpdateAndNotify() {
+    // Given
+    auto database = this->databaseWithCreator();
+    const auto &testCRUDRepository = TestCRUDRepository(database);
+    auto testObserver = TestObserver();
+
+    // When
+    database.connect();
+    database.migrate();
+    const auto lastInsertedKey = testCRUDRepository.create(
+        std::make_unique<TestEntity>(-1));
+    auto &savedEntity = testCRUDRepository.get(lastInsertedKey);
+    savedEntity.attach(&testObserver);
+    const auto typeIndex = savedEntity.getTypeIndex();
+    testCRUDRepository.update(savedEntity);
 
     // Then
     QVERIFY(testCRUDRepository.exists(lastInsertedKey));

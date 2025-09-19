@@ -6,6 +6,7 @@
 #include <list>
 #include <memory>
 #include <stdexcept>
+#include <utility>
 #include "operations/query/insert.h"
 #include "operations/query/update.h"
 #include "operations/query/delete.h"
@@ -45,8 +46,8 @@ class CRUDRepository : public ReadOnlyRepository<Entity, Key> {
         if (!assignmentsToDo.empty()) {
             this->getDatabase().execute(Update(this->tableName(),
                 assignmentsToDo, this->keyCondition(entity.getKey())));
-            entity.notifyChange();
         }
+        entity.notifyChange();
     }
 
     virtual void saveAll(const std::list<Entity*> &entities) const {
