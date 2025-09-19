@@ -127,7 +127,7 @@ class ReadOnlyRepository {
     }
 
     virtual auto exists(const std::list<Condition> &conditions) const -> bool {
-        return this->count(conditions) > 0;
+        return this->count(conditions) > 0U;
     }
 
     void assertFieldValidity(const QString &field) const {
