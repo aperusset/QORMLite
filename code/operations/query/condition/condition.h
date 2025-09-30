@@ -31,7 +31,7 @@ class Condition : public Operation, public Bindable {
     auto getRightField() const -> const QString&;
     auto getName() const -> QString override;
     auto getType() const -> QString override;
-    auto getValue() const -> QVariant override;
+    auto getValue() const -> const QVariant& override;
     auto getParametrizedConditions() const -> std::list<Condition>;
     auto generate() const -> QString override;
 
@@ -65,7 +65,7 @@ inline auto Condition::getType() const -> QString {
     return type;
 }
 
-inline auto Condition::getValue() const -> QVariant {
+inline auto Condition::getValue() const -> const QVariant& {
     return this->value;
 }
 

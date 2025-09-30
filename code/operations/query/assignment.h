@@ -16,7 +16,7 @@ class Assignment : public Operation, public Bindable {
     auto getFieldName() const -> const QString&;
     auto getName() const -> QString override;
     auto getType() const -> QString override;
-    auto getValue() const -> QVariant override;
+    auto getValue() const -> const QVariant& override;
     auto generate() const -> QString override;
 };
 
@@ -33,7 +33,7 @@ inline auto Assignment::getType() const -> QString {
     return type;
 }
 
-inline auto Assignment::getValue() const -> QVariant {
+inline auto Assignment::getValue() const -> const QVariant& {
     return this->value;
 }
 
