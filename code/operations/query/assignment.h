@@ -29,7 +29,8 @@ inline auto Assignment::getName() const -> QString {
 }
 
 inline auto Assignment::getType() const -> QString {
-    return "assignment";
+    static const QString type("assignment");
+    return type;
 }
 
 inline auto Assignment::getValue() const -> QVariant {

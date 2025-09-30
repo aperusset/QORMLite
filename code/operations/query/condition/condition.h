@@ -61,7 +61,8 @@ inline auto Condition::getName() const -> QString {
 }
 
 inline auto Condition::getType() const -> QString {
-    return "condition";
+    static const QString type("condition");
+    return type;
 }
 
 inline auto Condition::getValue() const -> QVariant {
