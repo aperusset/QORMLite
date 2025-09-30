@@ -4,7 +4,7 @@
 
 QORM::Assignment::Assignment(QString fieldName, QVariant value) :
     fieldName(std::move(fieldName)),
-    parameter(QORM::Utils::parametrize(this->fieldName)),
+    parameter(Utils::parametrize(this->fieldName)),
     value(std::move(value)) {
     if (this->fieldName.simplified().isEmpty()) {
         throw std::invalid_argument("Field name must not be blank.");
@@ -12,5 +12,5 @@ QORM::Assignment::Assignment(QString fieldName, QVariant value) :
 }
 
 auto QORM::Assignment::generate() const -> QString {
-    return (this->fieldName + " = " + this->parameter).simplified();
+    return (this->fieldName + " = " + this->getParameter()).simplified();
 }

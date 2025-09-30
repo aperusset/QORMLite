@@ -26,12 +26,12 @@ auto QORM::Table::generate() const -> QString {
     std::copy_if(this->fields.begin(), this->fields.end(),
                  std::back_inserter(fieldsToGenerate),
         [&pKeyFields, &fieldsToGenerate](const Field &field) -> bool {
-            return !QORM::Utils::contains(pKeyFields, field) &&
-                   !QORM::Utils::contains(fieldsToGenerate, field);
+            return !Utils::contains(pKeyFields, field) &&
+                   !Utils::contains(fieldsToGenerate, field);
         });
     std::transform(fieldsToGenerate.begin(), fieldsToGenerate.end(),
-        std::back_inserter(generatedFields),
-        std::bind(&Field::generate, std::placeholders::_1));
+                   std::back_inserter(generatedFields),
+                   std::bind(&Field::generate, std::placeholders::_1));
     QString creation = "create table if not exists " + this->tableName + "(" +
                        generatedFields.join(", ");
     if (!isAutoIncrement) {

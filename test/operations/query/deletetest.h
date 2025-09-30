@@ -10,6 +10,7 @@ class DeleteTest : public QObject {
     inline static const QString DEFAULT_FIELD_NAME = "field_name";
 
  private slots:
+    static void conditionsWithSameNameShouldFail();
     static void generateWithoutConditions();
     static void generateWithConditions();
 };

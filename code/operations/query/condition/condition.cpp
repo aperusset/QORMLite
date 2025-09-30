@@ -9,7 +9,7 @@ QORM::Condition::Condition(QString op, std::list<Condition> nestedConditions,
     op(std::move(op)), nestedConditions(std::move(nestedConditions)),
     leftField(std::move(leftField)),
     rightField(value.isValid() && this->leftField.has_value() ?
-            std::optional(QORM::Utils::parametrize(this->leftField.value())) :
+            std::optional(Utils::parametrize(this->leftField.value())) :
             std::move(rightField)),
     value(std::move(value)) {
     if (this->op.isNull() || this->op.simplified().isEmpty()) {
@@ -61,8 +61,9 @@ const -> std::list<Condition> {
 
 auto QORM::Condition::generate() const -> QString {
     if (this->nestedConditions.empty()) {
-        return (this->leftField.value() + this->op +
-                this->rightField.value_or("")).simplified();
+        const auto right = this->isParametrized()
+            ? this->getParameter() : this->rightField.value_or("");
+        return (this->leftField.value() + this->op + right).simplified();
     }
     if (this->nestedConditions.size() == 1) {  // recursivity stop condition
         return (this->op +

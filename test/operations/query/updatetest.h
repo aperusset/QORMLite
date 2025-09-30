@@ -11,6 +11,8 @@ class UpdateTest : public QObject {
 
  private slots:
     static void withoutAssignmentsShouldFail();
+    static void assignmentsWithSameNameShouldFail();
+    static void conditionsWithSameNameShouldFail();
     static void generateWithoutConditions();
     static void generateWithConditions();
 };

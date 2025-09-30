@@ -10,6 +10,7 @@ class InsertTest : public QObject {
     inline static const QString DEFAULT_FIELD_NAME = "field";
 
  private slots:
+    static void assignmentsWithSameNameShouldFail();
     static void generateDefaultValues();
     static void generateWithAssignments();
 };
