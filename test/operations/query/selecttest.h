@@ -29,6 +29,9 @@ class SelectTest : public QObject {
     void selectWithIncompatibleUnionsShouldFail();
     void selectAllWithUnions();
     void lastInsertedId();
+    void whereConditionsWithSameNameShouldFail();
+    void havingConditionsWithSameNameShouldFail();
+    void whereAndHavingConditionsWithSameNameShouldFail();
 };
 
 #endif  // TEST_OPERATIONS_QUERY_SELECTTEST_H_

@@ -20,8 +20,9 @@ void AssignmentTest::generate() {
     // Then
     QCOMPARE(DEFAULT_FIELD_NAME, assignment.getFieldName());
     QCOMPARE(QORM::Utils::parametrize(DEFAULT_FIELD_NAME),
-             assignment.getParameter());
+             assignment.getName());
     QCOMPARE(DEFAULT_VALUE, assignment.getValue());
     QCOMPARE(generated, DEFAULT_FIELD_NAME + " = " +
-             QORM::Utils::parametrize(DEFAULT_FIELD_NAME));
+             QORM::Utils::parametrize(DEFAULT_FIELD_NAME) +
+             assignment.getType());
 }

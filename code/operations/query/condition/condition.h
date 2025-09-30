@@ -29,7 +29,8 @@ class Condition : public Operation, public Bindable {
     auto getLeftField() const -> const QString&;
     auto hasRightField() const -> bool;
     auto getRightField() const -> const QString&;
-    auto getParameter() const -> const QString& override;
+    auto getName() const -> QString override;
+    auto getType() const -> QString override;
     auto getValue() const -> const QVariant& override;
     auto getParametrizedConditions() const -> std::list<Condition>;
     auto generate() const -> QString override;
@@ -55,8 +56,13 @@ inline auto Condition::hasRightField() const -> bool {
     return this->rightField.has_value();
 }
 
-inline auto Condition::getParameter() const -> const QString& {
+inline auto Condition::getName() const -> QString {
     return this->getRightField();
+}
+
+inline auto Condition::getType() const -> QString {
+    static const QString type("condition");
+    return type;
 }
 
 inline auto Condition::getValue() const -> const QVariant& {

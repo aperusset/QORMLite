@@ -58,7 +58,7 @@ void SchemaVersionRepositoryTest::saveAndGet() {
     // When
     const auto key = repository.create(
         std::make_unique<QORM::Entities::SchemaVersion>(
-            1, description, now)).getKey();
+            2, description, now)).getKey();
 
     // Then
     const auto &sv = repository.get(key);
@@ -123,7 +123,7 @@ void SchemaVersionRepositoryTest::getCurrentSchemaVersionShouldReturnLatest() {
     // When
     const auto key = repository.create(
         std::make_unique<QORM::Entities::SchemaVersion>(
-            1, "description", QDateTime::currentDateTime())).getKey();
+            2, "description", QDateTime::currentDateTime())).getKey();
     const auto &latestVersion = repository.getCurrentSchemaVersion();
 
     // Then

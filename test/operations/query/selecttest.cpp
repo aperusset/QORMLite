@@ -294,3 +294,36 @@ void SelectTest::lastInsertedId() {
     QVERIFY(!last.hasBindables());
     QCOMPARE(generated, "select last_insert_rowid()");
 }
+
+void SelectTest::whereConditionsWithSameNameShouldFail() {
+    // Given
+    const auto bindedCondition = QORM::Equals::field(DEFAULT_FIELD_NAME, 0);
+
+    // When / Then
+    QVERIFY_THROWS_EXCEPTION(std::invalid_argument,
+        QORM::Select(DEFAULT_TABLE_NAME)
+            .where({bindedCondition, bindedCondition}));
+}
+
+void SelectTest::havingConditionsWithSameNameShouldFail() {
+    // Given
+    const auto bindedCondition = QORM::Equals::field(DEFAULT_FIELD_NAME, 0);
+
+    // When / Then
+    QVERIFY_THROWS_EXCEPTION(std::invalid_argument,
+        QORM::Select(DEFAULT_TABLE_NAME)
+            .groupBy({DEFAULT_FIELD_NAME})
+            .having({bindedCondition, bindedCondition}));
+}
+
+void SelectTest::whereAndHavingConditionsWithSameNameShouldFail() {
+    // Given
+    const auto bindedCondition = QORM::Equals::field(DEFAULT_FIELD_NAME, 0);
+
+    // When / Then
+    QVERIFY_THROWS_EXCEPTION(std::invalid_argument,
+        QORM::Select(DEFAULT_TABLE_NAME)
+            .where({bindedCondition})
+            .groupBy({DEFAULT_FIELD_NAME})
+            .having({bindedCondition}));
+}
