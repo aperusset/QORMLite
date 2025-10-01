@@ -80,7 +80,7 @@ class ReadOnlyRepository {
         });
     }
 
-    auto get(const std::list<Condition> &conditions) const -> Entity& {
+    auto get(const std::list<Condition> &conditions = {}) const -> Entity& {
         if (const auto entities = this->getAll(conditions); !entities.empty()) {
             return entities.front().get();
         }
