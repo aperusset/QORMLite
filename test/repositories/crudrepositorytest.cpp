@@ -79,6 +79,38 @@ void CRUDRepositoryTest::getByKeyShouldReturnEntity() {
     QCOMPARE(entity.getKey(), savedEntity.getKey());
 }
 
+void CRUDRepositoryTest::getShouldFail() {
+    // Given
+    auto database = this->databaseWithCreator();
+    const auto &testCRUDRepository = TestCRUDRepository(database);
+
+    // When
+    database.connect();
+    database.migrate();
+
+    // When / Then
+    QVERIFY_THROWS_EXCEPTION(std::logic_error,
+        testCRUDRepository.get(
+            {QORM::Equals::field(TestCreator::TEST_FIELD, 0)}));
+}
+
+void CRUDRepositoryTest::getShouldReturnEntity() {
+    // Given
+    auto database = this->databaseWithCreator();
+    const auto &testCRUDRepository = TestCRUDRepository(database);
+
+    // When
+    database.connect();
+    database.migrate();
+    const auto lastInsertedKey = testCRUDRepository.create(
+        std::make_unique<TestEntity>(-1)).getKey();
+    const auto &entity = testCRUDRepository.get(
+        {QORM::Equals::field(TestCreator::TEST_FIELD, lastInsertedKey)});
+
+    // When / Then
+    QCOMPARE(entity.getKey(), lastInsertedKey);
+}
+
 void CRUDRepositoryTest::firstShouldFail() {
     // Given
     auto database = this->databaseWithCreator();
@@ -126,7 +158,7 @@ void CRUDRepositoryTest::lastShouldFail() {
             {QORM::Equals::field(TestCreator::TEST_FIELD, 0)}));
 }
 
-void CRUDRepositoryTest::lasthouldReturnEntity() {
+void CRUDRepositoryTest::lastShouldReturnEntity() {
     // Given
     auto database = this->databaseWithCreator();
     const auto &testCRUDRepository = TestCRUDRepository(database);

@@ -17,10 +17,12 @@ class CRUDRepositoryTest : public MainDatabaseTest {
     void qualifiedFieldsShouldQualifyOverrideAllFields();
     void getByKeyShouldFail();
     void getByKeyShouldReturnEntity();
+    void getShouldFail();
+    void getShouldReturnEntity();
     void firstShouldFail();
     void firstShouldReturnEntity();
     void lastShouldFail();
-    void lasthouldReturnEntity();
+    void lastShouldReturnEntity();
     void getAllShouldReturnAllExistingEntities();
     void getAllShouldReturnEntitiesAccordingToConditions();
     void selectShouldReturnExpectedEntities();
