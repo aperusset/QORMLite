@@ -79,7 +79,7 @@ void CRUDRepositoryTest::getByKeyShouldReturnEntity() {
     QCOMPARE(entity.getKey(), savedEntity.getKey());
 }
 
-void CRUDRepositoryTest::getShouldFail() {
+void CRUDRepositoryTest::firstShouldFail() {
     // Given
     auto database = this->databaseWithCreator();
     const auto &testCRUDRepository = TestCRUDRepository(database);
@@ -90,11 +90,11 @@ void CRUDRepositoryTest::getShouldFail() {
 
     // When / Then
     QVERIFY_THROWS_EXCEPTION(std::logic_error,
-        testCRUDRepository.get(
+        testCRUDRepository.first(
             {QORM::Equals::field(TestCreator::TEST_FIELD, 0)}));
 }
 
-void CRUDRepositoryTest::getShouldReturnEntity() {
+void CRUDRepositoryTest::firstShouldReturnEntity() {
     // Given
     auto database = this->databaseWithCreator();
     const auto &testCRUDRepository = TestCRUDRepository(database);
@@ -104,7 +104,39 @@ void CRUDRepositoryTest::getShouldReturnEntity() {
     database.migrate();
     const auto lastInsertedKey = testCRUDRepository.create(
         std::make_unique<TestEntity>(-1)).getKey();
-    const auto &entity = testCRUDRepository.get(
+    const auto &entity = testCRUDRepository.first(
+        {QORM::Equals::field(TestCreator::TEST_FIELD, lastInsertedKey)});
+
+    // When / Then
+    QCOMPARE(entity.getKey(), lastInsertedKey);
+}
+
+void CRUDRepositoryTest::lastShouldFail() {
+    // Given
+    auto database = this->databaseWithCreator();
+    const auto &testCRUDRepository = TestCRUDRepository(database);
+
+    // When
+    database.connect();
+    database.migrate();
+
+    // When / Then
+    QVERIFY_THROWS_EXCEPTION(std::logic_error,
+        testCRUDRepository.last(
+            {QORM::Equals::field(TestCreator::TEST_FIELD, 0)}));
+}
+
+void CRUDRepositoryTest::lasthouldReturnEntity() {
+    // Given
+    auto database = this->databaseWithCreator();
+    const auto &testCRUDRepository = TestCRUDRepository(database);
+
+    // When
+    database.connect();
+    database.migrate();
+    const auto lastInsertedKey = testCRUDRepository.create(
+        std::make_unique<TestEntity>(-1)).getKey();
+    const auto &entity = testCRUDRepository.last(
         {QORM::Equals::field(TestCreator::TEST_FIELD, lastInsertedKey)});
 
     // When / Then

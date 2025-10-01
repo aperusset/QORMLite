@@ -80,9 +80,16 @@ class ReadOnlyRepository {
         });
     }
 
-    auto get(const std::list<Condition> &conditions = {}) const -> Entity& {
+    auto first(const std::list<Condition> &conditions = {}) const -> Entity& {
         if (const auto entities = this->getAll(conditions); !entities.empty()) {
             return entities.front().get();
+        }
+        throw std::logic_error("No entity match the given conditions");
+    }
+
+    auto last(const std::list<Condition> &conditions = {}) const -> Entity& {
+        if (const auto entities = this->getAll(conditions); !entities.empty()) {
+            return entities.back().get();
         }
         throw std::logic_error("No entity match the given conditions");
     }
