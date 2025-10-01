@@ -16,6 +16,8 @@
 #include "operations/query/cte.h"
 #include "operations/query/selection/count.h"
 #include "operations/query/condition/equals.h"
+#include "operations/query/order/asc.h"
+#include "operations/query/order/desc.h"
 
 namespace QORM::Repositories {
 
@@ -80,11 +82,22 @@ class ReadOnlyRepository {
         });
     }
 
-    auto get(const std::list<Condition> &conditions = {}) const -> Entity& {
-        if (const auto entities = this->getAll(conditions); !entities.empty()) {
-            return entities.front().get();
+    auto get(const std::list<Condition> &conditions = {},
+             const std::list<Order> &orders = {}) const -> Entity& {
+        const auto &results = this->select(Select(this->tableName())
+            .where(conditions).orderBy(orders).limit(1U));
+        if (!results.empty()) {
+            return results.front().get();
         }
         throw std::logic_error("No entity match the given conditions");
+    }
+
+    auto first(const std::list<Condition> &conditions = {}) const -> Entity& {
+        return this->get(conditions, {Asc(this->keyName())});
+    }
+
+    auto last(const std::list<Condition> &conditions = {}) const -> Entity& {
+        return this->get(conditions, {Desc(this->keyName())});
     }
 
     auto getAll(const std::list<Order> &orders = {}) const {

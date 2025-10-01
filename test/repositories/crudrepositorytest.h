@@ -19,6 +19,10 @@ class CRUDRepositoryTest : public MainDatabaseTest {
     void getByKeyShouldReturnEntity();
     void getShouldFail();
     void getShouldReturnEntity();
+    void firstShouldFail();
+    void firstShouldReturnEntity();
+    void lastShouldFail();
+    void lastShouldReturnEntity();
     void getAllShouldReturnAllExistingEntities();
     void getAllShouldReturnEntitiesAccordingToConditions();
     void selectShouldReturnExpectedEntities();

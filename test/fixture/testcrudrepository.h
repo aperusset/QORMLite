@@ -12,6 +12,7 @@ class TestCRUDRepository :
  public:
     explicit TestCRUDRepository(const QORM::Database &database);
 
+    auto keyName() const -> QString override;
     auto keyCondition(const int&) const -> QORM::Condition override;
     auto fields() const -> std::list<QString> override;
     auto buildKey(const QSqlRecord &record) const -> int override;
