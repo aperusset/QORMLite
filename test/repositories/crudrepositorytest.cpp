@@ -425,6 +425,21 @@ void CRUDRepositoryTest::createShouldInsertAndNotify() {
                                      savedEntity.getTypeIndex()));
 }
 
+void CRUDRepositoryTest::createArgsShouldInsert() {
+    // Given
+    auto database = this->databaseWithCreator();
+    const auto &testCRUDRepository = TestCRUDRepository(database);
+    const auto newTestEntityKey = -1;
+
+    // When
+    database.connect();
+    database.migrate();
+    const auto &savedEntity = testCRUDRepository.create(newTestEntityKey);
+
+    // Then
+    QVERIFY(testCRUDRepository.exists(savedEntity.getKey()));
+}
+
 void CRUDRepositoryTest::updateShouldUpdateAndNotify() {
     // Given
     auto database = this->databaseWithCreator();

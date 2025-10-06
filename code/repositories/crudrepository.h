@@ -43,6 +43,12 @@ class CRUDRepository : public ReadOnlyRepository<Entity, Key> {
         return cachedEntity;
     }
 
+    template<class... EntityArgs>
+    auto create(EntityArgs&&... args) const -> Entity& {
+        return this->create(
+            std::make_unique<Entity>(std::forward<EntityArgs>(args)...));
+    }
+
     virtual void update(const Entity &entity) const {
         const auto &assignmentsToDo = this->assignments(entity);
         if (!assignmentsToDo.empty()) {
