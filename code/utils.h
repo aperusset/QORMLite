@@ -10,8 +10,10 @@
 #include <algorithm>
 #include <list>
 #include <map>
+#include <unordered_set>
 #include <string>
 #include <utility>
+#include "entities/baseentity.h"
 #include "operations/query/selection/selection.h"
 
 namespace QORM::Utils {
@@ -102,6 +104,7 @@ namespace QORM::Utils {
     auto joinToString(const std::list<T> &elements, const QString &separator,
                       Transformer &&transformer) {
         QStringList transformed;
+        transformed.reserve(elements.size());
         std::transform(elements.begin(), elements.end(),
                        std::back_inserter(transformed),
                        std::forward<Transformer>(transformer));
@@ -119,10 +122,30 @@ namespace QORM::Utils {
     auto joinToString(const std::map<K, T> &elements, const QString &separator,
                       Transformer &&transformer) {
         QStringList transformed;
+        transformed.reserve(elements.size());
         std::transform(elements.begin(), elements.end(),
                        std::back_inserter(transformed),
                        std::forward<Transformer>(transformer));
         return transformed.join(separator);
+    }
+
+    /**
+     * @brief Extract keys from a list of entities
+     * @param entities the entities to extract the keys
+     * @return an unordered set containing the keys of the entities
+     */
+    template<class Entity, typename Key = int>
+    [[nodiscard]] auto extractKeys(const QORM::ConstRefList<Entity> &entities) {
+        static_assert(
+            std::is_base_of_v<Entities::BaseEntity<Key>, Entity>,
+            "Entity must extend QORM::Entities::BaseEntity<Key>");
+        std::unordered_set<Key> keys;
+        keys.reserve(entities.size());
+        std::transform(entities.begin(), entities.end(),
+            std::inserter(keys, keys.end()), [](const auto &e) {
+                return e.get().getKey();
+            });
+        return keys;
     }
 
     /**
