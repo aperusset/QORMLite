@@ -47,8 +47,8 @@ class Database {
 
     template<class Selector>
     static void assertSelector() {
-        static_assert(std::is_base_of<Select, Selector>::value ||
-                      std::is_base_of<CTE<Select>, Selector>::value,
+        static_assert(std::is_base_of_v<Select, Selector> ||
+                      std::is_base_of_v<CTE<Select>, Selector>,
                       "Selector must be Select or CTE<Select>");
     }
 

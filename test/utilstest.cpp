@@ -7,6 +7,7 @@
 #include <string>
 #include "./utils.h"
 #include "operations/query/selection/selection.h"
+#include "fixture/testentity.h"
 
 void UtilsTest::formatSQLiteDate() {
     // Given
@@ -144,6 +145,28 @@ void UtilsTest::joinToStringShouldJoinMapWithSeparator() {
 
     // Then
     QCOMPARE(joined, "01-12-23");
+}
+
+void UtilsTest::extractKeysShouldExtractKeys() {
+    // Given
+    const TestEntity firstEntity(10);
+    const TestEntity secondEntity(42);
+    const TestEntity thirdEntity(42);
+    const QORM::ConstRefList<TestEntity> entities = {
+        std::cref(firstEntity),
+        std::cref(secondEntity),
+        std::cref(thirdEntity),
+    };
+    const QORM::ConstRefList<TestEntity> noEntities = {};
+
+    // When
+    const auto extractedKeys = QORM::Utils::extractKeys(entities);
+
+    // Then
+    QVERIFY(extractedKeys.size() == 2U);
+    QVERIFY(extractedKeys.count(firstEntity.getKey()) == 1U);
+    QVERIFY(extractedKeys.count(secondEntity.getKey()) == 1U);
+    QVERIFY(QORM::Utils::extractKeys(noEntities).empty());
 }
 
 void UtilsTest::getOrThrowShouldReturnValue() {
