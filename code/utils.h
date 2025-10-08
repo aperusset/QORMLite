@@ -92,13 +92,12 @@ namespace QORM::Utils {
     }
 
     /**
-     * @brief Define if a container contains or not an element.
+     * @brief Define if a list initializer contains or not an element.
      * @return true : contains, false : does not contain
      */
     template<typename T>
-    auto contains(std::initializer_list<T> elements, const T &element) {
-        return contains(std::list(elements.begin(), elements.end()),
-                        element);
+    auto contains(std::initializer_list<T> list, const T &element) {
+        return std::find(list.begin(), list.end(), element) != list.end();
     }
 
     /**
@@ -112,10 +111,7 @@ namespace QORM::Utils {
     auto joinToString(const Container &elements, const QString &separator,
                       Transformer &&transformer) {
         QStringList transformed;
-        if constexpr (std::is_same_v<decltype(elements.size()),
-                      typename Container::size_type>) {
-            transformed.reserve(elements.size());
-        }
+        transformed.reserve(elements.size());
         std::transform(elements.begin(), elements.end(),
                        std::back_inserter(transformed),
                        std::forward<Transformer>(transformer));
@@ -132,8 +128,8 @@ namespace QORM::Utils {
     template<typename T, typename Transformer>
     auto joinToString(std::initializer_list<T> elements,
                       const QString &separator, Transformer &&transformer) {
-        return joinToString(std::list(elements.begin(), elements.end()),
-                            separator, std::forward<Transformer>(transformer));
+        return joinToString<std::initializer_list<T>>(elements, separator,
+            std::forward<Transformer>(transformer));
     }
 
     /**

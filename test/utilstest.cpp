@@ -2,6 +2,7 @@
 #include <QMetaType>
 #include <QSqlField>
 #include <QSqlRecord>
+#include <functional>
 #include <list>
 #include <map>
 #include <string>

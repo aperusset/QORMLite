@@ -4,6 +4,8 @@
 #include <QString>
 #include <set>
 #include <utility>
+#include <initializer_list>
+#include <type_traits>
 #include "operations/query/condition/condition.h"
 #include "operations/query/select.h"
 #include "utils.h"
