@@ -16,6 +16,13 @@
 
 namespace QORM::Utils {
 
+    struct identity {
+        template <typename T>
+        constexpr T&& operator()(T&& t) const noexcept {
+            return std::forward<T>(t);
+        }
+    };
+
     /**
      * @brief Format a QDate to database valid date
      * @param date the date to format
@@ -107,9 +114,9 @@ namespace QORM::Utils {
      * @param transformer the function that transform to QString
      * @return the elements joined into a single QString with the separator
      */
-    template<typename Container, typename Transformer>
+    template<typename Container, typename Transformer = identity>
     auto joinToString(const Container &elements, const QString &separator,
-                      Transformer &&transformer) {
+                      Transformer &&transformer = {}) {
         QStringList transformed;
         transformed.reserve(elements.size());
         std::transform(elements.begin(), elements.end(),
@@ -125,9 +132,10 @@ namespace QORM::Utils {
      * @param transformer the function that transform to QString
      * @return the elements joined into a single QString with the separator
      */
-    template<typename T, typename Transformer>
+    template<typename T, typename Transformer = identity>
     auto joinToString(std::initializer_list<T> elements,
-                      const QString &separator, Transformer &&transformer) {
+                      const QString &separator,
+                      Transformer &&transformer = {}) {
         return joinToString<std::initializer_list<T>>(elements, separator,
             std::forward<Transformer>(transformer));
     }

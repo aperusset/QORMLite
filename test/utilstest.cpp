@@ -127,15 +127,18 @@ void UtilsTest::containsShouldReturnFalse() {
 void UtilsTest::joinToStringShouldJoinListWithSeparator() {
     // Given
     const std::list<int> values{0, 1, 2};
+    const std::list<QString> stringValues{"0", "1", "2"};
 
     // When
     const auto joined = QORM::Utils::joinToString(values, "-",
         [](const auto &value) -> QString {
             return QString::number(value);
         });
+    const auto joinedStrings = QORM::Utils::joinToString(stringValues, "-");
 
     // Then
     QCOMPARE(joined, "0-1-2");
+    QCOMPARE(joinedStrings, "0-1-2");
 }
 
 void UtilsTest::joinToStringShouldJoinInitListWithSeparator() {
@@ -144,9 +147,11 @@ void UtilsTest::joinToStringShouldJoinInitListWithSeparator() {
         [](const auto &value) -> QString {
             return QString::number(value);
         });
+    const auto joinedStrings = QORM::Utils::joinToString({"0", "1", "2"}, "-");
 
     // Then
     QCOMPARE(joined, "0-1-2");
+    QCOMPARE(joinedStrings, "0-1-2");
 }
 
 void UtilsTest::joinToStringShouldJoinMapWithSeparator() {
