@@ -8,8 +8,6 @@
 #include <QStringList>
 #include <QVariant>
 #include <algorithm>
-#include <list>
-#include <map>
 #include <unordered_set>
 #include <string>
 #include <utility>
@@ -85,26 +83,39 @@ namespace QORM::Utils {
                           const QString &fieldName) -> QString;
 
     /**
-     * @brief Define if a STL list contains or not an element.
+     * @brief Define if a container contains or not an element.
      * @return true : contains, false : does not contain
      */
-    template<typename T>
-    auto contains(const std::list<T> &list, const T &element) {
+    template<typename Container, typename T>
+    auto contains(const Container &list, const T &element) {
         return std::find(list.begin(), list.end(), element) != list.end();
     }
 
     /**
-     * @brief Join a list of elements into a QString with a separator
+     * @brief Define if a container contains or not an element.
+     * @return true : contains, false : does not contain
+     */
+    template<typename T>
+    auto contains(std::initializer_list<T> elements, const T &element) {
+        return contains(std::list(elements.begin(), elements.end()),
+                        element);
+    }
+
+    /**
+     * @brief Join a container of elements into a QString with a separator
      * @param elements the elements to join
      * @param separator the separator to use
-     * @param transformer the function that transform from T to QString
+     * @param transformer the function that transform to QString
      * @return the elements joined into a single QString with the separator
      */
-    template<typename T, typename Transformer>
-    auto joinToString(const std::list<T> &elements, const QString &separator,
+    template<typename Container, typename Transformer>
+    auto joinToString(const Container &elements, const QString &separator,
                       Transformer &&transformer) {
         QStringList transformed;
-        transformed.reserve(elements.size());
+        if constexpr (std::is_same_v<decltype(elements.size()),
+                      typename Container::size_type>) {
+            transformed.reserve(elements.size());
+        }
         std::transform(elements.begin(), elements.end(),
                        std::back_inserter(transformed),
                        std::forward<Transformer>(transformer));
@@ -112,21 +123,17 @@ namespace QORM::Utils {
     }
 
     /**
-     * @brief Join a map of elements into a QString with a separator
+     * @brief Join an initializer of elements into a QString with a separator
      * @param elements the elements to join
      * @param separator the separator to use
-     * @param transformer the function that transform from <K, T> to QString
+     * @param transformer the function that transform to QString
      * @return the elements joined into a single QString with the separator
      */
-    template<typename K, typename T, typename Transformer>
-    auto joinToString(const std::map<K, T> &elements, const QString &separator,
-                      Transformer &&transformer) {
-        QStringList transformed;
-        transformed.reserve(elements.size());
-        std::transform(elements.begin(), elements.end(),
-                       std::back_inserter(transformed),
-                       std::forward<Transformer>(transformer));
-        return transformed.join(separator);
+    template<typename T, typename Transformer>
+    auto joinToString(std::initializer_list<T> elements,
+                      const QString &separator, Transformer &&transformer) {
+        return joinToString(std::list(elements.begin(), elements.end()),
+                            separator, std::forward<Transformer>(transformer));
     }
 
     /**
@@ -135,7 +142,7 @@ namespace QORM::Utils {
      * @return an unordered set containing the keys of the entities
      */
     template<class Entity, typename Key = int>
-    [[nodiscard]] auto extractKeys(const QORM::ConstRefList<Entity> &entities) {
+    [[nodiscard]] auto extractKeys(const QORM::RefList<Entity> &entities) {
         static_assert(
             std::is_base_of_v<Entities::BaseEntity<Key>, Entity>,
             "Entity must extend QORM::Entities::BaseEntity<Key>");

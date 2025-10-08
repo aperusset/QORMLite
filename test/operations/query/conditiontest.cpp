@@ -517,13 +517,20 @@ void ConditionTest::inWithEmptyStringsShouldFail() {
 
 void ConditionTest::inWithIntegers() {
     // Given
-    const auto in = QORM::In(DEFAULT_FIELD_NAME, {0, 1, 2});
+    const auto intList = std::list{0, 1, 2};
+    const auto inIntList = QORM::In(DEFAULT_FIELD_NAME, intList);
+    const auto inSingle = QORM::In(DEFAULT_FIELD_NAME, {0});
+    const auto inMultiple = QORM::In(DEFAULT_FIELD_NAME, {0, 1, 2});
 
     // When
-    const auto generated = in.generate();
+    const auto generatedIntList = inIntList.generate();
+    const auto generatedSingle = inSingle.generate();
+    const auto generatedMultiple = inMultiple.generate();
 
     // Then
-    QCOMPARE(generated, DEFAULT_FIELD_NAME + " in (0, 1, 2)");
+    QCOMPARE(generatedIntList, DEFAULT_FIELD_NAME + " in (0, 1, 2)");
+    QCOMPARE(generatedSingle, DEFAULT_FIELD_NAME + " in (0)");
+    QCOMPARE(generatedMultiple, DEFAULT_FIELD_NAME + " in (0, 1, 2)");
 }
 
 void ConditionTest::notInWithIntegers() {
@@ -539,13 +546,22 @@ void ConditionTest::notInWithIntegers() {
 
 void ConditionTest::inWithStrings() {
     // Given
-    const auto in = QORM::In(DEFAULT_FIELD_NAME, {"test1", "test2", "test3"});
+    const auto stringList = std::list<QString>{"test1", "test2"};
+    const auto inStringList = QORM::In(DEFAULT_FIELD_NAME, stringList);
+    const auto inSingle = QORM::In(DEFAULT_FIELD_NAME, {"test"});
+    const auto inMultiple = QORM::In(DEFAULT_FIELD_NAME, {"test1", "test2"});
 
     // When
-    const auto generated = in.generate();
+    const auto generatedStringList = inStringList.generate();
+    const auto generatedSingle = inSingle.generate();
+    const auto generatedMultiple = inMultiple.generate();
 
     // Then
-    QCOMPARE(generated, DEFAULT_FIELD_NAME + " in ('test1', 'test2', 'test3')");
+    QCOMPARE(generatedStringList,
+             DEFAULT_FIELD_NAME + " in ('test1', 'test2')");
+    QCOMPARE(generatedSingle, DEFAULT_FIELD_NAME + " in ('test')");
+    QCOMPARE(generatedMultiple,
+             DEFAULT_FIELD_NAME + " in ('test1', 'test2')");
 }
 
 void ConditionTest::notInWithStrings() {

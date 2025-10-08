@@ -20,6 +20,7 @@ class UtilsTest : public QObject {
     static void containsShouldReturnTrue();
     static void containsShouldReturnFalse();
     static void joinToStringShouldJoinListWithSeparator();
+    static void joinToStringShouldJoinInitListWithSeparator();
     static void joinToStringShouldJoinMapWithSeparator();
     static void extractKeysShouldExtractKeys();
     static void getOrThrowShouldReturnValue();
