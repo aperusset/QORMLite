@@ -40,9 +40,9 @@ void SchemaVersionRepositoryTest::fields() {
 
     // Then
     QCOMPARE(expectedSize, fields.size());
-    QVERIFY(QORM::Utils::contains<QString>(fields, "version"));
-    QVERIFY(QORM::Utils::contains<QString>(fields, "description"));
-    QVERIFY(QORM::Utils::contains<QString>(fields, "execution"));
+    QVERIFY(QORM::Utils::contains(fields, "version"));
+    QVERIFY(QORM::Utils::contains(fields, "description"));
+    QVERIFY(QORM::Utils::contains(fields, "execution"));
 }
 
 void SchemaVersionRepositoryTest::saveAndGet() {

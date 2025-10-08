@@ -35,11 +35,11 @@ class CTE : public Query {  // Common Table Expression
     }
 
     auto generate() const -> QString override {
-        return ("with " + Utils::joinToString<QString, Select>(this->withs,
+        return ("with " + Utils::joinToString(this->withs,
             ", ", [](const auto &pair) -> QString {
                 return pair.first.simplified() + " as (" +
                        pair.second.generate() + ")";
-            })).simplified() + " " + query.generate();
+            })).simplified() + " " + this->query.generate();
     }
 
     void bind(QSqlQuery &qSqlQuery) const override {

@@ -5,7 +5,6 @@
 #include <QString>
 #include <list>
 #include <memory>
-#include <stdexcept>
 #include <utility>
 #include "operations/query/insert.h"
 #include "operations/query/update.h"
@@ -20,19 +19,6 @@ class CRUDRepository : public ReadOnlyRepository<Entity, Key> {
     explicit CRUDRepository(const Database &database,
                             Cache<Key, Entity>* const cache = nullptr) :
         ReadOnlyRepository<Entity, Key>(database, cache) {}
-
-    [[deprecated("Use create(std::unique_ptr) or update(&) instead")]]
-    virtual auto save(Entity* const entity) const -> Key {
-        if (entity == nullptr) {
-            throw std::invalid_argument("Cannot save nullptr");
-        }
-        if (this->exists(entity->getKey())) {
-            this->update(*entity);
-            return entity->getKey();
-        } else {
-            return this->create(std::unique_ptr<Entity>(entity)).getKey();
-        }
-    }
 
     virtual auto create(std::unique_ptr<Entity> entity) const -> Entity& {
         const auto key = this->getDatabase().insertAndRetrieveKey(
@@ -58,6 +44,7 @@ class CRUDRepository : public ReadOnlyRepository<Entity, Key> {
         entity.notifyChange();
     }
 
+    [[deprecated("Use create(std::unique_ptr) or update(&) instead")]]
     virtual void saveAll(const std::list<Entity*> &entities) const {
         for (auto *entity : entities) {
             if (entity != nullptr) {

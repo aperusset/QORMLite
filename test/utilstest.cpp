@@ -2,6 +2,7 @@
 #include <QMetaType>
 #include <QSqlField>
 #include <QSqlRecord>
+#include <functional>
 #include <list>
 #include <map>
 #include <string>
@@ -107,6 +108,8 @@ void UtilsTest::containsShouldReturnTrue() {
     // When / Then
     QVERIFY(QORM::Utils::contains(values, 0));
     QVERIFY(QORM::Utils::contains(values, 1));
+    QVERIFY(QORM::Utils::contains({0, 1}, 0));
+    QVERIFY(QORM::Utils::contains({0, 1}, 1));
 }
 
 void UtilsTest::containsShouldReturnFalse() {
@@ -117,6 +120,8 @@ void UtilsTest::containsShouldReturnFalse() {
     // When / Then
     QVERIFY(!QORM::Utils::contains(values, 2));
     QVERIFY(!QORM::Utils::contains(empty, 1));
+    QVERIFY(!QORM::Utils::contains({0, 1}, 2));
+    QVERIFY(!QORM::Utils::contains({}, 1));
 }
 
 void UtilsTest::joinToStringShouldJoinListWithSeparator() {
@@ -125,6 +130,17 @@ void UtilsTest::joinToStringShouldJoinListWithSeparator() {
 
     // When
     const auto joined = QORM::Utils::joinToString(values, "-",
+        [](const auto &value) -> QString {
+            return QString::number(value);
+        });
+
+    // Then
+    QCOMPARE(joined, "0-1-2");
+}
+
+void UtilsTest::joinToStringShouldJoinInitListWithSeparator() {
+    // Given / When
+    const auto joined = QORM::Utils::joinToString({0, 1, 2}, "-",
         [](const auto &value) -> QString {
             return QString::number(value);
         });
@@ -149,24 +165,35 @@ void UtilsTest::joinToStringShouldJoinMapWithSeparator() {
 
 void UtilsTest::extractKeysShouldExtractKeys() {
     // Given
-    const TestEntity firstEntity(10);
-    const TestEntity secondEntity(42);
-    const TestEntity thirdEntity(42);
-    const QORM::ConstRefList<TestEntity> entities = {
+    TestEntity firstEntity(10);
+    TestEntity secondEntity(42);
+    TestEntity thirdEntity(42);
+    const QORM::RefList<TestEntity> entities = {
+        std::ref(firstEntity),
+        std::ref(secondEntity),
+        std::ref(thirdEntity),
+    };
+    const QORM::ConstRefList<TestEntity> constEntities = {
         std::cref(firstEntity),
         std::cref(secondEntity),
         std::cref(thirdEntity),
     };
-    const QORM::ConstRefList<TestEntity> noEntities = {};
+    const QORM::RefList<TestEntity> noEntities = {};
+    const QORM::ConstRefList<TestEntity> noConstEntities = {};
 
     // When
     const auto extractedKeys = QORM::Utils::extractKeys(entities);
+    const auto extractedConstKeys = QORM::Utils::extractKeys(constEntities);
 
     // Then
     QVERIFY(extractedKeys.size() == 2U);
     QVERIFY(extractedKeys.count(firstEntity.getKey()) == 1U);
     QVERIFY(extractedKeys.count(secondEntity.getKey()) == 1U);
     QVERIFY(QORM::Utils::extractKeys(noEntities).empty());
+    QVERIFY(extractedConstKeys.size() == 2U);
+    QVERIFY(extractedConstKeys.count(firstEntity.getKey()) == 1U);
+    QVERIFY(extractedConstKeys.count(secondEntity.getKey()) == 1U);
+    QVERIFY(QORM::Utils::extractKeys(noConstEntities).empty());
 }
 
 void UtilsTest::getOrThrowShouldReturnValue() {

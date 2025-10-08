@@ -345,64 +345,6 @@ void CRUDRepositoryTest::existsShouldReturnFalse() {
         {QORM::Equals::field(TestCreator::TEST_FIELD, 0)}));
 }
 
-void CRUDRepositoryTest::saveShouldFail() {
-    // Given
-    auto database = this->databaseWithCreator();
-    const auto &testCRUDRepository = TestCRUDRepository(database);
-
-    // When
-    database.connect();
-    database.migrate();
-
-    // Then
-    QVERIFY_THROWS_EXCEPTION(std::invalid_argument,
-        testCRUDRepository.save(nullptr));
-}
-
-void CRUDRepositoryTest::saveShouldInsertAndNotify() {
-    // Given
-    auto database = this->databaseWithCreator();
-    const auto &testCRUDRepository = TestCRUDRepository(database);
-    auto * const newTestEntity = new TestEntity(-1);
-    auto testObserver = TestObserver();
-    newTestEntity->attach(&testObserver);
-
-    // When
-    database.connect();
-    database.migrate();
-    const auto lastInsertedKey = testCRUDRepository.save(newTestEntity);
-    const auto &savedEntity = testCRUDRepository.get(lastInsertedKey);
-
-    // Then
-    QVERIFY(testCRUDRepository.exists(lastInsertedKey));
-    QVERIFY(testObserver.wasChanged(lastInsertedKey,
-                                    savedEntity.getTypeIndex()));
-    QVERIFY(!testObserver.wasDeleted(lastInsertedKey,
-                                     savedEntity.getTypeIndex()));
-}
-
-void CRUDRepositoryTest::saveShouldUpdateAndNotify() {
-    // Given
-    auto database = this->databaseWithCreator();
-    const auto &testCRUDRepository = TestCRUDRepository(database);
-    auto * const newTestEntity = new TestEntity(-1);
-    auto testObserver = TestObserver();
-
-    // When
-    database.connect();
-    database.migrate();
-    const auto lastInsertedKey = testCRUDRepository.save(newTestEntity);
-    auto &savedEntity = testCRUDRepository.get(lastInsertedKey);
-    savedEntity.attach(&testObserver);
-    const auto typeIndex = savedEntity.getTypeIndex();
-    testCRUDRepository.save(&savedEntity);
-
-    // Then
-    QVERIFY(testCRUDRepository.exists(lastInsertedKey));
-    QVERIFY(testObserver.wasChanged(lastInsertedKey, typeIndex));
-    QVERIFY(!testObserver.wasDeleted(lastInsertedKey, typeIndex));
-}
-
 void CRUDRepositoryTest::createShouldInsertAndNotify() {
     // Given
     auto database = this->databaseWithCreator();
