@@ -11,7 +11,7 @@ class CrossJoin : public Join {
  public:
     explicit CrossJoin(const QString &table,
                        const std::optional<QString> &renamedTo = std::nullopt) :
-    Join(JoinType::Cross, table, {}, renamedTo) {}
+        Join(JoinType::Cross, table, {}, renamedTo) {}
 };
 
 }  // namespace QORM

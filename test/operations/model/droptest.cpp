@@ -17,16 +17,16 @@ void DropTest::dropTableShouldGenerateExpected() {
 
 void DropTest::dropViewShouldGenerateExpected() {
     // Given
-    const auto dropTable = QORM::DropView(NAME);
+    const auto dropView = QORM::DropView(NAME);
 
     // When / Then
-    QCOMPARE(dropTable.generate(), "drop view if exists " + NAME);
+    QCOMPARE(dropView.generate(), "drop view if exists " + NAME);
 }
 
 void DropTest::dropTriggerShouldGenerateExpected() {
     // Given
-    const auto dropTable = QORM::DropTrigger(NAME);
+    const auto dropTrigger = QORM::DropTrigger(NAME);
 
     // When / Then
-    QCOMPARE(dropTable.generate(), "drop trigger if exists " + NAME);
+    QCOMPARE(dropTrigger.generate(), "drop trigger if exists " + NAME);
 }

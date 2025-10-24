@@ -9,6 +9,9 @@ QORM::Join::Join(JoinType joinType, QString table,
     if (this->joinType != JoinType::Cross && this->conditions.empty()) {
         throw std::invalid_argument("Join must have at least one condition.");
     }
+    if (this->joinType == JoinType::Cross && !this->conditions.empty()) {
+        throw std::invalid_argument("Cross join must not have conditions.");
+    }
 }
 
 auto QORM::Join::generate() const -> QString {

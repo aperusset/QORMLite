@@ -20,6 +20,8 @@ auto QORM::Drop::generate() const -> QString {
         case DropType::Trigger:
             query += "trigger";
             break;
+        default:
+            throw std::logic_error("Unknown drop type");
     }
     return (query += " if exists " + this->name).simplified();
 }

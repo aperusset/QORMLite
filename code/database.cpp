@@ -84,7 +84,7 @@ auto QORM::Database::getSchemaState() const -> Schema::State {
                                            Entities::SchemaVersion::TABLE);
     if (!versioned && tables.empty()) {
         return Schema::State::Empty;
-    } else if (!versioned && tables.size() > 0) {
+    } else if (!versioned && !tables.empty()) {
         return Schema::State::ToBeVersioned;
     } else if (this->upgraders.empty()) {
         return Schema::State::UpToDate;
@@ -124,7 +124,7 @@ void QORM::Database::migrate() {
         case Schema::State::ToBeUpgraded:
             this->upgrade();
             break;
-        default:
+        case Schema::State::UpToDate:
             if (this->verbose) {
                 qDebug("Database %s is up to date",
                        qUtf8Printable(connector->getName()));
