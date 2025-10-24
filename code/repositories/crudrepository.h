@@ -15,7 +15,7 @@ namespace QORM::Repositories {
 
 template<class Entity>
 class CRUDRepository : public ReadOnlyRepository<Entity> {
-    using Key = typename Entity::keyType;
+    using Key = typename Entity::KeyType;
 
  public:
     explicit CRUDRepository(const Database &database,

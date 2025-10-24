@@ -23,7 +23,7 @@ namespace QORM::Repositories {
 
 template<class Entity>
 class ReadOnlyRepository {
-    using Key = typename Entity::keyType;
+    using Key = typename Entity::KeyType;
     static_assert(
         std::is_base_of_v<Entities::BaseEntity<Key>, Entity>,
         "Entity must extend QORM::Entities::BaseEntity");
