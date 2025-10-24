@@ -66,6 +66,8 @@ class BaseEntity {
                 }
             });
     }
+
+    using keyType = Key;
 };
 
 }  // namespace QORM::Entities
