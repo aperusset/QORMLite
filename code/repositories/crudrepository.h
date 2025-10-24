@@ -13,12 +13,14 @@
 
 namespace QORM::Repositories {
 
-template<class Entity, typename Key = int>
-class CRUDRepository : public ReadOnlyRepository<Entity, Key> {
+template<class Entity>
+class CRUDRepository : public ReadOnlyRepository<Entity> {
+    using Key = typename Entity::KeyType;
+
  public:
     explicit CRUDRepository(const Database &database,
                             Cache<Key, Entity>* const cache = nullptr) :
-        ReadOnlyRepository<Entity, Key>(database, cache) {}
+        ReadOnlyRepository<Entity>(database, cache) {}
 
     virtual auto create(std::unique_ptr<Entity> entity) const -> Entity& {
         const auto key = this->getDatabase().insertAndRetrieveKey(
