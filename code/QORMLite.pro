@@ -25,6 +25,7 @@ SOURCES += \
   operations/model/constraint/unique.cpp \
   operations/model/constraint/foreignkey.cpp \
   operations/model/constraint/primarykey.cpp \
+  operations/model/drop/drop.cpp \
   operations/model/field.cpp \
   operations/model/table.cpp \
   operations/model/type/blob.cpp \
@@ -75,6 +76,7 @@ HEADERS += \
   operations/model/constraint/foreignkey.h \
   operations/model/constraint/primarykey.h \
   operations/model/constraint/reference.h \
+  operations/model/drop/drop.h \
   operations/model/field.h \
   operations/model/table.h \
   operations/model/type/blob.h \

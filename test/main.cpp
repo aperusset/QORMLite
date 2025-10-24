@@ -14,6 +14,7 @@
 #include "operations/model/constraint/referencetest.h"
 #include "operations/model/constraint/foreignkeytest.h"
 #include "operations/model/constraint/uniquetest.h"
+#include "operations/model/droptest.h"
 #include "operations/query/ordertest.h"
 #include "operations/query/assignmenttest.h"
 #include "operations/query/selectiontest.h"
@@ -49,6 +50,7 @@ auto main(int argc, char *argv[]) -> int {
     tests.emplace_back(std::make_unique<ReferenceTest>());
     tests.emplace_back(std::make_unique<ForeignKeyTest>());
     tests.emplace_back(std::make_unique<UniqueTest>());
+    tests.emplace_back(std::make_unique<DropTest>());
     tests.emplace_back(std::make_unique<OrderTest>());
     tests.emplace_back(std::make_unique<AssignmentTest>());
     tests.emplace_back(std::make_unique<SelectionTest>());

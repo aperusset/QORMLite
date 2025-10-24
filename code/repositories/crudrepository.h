@@ -44,19 +44,6 @@ class CRUDRepository : public ReadOnlyRepository<Entity, Key> {
         entity.notifyChange();
     }
 
-    [[deprecated("Use create(std::unique_ptr) or update(&) instead")]]
-    virtual void saveAll(const std::list<Entity*> &entities) const {
-        for (auto *entity : entities) {
-            if (entity != nullptr) {
-                if (this->exists(entity->getKey())) {
-                    this->update(*entity);
-                } else {
-                    this->create(std::unique_ptr<Entity>(entity));
-                }
-            }
-        }
-    }
-
     virtual void erase(const Key &key) const {
         if (this->exists(key)) {
             const auto &entity = this->get(key);

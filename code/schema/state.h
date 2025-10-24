@@ -2,14 +2,15 @@
 #define SCHEMA_STATE_H
 
 #include <QObject>
+#include <cstdint>
 
 namespace QORM::Schema {
 
-enum class State {
-    EMPTY = 0,
-    TO_BE_VERSIONED = 1,
-    TO_BE_UPGRADED = 2,
-    UP_TO_DATE = 3
+enum class State : uint8_t {
+    Empty = 0,
+    ToBeVersioned = 1,
+    ToBeUpgraded = 2,
+    UpToDate = 3
 };
 
 }

@@ -403,34 +403,6 @@ void CRUDRepositoryTest::updateShouldUpdateAndNotify() {
     QVERIFY(!testObserver.wasDeleted(savedEntity.getKey(), typeIndex));
 }
 
-void CRUDRepositoryTest::saveAllShouldInsertAndNotify() {
-    // Given
-    auto database = this->databaseWithCreator();
-    const auto &testCRUDRepository = TestCRUDRepository(database);
-    auto * const newTestEntity1 = new TestEntity(-1);
-    auto * const newTestEntity2 = new TestEntity(-1);
-    auto testObserver = TestObserver();
-    newTestEntity1->attach(&testObserver);
-    newTestEntity2->attach(&testObserver);
-
-    // When
-    database.connect();
-    database.migrate();
-    testCRUDRepository.saveAll({newTestEntity1, newTestEntity2});
-
-    // Then
-    QVERIFY(testCRUDRepository.exists(newTestEntity1->getKey()));
-    QVERIFY(testCRUDRepository.exists(newTestEntity2->getKey()));
-    QVERIFY(testObserver.wasChanged(newTestEntity1->getKey(),
-                                    newTestEntity1->getTypeIndex()));
-    QVERIFY(testObserver.wasChanged(newTestEntity2->getKey(),
-                                    newTestEntity2->getTypeIndex()));
-    QVERIFY(!testObserver.wasDeleted(newTestEntity1->getKey(),
-                                     newTestEntity1->getTypeIndex()));
-    QVERIFY(!testObserver.wasDeleted(newTestEntity2->getKey(),
-                                     newTestEntity2->getTypeIndex()));
-}
-
 void CRUDRepositoryTest::eraseShouldNotFailIfNotExists() {
     // Given
     auto database = this->databaseWithCreator();
