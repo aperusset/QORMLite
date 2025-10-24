@@ -36,7 +36,6 @@ class CRUDRepositoryTest : public MainDatabaseTest {
     void createShouldInsertAndNotify();
     void createArgsShouldInsert();
     void updateShouldUpdateAndNotify();
-    void saveAllShouldInsertAndNotify();
     void eraseShouldNotFailIfNotExists();
     void eraseShouldDeleteAndNotify();
     void eraseAllShouldDeleteAndNotify();

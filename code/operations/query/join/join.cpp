@@ -9,24 +9,28 @@ QORM::Join::Join(JoinType joinType, QString table,
     if (this->joinType != JoinType::Cross && this->conditions.empty()) {
         throw std::invalid_argument("Join must have at least one condition.");
     }
+    if (this->joinType == JoinType::Cross && !this->conditions.empty()) {
+        throw std::invalid_argument("Cross join must not have conditions.");
+    }
 }
 
 auto QORM::Join::generate() const -> QString {
     QString query;
     switch (this->joinType) {
         case JoinType::Inner:
-            query += "inner join ";
+            query += "inner";
             break;
         case JoinType::Left:
-            query += "left join ";
+            query += "left";
             break;
         case JoinType::Right:
-            query += "right join ";
+            query += "right";
             break;
         case JoinType::Cross:
-            query += "cross join ";
+            query += "cross";
             break;
     }
-    return (query + this->table + " " + this->renamedTo.value_or("") +
-            Condition::generateMultiple(" on ", this->conditions)).simplified();
+    return (
+        query + " join " + this->table + " " + this->renamedTo.value_or("") +
+        Condition::generateMultiple(" on ", this->conditions)).simplified();
 }

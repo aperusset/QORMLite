@@ -123,7 +123,7 @@ void DatabaseTest::getSchemaStateShouldReturnEmpty() {
 
     // Then
     QVERIFY(database.isConnected());
-    QCOMPARE(database.getSchemaState(), QORM::Schema::State::EMPTY);
+    QCOMPARE(database.getSchemaState(), QORM::Schema::State::Empty);
 }
 
 void DatabaseTest::getSchemaStateShouldReturnToBeUpgraded() {
@@ -142,7 +142,7 @@ void DatabaseTest::getSchemaStateShouldReturnToBeUpgraded() {
     // Then
     QVERIFY(databaseUpgrade.isConnected());
     QCOMPARE(databaseUpgrade.getSchemaState(),
-             QORM::Schema::State::TO_BE_UPGRADED);
+             QORM::Schema::State::ToBeUpgraded);
 }
 
 void DatabaseTest::getSchemaStateShouldReturnUpToDate() {
@@ -155,7 +155,7 @@ void DatabaseTest::getSchemaStateShouldReturnUpToDate() {
 
     // Then
     QVERIFY(database.isConnected());
-    QCOMPARE(database.getSchemaState(), QORM::Schema::State::UP_TO_DATE);
+    QCOMPARE(database.getSchemaState(), QORM::Schema::State::UpToDate);
 }
 
 void DatabaseTest::prepareExecuteShouldFailWithInvalidQuery() {

@@ -83,19 +83,19 @@ auto QORM::Database::getSchemaState() const -> Schema::State {
     const auto versioned = Utils::contains(tables,
                                            Entities::SchemaVersion::TABLE);
     if (!versioned && tables.empty()) {
-        return Schema::State::EMPTY;
-    } else if (!versioned && tables.size() > 0) {
-        return Schema::State::TO_BE_VERSIONED;
+        return Schema::State::Empty;
+    } else if (!versioned && !tables.empty()) {
+        return Schema::State::ToBeVersioned;
     } else if (this->upgraders.empty()) {
-        return Schema::State::UP_TO_DATE;
+        return Schema::State::UpToDate;
     }
     const auto &version = this->svRepository->getCurrentSchemaVersion();
     const auto toBeUpgraded = std::any_of(upgraders.begin(), upgraders.end(),
         [&version](const auto &upgrader) {
             return upgrader->getVersion() > version.getKey();
         });
-    return toBeUpgraded ? Schema::State::TO_BE_UPGRADED
-                        : Schema::State::UP_TO_DATE;
+    return toBeUpgraded ? Schema::State::ToBeUpgraded
+                        : Schema::State::UpToDate;
 }
 
 void QORM::Database::connect() const {
@@ -112,19 +112,19 @@ void QORM::Database::migrate() {
         throw std::runtime_error("Not connected to database");
     }
     switch (this->getSchemaState()) {
-        case Schema::State::EMPTY:
+        case Schema::State::Empty:
             this->create();
             this->createSchemaVersion();
             this->upgrade();
             break;
-        case Schema::State::TO_BE_VERSIONED:
+        case Schema::State::ToBeVersioned:
             this->createSchemaVersion();
             this->upgrade();
             break;
-        case Schema::State::TO_BE_UPGRADED:
+        case Schema::State::ToBeUpgraded:
             this->upgrade();
             break;
-        default:
+        case Schema::State::UpToDate:
             if (this->verbose) {
                 qDebug("Database %s is up to date",
                        qUtf8Printable(connector->getName()));
