@@ -11,8 +11,10 @@ void QORM::Schema::Operator::createTable(const Database &database,
         const QString &name, const PrimaryKey &primaryKey,
         const std::list<Field> &fields,
         const std::list<ForeignKey> &foreignKeys,
-        const std::list<Unique> &uniques) {
-    database.execute(Table(name, primaryKey, fields, foreignKeys, uniques));
+        const std::list<Unique> &uniques,
+        const std::list<Check> &checks) {
+    database.execute(
+        Table(name, primaryKey, fields, foreignKeys, uniques, checks));
 }
 
 void QORM::Schema::Operator::createView(const Database &database,

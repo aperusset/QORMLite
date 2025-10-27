@@ -7,6 +7,7 @@
 #include "operations/model/constraint/foreignkey.h"
 #include "operations/model/constraint/primarykey.h"
 #include "operations/model/constraint/unique.h"
+#include "operations/model/constraint/check.h"
 #include "operations/query/insert.h"
 #include "operations/query/select.h"
 
@@ -36,7 +37,8 @@ class Operator {
     static void createTable(const Database&, const QString&,
                             const PrimaryKey&, const std::list<Field>& = {},
                             const std::list<ForeignKey>& = {},
-                            const std::list<Unique>& = {});
+                            const std::list<Unique>& = {},
+                            const std::list<Check>& = {});
     static void createView(const Database&, const QString&, const Select&);
     static void insert(const Database&, const Insert&);
 };
