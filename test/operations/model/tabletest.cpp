@@ -4,7 +4,9 @@
 #include "operations/model/constraint/reference.h"
 #include "operations/model/constraint/foreignkey.h"
 #include "operations/model/constraint/unique.h"
+#include "operations/model/constraint/check.h"
 #include "operations/model/table.h"
+#include "operations/query/condition/equals.h"
 
 void TableTest::autoIncrementedPrimaryKeyWithoutFields() {
     // Given
@@ -166,4 +168,41 @@ void TableTest::multipleUniques() {
                          primaryKey.generate() + ", " +
                          unique.generate() + ", " +
                          unique.generate() + ")");
+}
+
+void TableTest::singleCheck() {
+    // Given
+    const auto primaryKey = QORM::PrimaryKey(DEFAULT_FIELD_1);
+    const auto check = QORM::Check({
+        QORM::Equals::fields(DEFAULT_FIELD_1.getName(),
+                             DEFAULT_FIELD_2.getName())});
+    const QORM::Table table(DEFAULT_TABLE_NAME, primaryKey, {}, {}, {},
+                            {check});
+    // When
+    const auto generated = table.generate();
+
+    // Then
+    QCOMPARE(table.getTableName(), DEFAULT_TABLE_NAME);
+    QCOMPARE(generated, "create table if not exists test_table(" +
+                         primaryKey.generate() + ", " +
+                         check.generate() + ")");
+}
+
+void TableTest::multipleChecks() {
+    // Given
+    const auto primaryKey = QORM::PrimaryKey(DEFAULT_FIELD_1);
+    const auto check = QORM::Check({
+        QORM::Equals::fields(DEFAULT_FIELD_1.getName(),
+                             DEFAULT_FIELD_2.getName())});
+    const QORM::Table table(DEFAULT_TABLE_NAME, primaryKey, {}, {}, {},
+                            {check, check});
+    // When
+    const auto generated = table.generate();
+
+    // Then
+    QCOMPARE(table.getTableName(), DEFAULT_TABLE_NAME);
+    QCOMPARE(generated, "create table if not exists test_table(" +
+                         primaryKey.generate() + ", " +
+                         check.generate() + ", " +
+                         check.generate() + ")");
 }

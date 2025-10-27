@@ -10,6 +10,7 @@
 #include "operations/model/altertest.h"
 #include "operations/model/typetest.h"
 #include "operations/model/fieldtest.h"
+#include "operations/model/constraint/checktest.h"
 #include "operations/model/constraint/primarykeytest.h"
 #include "operations/model/constraint/referencetest.h"
 #include "operations/model/constraint/foreignkeytest.h"
@@ -46,6 +47,7 @@ auto main(int argc, char *argv[]) -> int {
     tests.emplace_back(std::make_unique<TypeTest>());
     tests.emplace_back(std::make_unique<FieldTest>());
     tests.emplace_back(std::make_unique<AlterTest>());
+    tests.emplace_back(std::make_unique<CheckTest>());
     tests.emplace_back(std::make_unique<PrimaryKeyTest>());
     tests.emplace_back(std::make_unique<ReferenceTest>());
     tests.emplace_back(std::make_unique<ForeignKeyTest>());

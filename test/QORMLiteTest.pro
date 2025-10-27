@@ -20,6 +20,7 @@ SOURCES +=  \
   connectors/odbctest.cpp \
   connectors/sqlitetest.cpp \
   operations/model/altertest.cpp \
+  operations/model/constraint/checktest.cpp \
   operations/model/droptest.cpp \
   operations/query/ctetest.cpp \
   repositories/schemaversionrepositorytest.cpp \
@@ -60,6 +61,7 @@ HEADERS += \
   connectors/sqlitetest.h \
   fixture/testupgrader.h \
   operations/model/altertest.h \
+  operations/model/constraint/checktest.h \
   operations/model/droptest.h \
   operations/query/ctetest.h \
   repositories/schemaversionrepositorytest.h \
