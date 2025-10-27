@@ -16,9 +16,9 @@ auto QORM::Constraint::getName() const -> const QString& {
 }
 
 auto QORM::Constraint::generate() const -> QString {
+    const auto constraint = this->generateConstraint().simplified();
     if (this->name.has_value()) {
-        return ("constraint " + this->name.value() + " " +
-            this->generateConstraint()).simplified();
+        return ("constraint " + this->name.value() + " " + constraint);
     }
-    return this->generateConstraint();
+    return constraint;
 }

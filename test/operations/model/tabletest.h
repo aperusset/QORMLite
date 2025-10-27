@@ -15,16 +15,18 @@ class TableTest : public QObject {
             QORM::Field::notNull("field2", QORM::Integer());
 
  private slots:
-    static void autoIncrementedPrimaryKeyWithoutFields();
-    static void autoIncrementedPrimaryKeyWithFields();
-    static void autoIncrementedPrimaryKeyWithDuplicatedFields();
-    static void primaryKeyWithoutAdditionalFields();
-    static void primaryKeyWithAdditionalFields();
-    static void primaryKeyWithDuplicatedFields();
-    static void singleForeignKey();
-    static void multipleForeignKeys();
-    static void singleUnique();
-    static void multipleUniques();
+    void autoIncrementedPrimaryKeyWithoutFields();
+    void autoIncrementedPrimaryKeyWithFields();
+    void autoIncrementedPrimaryKeyWithDuplicatedFields();
+    void primaryKeyWithoutAdditionalFields();
+    void primaryKeyWithAdditionalFields();
+    void primaryKeyWithDuplicatedFields();
+    void singleForeignKey();
+    void multipleForeignKeys();
+    void singleUnique();
+    void multipleUniques();
+    void singleCheck();
+    void multipleChecks();
 };
 
 #endif  // TEST_OPERATIONS_MODEL_TABLETEST_H_

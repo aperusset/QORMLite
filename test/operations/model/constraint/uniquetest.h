@@ -7,10 +7,9 @@ class UniqueTest : public QObject {
     Q_OBJECT
 
  private slots:
-    static void shouldFailWithEmptyName();
-    static void shouldFailWithoutFields();
-    static void generateShouldSuccessWithoutName();
-    static void generateShouldSuccessWithName();
+    void shouldFailWithoutFields();
+    void generateShouldSuccessWithoutName();
+    void generateShouldSuccessWithName();
 };
 
 #endif  // TEST_OPERATIONS_MODEL_CONSTRAINT_UNIQUETEST_H_

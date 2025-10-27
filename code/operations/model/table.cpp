@@ -6,10 +6,10 @@
 
 QORM::Table::Table(QString tableName, PrimaryKey primaryKey,
                    std::list<Field> fields, std::list<ForeignKey> foreignKeys,
-                   std::list<Unique> uniques) :
+                   std::list<Unique> uniques, std::list<Check> checks) :
     tableName(std::move(tableName)), primaryKey(std::move(primaryKey)),
     fields(std::move(fields)), foreignKeys(std::move(foreignKeys)),
-    uniques(std::move(uniques)) {
+    uniques(std::move(uniques)), checks(std::move(checks)) {
     if (this->tableName.trimmed().isEmpty()) {
         throw std::invalid_argument("Table name must not be blank.");
     }
@@ -39,6 +39,7 @@ auto QORM::Table::generate() const -> QString {
     }
     if (!this->foreignKeys.empty()) {
         QStringList generatedForeignKeys;
+        generatedForeignKeys.reserve(this->foreignKeys.size());
         std::transform(this->foreignKeys.begin(), this->foreignKeys.end(),
             std::back_inserter(generatedForeignKeys),
             std::bind(&ForeignKey::generate, std::placeholders::_1));
@@ -46,10 +47,19 @@ auto QORM::Table::generate() const -> QString {
     }
     if (!this->uniques.empty()) {
         QStringList generatedUniques;
+        generatedUniques.reserve(this->uniques.size());
         std::transform(this->uniques.begin(), this->uniques.end(),
             std::back_inserter(generatedUniques),
             std::bind(&Unique::generate, std::placeholders::_1));
         creation += ", " + generatedUniques.join(", ");
+    }
+    if (!this->checks.empty()) {
+        QStringList generatedChecks;
+        generatedChecks.reserve(this->checks.size());
+        std::transform(this->checks.begin(), this->checks.end(),
+            std::back_inserter(generatedChecks),
+            std::bind(&Check::generate, std::placeholders::_1));
+        creation += ", " + generatedChecks.join(", ");
     }
     return (creation += ")").simplified();
 }

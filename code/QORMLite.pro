@@ -21,6 +21,7 @@ SOURCES += \
   operations/model/alter/dropcolumn.cpp \
   operations/model/alter/renamecolumnto.cpp \
   operations/model/alter/renameto.cpp \
+  operations/model/constraint/check.cpp \
   operations/model/constraint/constraint.cpp \
   operations/model/constraint/unique.cpp \
   operations/model/constraint/foreignkey.cpp \
@@ -71,6 +72,7 @@ HEADERS += \
   operations/model/alter/dropcolumn.h \
   operations/model/alter/renamecolumnto.h \
   operations/model/alter/renameto.h \
+  operations/model/constraint/check.h \
   operations/model/constraint/constraint.h \
   operations/model/constraint/unique.h \
   operations/model/constraint/foreignkey.h \

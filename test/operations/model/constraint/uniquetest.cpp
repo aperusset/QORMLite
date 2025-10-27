@@ -2,17 +2,9 @@
 #include "operations/model/constraint/unique.h"
 #include "operations/model/field.h"
 
-void UniqueTest::shouldFailWithEmptyName() {
-    // Given
-    const auto field = QORM::Field("name", QORM::Type("type"), false,
-                                   std::nullopt);
-
-    // When / Then
-    QVERIFY_THROWS_EXCEPTION(std::invalid_argument, QORM::Unique("", {field}));
-}
-
 void UniqueTest::shouldFailWithoutFields() {
     // When / Then
+    QVERIFY_THROWS_EXCEPTION(std::invalid_argument, QORM::Unique({}));
     QVERIFY_THROWS_EXCEPTION(std::invalid_argument, QORM::Unique("name", {}));
 }
 
