@@ -16,11 +16,8 @@ QORM::Check::Check(const QString &name, std::list<Condition> conditions) :
 }
 
 auto QORM::Check::generateConstraint() const -> QString {
-    const auto condition = [&]() {
-        if (this->conditions.size() >= 2) {
-            return QORM::And(this->conditions).generate();
-        }
-        return this->conditions.front().generate();
-    }();
+    const auto condition = this->conditions.size() >= 2
+        ? QORM::And(this->conditions).generate()
+        : this->conditions.front().generate();
     return "check (" + condition + ")";
 }
