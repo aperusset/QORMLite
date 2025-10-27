@@ -16,13 +16,12 @@ QORM::PrimaryKey::PrimaryKey(std::list<Field> fields) :
 
 auto QORM::PrimaryKey::generateConstraint() const -> QString {
     if (this->fields.size() == 1 && this->autoIncrement) {
-        return (this->fields.front().generate() +
-                " primary key autoincrement").simplified();
+        return this->fields.front().generate() + " primary key autoincrement";
     }
     QStringList constraintFields;
     constraintFields.reserve(this->fields.size());
     for (const auto &field : this->fields) {
         constraintFields << field.getName();
     }
-    return ("primary key (" + constraintFields.join(", ") + ")").simplified();
+    return "primary key (" + constraintFields.join(", ") + ")";
 }

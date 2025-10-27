@@ -1,4 +1,5 @@
 #include "checktest.h"
+#include <stdexcept>
 #include "operations/model/constraint/check.h"
 #include "operations/query/condition/equals.h"
 
@@ -14,7 +15,7 @@ void CheckTest::generateShouldSuccessWithoutName() {
     const auto cond2 = QORM::Equals::fields("left2", "right2");
 
     // When
-    const auto &check = QORM::Check({cond1, cond2});
+    const auto check = QORM::Check({cond1, cond2});
 
     // Then
     QCOMPARE(check.generate(), "check ((" +
@@ -27,7 +28,7 @@ void CheckTest::generateShouldSuccessWithName() {
     const auto cond = QORM::Equals::fields("left", "right");
 
     // When
-    const auto &check = QORM::Check("constraintName", {cond});
+    const auto check = QORM::Check("constraintName", {cond});
 
     // Then
     QCOMPARE(check.getName(), "constraintName_ck");

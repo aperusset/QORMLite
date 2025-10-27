@@ -41,5 +41,5 @@ auto QORM::ForeignKey::generateConstraint() const -> QString {
         foreignKey += "set default";
         break;
     }
-    return foreignKey.simplified();
+    return foreignKey;
 }

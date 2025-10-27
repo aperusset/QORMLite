@@ -58,7 +58,7 @@ auto QORM::Table::generate() const -> QString {
         generatedChecks.reserve(this->checks.size());
         std::transform(this->checks.begin(), this->checks.end(),
             std::back_inserter(generatedChecks),
-            std::bind(&Unique::generate, std::placeholders::_1));
+            std::bind(&Check::generate, std::placeholders::_1));
         creation += ", " + generatedChecks.join(", ");
     }
     return (creation += ")").simplified();
