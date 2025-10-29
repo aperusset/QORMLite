@@ -27,6 +27,7 @@ jobs:
           tools: tools_mingw1310
           target: desktop
           cache: true
+          dir: $RUNNER_WORKSPACE/Qt
       - name: Export Qt root dir
         id: export
         shell: bash
