@@ -12,8 +12,7 @@ jobs:
             version: '6.10.0'
             host: 'windows'
             arch: 'win64_mingw'
-            tools: 'qt.tools.win64_mingw1310'
-            cache: true
+            tools: 'tools_mingw1310'
       - name: Configure and build project
         run: |
           mkdir build
