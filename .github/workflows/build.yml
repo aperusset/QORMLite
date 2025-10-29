@@ -22,12 +22,12 @@ jobs:
           cd build
           qmake ../QORMLiteParent.pro CONFIG+=debug
           mingw32-make -j4
-          dir
       - name: Run tests
         shell: bash
         run: |
          cd build/test/debug
-         for test_exe in *.exe; do
-           echo "Running $test_exe..."
-           ./$test_exe
+         ls -la
+         for test in *.exe; do
+           echo "Running $test..."
+           "$PWD/$test"
          done
