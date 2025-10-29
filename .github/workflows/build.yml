@@ -3,6 +3,8 @@ on: [pull_request]
 jobs:
   setup-qt:
     uses: ./.github/workflows/setup-qt.yml
+    with:
+      qt_version: ${{ vars.QT_VERSION }}
     
   build:
     runs-on: windows-latest
@@ -15,12 +17,22 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
+        
+      - name: Configure PATH
+        shell: bash
+        run: |
+          if [ -z "$QT_DIR" ]; then
+            echo "QT_DIR is empty, aborting."
+            exit 1
+          fi
+          echo "PATH=$QT_DIR/Tools/mingw1310_64/bin:$QT_DIR/$QT_VERSION/mingw_64/bin:$PATH" >> $GITHUB_ENV
+          echo "PATH is now: $PATH"
+        
       - name: Configure and build project
         shell: bash
         run: |
-          echo "PATH="$QT_DIR/Tools/mingw1310_64/bin:$QT_DIR/$QT_VERSION/mingw_64/bin:$PATH" >> $GITHUB_ENV
           mkdir -p build
           cd build
           qmake ../QORMLiteParent.pro CONFIG+=$BUILD_TARGET
-          mingw32-make -j4
+          mingw32-make -j$NUMBER_OF_PROCESSORS
       

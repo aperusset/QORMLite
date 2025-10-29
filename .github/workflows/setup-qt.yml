@@ -2,27 +2,26 @@ name: Setup Qt
 
 on:
   workflow_call:
+    inputs:
+      qt_version:
+        required: true
+        type: string
     outputs:
       qt_root:
         description: "Path to installed Qt"
         value: ${{ jobs.setup.outputs.qt_root }}
-      qt_version:
-        description: "Installed Qt version"
-        value: ${{ jobs.setup.outputs.qt_version }}
 
 jobs:
   setup:
     runs-on: windows-latest
     outputs:
       qt_root: ${{ steps.export.outputs.qt_root }}
-    env:
-      BUILD_TARGET: release
     steps:
       - name: Install Qt
         id: install
         uses: jurplel/install-qt-action@v4
         with:
-          version: ${{ vars.QT_VERSION }}
+          version: ${{ inputs.qt_version }}
           host: windows
           arch: win64_mingw
           tools: tools_mingw1310
