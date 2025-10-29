@@ -21,8 +21,8 @@ jobs:
       - name: Configure and build
         shell: bash
         run: |
-          QT_BIN="$QT_ROOT_DIR/bin"
-          QT_TOOLS="$QT_ROOT_DIR/Tools/mingw1310_64/bin"
+          QT_BIN=$(cygpath -u "$QT_ROOT_DIR/bin")
+          QT_TOOLS=$(cygpath -u "$QT_ROOT_DIR/Tools/mingw1310_64/bin")
           export PATH="$QT_BIN;$QT_TOOLS:$PATH"
           echo "PATH=$QT_BIN;$QT_TOOLS:$PATH" >> $GITHUB_ENV
           which qmake
