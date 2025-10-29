@@ -1,0 +1,18 @@
+name: Test QORMLite
+on:
+  workflow_run:
+    workflows: ["Build QORMLite"]
+    types: [completed]
+jobs:
+  test:
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}
+    runs-on: windows-latest
+    steps:
+      - name: Run tests
+        shell: bash
+        run: |
+          cd build/test/$BUILD_TARGET
+          for test in *.exe; do
+            echo "Running $test..."
+            "$PWD/$test"
+          done

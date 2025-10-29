@@ -1,14 +1,16 @@
-name: Build QORMLite with Qt
+name: Build QORMLite
 on: [pull_request]
 jobs:
+  setup-qt:
+    uses: ./.github/workflows/setup-qt.yml
+    
   build:
     runs-on: windows-latest
+    needs: setup-qt
     env:
-      QT_BUILD_VERSION: 6.10.0
-      BUILD_TARGET: debug
+      BUILD_TARGET: release
+      
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
       - name: Install Qt
         uses: jurplel/install-qt-action@v3
         with:
@@ -17,20 +19,15 @@ jobs:
           arch: win64_mingw
           tools: tools_mingw1310
           cache: true
+      - name: Checkout repository
+        uses: actions/checkout@v4
       - name: Configure and build project
         shell: bash
         run: |
-          QT_DIR_BASH=$(echo $QT_DIR | sed 's|\\|/|g' | sed 's|^D:|/d|')
-          export PATH="$QT_DIR_BASH/Tools/mingw1310_64/bin:$QT_DIR_BASH/$QT_BUILD_VERSION/mingw_64/bin:$PATH"
+          QT_DIR_BASH=$(${{ needs.setup-qt.outputs.qt_root }} | sed 's|\\|/|g' | sed 's|^D:|/d|')
+          echo "PATH="$QT_DIR_BASH/Tools/mingw1310_64/bin:$QT_DIR_BASH/$QT_BUILD_VERSION/mingw_64/bin:$PATH" >> $GITHUB_ENV
           mkdir -p build
           cd build
           qmake ../QORMLiteParent.pro CONFIG+=$BUILD_TARGET
           mingw32-make -j4
-      - name: Run tests
-        shell: bash
-        run: |
-          cd build/test/$BUILD_TARGET
-          for test in *.exe; do
-            echo "Running $test..."
-            "$PWD/$test"
-          done
+      
