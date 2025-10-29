@@ -29,12 +29,12 @@ jobs:
             QT_UNIX=$(cygpath -u "$QT_ROOT_DIR")
             echo "Unix path: $QT_UNIX"
             echo "PATH=$QT_UNIX/bin;${QT_UNIX%/*}/Tools/mingw1310_64/bin:$PATH" >> $GITHUB_ENV
-            echo "PATH is now: $PATH"
           fi
         
       - name: Configure and build project
         shell: bash
         run: |
+          echo "PATH: $PATH"
           mkdir -p build
           cd build
           qmake ../QORMLiteParent.pro CONFIG+=$BUILD_TARGET
