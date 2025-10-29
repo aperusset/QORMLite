@@ -23,8 +23,8 @@ jobs:
         run: |
           QT_BIN=$(cygpath -u "$QT_ROOT_DIR/bin")
           QT_TOOLS=$(cygpath -u "$QT_ROOT_DIR/Tools/mingw1310_64/bin")
-          export PATH="$QT_BIN;$QT_TOOLS:$PATH"
-          echo "PATH=$QT_BIN;$QT_TOOLS:$PATH" >> $GITHUB_ENV
+          export PATH="$QT_BIN:$QT_TOOLS:$PATH"
+          echo "PATH=$QT_BIN:$QT_TOOLS:$PATH" >> $GITHUB_ENV
           which qmake
           qmake -v
           mkdir -p build
