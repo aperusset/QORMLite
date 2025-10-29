@@ -6,23 +6,29 @@ on:
       qt_root:
         description: "Path to installed Qt"
         value: ${{ jobs.setup.outputs.qt_root }}
+      qt_version:
+        description: "Installed Qt version"
+        value: ${{ jobs.setup.outputs.qt_version }}
 
 jobs:
   setup:
     runs-on: windows-latest
     outputs:
-      qt_root: ${{ steps.install.outputs.qt_root_dir }}
+      qt_root: ${{ steps.export.outputs.qt_root }}
     env:
-      QT_BUILD_VERSION: 6.10.0
       BUILD_TARGET: release
     steps:
       - name: Install Qt
         id: install
         uses: jurplel/install-qt-action@v4
         with:
-          version: ${{ env.QT_BUILD_VERSION }}
+          version: ${{ vars.QT_VERSION }}
           host: windows
           arch: win64_mingw
           tools: tools_mingw1310
           target: desktop
           cache: true
+      - name: Export Qt root dir
+        id: export
+        run: | 
+          echo "qt_root=${QT_ROOT_DIR}" >> $GITHUB_OUTPUT
