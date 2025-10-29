@@ -17,5 +17,5 @@ jobs:
         run: |
           mkdir build
           cd build
-          qmake ../QORMLite.pro
+          qmake ../QORMLiteParent.pro
           make -j$(nproc)
