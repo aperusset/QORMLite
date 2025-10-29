@@ -33,6 +33,4 @@ jobs:
         shell: bash
         run: |
           echo "QT_ROOT_DIR: $QT_ROOT_DIR"
-          QT_UNIX_ROOT_DIR=$(cygpath -u "$(dirname "$QT_ROOT_DIR")")
-          echo "QT_UNIX_ROOT_DIR: $QT_UNIX_ROOT_DIR"
-          echo "qt_root=${QT_UNIX_ROOT_DIR}" >> $GITHUB_OUTPUT
+          echo "qt_root=${QT_ROOT_DIR}" >> $GITHUB_OUTPUT
