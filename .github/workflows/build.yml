@@ -18,23 +18,15 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
         
-      - name: Configure PATH
+      - name: Configure and build
         shell: bash
         run: |
-          if [ -z "$QT_ROOT_DIR" ]; then
-            echo "QT_ROOT_DIR is empty, aborting."
-            exit 1
-          else
-            echo "Add ${QT_ROOT_DIR} to PATH..."
-            QT_UNIX=$(cygpath -u "$QT_ROOT_DIR")
-            echo "Unix path: $QT_UNIX"
-            echo "PATH=$QT_UNIX/bin;${QT_UNIX%/*}/Tools/mingw1310_64/bin:$PATH" >> $GITHUB_ENV
-          fi
-        
-      - name: Configure and build project
-        shell: bash
-        run: |
-          echo "PATH: $PATH"
+          QT_BIN="$QT_ROOT_DIR/bin"
+          QT_TOOLS="$QT_ROOT_DIR/Tools/mingw1310_64/bin"
+          export PATH="$QT_BIN;$QT_TOOLS:$PATH"
+          echo "PATH=$QT_BIN;$QT_TOOLS:$PATH" >> $GITHUB_ENV
+          which qmake
+          qmake -v
           mkdir -p build
           cd build
           qmake ../QORMLiteParent.pro CONFIG+=$BUILD_TARGET
