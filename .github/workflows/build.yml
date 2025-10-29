@@ -8,6 +8,7 @@ jobs:
     runs-on: windows-latest
     needs: setup-qt
     env:
+      QT_DIR: ${{ needs.setup-qt.outputs.qt_root }}
       BUILD_TARGET: release
       
     steps:
@@ -16,7 +17,7 @@ jobs:
       - name: Configure and build project
         shell: bash
         run: |
-          QT_DIR_BASH=$(${{ needs.setup-qt.outputs.qt_root }} | sed 's|\\|/|g' | sed 's|^D:|/d|')
+          QT_DIR_BASH=$($QT_DIR | sed 's|\\|/|g' | sed 's|^D:|/d|')
           echo "PATH="$QT_DIR_BASH/Tools/mingw1310_64/bin:$QT_DIR_BASH/$QT_BUILD_VERSION/mingw_64/bin:$PATH" >> $GITHUB_ENV
           mkdir -p build
           cd build
