@@ -25,9 +25,11 @@ jobs:
       - name: Run tests
         shell: bash
         run: |
-         cd build/test/debug
-         ls -la
-         for test in *.exe; do
-           echo "Running $test..."
-           "$PWD/$test"
-         done
+          echo $PATH
+          export PATH=$QT_DIR/6.10.0/mingw_64/bin:$QT_DIR/Tools/mingw1310_64/bin:$PATH
+          cd build/test/debug
+          ls -la
+          for test in *.exe; do
+            echo "Running $test..."
+            "$PWD/$test"
+          done
