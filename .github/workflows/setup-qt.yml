@@ -29,5 +29,6 @@ jobs:
           cache: true
       - name: Export Qt root dir
         id: export
+        shell: bash
         run: | 
           echo "qt_root=${QT_ROOT_DIR}" >> $GITHUB_OUTPUT
