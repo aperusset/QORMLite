@@ -24,13 +24,13 @@ jobs:
           if [ -z "$QT_ROOT_DIR" ]; then
             echo "QT_ROOT_DIR is empty, aborting."
             exit 1
-          elif
-            echo "Add ${QT_ROOT_DIR} to path ..."
+          else
+            echo "Add ${QT_ROOT_DIR} to PATH..."
+            cd "${QT_ROOT_DIR}"
+            ls -la
+            echo "PATH=${QT_ROOT_DIR}/bin;${QT_ROOT_DIR%/*}/Tools/mingw1310_64/bin;$PATH" >> $GITHUB_ENV
+            echo "PATH is now: $PATH"
           fi
-          cd ${QT_ROOT_DIR}
-          ls -la
-          echo "PATH=$QT_DIR/bin;${QT_DIR%/*}/Tools/mingw1310_64/bin;$PATH" >> $GITHUB_ENV
-          echo "PATH is now: $PATH"
         
       - name: Configure and build project
         shell: bash
