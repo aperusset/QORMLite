@@ -5,6 +5,7 @@ jobs:
     runs-on: windows-latest
     env:
       QT_BUILD_VERSION: 6.10.0
+      BUILD_TARGET: debug
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -20,16 +21,15 @@ jobs:
         shell: bash
         run: |
           QT_DIR_BASH=$(echo $QT_DIR | sed 's|\\|/|g' | sed 's|^D:|/d|')
-          echo "QT_DIR_BASH=$QT_DIR_BASH" >> $GITHUB_ENV
-          echo "PATH=$QT_DIR_BASH/Tools/mingw1310_64/bin:$QT_DIR_BASH/$QT_VERSION/mingw_64/bin:$PATH" >> $GITHUB_ENV
+          export PATH="$QT_DIR_BASH/Tools/mingw1310_64/bin:$QT_DIR_BASH/$QT_BUILD_VERSION/mingw_64/bin:$PATH"
           mkdir -p build
           cd build
-          qmake ../QORMLiteParent.pro CONFIG+=debug
+          qmake ../QORMLiteParent.pro CONFIG+=$BUILD_TARGET
           mingw32-make -j4
       - name: Run tests
         shell: bash
         run: |
-          cd build/test/debug
+          cd build/test/$BUILD_TARGET
           for test in *.exe; do
             echo "Running $test..."
             "$PWD/$test"
