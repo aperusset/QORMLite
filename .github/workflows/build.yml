@@ -26,9 +26,11 @@ jobs:
             exit 1
           else
             echo "Add ${QT_ROOT_DIR} to PATH..."
-            cd "${QT_ROOT_DIR}"
+            QT_UNIX=$(cygpath -u "$QT_ROOT_DIR")
+            echo "Unix path: $QT_UNIX"
+            cd "$QT_UNIX" || exit 1
             ls -la
-            echo "PATH=${QT_ROOT_DIR}/bin;${QT_ROOT_DIR%/*}/Tools/mingw1310_64/bin;$PATH" >> $GITHUB_ENV
+            echo "PATH=$QT_UNIX/bin;${QT_UNIX%/*}/Tools/mingw1310_64/bin:$PATH" >> $GITHUB_ENV
             echo "PATH is now: $PATH"
           fi
         
