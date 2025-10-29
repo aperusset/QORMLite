@@ -1,5 +1,7 @@
 name: Build QORMLite with Qt
 on: [pull_request]
+env:
+  QT_BUILD_VERSION: 6.10.0
 jobs:
   build:
     runs-on: windows-latest
@@ -9,7 +11,7 @@ jobs:
       - name: Install Qt
         uses: jurplel/install-qt-action@v3
         with:
-            version: '6.10.0'
+            version: '$QT_BUILD_VERSION'
             host: 'windows'
             arch: 'win64_mingw'
             tools: 'tools_mingw1310'
@@ -17,7 +19,7 @@ jobs:
       - name: Configure and build project
         shell: bash
         run: |
-          echo "PATH=$QT_DIR/Tools/mingw1310_64/bin:$QT_DIR/6.10.0/mingw_64/bin:$PATH" >> $GITHUB_ENV
+          echo "PATH=$QT_DIR/Tools/mingw1310_64/bin:$QT_DIR/$QT_BUILD_VERSION/mingw_64/bin:$PATH" >> $GITHUB_ENV
           mkdir -p build
           cd build
           qmake ../QORMLiteParent.pro CONFIG+=debug
@@ -25,10 +27,9 @@ jobs:
       - name: Run tests
         shell: bash
         run: |
-          echo $PATH
-          export PATH=$QT_DIR/6.10.0/mingw_64/bin:$QT_DIR/Tools/mingw1310_64/bin:$PATH
+          QT_DIR_BASH=$(echo $QT_DIR | sed 's|\\|/|g' | sed 's|^D:|/d|')
+          export PATH="$QT_DIR_BASH/Tools/mingw1310_64/bin:$QT_DIR_BASH/$QT_BUILD_VERSION/mingw_64/bin:$PATH"
           cd build/test/debug
-          ls -la
           for test in *.exe; do
             echo "Running $test..."
             "$PWD/$test"
