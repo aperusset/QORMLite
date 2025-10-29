@@ -20,13 +20,14 @@ jobs:
           echo "PATH=$QT_DIR/Tools/mingw1310_64/bin:$QT_DIR/6.10.0/mingw_64/bin:$PATH" >> $GITHUB_ENV
           mkdir -p build
           cd build
-          qmake ../QORMLiteParent.pro
+          qmake ../QORMLiteParent.pro CONFIG+=debug
           mingw32-make -j4
           dir
       - name: Run tests
         shell: bash
         run: |
-         cd build/test
+         dir
+         cd test/debug
          for test_exe in *.exe; do
            echo "Running $test_exe..."
            ./$test_exe
