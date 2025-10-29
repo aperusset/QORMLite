@@ -26,8 +26,7 @@ jobs:
       - name: Run tests
         shell: bash
         run: |
-         dir
-         cd test/debug
+         cd build/test/debug
          for test_exe in *.exe; do
            echo "Running $test_exe..."
            ./$test_exe
