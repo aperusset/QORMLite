@@ -13,6 +13,11 @@ jobs:
             host: 'windows'
             arch: 'win64_mingw'
             tools: 'tools_mingw1310'
+            cache: true
+      - name: Check compiler
+        run: |
+            where g++
+            g++ --version
       - name: Configure and build project
         run: |
           mkdir build
