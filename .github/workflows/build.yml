@@ -14,12 +14,10 @@ jobs:
             arch: 'win64_mingw'
             tools: 'tools_mingw1310'
             cache: true
-      - name: Check compiler
-        run: |
-            where g++
-            g++ --version
       - name: Configure and build project
         run: |
+          set PATH=%PATH%;%QT_DIR%\Tools\mingw1310_64\bin
+          g++ --version
           dir
           mkdir build
           cd build
