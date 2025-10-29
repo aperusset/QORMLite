@@ -30,5 +30,8 @@ jobs:
       - name: Export Qt root dir
         id: export
         shell: bash
-        run: | 
+        run: |
+          echo "QT_ROOT_DIR: $QT_ROOT_DIR"
+          echo "Listing Qt installation folder..."
+          ls -R "$(cygpath -u "$(dirname "$QT_ROOT_DIR")")" || true
           echo "qt_root=${QT_ROOT_DIR}" >> $GITHUB_OUTPUT
