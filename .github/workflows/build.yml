@@ -15,9 +15,10 @@ jobs:
             tools: 'tools_mingw1310'
             cache: true
       - name: Configure and build project
+        shell: cmd
         run: |
+          set PATH=%QT_DIR%\Tools\mingw1310_64\bin;%QT_DIR%\6.10.0\mingw_64\bin;%PATH%
           g++ --version
-          dir
           mkdir build
           cd build
           qmake ../QORMLiteParent.pro
