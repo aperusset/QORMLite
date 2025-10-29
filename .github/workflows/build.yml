@@ -22,3 +22,12 @@ jobs:
           cd build
           qmake ../QORMLiteParent.pro
           mingw32-make -j4
+          dir
+      - name: Run tests
+        shell: bash
+        run: |
+         cd build/test
+         for test_exe in *.exe; do
+           echo "Running $test_exe..."
+           ./$test_exe
+         done
