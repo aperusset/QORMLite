@@ -25,7 +25,7 @@ jobs:
             echo "QT_DIR is empty, aborting."
             exit 1
           fi
-          echo "PATH=$QT_DIR/Tools/mingw1310_64/bin:$QT_DIR/$QT_VERSION/mingw_64/bin:$PATH" >> $GITHUB_ENV
+          echo "PATH=$QT_DIR/bin;${QT_DIR%/*}/Tools/mingw1310_64/bin;$PATH" >> $GITHUB_ENV
           echo "PATH is now: $PATH"
         
       - name: Configure and build project
