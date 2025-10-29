@@ -10,7 +10,7 @@ jobs:
     runs-on: windows-latest
     needs: setup-qt
     env:
-      QT_DIR: ${{ needs.setup-qt.outputs.qt_root }}
+      QT_ROOT_DIR: ${{ needs.setup-qt.outputs.qt_root }}
       QT_VERSION: ${{ vars.QT_VERSION }}
       BUILD_TARGET: release
       
@@ -21,10 +21,14 @@ jobs:
       - name: Configure PATH
         shell: bash
         run: |
-          if [ -z "$QT_DIR" ]; then
-            echo "QT_DIR is empty, aborting."
+          if [ -z "$QT_ROOT_DIR" ]; then
+            echo "QT_ROOT_DIR is empty, aborting."
             exit 1
+          elif
+            echo "Add ${QT_ROOT_DIR} to path ..."
           fi
+          cd ${QT_ROOT_DIR}
+          ls -la
           echo "PATH=$QT_DIR/bin;${QT_DIR%/*}/Tools/mingw1310_64/bin;$PATH" >> $GITHUB_ENV
           echo "PATH is now: $PATH"
         
