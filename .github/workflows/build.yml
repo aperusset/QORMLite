@@ -13,3 +13,9 @@ jobs:
             host: 'windows'
             target: 'desktop'
             arch: 'win64_msvc2022_64'
+      - name: Configure and build project
+        run: |
+          mkdir build
+          cd build
+          qmake ../QORMLite.pro
+          make -j$(nproc)
