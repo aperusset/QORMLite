@@ -16,7 +16,6 @@ jobs:
             cache: true
       - name: Configure and build project
         run: |
-          set PATH=%PATH%;%QT_DIR%\Tools\mingw1310_64\bin
           g++ --version
           dir
           mkdir build
