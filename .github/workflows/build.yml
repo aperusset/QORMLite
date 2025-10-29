@@ -20,6 +20,7 @@ jobs:
             g++ --version
       - name: Configure and build project
         run: |
+          dir
           mkdir build
           cd build
           qmake ../QORMLiteParent.pro
