@@ -11,14 +11,6 @@ jobs:
       BUILD_TARGET: release
       
     steps:
-      - name: Install Qt
-        uses: jurplel/install-qt-action@v3
-        with:
-          version: ${{ env.QT_BUILD_VERSION }}
-          host: windows
-          arch: win64_mingw
-          tools: tools_mingw1310
-          cache: true
       - name: Checkout repository
         uses: actions/checkout@v4
       - name: Configure and build project
