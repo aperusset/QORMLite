@@ -42,6 +42,8 @@ jobs:
         run: |
           echo "Qt directory : $QT_ROOT_DIR"
           echo "Path : $PATH"
+          echo "Current directory content"
+          ls -la
           export QT_ASSUME_STDERR_HAS_CONSOLE=1
           export QT_LOGGING_TO_CONSOLE=1
           cd $BUILD_DIR/test/$BUILD_TARGET
