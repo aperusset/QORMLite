@@ -19,7 +19,7 @@ jobs:
           tools: tools_mingw1310
           cache: true
 
-      - name: Checkout repository
+      - name: Checkout Git repository
         uses: actions/checkout@v4
         
       - name: Compile and install
@@ -43,11 +43,12 @@ jobs:
           cp $BUILD_DIR/lib/$BUILD_TARGET/$QORMLITE_VERSION/*.dll $TESTS_DIR/
           cd $TESTS_DIR
           for test in *.exe; do
-            echo "Running $test..."
-            "$PWD/$test" 2>&1 | tee "${test}.log"
+            test_name="${test%.exe}"
+            echo "Running test_name..."
+            "$PWD/$test" 2>&1 | tee "${test_name}.log"
             status=${PIPESTATUS[0]}
             if [ $status -ne 0 ]; then
-              echo "❌ Test $test failed with exit code $status"
+              echo "❌ Test test_name failed with exit code $status"
               exit $status
             fi
           done
@@ -59,7 +60,7 @@ jobs:
           path: ${{ env.BUILD_DIR }}/test/${{ env.BUILD_TARGET }}/*.log
           retention-days: 7
 
-      - name: Upload library
+      - name: Upload artefacts (library and public headers)
         uses: actions/upload-artifact@v4
         with:
           name: QORMLite-library
