@@ -1,0 +1,46 @@
+name: Build QORMLite for Windows
+on: [pull_request]
+jobs:
+  build:
+    runs-on: windows-latest
+    env:
+      QT_ROOT_DIR: ${{ needs.setup-qt.outputs.qt_root }}
+      QT_VERSION: ${{ vars.QT_VERSION }}
+      BUILD_TARGET: release
+      
+    steps:
+      - name: Install Qt
+        id: install
+        uses: jurplel/install-qt-action@v4
+        with:
+          version: ${{ inputs.qt_version }}
+          host: windows
+          arch: win64_mingw
+          tools: tools_mingw1310
+          target: desktop
+          cache: true
+          dir: D:\
+
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        
+      - name: Configure and build
+        shell: bash
+        run: |
+          QT_DIR_BASH=$(cygpath -u "$QT_DIR")
+          echo "QT directory : $QT_DIR_BASH"
+          export PATH="$QT_DIR_BASH/Tools/mingw1310_64/bin:$QT_DIR_BASH/$QT_BUILD_VERSION/mingw_64/bin:$PATH"
+          mkdir -p build
+          cd build
+          qmake ../QORMLiteParent.pro CONFIG+=$BUILD_TARGET
+          mingw32-make -j$NUMBER_OF_PROCESSORS
+
+      #- name: Run tests
+       # shell: bash
+       # run: |
+       #   cd build/test/$BUILD_TARGET
+       #   for test in *.exe; do
+       #     echo "Running $test..."
+       #     "$PWD/$test"
+       #   done
+      
