@@ -42,16 +42,14 @@ jobs:
         run: |
           echo "Qt directory : $QT_ROOT_DIR"
           echo "Path : $PATH"
-          echo "Current directory content"
-          ls -la
           export QT_ASSUME_STDERR_HAS_CONSOLE=1
           export QT_LOGGING_TO_CONSOLE=1
-          cd $BUILD_DIR/test/$BUILD_TARGET
-          cp $BUILD_DIR/lib/$BUILD_TARGET/${QORMLITE_VERSION}/*.dll .
+          export TESTS_DIR=$BUILD_DIR/test/$BUILD_TARGET
+          cp $BUILD_DIR/lib/$BUILD_TARGET/$QORMLITE_VERSION/*.dll $TESTS_DIR/
+          cd $TESTS_DIRg
           for test in *.exe; do
             echo "Running $test..."
-            "./$test" -v2 2>&1 | tee "${test}.log"
-            "$PWD/$test" 2>&1 | tee "${test}.log"
+            "$PWD/$test" -v2 2>&1 | tee "${test}.log"
             status=${PIPESTATUS[0]}
             if [ $status -ne 0 ]; then
               echo "❌ Test $test failed with exit code $status"
