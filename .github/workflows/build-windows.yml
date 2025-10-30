@@ -32,6 +32,10 @@ jobs:
           qmake ../QORMLiteParent.pro CONFIG+=$BUILD_TARGET
           mingw32-make -j$NUMBER_OF_PROCESSORS
           mingw32-make install
+          echo "Content of build directory"
+          ls -la $BUILD_DIR/lib/$BUILD_TARGET/${QORMLITE_VERSION}
+          echo "Content of test directory"
+          ls -la $BUILD_DIR/test/$BUILD_TARGET
 
       - name: Run tests
         shell: bash
