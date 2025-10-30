@@ -25,13 +25,23 @@ jobs:
       - name: Configure and build
         shell: bash
         run: |
-          echo "Qt directory : $QT_DIR"
-          echo "PATH=$QT_DIR/Tools/mingw1310_64/bin:$QT_DIR/6.10.0/mingw_64/bin:$PATH" >> $GITHUB_ENV
+          echo "Qt directory : QT_ROOT_DIR"
           echo "Path : $PATH"
           mkdir -p build
           cd build
           qmake ../QORMLiteParent.pro CONFIG+=$BUILD_TARGET
           mingw32-make -j$NUMBER_OF_PROCESSORS
+          mingw32-make install
+          ls -la
+
+      - name: Upload library artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: QORMLite-artifacts
+          path: |
+            build/lib/**
+          retention-days: 7
+
 
       #- name: Run tests
        # shell: bash
