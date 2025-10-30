@@ -46,7 +46,7 @@ jobs:
           export QT_LOGGING_TO_CONSOLE=1
           export TESTS_DIR=$BUILD_DIR/test/$BUILD_TARGET
           cp $BUILD_DIR/lib/$BUILD_TARGET/$QORMLITE_VERSION/*.dll $TESTS_DIR/
-          cd $TESTS_DIRg
+          cd $TESTS_DIR
           for test in *.exe; do
             echo "Running $test..."
             "$PWD/$test" -v2 2>&1 | tee "${test}.log"
