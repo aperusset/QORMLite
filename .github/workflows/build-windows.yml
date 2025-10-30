@@ -25,9 +25,9 @@ jobs:
       - name: Configure and build
         shell: bash
         run: |
-          QT_DIR_BASH=$(cygpath -u "$QT_DIR")
-          echo "QT directory : $QT_DIR_BASH"
-          export PATH="$QT_DIR_BASH/Tools/mingw1310_64/bin:$QT_DIR_BASH/$QT_BUILD_VERSION/mingw_64/bin:$PATH"
+          echo "Qt directory : $QT_DIR"
+          echo "PATH=$QT_DIR/Tools/mingw1310_64/bin:$QT_DIR/6.10.0/mingw_64/bin:$PATH" >> $GITHUB_ENV
+          echo "Path : $PATH"
           mkdir -p build
           cd build
           qmake ../QORMLiteParent.pro CONFIG+=$BUILD_TARGET
