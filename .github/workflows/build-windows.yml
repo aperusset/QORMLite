@@ -4,8 +4,6 @@ jobs:
   build:
     runs-on: windows-latest
     env:
-      QT_ROOT_DIR: ${{ needs.setup-qt.outputs.qt_root }}
-      QT_VERSION: ${{ vars.QT_VERSION }}
       BUILD_TARGET: release
       
     steps:
@@ -13,7 +11,7 @@ jobs:
         id: install
         uses: jurplel/install-qt-action@v4
         with:
-          version: ${{ inputs.qt_version }}
+          version: ${{ vars.QT_VERSION }}
           host: windows
           arch: win64_mingw
           tools: tools_mingw1310
