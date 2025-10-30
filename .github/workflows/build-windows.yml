@@ -36,21 +36,19 @@ jobs:
           mingw32-make install
           ls -la
 
-      - name: Upload library artifacts
+      #- name: Run tests
+      # shell: bash
+      # run: |
+      #   cd build/test/$BUILD_TARGET
+      #   for test in *.exe; do
+      #     echo "Running $test..."
+      #     "$PWD/$test"
+      #   done
+
+      - name: Upload artifacts
         uses: actions/upload-artifact@v4
         with:
           name: QORMLite-artifacts
-          path: |
-            $BUILD_DIR/lib/$BUILD_TARGET/$QORMLITE_VERSION/**
+          path: ${{ env.BUILD_DIR }}/lib/${{ env.BUILD_TARGET }}/${{ env.QORMLITE_VERSION }}/**
           retention-days: 7
-
-
-      #- name: Run tests
-       # shell: bash
-       # run: |
-       #   cd build/test/$BUILD_TARGET
-       #   for test in *.exe; do
-       #     echo "Running $test..."
-       #     "$PWD/$test"
-       #   done
       
