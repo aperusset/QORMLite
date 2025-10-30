@@ -6,7 +6,7 @@ jobs:
     env:
       BUILD_TARGET: release
       BUILD_DIR: build
-      QORMLITE_VERSION: 3.0
+      QORMLITE_VERSION: "3.0"
       
     steps:
       - name: Install Qt
