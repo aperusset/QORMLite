@@ -17,9 +17,7 @@ jobs:
           host: windows
           arch: win64_mingw
           tools: tools_mingw1310
-          target: desktop
           cache: true
-          dir: D:\
 
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -29,12 +27,11 @@ jobs:
         run: |
           echo "Qt directory : QT_ROOT_DIR"
           echo "Path : $PATH"
-          mkdir -p build
+          mkdir -p $BUILD_DIR
           cd $BUILD_DIR
           qmake ../QORMLiteParent.pro CONFIG+=$BUILD_TARGET
           mingw32-make -j$NUMBER_OF_PROCESSORS
           mingw32-make install
-          ls -la
 
       #- name: Run tests
       # shell: bash
