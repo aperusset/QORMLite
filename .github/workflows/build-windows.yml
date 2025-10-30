@@ -42,14 +42,18 @@ jobs:
           export QT_ASSUME_STDERR_HAS_CONSOLE=1
           export TESTS_DIR=$BUILD_DIR/test/$BUILD_TARGET
           cp $BUILD_DIR/lib/$BUILD_TARGET/$QORMLITE_VERSION/*.dll $TESTS_DIR/
+          if [ $? -ne 0 ]; then
+            echo "ERROR: Failed to copy library. Check build output structure."
+            exit 1
+          fi
           cd $TESTS_DIR
           for test in *.exe; do
             test_name="${test%.exe}"
-            echo "Running test_name..."
+            echo "Running ${test_name}..."
             "$PWD/$test" 2>&1 | tee "${test_name}.log"
             status=${PIPESTATUS[0]}
             if [ $status -ne 0 ]; then
-              echo "❌ Test test_name failed with exit code $status"
+              echo "❌ Test ${test_name} failed with exit code $status"
               exit $status
             fi
           done
