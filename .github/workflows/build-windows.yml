@@ -38,21 +38,29 @@ jobs:
         run: |
           echo "Qt directory : $QT_ROOT_DIR"
           echo "Path : $PATH"
-          cp $BUILD_DIR/lib/$BUILD_TARGET/${QORMLITE_VERSION}/*.dll $BUILD_DIR/test/$BUILD_TARGET/
+          export QT_ASSUME_STDERR_HAS_CONSOLE=1
+          export QT_LOGGING_TO_CONSOLE=1
           cd $BUILD_DIR/test/$BUILD_TARGET
+          cp $BUILD_DIR/lib/$BUILD_TARGET/${QORMLITE_VERSION}/*.dll .
           for test in *.exe; do
             echo "Running $test..."
+            "./$test" -v2 2>&1 | tee "${test}.log"
             "$PWD/$test" 2>&1 | tee "${test}.log"
+            status=${PIPESTATUS[0]}
+            if [ $status -ne 0 ]; then
+              echo "❌ Test $test failed with exit code $status"
+              exit $status
+            fi
           done
 
-      - name: Upload test results
+      - name: Upload test logs
         uses: actions/upload-artifact@v4
         with:
-          name: QORMLite-tests
+          name: QORMLite-tests-logs
           path: ${{ env.BUILD_DIR }}/test/${{ env.BUILD_TARGET }}/*.log
           retention-days: 7
 
-      - name: Upload artifacts
+      - name: Upload library
         uses: actions/upload-artifact@v4
         with:
           name: QORMLite-library
