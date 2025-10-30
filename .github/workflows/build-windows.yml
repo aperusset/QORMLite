@@ -5,6 +5,8 @@ jobs:
     runs-on: windows-latest
     env:
       BUILD_TARGET: release
+      BUILD_DIR: build
+      QORMLITE_VERSION: 3.0
       
     steps:
       - name: Install Qt
@@ -22,13 +24,13 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
         
-      - name: Configure and build
+      - name: Compile and install
         shell: bash
         run: |
           echo "Qt directory : QT_ROOT_DIR"
           echo "Path : $PATH"
           mkdir -p build
-          cd build
+          cd $BUILD_DIR
           qmake ../QORMLiteParent.pro CONFIG+=$BUILD_TARGET
           mingw32-make -j$NUMBER_OF_PROCESSORS
           mingw32-make install
@@ -39,7 +41,7 @@ jobs:
         with:
           name: QORMLite-artifacts
           path: |
-            build/lib/**
+            $BUILD_DIR/lib/$BUILD_TARGET/$QORMLITE_VERSION/**
           retention-days: 7
 
 
