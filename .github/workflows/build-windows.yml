@@ -9,7 +9,7 @@ jobs:
       QORMLITE_VERSION: "3.0"
       
     steps:
-      - name: Install Qt
+      - name: Install Qt ${{ vars.QT_VERSION }}
         id: install
         uses: jurplel/install-qt-action@v4
         with:
@@ -33,9 +33,9 @@ jobs:
           mingw32-make -j$NUMBER_OF_PROCESSORS
           mingw32-make install
           echo "Content of build directory"
-          ls -la $BUILD_DIR/lib/$BUILD_TARGET/${QORMLITE_VERSION}
+          ls -la lib/$BUILD_TARGET/${QORMLITE_VERSION}
           echo "Content of test directory"
-          ls -la $BUILD_DIR/test/$BUILD_TARGET
+          ls -la test/$BUILD_TARGET
 
       - name: Run tests
         shell: bash
