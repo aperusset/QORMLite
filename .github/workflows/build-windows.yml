@@ -36,6 +36,9 @@ jobs:
       - name: Run tests
         shell: bash
         run: |
+          echo "Qt directory : $QT_ROOT_DIR"
+          echo "Path : $PATH"
+          cp $BUILD_DIR/lib/$BUILD_TARGET/${QORMLITE_VERSION}/*.dll $BUILD_DIR/test/$BUILD_TARGET/
           cd $BUILD_DIR/test/$BUILD_TARGET
           for test in *.exe; do
             echo "Running $test..."
