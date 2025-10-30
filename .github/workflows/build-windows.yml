@@ -42,13 +42,20 @@ jobs:
           cd $BUILD_DIR/test/$BUILD_TARGET
           for test in *.exe; do
             echo "Running $test..."
-            "$PWD/$test"
+            "$PWD/$test" 2>&1 | tee "${test}.log"
           done
+
+      - name: Upload test results
+        uses: actions/upload-artifact@v4
+        with:
+          name: QORMLite-tests
+          path: ${{ env.BUILD_DIR }}/test/${{ env.BUILD_TARGET }}/*.log
+          retention-days: 7
 
       - name: Upload artifacts
         uses: actions/upload-artifact@v4
         with:
-          name: QORMLite-artifacts
+          name: QORMLite-library
           path: ${{ env.BUILD_DIR }}/lib/${{ env.BUILD_TARGET }}/${{ env.QORMLITE_VERSION }}/**
           retention-days: 7
       
