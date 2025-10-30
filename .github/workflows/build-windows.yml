@@ -1,7 +1,8 @@
-name: Build QORMLite for Windows
+name: Build QORMLite
 on: [pull_request]
 jobs:
   build:
+    name: Build - Windows
     runs-on: windows-latest
     env:
       BUILD_TARGET: release
@@ -53,14 +54,14 @@ jobs:
             fi
           done
 
-      - name: Upload tests logs
+      - name: Upload artifacts (tests logs)
         uses: actions/upload-artifact@v4
         with:
           name: QORMLite-tests-logs
           path: ${{ env.BUILD_DIR }}/test/${{ env.BUILD_TARGET }}/*.log
           retention-days: 7
 
-      - name: Upload artefacts (library and public headers)
+      - name: Upload artifacts (library and public headers)
         uses: actions/upload-artifact@v4
         with:
           name: QORMLite-library
