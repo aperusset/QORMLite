@@ -12,7 +12,7 @@ namespace QORM::Entities {
 template<typename Key = int>
 class BaseEntity {
     Key key;
-    std::set<Observer<Key>*> observers;
+    mutable std::set<Observer<Key>*> observers;
 
  public:
     explicit BaseEntity(const Key &key) : key(key) {}
@@ -37,13 +37,13 @@ class BaseEntity {
         return std::type_index(typeid(*this));
     }
 
-    virtual void attach(Observer<Key> *observer) {
+    virtual void attach(Observer<Key> *observer) const {
         if (observer != nullptr) {
             this->observers.insert(observer);
         }
     }
 
-    virtual void detach(Observer<Key> *observer) {
+    virtual void detach(Observer<Key> *observer) const {
         if (observer != nullptr) {
             this->observers.erase(observer);
         }
