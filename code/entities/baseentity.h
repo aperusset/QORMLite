@@ -12,7 +12,7 @@ namespace QORM::Entities {
 template<typename Key = int>
 class BaseEntity {
     Key key;
-    std::set<Observer<Key>*> observers;
+    mutable std::set<Observer<Key>*> observers;
 
  public:
     explicit BaseEntity(const Key &key) : key(key) {}
