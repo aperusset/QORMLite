@@ -26,8 +26,6 @@ QORM::Database::Database(ConnectorUPtr connector, CreatorUPtr creator,
 }
 
 QORM::Database::~Database() {
-    qDebug().noquote() << "Disconnect database " << connector->getName();
-    this->disconnect();
 }
 
 auto QORM::Database::prepare(const QString &query) const -> QSqlQuery {
@@ -126,8 +124,8 @@ void QORM::Database::migrate() {
             break;
         case Schema::State::UpToDate:
             if (this->verbose) {
-                qDebug().noquote() << "Database " << connector->getName()
-                                   << " is up to date";
+                qDebug().noquote() << "Database" << connector->getName()
+                                   << "is up to date";
             }
     }
 }

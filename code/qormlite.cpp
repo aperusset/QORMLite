@@ -22,7 +22,7 @@ auto initializeChecks(const QORM::Connector &connector) -> QString {
         throw std::logic_error("Database " + databaseName.toStdString() +
                                " is already initialized");
     }
-    qDebug().noquote() << "Initializing database " << connector.getName();
+    qDebug().noquote() << "Initializing database" << connector.getName();
     return databaseName;
 }
 
@@ -62,10 +62,18 @@ auto QORM::get(const QString &name) -> std::shared_ptr<Database> {
 
 void QORM::destroy(const QString &name) {
     const QMutexLocker lock(&poolMutex);
-    pool.erase(name);
+    if (initialized(name)) {
+        QORM::get(name)->disconnect();
+        pool.erase(name);
+    } else {
+        qWarning().noquote() << "Database" << name << "not in pool";
+    }
 }
 
 void QORM::destroyAll() {
     const QMutexLocker lock(&poolMutex);
+    for (auto& [_, db] : pool) {
+        db->disconnect();
+    }
     pool.clear();
 }
