@@ -39,7 +39,7 @@ auto quit(QCoreApplication &application, int exitCode) -> int {
 
 auto main(int argc, char *argv[]) -> int {
     QCoreApplication application(argc, argv);
-    std::list<std::unique_ptr<QObject>> tests;
+    std::vector<std::unique_ptr<QObject>> tests;
     tests.emplace_back(std::make_unique<UtilsTest>());
     tests.emplace_back(std::make_unique<EntityTest>());
     tests.emplace_back(std::make_unique<ObserverTest>());
@@ -75,7 +75,7 @@ auto main(int argc, char *argv[]) -> int {
     tests.emplace_back(std::make_unique<SchemaVersionRepositoryTest>());
 
     try {
-        if (std::any_of(tests.begin(), tests.end(), [=](const auto &test) {
+        if (std::any_of(tests.begin(), tests.end(), [&](const auto &test) {
             return static_cast<bool>(QTest::qExec(test.get(), argc, argv));
         })) {
             return quit(application, EXIT_FAILURE);

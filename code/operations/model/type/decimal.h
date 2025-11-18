@@ -12,8 +12,8 @@ class Decimal : public Type {
     inline static const int DEFAULT_DECIMALS = 2;
 
     // digits and decimals are just documentation, not constraints
-    Decimal(const int digits = DEFAULT_DIGITS,
-            const int decimals = DEFAULT_DECIMALS) :
+    explicit Decimal(const int digits = DEFAULT_DIGITS,
+                     const int decimals = DEFAULT_DECIMALS) :
         Type("decimal(" + QString::number(digits) + "," +
              QString::number(decimals) + ")") {}
 };

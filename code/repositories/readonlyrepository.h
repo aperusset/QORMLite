@@ -8,7 +8,6 @@
 #include <list>
 #include <memory>
 #include <optional>
-#include <typeinfo>
 #include "./cache.h"
 #include "./database.h"
 #include "./utils.h"
@@ -70,9 +69,10 @@ class ReadOnlyRepository {
         std::list<QString> qualifiedFields;
         std::transform(tableFields.begin(), tableFields.end(),
             std::back_inserter(qualifiedFields),
-            std::bind(&Utils::qualifyFieldName,
-                      tableName.value_or(this->tableName()),
-                      std::placeholders::_1));
+            [&](const QString &field) {
+                return Utils::qualifyFieldName(
+                    tableName.value_or(this->tableName()), field);
+            });
         return qualifiedFields;
     }
 
@@ -171,20 +171,11 @@ class ReadOnlyRepository {
         throw std::runtime_error("buildKey must be overriden");
     }
 
-    // WARNING: typeid(Entity).name() is implementation-defined and
-    // non-portable. This default implementation attempts basic cleanup but may
-    // not work across all compilers. Override this method if the inferred name
-    // is incorrect.
-    virtual auto tableName() const -> QString {
-        static const auto regexp = QRegularExpression(
-            "(^\\d+|^class\\s+|^struct\\s+|^.*::|<[^>]*>|[^a-zA-Z0-9_])");
-        return QString::fromLatin1(typeid(Entity).name())
-                    .replace(regexp, "").toLower();
-    }
+    virtual auto tableName() const -> QString = 0;
 
     virtual auto fields() const -> std::list<QString> = 0;
-    virtual auto build(const QSqlRecord &record)
-        const -> std::unique_ptr<Entity> = 0;
+
+    virtual auto build(const QSqlRecord&) const -> std::unique_ptr<Entity> = 0;
 };
 
 }  // namespace QORM::Repositories

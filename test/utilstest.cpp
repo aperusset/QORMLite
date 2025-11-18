@@ -211,9 +211,7 @@ void UtilsTest::getOrThrowShouldReturnValue() {
 
     // When
     auto rValue = QORM::Utils::getOrThrow<QString>(record, FIELD_NAME,
-                        "error-message", [](const auto &variant) -> QString {
-                            return variant.toString();
-                        });
+                        "error-message", &QVariant::toString);
     // Then
     QCOMPARE(rValue, value);
 }
@@ -227,9 +225,7 @@ void UtilsTest::getOrThrowShouldThrow() {
     // When / Then
     QVERIFY_THROWS_EXCEPTION(std::invalid_argument,
         QORM::Utils::getOrThrow<QString>(record, FIELD_NAME,
-            "Error message", [](const auto &variant) -> QString {
-                return variant.toString();
-            }));
+            "Error message", &QVariant::toString));
 }
 
 void UtilsTest::getOrDefaultShouldReturnValue() {
@@ -242,9 +238,7 @@ void UtilsTest::getOrDefaultShouldReturnValue() {
 
     // When
     auto rValue = QORM::Utils::getOrDefault<QString>(record, FIELD_NAME, "",
-                        [](const auto &variant) -> QString {
-                            return variant.toString();
-                        });
+                                                     &QVariant::toString);
     // Then
     QCOMPARE(rValue, value);
 }
@@ -258,9 +252,7 @@ void UtilsTest::getOrDefaultShouldReturnDefault() {
 
     // When
     auto rValue = QORM::Utils::getOrDefault<QString>(record, FIELD_NAME,
-                        defaultValue, [](const auto &variant) -> QString {
-                            return variant.toString();
-                        });
+                        defaultValue, &QVariant::toString);
     // Then
     QCOMPARE(rValue, defaultValue);
 }
@@ -271,44 +263,41 @@ void UtilsTest::getOrDefaultShouldReturnDefaultIfNotExists() {
 
     // When
     auto rValue = QORM::Utils::getOrDefault<QString>(QSqlRecord(), FIELD_NAME,
-                        defaultValue, [](const auto &variant) -> QString {
-                            return variant.toString();
-                        });
+                        defaultValue, &QVariant::toString);
     // Then
     QCOMPARE(rValue, defaultValue);
 }
 
-void UtilsTest::getOrNullShouldReturnPointer() {
+void UtilsTest::getOrNullShouldReturnValue() {
     // Given
     auto field = QSqlField(FIELD_NAME, QMetaType::fromType<int32_t>());
-    int32_t value = 42;
-    field.setValue(QVariant::fromValue(value));
+    uint32_t expected = 42U;
+    field.setValue(QVariant::fromValue(expected));
     auto record = QSqlRecord();
     record.append(field);
 
     // When
-    auto *pointer = QORM::Utils::getOrNull<int32_t>(record, FIELD_NAME,
-                        [&value](const auto&) -> int32_t* {
-                            return &value;
+    auto value = QORM::Utils::getOrNull<uint32_t>(record, FIELD_NAME,
+                        [](const auto &variant) {
+                            return variant.toUInt();
                         });
     // Then
-    QCOMPARE(*pointer, value);
+    QCOMPARE(value, expected);
 }
 
-void UtilsTest::getOrNullShouldReturnNullptr() {
+void UtilsTest::getOrNullShouldReturnNullopt() {
     // Given
     auto field = QSqlField(FIELD_NAME, QMetaType::fromType<int32_t>());
-    int32_t value = 42;
     auto record = QSqlRecord();
     record.append(field);
 
     // When
-    auto *pointer = QORM::Utils::getOrNull<int32_t>(record, FIELD_NAME,
-                        [&value](const auto&) -> int32_t* {
-                            return &value;
+    auto value = QORM::Utils::getOrNull<int32_t>(record, FIELD_NAME,
+                        [](const auto &variant) {
+                            return variant.toInt();
                         });
     // Then
-    QCOMPARE(pointer, nullptr);
+    QCOMPARE(value, std::nullopt);
 }
 
 void UtilsTest::getBoolOrDefaultShouldReturnValue() {

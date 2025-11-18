@@ -41,7 +41,7 @@ void QORM::Connector::connect() const {
             throw std::invalid_argument("A connection to database " +
                             this->getName().toStdString() + " already exists");
         }
-        qDebug("Connect to database %s", qUtf8Printable(this->name));
+        qDebug().noquote() << "Connect to database " << this->name;
         auto database = QSqlDatabase::addDatabase(this->driverName(),
                                                   this->connectionName());
         this->preConnect();
@@ -54,14 +54,14 @@ void QORM::Connector::connect() const {
         this->postConnect();
         this->optimize();
     } else {
-        qDebug("Already connected to database %s", qUtf8Printable(this->name));
+        qDebug().noquote() << "Already connected to database " << this->name;
     }
 }
 
 void QORM::Connector::disconnect() const {
     if (this->isConnected()) {
-        qDebug("Close and remove connection to database %s",
-               qUtf8Printable(this->name));
+        qDebug().noquote() << "Close and remove connection to database "
+                           << this->name;
         getDatabase().close();
         QSqlDatabase::removeDatabase(this->connectionName());
     }

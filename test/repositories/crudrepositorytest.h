@@ -41,7 +41,6 @@ class CRUDRepositoryTest : public MainDatabaseTest {
     void eraseAllShouldDeleteAndNotify();
     void assertFieldValidityShouldThrow();
     void assertFieldValidityShouldNotThrow();
-    void tableNameShouldReturnExpectedName();
 
     void init() {
         this->deleteAllDatabases();
