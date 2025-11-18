@@ -22,7 +22,7 @@ auto initializeChecks(const QORM::Connector &connector) -> QString {
         throw std::logic_error("Database " + databaseName.toStdString() +
                                " is already initialized");
     }
-    qDebug("Initializing database %s.", qUtf8Printable(connector.getName()));
+    qDebug().noquote() << "Initializing database " << connector.getName();
     return databaseName;
 }
 

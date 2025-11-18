@@ -169,12 +169,14 @@ namespace QORM::Utils {
      * @return extracted T value
      * @throw std::invalid_argument if the value is invalid
      */
-    template<typename T>
+    template<typename T, typename Extractor>
     auto getOrThrow(const QSqlRecord &record, const QString &fieldName,
-                    const std::string &errorMessage,
-                    const std::function<T(const QVariant&)> &extractor) {
+                    const std::string &errorMessage, Extractor &&extractor) {
         if (record.isNull(fieldName)) {
-            throw std::invalid_argument(errorMessage);
+            throw std::invalid_argument(errorMessage.c_str());
+        }
+        if constexpr (std::is_member_function_pointer_v<Extractor>) {
+            return (record.value(fieldName).*extractor)();
         } else {
             return extractor(record.value(fieldName));
         }
@@ -188,12 +190,14 @@ namespace QORM::Utils {
      * @param extractor the function that transform from QVariant to T
      * @return extracted T value
      */
-    template<typename T>
+    template<typename T, typename Extractor>
     auto getOrDefault(const QSqlRecord &record, const QString &fieldName,
-                      const T &defaultValue,
-                      const std::function<T(const QVariant&)> &extractor) {
+                      const T &defaultValue, Extractor &&extractor) {
         if (record.isNull(fieldName)) {
             return defaultValue;
+        }
+        if constexpr (std::is_member_function_pointer_v<Extractor>) {
+            return (record.value(fieldName).*extractor)();
         } else {
             return extractor(record.value(fieldName));
         }
@@ -206,9 +210,9 @@ namespace QORM::Utils {
      * @param extractor the function that transform from QVariant to T*
      * @return extracted pointer to T or nulltpr
      */
-    template<typename T>
+    template<typename T, typename Extractor>
     auto getOrNull(const QSqlRecord &record, const QString &fieldName,
-                   const std::function<T*(const QVariant&)> &extractor) {
+                   Extractor &&extractor) {
         return getOrDefault<T*>(record, fieldName, nullptr, extractor);
     }
 
@@ -380,7 +384,7 @@ namespace QORM::Utils {
         if (predicate(value)) {
             return QVariant::fromValue(value);
         }
-        throw std::invalid_argument(errorMessage);
+        throw std::invalid_argument(errorMessage.c_str());
     }
 
     /**

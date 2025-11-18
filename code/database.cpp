@@ -26,7 +26,7 @@ QORM::Database::Database(ConnectorUPtr connector, CreatorUPtr creator,
 }
 
 QORM::Database::~Database() {
-    qDebug("Disconnect database %s.", qUtf8Printable(connector->getName()));
+    qDebug().noquote() << "Disconnect database " << connector->getName();
     this->disconnect();
 }
 
@@ -56,7 +56,7 @@ auto QORM::Database::execute(const Query &query) const -> QSqlQuery {
 
 auto QORM::Database::execute(QSqlQuery query) const -> QSqlQuery {
     if (this->verbose) {
-        qDebug("%s", qUtf8Printable(query.lastQuery()));
+        qDebug().noquote() << query.lastQuery();
     }
     const auto success = query.exec();
     if (!success && query.lastError().isValid()) {
@@ -126,8 +126,8 @@ void QORM::Database::migrate() {
             break;
         case Schema::State::UpToDate:
             if (this->verbose) {
-                qDebug("Database %s is up to date",
-                       qUtf8Printable(connector->getName()));
+                qDebug().noquote() << "Database " << connector->getName()
+                                   << " is up to date";
             }
     }
 }
@@ -138,13 +138,13 @@ void QORM::Database::createSchemaVersion() const {
 
 void QORM::Database::create() {
     if (this->creator != nullptr) {
-        qInfo("Create database with name %s",
-            qUtf8Printable(connector->getName()));
+        qInfo().noquote() << "Create database with name "
+                          << connector->getName();
         this->creator->execute(*this);
     } else {
         if (this->verbose) {
-            qDebug("No creation expected for database %s",
-                qUtf8Printable(connector->getName()));
+            qDebug().noquote() << "No creation expected for database "
+                               << connector->getName();
         }
     }
 }
@@ -159,9 +159,9 @@ void QORM::Database::upgrade() {
             [&](const auto &upgrader) {
                 const auto upgraderVersion = upgrader->getVersion();
                 if (upgraderVersion > version.getKey()) {
-                    qInfo("Upgrade database %s to version %s",
-                        qUtf8Printable(connector->getName()),
-                        qUtf8Printable(QString::number(upgraderVersion)));
+                    qInfo().noquote() << "Upgrade database "
+                                      << connector->getName() << " to version "
+                                      << upgraderVersion;
                     upgrader->execute(*this);
                     this->registerUpgrade(*upgrader);
                 }
@@ -171,16 +171,16 @@ void QORM::Database::upgrade() {
                 const auto upgraderVersion = upgrader->getVersion();
                 if (upgrader->isAlreadyExecuted() &&
                     upgrader->isDataMigrationDelayed()) {
-                    qInfo("Migrate %s data to version %s (was delayed)",
-                        qUtf8Printable(connector->getName()),
-                        qUtf8Printable(QString::number(upgraderVersion)));
+                    qInfo().noquote() << "Migrate " << connector->getName()
+                                      << " data to version "
+                                      << upgraderVersion;
                     upgrader->executeDelayed(*this);
                 }
             });
     } else {
         if (this->verbose) {
-            qDebug("No upgrade expected for database %s",
-                qUtf8Printable(connector->getName()));
+            qDebug().noquote() << "No upgrade expected for database "
+                               << connector->getName();
         }
     }
 }

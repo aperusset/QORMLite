@@ -10,6 +10,28 @@ auto formatSQLDate(const QString &format, const QString &fieldName,
     return QORM::DateFormatter(format, fieldName, renameTo);
 }
 
+static const auto parametrizeRegExp = QRegularExpression("[^a-z0-9]");
+
+static const auto uIntExtractor = [](const auto &variant) -> uint32_t {
+    return variant.toUInt();
+};
+
+static const auto intExtractor = [](const auto &variant) -> int32_t {
+    return variant.toInt();
+};
+
+static const auto doubleExtractor = [](const auto &variant) -> double {
+    return variant.toDouble();
+};
+
+static const auto validString = [](const auto &value) {
+    return !value.isEmpty();
+};
+
+static const auto validDate = [](const QDate &value) {
+    return value.isValid();
+};
+
 }  // namespace
 
 auto QORM::Utils::formatSQLiteDate(const QDate &date) -> QString {
@@ -22,8 +44,7 @@ auto QORM::Utils::backupFileName(const QString& databaseName) -> QString {
 }
 
 auto QORM::Utils::parametrize(const QString &field) -> QString {
-    static const auto regExp = QRegularExpression("[^a-z0-9]");
-    return ":" + field.toLower().remove(regExp);
+    return ":" + field.toLower().remove(parametrizeRegExp);
 }
 
 auto QORM::Utils::dateToDay(const QString &fieldName,
@@ -103,10 +124,6 @@ auto QORM::Utils::getDateTimeOrThrow(const QSqlRecord &record,
                     "A valid QDateTime is expected", &QVariant::toDateTime);
 }
 
-const auto uIntExtractor = [](const auto &variant) -> uint32_t {
-    return variant.toUInt();
-};
-
 auto QORM::Utils::getUIntOrDefault(const QSqlRecord &record,
                                    const QString &fieldName,
                                    uint32_t defaultValue) -> uint32_t {
@@ -120,10 +137,6 @@ auto QORM::Utils::getUIntOrThrow(const QSqlRecord &record,
                     "A valid unsigned int is expected", uIntExtractor);
 }
 
-const auto intExtractor = [](const auto &variant) -> uint32_t {
-    return variant.toInt();
-};
-
 auto QORM::Utils::getIntOrDefault(const QSqlRecord &record,
                                   const QString &fieldName,
                                   int32_t defaultValue) -> int32_t {
@@ -135,10 +148,6 @@ auto QORM::Utils::getIntOrThrow(const QSqlRecord &record,
     return getOrThrow<int32_t>(record, fieldName, "A valid int is expected",
                                intExtractor);
 }
-
-const auto doubleExtractor = [](const auto &variant) -> double {
-    return variant.toDouble();
-};
 
 auto QORM::Utils::getDoubleOrDefault(const QSqlRecord &record,
                                      const QString &fieldName,
@@ -153,10 +162,6 @@ auto QORM::Utils::getDoubleOrThrow(const QSqlRecord &record,
                               doubleExtractor);
 }
 
-const auto validString = [](const auto &value) {
-    return !value.isEmpty();
-};
-
 auto QORM::Utils::notBlankOrNull(const QString &value) -> QVariant {
     return validOrNull<QString>(value.trimmed(), validString);
 }
@@ -165,10 +170,6 @@ auto QORM::Utils::notBlankOrThrow(const QString &value) -> QVariant {
     return validOrThrow<QString>(value.trimmed(),
                                  "A not blank string is expected", validString);
 }
-
-const auto validDate = [](const QDate &value) {
-    return value.isValid();
-};
 
 auto QORM::Utils::validOrNull(const QDate &value) -> QVariant {
     return validOrNull<QDate>(value, validDate);
