@@ -271,13 +271,13 @@ void UtilsTest::getOrDefaultShouldReturnDefaultIfNotExists() {
 void UtilsTest::getOrNullShouldReturnValue() {
     // Given
     auto field = QSqlField(FIELD_NAME, QMetaType::fromType<int32_t>());
-    int32_t expected = 42;
+    uint32_t expected = 42U;
     field.setValue(QVariant::fromValue(expected));
     auto record = QSqlRecord();
     record.append(field);
 
     // When
-    auto value = QORM::Utils::getOrNull<int32_t>(record, FIELD_NAME,
+    auto value = QORM::Utils::getOrNull<uint32_t>(record, FIELD_NAME,
                         [](const auto &variant) {
                             return variant.toUInt();
                         });
@@ -293,8 +293,8 @@ void UtilsTest::getOrNullShouldReturnNullopt() {
 
     // When
     auto value = QORM::Utils::getOrNull<int32_t>(record, FIELD_NAME,
-                        [](const auto&) {
-                            return 42;
+                        [](const auto &variant) {
+                            return variant.toInt();
                         });
     // Then
     QCOMPARE(value, std::nullopt);
