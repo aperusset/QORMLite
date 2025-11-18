@@ -28,8 +28,8 @@ class UtilsTest : public QObject {
     static void getOrDefaultShouldReturnValue();
     static void getOrDefaultShouldReturnDefault();
     static void getOrDefaultShouldReturnDefaultIfNotExists();
-    static void getOrNullShouldReturnPointer();
-    static void getOrNullShouldReturnNullptr();
+    static void getOrNullShouldReturnValue();
+    static void getOrNullShouldReturnNullopt();
     static void getBoolOrDefaultShouldReturnValue();
     static void getBoolOrThrowShouldReturnValue();
     static void getStringOrDefaultShouldReturnValue();

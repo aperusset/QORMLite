@@ -10,6 +10,8 @@
 #include <algorithm>
 #include <unordered_set>
 #include <string>
+#include <type_traits>
+#include <functional>
 #include <utility>
 #include "entities/baseentity.h"
 #include "operations/query/selection/selection.h"
@@ -160,6 +162,22 @@ namespace QORM::Utils {
     }
 
     /**
+     * @brief Extract a value from a QVariant without any check
+     * @param variant the QVariant from which to extract the value
+     * @param extractor the function that transform from QVariant
+     * @return extracted value
+     */
+    template<typename Extractor>
+    auto extractValue(const QVariant &variant, Extractor &&extractor) {
+        using ExtractorType = std::remove_reference_t<Extractor>;
+        if constexpr (std::is_member_function_pointer_v<ExtractorType>) {
+            return (variant.*extractor)();
+        } else {
+            return std::forward<Extractor>(extractor)(variant);
+        }
+    }
+
+    /**
      * @brief Extract a T value from a QSqlRecord or, if null, throw an
      * std::invalid_argument with a given error message
      * @param record the record from which to extract the value
@@ -171,15 +189,12 @@ namespace QORM::Utils {
      */
     template<typename T, typename Extractor>
     auto getOrThrow(const QSqlRecord &record, const QString &fieldName,
-                    const std::string &errorMessage, Extractor &&extractor) {
+            const QString &errorMessage, Extractor &&extractor) -> T {
         if (record.isNull(fieldName)) {
-            throw std::invalid_argument(errorMessage.c_str());
+            throw std::invalid_argument(errorMessage.toStdString().c_str());
         }
-        if constexpr (std::is_member_function_pointer_v<Extractor>) {
-            return (record.value(fieldName).*extractor)();
-        } else {
-            return extractor(record.value(fieldName));
-        }
+        const auto &value = record.value(fieldName);
+        return extractValue(value, std::forward<Extractor>(extractor));
     }
 
     /**
@@ -192,28 +207,29 @@ namespace QORM::Utils {
      */
     template<typename T, typename Extractor>
     auto getOrDefault(const QSqlRecord &record, const QString &fieldName,
-                      const T &defaultValue, Extractor &&extractor) {
+                      const T &defaultValue, Extractor &&extractor) -> T {
         if (record.isNull(fieldName)) {
             return defaultValue;
         }
-        if constexpr (std::is_member_function_pointer_v<Extractor>) {
-            return (record.value(fieldName).*extractor)();
-        } else {
-            return extractor(record.value(fieldName));
-        }
+        const auto &value = record.value(fieldName);
+        return extractValue(value, std::forward<Extractor>(extractor));
     }
 
     /**
-     * @brief Extract a pointer to T value from a QSqlRecord or nullptr
-     * @param record the record from which to extract the pointer
+     * @brief Extract an optional T value from a QSqlRecord
+     * @param record the record from which to extract the optional value
      * @param fieldName the name of the field to extract from the record
-     * @param extractor the function that transform from QVariant to T*
-     * @return extracted pointer to T or nulltpr
+     * @param extractor the function that transform from QVariant to T
+     * @return extracted T value or std::nullopt
      */
     template<typename T, typename Extractor>
     auto getOrNull(const QSqlRecord &record, const QString &fieldName,
-                   Extractor &&extractor) {
-        return getOrDefault<T*>(record, fieldName, nullptr, extractor);
+                   Extractor &&extractor) -> std::optional<T> {
+        if (record.isNull(fieldName)) {
+            return std::nullopt;
+        }
+        const auto &value = record.value(fieldName);
+        return extractValue(value, std::forward<Extractor>(extractor));
     }
 
     /**
