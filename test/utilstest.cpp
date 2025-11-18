@@ -211,9 +211,7 @@ void UtilsTest::getOrThrowShouldReturnValue() {
 
     // When
     auto rValue = QORM::Utils::getOrThrow<QString>(record, FIELD_NAME,
-                        "error-message", [](const auto &variant) -> QString {
-                            return variant.toString();
-                        });
+                        "error-message", &QVariant::toString);
     // Then
     QCOMPARE(rValue, value);
 }
@@ -227,9 +225,7 @@ void UtilsTest::getOrThrowShouldThrow() {
     // When / Then
     QVERIFY_THROWS_EXCEPTION(std::invalid_argument,
         QORM::Utils::getOrThrow<QString>(record, FIELD_NAME,
-            "Error message", [](const auto &variant) -> QString {
-                return variant.toString();
-            }));
+            "Error message", &QVariant::toString));
 }
 
 void UtilsTest::getOrDefaultShouldReturnValue() {
@@ -242,9 +238,7 @@ void UtilsTest::getOrDefaultShouldReturnValue() {
 
     // When
     auto rValue = QORM::Utils::getOrDefault<QString>(record, FIELD_NAME, "",
-                        [](const auto &variant) -> QString {
-                            return variant.toString();
-                        });
+                                                     &QVariant::toString);
     // Then
     QCOMPARE(rValue, value);
 }
@@ -258,9 +252,7 @@ void UtilsTest::getOrDefaultShouldReturnDefault() {
 
     // When
     auto rValue = QORM::Utils::getOrDefault<QString>(record, FIELD_NAME,
-                        defaultValue, [](const auto &variant) -> QString {
-                            return variant.toString();
-                        });
+                        defaultValue, &QVariant::toString);
     // Then
     QCOMPARE(rValue, defaultValue);
 }
@@ -271,9 +263,7 @@ void UtilsTest::getOrDefaultShouldReturnDefaultIfNotExists() {
 
     // When
     auto rValue = QORM::Utils::getOrDefault<QString>(QSqlRecord(), FIELD_NAME,
-                        defaultValue, [](const auto &variant) -> QString {
-                            return variant.toString();
-                        });
+                        defaultValue, &QVariant::toString);
     // Then
     QCOMPARE(rValue, defaultValue);
 }
@@ -288,8 +278,8 @@ void UtilsTest::getOrNullShouldReturnValue() {
 
     // When
     auto value = QORM::Utils::getOrNull<int32_t>(record, FIELD_NAME,
-                        [&expected](const auto&) {
-                            return expected;
+                        [](const auto &variant) {
+                            return variant.toUInt();
                         });
     // Then
     QCOMPARE(value, expected);
