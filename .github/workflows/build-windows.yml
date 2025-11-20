@@ -1,0 +1,74 @@
+name: Build QORMLite
+on: [pull_request]
+jobs:
+  build:
+    name: Build - Windows
+    runs-on: windows-latest
+    env:
+      BUILD_TARGET: release
+      BUILD_DIR: build
+      QORMLITE_VERSION: "3.0"
+      
+    steps:
+      - name: Install Qt ${{ vars.QT_VERSION }}
+        id: install
+        uses: jurplel/install-qt-action@v4
+        with:
+          version: ${{ vars.QT_VERSION }}
+          host: windows
+          arch: win64_mingw
+          tools: tools_mingw1310
+          cache: true
+
+      - name: Checkout Git repository
+        uses: actions/checkout@v4
+        
+      - name: Compile and install
+        shell: bash
+        run: |
+          echo "Qt directory : $QT_ROOT_DIR"
+          echo "Path : $PATH"
+          mkdir -p $BUILD_DIR
+          cd $BUILD_DIR
+          qmake ../QORMLiteParent.pro CONFIG+=$BUILD_TARGET
+          mingw32-make -j$NUMBER_OF_PROCESSORS
+          mingw32-make install
+
+      - name: Run tests
+        shell: bash
+        run: |
+          echo "Qt directory : $QT_ROOT_DIR"
+          echo "Path : $PATH"
+          export QT_ASSUME_STDERR_HAS_CONSOLE=1
+          export TESTS_DIR=$BUILD_DIR/test/$BUILD_TARGET
+          cp $BUILD_DIR/lib/$BUILD_TARGET/$QORMLITE_VERSION/*.dll $TESTS_DIR/
+          if [ $? -ne 0 ]; then
+            echo "ERROR: Failed to copy library. Check build output structure."
+            exit 1
+          fi
+          cd $TESTS_DIR
+          for test in *.exe; do
+            test_name="${test%.exe}"
+            echo "Running ${test_name}..."
+            "$PWD/$test" 2>&1 | tee "${test_name}.log"
+            status=${PIPESTATUS[0]}
+            if [ $status -ne 0 ]; then
+              echo "❌ Test ${test_name} failed with exit code $status"
+              exit $status
+            fi
+          done
+
+      - name: Upload artifacts (tests logs)
+        uses: actions/upload-artifact@v4
+        with:
+          name: QORMLite-tests-logs
+          path: ${{ env.BUILD_DIR }}/test/${{ env.BUILD_TARGET }}/*.log
+          retention-days: 7
+
+      - name: Upload artifacts (library and public headers)
+        uses: actions/upload-artifact@v4
+        with:
+          name: QORMLite-library
+          path: ${{ env.BUILD_DIR }}/lib/${{ env.BUILD_TARGET }}/${{ env.QORMLITE_VERSION }}/**
+          retention-days: 7
+      
