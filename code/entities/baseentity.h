@@ -13,7 +13,7 @@ namespace QORM::Entities {
 template<typename Derived, typename Key = int>
 class BaseEntity {
     Key key;
-    mutable std::set<Observer<Key>*> observers;
+    mutable std::set<Observer<Derived>*> observers;
 
  public:
     explicit BaseEntity(const Key &key) : key(key) {}
@@ -26,25 +26,21 @@ class BaseEntity {
     auto getKey() const noexcept -> const Key { return this->key; }
     void setKey(const Key &key) { this->key = key; }
 
-    auto getTypeIndex() const {
-        return std::type_index(typeid(*this));
-    }
-
-    auto getObservers() const -> const std::set<Observer<Key>*>& {
+    auto getObservers() const -> const std::set<Observer<Derived>*>& {
         return this->observers;
     }
 
-    auto isAttached(Observer<Key> *observer) const noexcept {
+    auto isAttached(Observer<Derived> *observer) const noexcept {
         return this->observers.find(observer) != this->observers.end();
     }
 
-    void attach(Observer<Key> *observer) const {
+    void attach(Observer<Derived> *observer) const {
         if (observer != nullptr) {
             this->observers.insert(observer);
         }
     }
 
-    void detach(Observer<Key> *observer) const {
+    void detach(Observer<Derived> *observer) const {
         if (observer != nullptr) {
             this->observers.erase(observer);
         }
@@ -54,7 +50,7 @@ class BaseEntity {
         std::for_each(this->observers.begin(), this->observers.end(),
             [this](auto *observer) {
                 if (observer != nullptr) {
-                    observer->onChange(this->key, this->getTypeIndex());
+                    observer->onChange(static_cast<const Derived&>(*this));
                 }
             });
     }
@@ -63,7 +59,7 @@ class BaseEntity {
         std::for_each(this->observers.begin(), this->observers.end(),
             [this](auto *observer) {
                 if (observer != nullptr) {
-                    observer->onDelete(this->key, this->getTypeIndex());
+                    observer->onDelete(static_cast<const Derived&>(*this));
                 }
             });
     }

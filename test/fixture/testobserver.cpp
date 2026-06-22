@@ -3,22 +3,22 @@
 
 TestObserver::TestObserver() {}
 
-void TestObserver::onChange(const int &key, const std::type_index &index) {
-    this->changedKeys.push_back(std::pair(key, index));
+void TestObserver::onChange(const TestEntity &testEntity) {
+    this->changedKeys.emplace(testEntity.getKey());
 }
 
-void TestObserver::onDelete(const int &key, const std::type_index &index) {
-    this->deletedKeys.push_back(std::pair(key, index));
+void TestObserver::onDelete(const TestEntity &testEntity) {
+    this->deletedKeys.emplace(testEntity.getKey());
 }
 
-auto TestObserver::wasChanged(const int key, const std::type_index &index)
+auto TestObserver::wasChanged(const TestEntity::KeyType key)
 const -> bool {
-    return QORM::Utils::contains(this->changedKeys, std::pair(key, index));
+    return QORM::Utils::contains(this->changedKeys, key);
 }
 
-auto TestObserver::wasDeleted(const int key,  const std::type_index &index)
+auto TestObserver::wasDeleted(const TestEntity::KeyType key)
 const -> bool {
-    return QORM::Utils::contains(this->deletedKeys, std::pair(key, index));
+    return QORM::Utils::contains(this->deletedKeys, key);
 }
 
 void TestObserver::reset() {
