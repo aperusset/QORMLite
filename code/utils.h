@@ -147,11 +147,17 @@ namespace QORM::Utils {
      * @param entities the entities to extract the keys
      * @return an unordered set containing the keys of the entities
      */
-    template<class Entity, typename Key = int>
-    [[nodiscard]] auto extractKeys(const QORM::RefList<Entity> &entities) {
+    template<typename Container>
+    [[nodiscard]] auto extractKeys(const Container &entities) {
+        using Ref = typename std::iterator_traits<decltype(std::declval<Container>().begin())>::value_type;
+        using Entity = std::remove_const_t<std::remove_reference_t<typename Ref::type>>;
+        using Key = std::remove_cv_t<std::remove_reference_t<
+            decltype(std::declval<Entity>().getKey())
+        >>;
+
         static_assert(
-            std::is_base_of_v<Entities::BaseEntity<Key>, Entity>,
-            "Entity must extend QORM::Entities::BaseEntity<Key>");
+            std::is_base_of_v<Entities::BaseEntity<Entity, Key>, Entity>,
+            "Entity must extend QORM::Entities::BaseEntity<Entity, Key>");
         std::unordered_set<Key> keys;
         keys.reserve(entities.size());
         std::transform(entities.begin(), entities.end(),

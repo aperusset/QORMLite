@@ -7,7 +7,7 @@
 
 namespace QORM::Entities {
 
-class SchemaVersion : public BaseEntity<> {
+class SchemaVersion : public BaseEntity<SchemaVersion> {
     const QString description;
     const QDateTime execution;
 

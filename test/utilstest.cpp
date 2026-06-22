@@ -173,18 +173,18 @@ void UtilsTest::extractKeysShouldExtractKeys() {
     TestEntity firstEntity(10);
     TestEntity secondEntity(42);
     TestEntity thirdEntity(42);
-    const QORM::RefList<TestEntity> entities = {
+    const TestEntity::RefList entities = {
         std::ref(firstEntity),
         std::ref(secondEntity),
         std::ref(thirdEntity),
     };
-    const QORM::ConstRefList<TestEntity> constEntities = {
+    const TestEntity::ConstRefList constEntities = {
         std::cref(firstEntity),
         std::cref(secondEntity),
         std::cref(thirdEntity),
     };
-    const QORM::RefList<TestEntity> noEntities = {};
-    const QORM::ConstRefList<TestEntity> noConstEntities = {};
+    const TestEntity::RefList noEntities = {};
+    const TestEntity::ConstRefList noConstEntities = {};
 
     // When
     const auto extractedKeys = QORM::Utils::extractKeys(entities);

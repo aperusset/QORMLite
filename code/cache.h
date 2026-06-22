@@ -16,7 +16,7 @@ namespace QORM {
 template<typename Key, class Entity>
 class Cache {
     static_assert(
-        std::is_base_of_v<Entities::BaseEntity<Key>, Entity>,
+        std::is_base_of_v<Entities::BaseEntity<Entity, Key>, Entity>,
         "Entity must extend QORM::Entities::BaseEntity<Key>");
 
     std::map<Key, std::unique_ptr<Entity>> entities;

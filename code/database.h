@@ -101,11 +101,11 @@ class Database {
                                selector.generate().toStdString());
     }
 
-    template<class Entity, class Selector = Select>
+    template<typename Entity, typename Key = int, typename Selector = Select>
     auto entities(const Selector &selector,
             const std::function<Entity&(const QSqlRecord&)> &extractor) const {
         assertSelector<Selector>();
-        RefList<Entity> entities;
+        typename Entities::BaseEntity<Entity, Key>::RefList entities;
         auto qSqlQuery = this->execute(selector);
         while (qSqlQuery.next()) {
             entities.push_back(extractor(qSqlQuery.record()));
