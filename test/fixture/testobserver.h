@@ -15,7 +15,7 @@ class TestObserver : public QORM::Observer<TestEntity>  {
     TestObserver();
 
     void onChange(const TestEntity &testEntity) override;
-    void onDelete(const TestEntity &TestEntity) override;
+    void onDelete(const TestEntity &testEntity) override;
 
     auto wasChanged(const TestEntity::KeyType key) const -> bool;
     auto wasDeleted(const TestEntity::KeyType key) const -> bool;

@@ -6,14 +6,15 @@
 #include "schema/schemaversioncreator.h"
 #include "repositories/schemaversionrepository.h"
 
-QORM::Database::Database(ConnectorUPtr connector, bool verbose) :
+QORM::Database::Database(Connector::UPtr connector, bool verbose) :
     Database(std::move(connector), nullptr, {}, verbose) {
 }
 
-QORM::Database::Database(ConnectorUPtr connector, CreatorUPtr creator,
-                         UpgraderUPtrList upgraders, bool verbose) :
-        connector(std::move(connector)), creator(std::move(creator)),
-        upgraders(std::move(upgraders)), verbose(verbose),
+QORM::Database::Database(Connector::UPtr connector,
+    Schema::Creator::UPtr creator, Schema::Upgrader::UPtrList upgraders,
+    bool verbose) : connector(std::move(connector)),
+        creator(std::move(creator)), upgraders(std::move(upgraders)),
+        verbose(verbose),
         svRepository(
             std::make_unique<Repositories::SchemaVersionRepository>(*this)) {
     std::set<int> upgraderVersions;

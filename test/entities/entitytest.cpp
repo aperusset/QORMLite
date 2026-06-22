@@ -33,8 +33,7 @@ void EntityTest::attached() {
 
     // Then
     QCOMPARE(entity.getObservers().size(), 1U);
-    QVERIFY(entity.isAttached(&this->observer));
-    QVERIFY(!entity.isAttached(nullptr));
+    QVERIFY(entity.isAttached(this->observer));
 }
 
 void EntityTest::notAttached() {
@@ -43,8 +42,7 @@ void EntityTest::notAttached() {
 
     // Then
     QVERIFY(entity.getObservers().empty());
-    QVERIFY(!entity.isAttached(&this->observer));
-    QVERIFY(!entity.isAttached(nullptr));
+    QVERIFY(!entity.isAttached(this->observer));
 }
 
 void EntityTest::detach() {
@@ -58,5 +56,5 @@ void EntityTest::detach() {
 
     // Then
     QVERIFY(entity.getObservers().empty());
-    QVERIFY(!entity.isAttached(&this->observer));
+    QVERIFY(!entity.isAttached(this->observer));
 }

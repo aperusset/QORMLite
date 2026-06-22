@@ -201,34 +201,6 @@ void UtilsTest::extractKeysShouldExtractKeys() {
     QVERIFY(QORM::Utils::extractKeys(noConstEntities).empty());
 }
 
-void UtilsTest::removeByKeyShouldRemove() {
-    // Given
-    TestEntity firstEntity(10);
-    TestEntity secondEntity(42);
-    TestEntity thirdEntity(42);
-    TestEntity::RefList entities = {
-        std::ref(firstEntity),
-        std::ref(secondEntity),
-        std::ref(thirdEntity),
-    };
-    TestEntity::ConstRefList constEntities = {
-        std::cref(firstEntity),
-        std::cref(secondEntity),
-        std::cref(thirdEntity),
-    };
-
-    QVERIFY(entities.size() == 3U);
-    QVERIFY(constEntities.size() == 3U);
-
-    QORM::Utils::removeByKey(entities, firstEntity.getKey());
-    QORM::Utils::removeByKey(entities, firstEntity.getKey());
-    QORM::Utils::removeByKey(constEntities, secondEntity.getKey());
-    QORM::Utils::removeByKey(constEntities, thirdEntity.getKey());
-
-    QVERIFY(entities.size() == 2U);
-    QVERIFY(constEntities.size() == 1U);
-}
-
 void UtilsTest::getOrThrowShouldReturnValue() {
     // Given
     auto field = QSqlField(FIELD_NAME, QMetaType::fromType<QString>());

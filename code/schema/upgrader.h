@@ -3,6 +3,7 @@
 
 #include <QRecursiveMutex>
 #include <QString>
+#include <memory>
 #include "schema/operator.h"
 
 namespace QORM::Schema {
@@ -28,6 +29,9 @@ class Upgrader : public Operator {
     void executeDelayed(const Database&);
     virtual void upgradeSchema(const Database&) const = 0;
     virtual void migrateData(const Database&) const {};
+
+    using UPtr = std::unique_ptr<Schema::Upgrader>;
+    using UPtrList = std::list<UPtr>;
 };
 
 inline auto Upgrader::getVersion() const -> int {

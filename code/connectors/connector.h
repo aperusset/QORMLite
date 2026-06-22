@@ -33,6 +33,8 @@ class Connector {
     virtual auto connectionName() const -> QString = 0;
     virtual auto driverName() const -> QString = 0;
     virtual auto backup(const QString &fileName) const -> bool = 0;
+
+    using UPtr = std::unique_ptr<Connector>;
 };
 
 inline auto Connector::getName() const -> const QString& {

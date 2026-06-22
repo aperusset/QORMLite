@@ -25,15 +25,10 @@ class SchemaVersionRepository;
 }  // namespace Repositories
 
 class Database {
-    using CreatorUPtr = std::unique_ptr<Schema::Creator>;
-    using UpgraderUPtr = std::unique_ptr<Schema::Upgrader>;
-    using UpgraderUPtrList = std::list<UpgraderUPtr>;
-    using ConnectorUPtr = std::unique_ptr<Connector>;
-
     mutable QRecursiveMutex databaseMutex;
-    const ConnectorUPtr connector;
-    const CreatorUPtr creator;
-    UpgraderUPtrList upgraders;
+    const Connector::UPtr connector;
+    const Schema::Creator::UPtr creator;
+    Schema::Upgrader::UPtrList upgraders;
     const bool verbose;
     const std::unique_ptr<Repositories::SchemaVersionRepository> svRepository;
 
@@ -53,8 +48,9 @@ class Database {
     }
 
  public:
-    Database(ConnectorUPtr, bool verbose);
-    Database(ConnectorUPtr, CreatorUPtr, UpgraderUPtrList, bool verbose);
+    Database(Connector::UPtr, bool verbose);
+    Database(Connector::UPtr, Schema::Creator::UPtr, Schema::Upgrader::UPtrList,
+             bool verbose);
     ~Database();
     Database(const Database&) = delete;
     Database(Database&&) = delete;

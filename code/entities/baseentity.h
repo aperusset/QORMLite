@@ -30,8 +30,9 @@ class BaseEntity {
         return this->observers;
     }
 
-    auto isAttached(Observer<Derived> *observer) const noexcept {
-        return this->observers.find(observer) != this->observers.end();
+    auto isAttached(const Observer<Derived> &observer) const noexcept {
+        return this->observers.find(const_cast<Observer<Derived>*>(
+            std::addressof(observer))) != this->observers.end();
     }
 
     void attach(Observer<Derived> *observer) const {
@@ -41,9 +42,7 @@ class BaseEntity {
     }
 
     void detach(Observer<Derived> *observer) const {
-        if (observer != nullptr) {
-            this->observers.erase(observer);
-        }
+        this->observers.erase(observer);
     }
 
     void notifyChange() const {
