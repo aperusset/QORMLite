@@ -167,6 +167,18 @@ namespace QORM::Utils {
         return keys;
     }
 
+    template<typename Container, typename Key>
+    void removeByKey(Container &container, const Key &key) {
+        using Type = std::remove_const_t<typename Container::value_type>;
+        static_assert(std::is_same_v<Type,
+            std::reference_wrapper<typename Type::type>
+        >, "removeByKey expects reference_wrapper containers");
+        container.erase(std::remove_if(container.begin(), container.end(),
+            [&](const auto &ref) {
+                return ref.get().getKey() == key;
+            }), container.end());
+    }
+
     /**
      * @brief Extract a value from a QVariant without any check
      * @param variant the QVariant from which to extract the value

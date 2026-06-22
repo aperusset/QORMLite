@@ -23,6 +23,7 @@ class UtilsTest : public QObject {
     static void joinToStringShouldJoinInitListWithSeparator();
     static void joinToStringShouldJoinMapWithSeparator();
     static void extractKeysShouldExtractKeys();
+    static void removeByKeyShouldRemove();
     static void getOrThrowShouldReturnValue();
     static void getOrThrowShouldThrow();
     static void getOrDefaultShouldReturnValue();
