@@ -4,7 +4,7 @@
 #include <memory>
 #include "entities/baseentity.h"
 
-class TestEntity : public QORM::Entities::BaseEntity<> {
+class TestEntity : public QORM::Entities::BaseEntity<TestEntity> {
  public:
     explicit TestEntity(const int key);
 };

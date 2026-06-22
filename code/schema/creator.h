@@ -28,6 +28,8 @@ class Creator : public Operator {
     virtual void createTables(const Database&) const = 0;
     virtual void createViews(const Database&) const = 0;
     virtual void populate(const Database&) const = 0;
+
+    using UPtr = std::unique_ptr<Schema::Creator>;
 };
 
 }  // namespace QORM::Schema

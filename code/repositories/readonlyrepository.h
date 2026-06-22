@@ -24,7 +24,7 @@ template<class Entity>
 class ReadOnlyRepository {
     using Key = typename Entity::KeyType;
     static_assert(
-        std::is_base_of_v<Entities::BaseEntity<Key>, Entity>,
+        std::is_base_of_v<Entities::BaseEntity<Entity, Key>, Entity>,
         "Entity must extend QORM::Entities::BaseEntity");
     using EntityCreator = std::function<Entity&(const QSqlRecord&)>;
     using EntityCache = Cache<Key, Entity>;

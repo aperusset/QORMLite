@@ -15,7 +15,6 @@ class EntityTest : public QObject {
     void attached();
     void notAttached();
     void detach();
-    void getTypeIndex();
 };
 
 #endif  // TEST_ENTITIES_ENTITYTEST_H_

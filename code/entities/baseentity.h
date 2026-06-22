@@ -3,16 +3,17 @@
 
 #include <algorithm>
 #include <list>
+#include <memory>
 #include <set>
-#include <typeindex>
+#include <vector>
 #include "./observer.h"
 
 namespace QORM::Entities {
 
-template<typename Key = int>
+template<typename Derived, typename Key = int>
 class BaseEntity {
     Key key;
-    mutable std::set<Observer<Key>*> observers;
+    mutable std::set<Observer<Derived>*> observers;
 
  public:
     explicit BaseEntity(const Key &key) : key(key) {}
@@ -20,65 +21,61 @@ class BaseEntity {
     BaseEntity(BaseEntity&&) noexcept = delete;
     BaseEntity& operator=(const BaseEntity&) = delete;
     BaseEntity& operator=(BaseEntity&&) = delete;
-    virtual ~BaseEntity() = default;
+    ~BaseEntity() = default;
 
-    auto getKey() const -> const Key& { return this->key; }
+    auto getKey() const noexcept -> const Key { return this->key; }
     void setKey(const Key &key) { this->key = key; }
 
-    auto getObservers() const -> const std::set<Observer<Key>*>& {
+    auto getObservers() const -> const std::set<Observer<Derived>*>& {
         return this->observers;
     }
 
-    auto isAttached(Observer<Key> *observer) const {
-        return this->observers.find(observer) != this->observers.end();
+    auto isAttached(const Observer<Derived> &observer) const noexcept {
+        return this->observers.find(const_cast<Observer<Derived>*>(
+            std::addressof(observer))) != this->observers.end();
     }
 
-    auto getTypeIndex() const {
-        return std::type_index(typeid(*this));
-    }
-
-    virtual void attach(Observer<Key> *observer) const {
+    void attach(Observer<Derived> *observer) const {
         if (observer != nullptr) {
             this->observers.insert(observer);
         }
     }
 
-    virtual void detach(Observer<Key> *observer) const {
-        if (observer != nullptr) {
-            this->observers.erase(observer);
-        }
+    void detach(Observer<Derived> *observer) const {
+        this->observers.erase(observer);
     }
 
-    virtual void notifyChange() const {
+    void notifyChange() const {
         std::for_each(this->observers.begin(), this->observers.end(),
             [this](auto *observer) {
                 if (observer != nullptr) {
-                    observer->onChange(this->key, this->getTypeIndex());
+                    observer->onChange(static_cast<const Derived&>(*this));
                 }
             });
     }
 
-    virtual void notifyDelete() const {
+    void notifyDelete() const {
         std::for_each(this->observers.begin(), this->observers.end(),
             [this](auto *observer) {
                 if (observer != nullptr) {
-                    observer->onDelete(this->key, this->getTypeIndex());
+                    observer->onDelete(static_cast<const Derived&>(*this));
                 }
             });
     }
 
     using KeyType = Key;
+
+    using Ref = std::reference_wrapper<Derived>;
+    using ConstRef = std::reference_wrapper<const Derived>;
+    using UPtr = std::unique_ptr<Derived>;
+    using SPtr = std::shared_ptr<Derived>;
+
+    using RefList = std::list<Ref>;
+    using ConstRefList = std::list<ConstRef>;
+    using RefVector = std::vector<Ref>;
+    using ConstRefVector = std::vector<ConstRef>;
 };
 
 }  // namespace QORM::Entities
-
-namespace QORM {
-
-template<class Entity>
-using RefList = std::list<std::reference_wrapper<Entity>>;
-template<class Entity>
-using ConstRefList = std::list<std::reference_wrapper<const Entity>>;
-
-}  // namespace QORM
 
 #endif  // ENTITIES_BASEENTITY_H_

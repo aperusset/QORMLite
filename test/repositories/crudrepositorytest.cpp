@@ -361,10 +361,8 @@ void CRUDRepositoryTest::createShouldInsertAndNotify() {
 
     // Then
     QVERIFY(testCRUDRepository.exists(savedEntity.getKey()));
-    QVERIFY(testObserver.wasChanged(savedEntity.getKey(),
-                                    savedEntity.getTypeIndex()));
-    QVERIFY(!testObserver.wasDeleted(savedEntity.getKey(),
-                                     savedEntity.getTypeIndex()));
+    QVERIFY(testObserver.wasChanged(savedEntity.getKey()));
+    QVERIFY(!testObserver.wasDeleted(savedEntity.getKey()));
 }
 
 void CRUDRepositoryTest::createArgsShouldInsert() {
@@ -394,13 +392,12 @@ void CRUDRepositoryTest::updateShouldUpdateAndNotify() {
     auto &savedEntity = testCRUDRepository.create(
         std::make_unique<TestEntity>(-1));
     savedEntity.attach(&testObserver);
-    const auto typeIndex = savedEntity.getTypeIndex();
     testCRUDRepository.update(savedEntity);
 
     // Then
     QVERIFY(testCRUDRepository.exists(savedEntity.getKey()));
-    QVERIFY(testObserver.wasChanged(savedEntity.getKey(), typeIndex));
-    QVERIFY(!testObserver.wasDeleted(savedEntity.getKey(), typeIndex));
+    QVERIFY(testObserver.wasChanged(savedEntity.getKey()));
+    QVERIFY(!testObserver.wasDeleted(savedEntity.getKey()));
 }
 
 void CRUDRepositoryTest::eraseShouldNotFailIfNotExists() {
@@ -421,7 +418,6 @@ void CRUDRepositoryTest::eraseShouldDeleteAndNotify() {
     auto newTestEntity = std::make_unique<TestEntity>(-1);
     auto testObserver = TestObserver();
     newTestEntity->attach(&testObserver);
-    const auto newTestEntityTypeIndex = newTestEntity->getTypeIndex();
 
     // When
     database.connect();
@@ -432,8 +428,8 @@ void CRUDRepositoryTest::eraseShouldDeleteAndNotify() {
 
     // Then
     QVERIFY(!testCRUDRepository.exists(lastInsertedKey));
-    QVERIFY(testObserver.wasChanged(lastInsertedKey, newTestEntityTypeIndex));
-    QVERIFY(testObserver.wasDeleted(lastInsertedKey, newTestEntityTypeIndex));
+    QVERIFY(testObserver.wasChanged(lastInsertedKey));
+    QVERIFY(testObserver.wasDeleted(lastInsertedKey));
 }
 
 void CRUDRepositoryTest::eraseAllShouldDeleteAndNotify() {
@@ -445,8 +441,6 @@ void CRUDRepositoryTest::eraseAllShouldDeleteAndNotify() {
     auto testObserver = TestObserver();
     newTestEntity1->attach(&testObserver);
     newTestEntity2->attach(&testObserver);
-    const auto newTestEntity1TypeIndex = newTestEntity1->getTypeIndex();
-    const auto newTestEntity2TypeIndex = newTestEntity2->getTypeIndex();
 
     // When
     database.connect();
@@ -460,10 +454,10 @@ void CRUDRepositoryTest::eraseAllShouldDeleteAndNotify() {
     // Then
     QVERIFY(!testCRUDRepository.exists(key1));
     QVERIFY(!testCRUDRepository.exists(key2));
-    QVERIFY(testObserver.wasChanged(key1, newTestEntity1TypeIndex));
-    QVERIFY(testObserver.wasChanged(key2, newTestEntity2TypeIndex));
-    QVERIFY(testObserver.wasDeleted(key1, newTestEntity1TypeIndex));
-    QVERIFY(testObserver.wasDeleted(key2, newTestEntity2TypeIndex));
+    QVERIFY(testObserver.wasChanged(key1));
+    QVERIFY(testObserver.wasChanged(key2));
+    QVERIFY(testObserver.wasDeleted(key1));
+    QVERIFY(testObserver.wasDeleted(key2));
 }
 
 void CRUDRepositoryTest::assertFieldValidityShouldThrow() {

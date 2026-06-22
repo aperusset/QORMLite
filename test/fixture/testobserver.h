@@ -1,24 +1,24 @@
 #ifndef TEST_FIXTURE_TESTOBSERVER_H_
 #define TEST_FIXTURE_TESTOBSERVER_H_
 
-#include <list>
-#include <utility>
+#include <set>
 #include "observer.h"
+#include "testentity.h"
 
-class TestObserver : public QORM::Observer<>  {
+class TestObserver : public QORM::Observer<TestEntity>  {
     inline static const int INVALID_KEY = -1;
 
-    std::list<std::pair<int, std::type_index>> changedKeys;
-    std::list<std::pair<int, std::type_index>> deletedKeys;
+    std::set<TestEntity::KeyType> changedKeys;
+    std::set<TestEntity::KeyType> deletedKeys;
 
  public:
     TestObserver();
 
-    void onChange(const int &key, const std::type_index&) override;
-    void onDelete(const int &key, const std::type_index&) override;
+    void onChange(const TestEntity &testEntity) override;
+    void onDelete(const TestEntity &testEntity) override;
 
-    auto wasChanged(const int key,  const std::type_index&) const -> bool;
-    auto wasDeleted(const int key,  const std::type_index&) const -> bool;
+    auto wasChanged(const TestEntity::KeyType key) const -> bool;
+    auto wasDeleted(const TestEntity::KeyType key) const -> bool;
     void reset();
 };
 
