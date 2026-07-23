@@ -42,7 +42,7 @@ void CacheTest::getShouldFail() {
     auto entity = aTestEntity();
 
     // When / Then
-    QVERIFY_THROWS_EXCEPTION(std::invalid_argument,
+    QVERIFY_THROWS_EXCEPTION(std::out_of_range,
                              cache.get(entity->getKey()));
 }
 
@@ -111,7 +111,7 @@ void CacheTest::invalidate() {
     QVERIFY(cache.contains(key1));
     QVERIFY(cache.contains(key2));
     QCOMPARE(2U, cache.size());
-    QVERIFY_THROWS_EXCEPTION(std::invalid_argument, cache.get(key1));
+    QVERIFY_THROWS_EXCEPTION(std::out_of_range, cache.get(key1));
 }
 
 void CacheTest::remove() {

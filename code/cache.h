@@ -2,8 +2,7 @@
 #define CACHE_H_
 
 #include <QDateTime>
-#include <functional>
-#include <map>
+#include <unordered_map>
 #include <memory>
 #include <stdexcept>
 #include <string>
@@ -20,61 +19,73 @@ class Cache {
     static_assert(
         std::is_base_of_v<Entities::BaseEntity<Entity, Key>, Entity>,
         "Entity must extend QORM::Entities::BaseEntity<Entity, Key>");
+    using Entry = std::pair<std::unique_ptr<Entity>, QDateTime>;
 
     const uint32_t ttl;
-    std::map<Key, std::pair<std::unique_ptr<Entity>, QDateTime>> entities;
+    std::unordered_map<Key, Entry> entities;
 
  public:
-    inline static const uint32_t DEFAULT_TTL = 7200U;
+    inline static constexpr uint32_t DEFAULT_TTL = 7200U;
 
     explicit Cache(uint32_t ttl = DEFAULT_TTL) : ttl(ttl) {}
     Cache(const Cache&) = delete;
     Cache(Cache&&) = delete;
     Cache& operator=(const Cache&) = delete;
     Cache& operator=(Cache&&) = delete;
-    virtual ~Cache() = default;
+    ~Cache() = default;
 
     auto insert(const Key &key, std::unique_ptr<Entity> &&entity) -> Entity& {
         if (entity == nullptr) {
             throw std::invalid_argument("Cannot store a null entity");
         }
-        const auto expiration = QDateTime::currentDateTime().addSecs(ttl);
-        return *entities.try_emplace(key, std::pair(std::move(entity),
-                      std::move(expiration))).first->second.first;
+        return *entities.try_emplace(key, std::move(entity),
+            QDateTime::currentDateTime().addSecs(ttl)).first->second.first;
     }
 
     auto get(const Key &key) const -> Entity& {
         if (this->isValid(key)) {
             return *this->entities.at(key).first.get();
         }
-        throw std::invalid_argument("Cannot retrieve an entity of type " +
-                                    std::string(typeid(Entity).name()));
+        throw std::out_of_range("Cannot retrieve an entity of type " +
+                                std::string(typeid(Entity).name()));
     }
 
-    auto getOrCreate(const Key &key,
-                     const std::function<Entity&()> &creator) const -> Entity& {
-        return this->isValid(key) ? this->get(key) : creator();
+    template<typename Creator>
+    auto getOrCreate(const Key &key, Creator&& creator) const -> Entity& {
+        return this->isValid(key)
+            ? this->get(key)
+            : std::forward<Creator>(creator)();
     }
 
-    auto contains(const Key &key) const {
-        return static_cast<bool>(entities.count(key));
+    [[nodiscard]]
+    auto contains(const Key &key) const -> bool {
+        return entities.find(key) != entities.end();
     }
 
-    auto isValid(const Key &key) const {
-        return this->contains(key) &&
-               this->entities.at(key).second > QDateTime::currentDateTime();
+    [[nodiscard]]
+    auto isValid(const Key &key) const -> bool {
+        const auto it = entities.find(key);
+        return it != entities.end() &&
+               it->second.second > QDateTime::currentDateTime();
     }
 
-    auto invalidate(const Key &key) {
-        if (this->contains(key)) {
-            this->entities.at(key).second = QDateTime();
+    void invalidate(const Key &key) {
+        if (const auto it = entities.find(key); it != entities.end()) {
+            it->second.second = {};
         }
     }
 
-    auto remove(const Key &key) {
+    void invalidateAll() {
+        for (auto& [_, value] : entities) {
+            value.second = {};
+        }
+    }
+
+    auto remove(const Key &key) -> bool {
         return static_cast<bool>(entities.erase(key));
     }
 
+    [[nodiscard]]
     auto size() const -> size_t {
         return entities.size();
     }

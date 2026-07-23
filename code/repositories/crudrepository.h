@@ -18,9 +18,7 @@ class CRUDRepository : public ReadOnlyRepository<Entity> {
     using Key = typename Entity::KeyType;
 
  public:
-    explicit CRUDRepository(const Database &database,
-                            Cache<Entity>* const cache = nullptr) :
-        ReadOnlyRepository<Entity>(database, cache) {}
+    using ReadOnlyRepository<Entity>::ReadOnlyRepository;
 
     virtual auto create(std::unique_ptr<Entity> entity) const -> Entity& {
         const auto key = this->getDatabase().insertAndRetrieveKey(
@@ -60,8 +58,8 @@ class CRUDRepository : public ReadOnlyRepository<Entity> {
     virtual void eraseAll() const {
         if (const auto &allEntities = this->getAll(); !allEntities.empty()) {
             this->getDatabase().execute(Delete(this->tableName()));
+            this->getCache().invalidateAll();
             for (const auto &entity : allEntities) {
-                this->getCache().invalidate(entity.get().getKey());
                 entity.get().notifyDelete();
             }
             this->getCache().clear();
