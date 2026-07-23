@@ -21,6 +21,7 @@ class CacheTest : public QObject {
     void getShouldSuccess();
     void getShouldFail();
     void getOrCreate();
+    void invalidate();
     void remove();
 };
 

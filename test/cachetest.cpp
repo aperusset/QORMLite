@@ -76,6 +76,25 @@ void CacheTest::getOrCreate() {
     QCOMPARE(key, retrievedEntity.getKey());
 }
 
+void CacheTest::invalidate() {
+    // Given
+    auto entity1 = aTestEntity();
+    const auto key1 = entity1->getKey();
+    const auto key2 = 43;
+    auto entity2 = aTestEntity(key2);
+
+    // When
+    cache.insert(entity1->getKey(), std::move(entity1));
+    cache.insert(entity2->getKey(), std::move(entity2));
+    cache.invalidate(key1);
+
+    // Then
+    QVERIFY(!cache.contains(key1));
+    QVERIFY(cache.contains(key2));
+    QCOMPARE(2U, cache.size());
+    QVERIFY_THROWS_EXCEPTION(std::invalid_argument, cache.get(key1));
+}
+
 void CacheTest::remove() {
     // Given
     auto entity1 = aTestEntity();
