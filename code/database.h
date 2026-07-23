@@ -40,7 +40,7 @@ class Database {
     void upgrade();
     void registerUpgrade(const Schema::Upgrader&) const;
 
-    template<class Selector>
+    template<typename Selector>
     static void assertSelector() {
         static_assert(std::is_base_of_v<Select, Selector> ||
                       std::is_base_of_v<CTE<Select>, Selector>,
@@ -85,7 +85,7 @@ class Database {
         return keyExtractor(this->execute(insert));
     }
 
-    template<class Entity, class Selector = Select>
+    template<typename Entity, typename Selector = Select>
     auto entity(const Selector &selector,
                 const std::function<Entity&(const QSqlRecord&)> &extractor)
     const -> Entity& {
@@ -97,10 +97,11 @@ class Database {
                                selector.generate().toStdString());
     }
 
-    template<typename Entity, typename Key = int, typename Selector = Select>
+    template<typename Entity, typename Selector = Select>
     auto entities(const Selector &selector,
             const std::function<Entity&(const QSqlRecord&)> &extractor) const {
         assertSelector<Selector>();
+        using Key = typename Entity::KeyType;
         typename Entities::BaseEntity<Entity, Key>::RefList entities;
         auto qSqlQuery = this->execute(selector);
         while (qSqlQuery.next()) {

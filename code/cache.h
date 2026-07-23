@@ -13,16 +13,18 @@
 
 namespace QORM {
 
-template<typename Key, class Entity>
+template<typename Entity>
 class Cache {
+    using Key = typename Entity::KeyType;
     static_assert(
         std::is_base_of_v<Entities::BaseEntity<Entity, Key>, Entity>,
         "Entity must extend QORM::Entities::BaseEntity<Entity, Key>");
 
+    const uint32_t ttl;
     std::map<Key, std::unique_ptr<Entity>> entities;
 
  public:
-    Cache() {}
+    explicit Cache(uint32_t ttl = 7200U) : ttl(ttl) {}
     Cache(const Cache&) = delete;
     Cache(Cache&&) = delete;
     Cache& operator=(const Cache&) = delete;

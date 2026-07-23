@@ -8,7 +8,7 @@
 class CacheTest : public QObject {
     Q_OBJECT
 
-    QORM::Cache<int, TestEntity> cache;
+    QORM::Cache<TestEntity> cache;
 
  private slots:
     void cleanup() {

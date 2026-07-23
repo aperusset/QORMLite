@@ -20,14 +20,14 @@
 
 namespace QORM::Repositories {
 
-template<class Entity>
+template<typename Entity>
 class ReadOnlyRepository {
     using Key = typename Entity::KeyType;
     static_assert(
         std::is_base_of_v<Entities::BaseEntity<Entity, Key>, Entity>,
         "Entity must extend QORM::Entities::BaseEntity");
     using EntityCreator = std::function<Entity&(const QSqlRecord&)>;
-    using EntityCache = Cache<Key, Entity>;
+    using EntityCache = Cache<Entity>;
     inline static const QString DEFAULT_KEY_NAME = "id";
 
     const Database &database;
@@ -41,7 +41,7 @@ class ReadOnlyRepository {
 
  public:
     explicit ReadOnlyRepository(const Database &database,
-                                Cache<Key, Entity>* const cache = nullptr) :
+                                Cache<Entity>* const cache = nullptr) :
         database(database),
         cache(cache == nullptr ? std::make_unique<EntityCache>()
                                : std::unique_ptr<EntityCache>(cache)) {}
