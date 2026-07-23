@@ -1,10 +1,6 @@
 #include "schemaversionrepository.h"
 #include "operations/query/order/desc.h"
 
-QORM::Repositories::SchemaVersionRepository::SchemaVersionRepository(
-    const Database &database) : CRUDRepository(database) {
-}
-
 auto QORM::Repositories::SchemaVersionRepository::tableName() const -> QString {
     return Entities::SchemaVersion::TABLE;
 }

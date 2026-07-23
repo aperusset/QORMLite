@@ -9,7 +9,7 @@ namespace QORM::Repositories {
 
 class SchemaVersionRepository : public CRUDRepository<Entities::SchemaVersion> {
  public:
-    explicit SchemaVersionRepository(const Database&);
+    using CRUDRepository<Entities::SchemaVersion>::CRUDRepository;
     auto tableName() const -> QString override;
     auto keyName() const -> QString override;
     auto fields() const -> std::list<QString> override;
