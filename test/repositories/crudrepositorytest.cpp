@@ -360,6 +360,7 @@ void CRUDRepositoryTest::createShouldInsertAndNotify() {
         std::move(newTestEntity));
 
     // Then
+    QVERIFY(testCRUDRepository.getCache().isValid(savedEntity.getKey()));
     QVERIFY(testCRUDRepository.exists(savedEntity.getKey()));
     QVERIFY(testObserver.wasChanged(savedEntity.getKey()));
     QVERIFY(!testObserver.wasDeleted(savedEntity.getKey()));
@@ -377,6 +378,7 @@ void CRUDRepositoryTest::createArgsShouldInsert() {
     const auto &savedEntity = testCRUDRepository.create(newTestEntityKey);
 
     // Then
+    QVERIFY(testCRUDRepository.getCache().isValid(savedEntity.getKey()));
     QVERIFY(testCRUDRepository.exists(savedEntity.getKey()));
 }
 
@@ -427,6 +429,7 @@ void CRUDRepositoryTest::eraseShouldDeleteAndNotify() {
     testCRUDRepository.erase(lastInsertedKey);
 
     // Then
+    QVERIFY(!testCRUDRepository.getCache().isValid(lastInsertedKey));
     QVERIFY(!testCRUDRepository.exists(lastInsertedKey));
     QVERIFY(testObserver.wasChanged(lastInsertedKey));
     QVERIFY(testObserver.wasDeleted(lastInsertedKey));
@@ -452,6 +455,8 @@ void CRUDRepositoryTest::eraseAllShouldDeleteAndNotify() {
     testCRUDRepository.eraseAll();
 
     // Then
+    QVERIFY(!testCRUDRepository.getCache().isValid(key1));
+    QVERIFY(!testCRUDRepository.getCache().isValid(key2));
     QVERIFY(!testCRUDRepository.exists(key1));
     QVERIFY(!testCRUDRepository.exists(key2));
     QVERIFY(testObserver.wasChanged(key1));

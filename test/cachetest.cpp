@@ -25,20 +25,6 @@ void CacheTest::insertShouldFail() {
     QVERIFY_THROWS_EXCEPTION(std::invalid_argument, cache.insert(0, nullptr));
 }
 
-void CacheTest::contains() {
-    // Given
-    auto entity1 = aTestEntity();
-    const auto key1 = entity1->getKey();
-    const auto key2 = 43;
-
-    // When
-    cache.insert(key1, std::move(entity1));
-
-    // Then
-    QVERIFY(cache.contains(key1));
-    QVERIFY(!cache.contains(key2));
-}
-
 void CacheTest::getShouldSuccess() {
     // Given
     auto entity = aTestEntity();
@@ -76,6 +62,37 @@ void CacheTest::getOrCreate() {
     QCOMPARE(key, retrievedEntity.getKey());
 }
 
+void CacheTest::contains() {
+    // Given
+    auto entity1 = aTestEntity();
+    const auto key1 = entity1->getKey();
+    const auto key2 = 43;
+
+    // When
+    cache.insert(key1, std::move(entity1));
+
+    // Then
+    QVERIFY(cache.contains(key1));
+    QVERIFY(!cache.contains(key2));
+}
+
+void CacheTest::isValid() {
+    // Given
+    auto entity1 = aTestEntity();
+    const auto key1 = entity1->getKey();
+    const auto key2 = 43;
+    QORM::Cache<TestEntity> noCache(0U);
+
+    // When
+    cache.insert(key1, std::move(entity1));
+    noCache.insert(key1, aTestEntity());
+
+    // Then
+    QVERIFY(cache.isValid(key1));
+    QVERIFY(!cache.isValid(key2));
+    QVERIFY(!noCache.isValid(key1));
+}
+
 void CacheTest::invalidate() {
     // Given
     auto entity1 = aTestEntity();
@@ -89,7 +106,9 @@ void CacheTest::invalidate() {
     cache.invalidate(key1);
 
     // Then
-    QVERIFY(!cache.contains(key1));
+    QVERIFY(!cache.isValid(key1));
+    QVERIFY(cache.isValid(key2));
+    QVERIFY(cache.contains(key1));
     QVERIFY(cache.contains(key2));
     QCOMPARE(2U, cache.size());
     QVERIFY_THROWS_EXCEPTION(std::invalid_argument, cache.get(key1));

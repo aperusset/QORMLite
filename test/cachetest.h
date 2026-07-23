@@ -17,10 +17,11 @@ class CacheTest : public QObject {
 
     void insert();
     void insertShouldFail();
-    void contains();
     void getShouldSuccess();
     void getShouldFail();
     void getOrCreate();
+    void contains();
+    void isValid();
     void invalidate();
     void remove();
 };
