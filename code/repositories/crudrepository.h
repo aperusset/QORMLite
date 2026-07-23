@@ -51,6 +51,7 @@ class CRUDRepository : public ReadOnlyRepository<Entity> {
             const auto &entity = this->get(key);
             this->getDatabase().execute(Delete(this->tableName(),
                                         this->keyCondition(key)));
+            this->getCache().invalidate(key);
             entity.notifyDelete();
             this->getCache().remove(key);
         }
