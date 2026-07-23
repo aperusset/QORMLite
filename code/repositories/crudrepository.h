@@ -61,6 +61,7 @@ class CRUDRepository : public ReadOnlyRepository<Entity> {
         if (const auto &allEntities = this->getAll(); !allEntities.empty()) {
             this->getDatabase().execute(Delete(this->tableName()));
             for (const auto &entity : allEntities) {
+                this->getCache().invalidate(entity.get().getKey());
                 entity.get().notifyDelete();
             }
             this->getCache().clear();
