@@ -46,7 +46,7 @@ class Cache {
 
     auto contains(const Key &key) const {
         return static_cast<bool>(entities.count(key)) &&
-               this->entities.at(key).second < QDateTime::currentDateTime();
+               this->entities.at(key).second > QDateTime::currentDateTime();
     }
 
     auto get(const Key &key) const -> Entity& {
