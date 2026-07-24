@@ -16,13 +16,15 @@ namespace QORM::Entities {
 
 template<typename Derived, typename Key = int>
 class BaseEntity {
+    template<typename>
+    friend class QORM::Repositories::CRUDRepository;
+
     Key key;
     mutable std::set<Observer<Derived>*> observers;
 
-    void setKey(const Key &key) { this->key = key; }
-
-    template<typename>
-    friend class QORM::Repositories::CRUDRepository;
+    void setKey(const Key &key) {
+        this->key = key;
+    }
 
  public:
     explicit BaseEntity(const Key &key) : key(key) {}
@@ -30,12 +32,10 @@ class BaseEntity {
     BaseEntity(BaseEntity&&) noexcept = delete;
     ~BaseEntity() = default;
 
-    // key and observers are intentionally not copied
     auto operator=(const BaseEntity&) noexcept -> BaseEntity& {
         return *this;
     }
 
-    // key and observers are intentionally not copied
     auto operator=(BaseEntity&&) noexcept -> BaseEntity& {
         return *this;
     }

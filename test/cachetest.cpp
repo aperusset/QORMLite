@@ -16,6 +16,7 @@ void CacheTest::upsert() {
     cache.upsert(entity3->getKey(), std::move(entity3));
 
     // Then
+    QCOMPARE(key1, entity.getKey());
     QVERIFY(cache.contains(entity.getKey()));
     QVERIFY(cache.contains(key2));
     QCOMPARE(2U, cache.size());

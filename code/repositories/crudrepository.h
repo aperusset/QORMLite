@@ -20,7 +20,7 @@ class CRUDRepository : public ReadOnlyRepository<Entity> {
  public:
     using ReadOnlyRepository<Entity>::ReadOnlyRepository;
 
-    virtual auto create(std::unique_ptr<Entity> entity) const -> Entity& {
+    virtual auto create(typename Entity::UPtr entity) const -> Entity& {
         const auto key = this->getDatabase().insertAndRetrieveKey(
                 Insert(this->tableName(), this->assignments(*entity)));
         entity->setKey(key);

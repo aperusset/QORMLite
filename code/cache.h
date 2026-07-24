@@ -3,7 +3,6 @@
 
 #include <QDateTime>
 #include <unordered_map>
-#include <memory>
 #include <stdexcept>
 #include <string>
 #include <typeinfo>
@@ -22,7 +21,7 @@ class Cache {
     static_assert(
         std::is_assignable_v<Entity&, const Entity&>,
         "Entity must be assignable for cache refresh");
-    using Entry = std::pair<std::unique_ptr<Entity>, QDateTime>;
+    using Entry = std::pair<typename Entity::UPtr, QDateTime>;
 
     const uint32_t ttl;
     std::unordered_map<Key, Entry> entities;
@@ -37,7 +36,7 @@ class Cache {
     Cache& operator=(Cache&&) = delete;
     ~Cache() = default;
 
-    auto upsert(const Key &key, std::unique_ptr<Entity> &&entity) -> Entity& {
+    auto upsert(const Key &key, typename Entity::UPtr &&entity) -> Entity& {
         if (entity == nullptr) {
             throw std::invalid_argument("Cannot store a null entity");
         }

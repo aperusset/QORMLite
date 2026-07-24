@@ -26,14 +26,14 @@ class ReadOnlyRepository {
     static_assert(
         std::is_base_of_v<Entities::BaseEntity<Entity, Key>, Entity>,
         "Entity must extend QORM::Entities::BaseEntity");
-    using EntityCreator = std::function<Entity&(const QSqlRecord&)>;
+    using EntitiyMapper = std::function<Entity&(const QSqlRecord&)>;
     using EntityCache = Cache<Entity>;
     inline static constexpr auto DEFAULT_KEY_NAME = "id";
 
     const Database &database;
     std::unique_ptr<EntityCache> cache;
 
-    const EntityCreator entityCreator =
+    const EntitiyMapper entityMapper =
         [this](const auto &record) -> Entity& {
             return this->cache->upsert(
                 this->buildKey(record), this->build(record));
@@ -53,12 +53,12 @@ class ReadOnlyRepository {
         return this->database;
     }
 
-    auto getCache() const -> Cache<Entity>& {
+    auto getCache() const -> EntityCache& {
         return *this->cache;
     }
 
-    auto getEntityCreator() const -> const EntityCreator& {
-        return this->entityCreator;
+    auto getEntityMapper() const -> const EntitiyMapper& {
+        return this->entityMapper;
     }
 
     auto qualifiedFields(
@@ -77,7 +77,7 @@ class ReadOnlyRepository {
     auto get(const Key &key) const -> Entity& {
         return this->cache->getOrCreate(key, [=]() -> Entity& {
             return database.entity(Select(this->tableName(), this->fields())
-                    .where({this->keyCondition(key)}), entityCreator);
+                    .where({this->keyCondition(key)}), entityMapper);
         });
     }
 
@@ -112,11 +112,11 @@ class ReadOnlyRepository {
     }
 
     auto select(const Select &select) const {
-        return database.entities(select, entityCreator);
+        return database.entities(select, entityMapper);
     }
 
     auto select(const CTE<Select> &cte) const {
-        return database.entities(cte, entityCreator);
+        return database.entities(cte, entityMapper);
     }
 
     [[nodiscard]]
@@ -177,7 +177,7 @@ class ReadOnlyRepository {
 
     virtual auto fields() const -> std::list<QString> = 0;
 
-    virtual auto build(const QSqlRecord&) const -> std::unique_ptr<Entity> = 0;
+    virtual auto build(const QSqlRecord&) const -> typename Entity::UPtr = 0;
 };
 
 }  // namespace QORM::Repositories
