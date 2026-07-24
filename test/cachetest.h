@@ -15,8 +15,8 @@ class CacheTest : public QObject {
         this->cache.clear();
     }
 
-    void insert();
-    void insertShouldFail();
+    void upsert();
+    void upsertShouldFail();
     void getShouldSuccess();
     void getShouldFail();
     void getOrCreate();

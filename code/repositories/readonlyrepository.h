@@ -35,7 +35,7 @@ class ReadOnlyRepository {
 
     const EntityCreator entityCreator =
         [this](const auto &record) -> Entity& {
-            return this->cache->insert(
+            return this->cache->upsert(
                 this->buildKey(record), this->build(record));
         };
 

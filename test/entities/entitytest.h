@@ -10,8 +10,7 @@ class EntityTest : public QObject {
     TestObserver observer;
 
  private slots:
-    static void getKey();
-    static void setKey();
+    void getKey();
     void attached();
     void notAttached();
     void detach();

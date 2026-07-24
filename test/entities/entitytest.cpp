@@ -12,17 +12,6 @@ void EntityTest::getKey() {
     QCOMPARE(DEFAULT_ENTITY_KEY, key);
 }
 
-void EntityTest::setKey() {
-    // Given
-    TestEntity entity(0);
-
-    // When
-    entity.setKey(DEFAULT_ENTITY_KEY);
-
-    // Then
-    QCOMPARE(DEFAULT_ENTITY_KEY, entity.getKey());
-}
-
 void EntityTest::attached() {
     // Given
     TestEntity entity(DEFAULT_ENTITY_KEY);

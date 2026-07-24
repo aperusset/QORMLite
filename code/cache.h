@@ -19,6 +19,9 @@ class Cache {
     static_assert(
         std::is_base_of_v<Entities::BaseEntity<Entity, Key>, Entity>,
         "Entity must extend QORM::Entities::BaseEntity<Entity, Key>");
+    static_assert(
+        std::is_assignable_v<Entity&, const Entity&>,
+        "Entity must be assignable for cache refresh");
     using Entry = std::pair<std::unique_ptr<Entity>, QDateTime>;
 
     const uint32_t ttl;
@@ -34,12 +37,19 @@ class Cache {
     Cache& operator=(Cache&&) = delete;
     ~Cache() = default;
 
-    auto insert(const Key &key, std::unique_ptr<Entity> &&entity) -> Entity& {
+    auto upsert(const Key &key, std::unique_ptr<Entity> &&entity) -> Entity& {
         if (entity == nullptr) {
             throw std::invalid_argument("Cannot store a null entity");
         }
-        return *entities.try_emplace(key, std::move(entity),
-            QDateTime::currentDateTime().addSecs(ttl)).first->second.first;
+        const auto expiration = QDateTime::currentDateTime().addSecs(ttl);
+        auto [it, inserted] = entities.try_emplace(key, nullptr, expiration);
+        if (inserted) {
+            it->second.first = std::move(entity);
+        } else {
+            it->second.second = expiration;
+            *it->second.first = std::move(*entity);
+        }
+        return *it->second.first;
     }
 
     auto get(const Key &key) const -> Entity& {

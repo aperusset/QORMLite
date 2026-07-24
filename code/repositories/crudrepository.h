@@ -24,7 +24,7 @@ class CRUDRepository : public ReadOnlyRepository<Entity> {
         const auto key = this->getDatabase().insertAndRetrieveKey(
                 Insert(this->tableName(), this->assignments(*entity)));
         entity->setKey(key);
-        auto &cachedEntity = this->getCache().insert(key, std::move(entity));
+        auto &cachedEntity = this->getCache().upsert(key, std::move(entity));
         cachedEntity.notifyChange();
         return cachedEntity;
     }
