@@ -8,8 +8,8 @@
 namespace QORM::Entities {
 
 class SchemaVersion : public BaseEntity<SchemaVersion> {
-    const QString description;
-    const QDateTime execution;
+    QString description;
+    QDateTime execution;
 
  public:
     SchemaVersion(int version, QString description, QDateTime execution);

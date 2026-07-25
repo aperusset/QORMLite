@@ -8,19 +8,21 @@
 class CacheTest : public QObject {
     Q_OBJECT
 
-    QORM::Cache<int, TestEntity> cache;
+    QORM::Cache<TestEntity> cache;
 
  private slots:
     void cleanup() {
         this->cache.clear();
     }
 
-    void insert();
-    void insertShouldFail();
-    void contains();
+    void upsert();
+    void upsertShouldFail();
     void getShouldSuccess();
     void getShouldFail();
     void getOrCreate();
+    void contains();
+    void isValid();
+    void invalidate();
     void remove();
 };
 

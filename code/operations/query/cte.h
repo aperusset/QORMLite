@@ -9,7 +9,7 @@
 
 namespace QORM {
 
-template<class TDQuery = Select>
+template<typename TDQuery = Select>
 class CTE : public Query {  // Common Table Expression
     static_assert(std::is_base_of_v<TableQuery, TDQuery>,
                   "TDQuery must extend TableQuery");

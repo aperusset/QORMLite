@@ -137,12 +137,12 @@ void QORM::Database::createSchemaVersion() const {
 
 void QORM::Database::create() {
     if (this->creator != nullptr) {
-        qInfo().noquote() << "Create database with name "
+        qInfo().noquote() << "Create database with name"
                           << connector->getName();
         this->creator->execute(*this);
     } else {
         if (this->verbose) {
-            qDebug().noquote() << "No creation expected for database "
+            qDebug().noquote() << "No creation expected for database"
                                << connector->getName();
         }
     }
@@ -158,8 +158,8 @@ void QORM::Database::upgrade() {
             [&](const auto &upgrader) {
                 const auto upgraderVersion = upgrader->getVersion();
                 if (upgraderVersion > version.getKey()) {
-                    qInfo().noquote() << "Upgrade database "
-                                      << connector->getName() << " to version "
+                    qInfo().noquote() << "Upgrade database"
+                                      << connector->getName() << "to version"
                                       << upgraderVersion;
                     upgrader->execute(*this);
                     this->registerUpgrade(*upgrader);
@@ -170,15 +170,15 @@ void QORM::Database::upgrade() {
                 const auto upgraderVersion = upgrader->getVersion();
                 if (upgrader->isAlreadyExecuted() &&
                     upgrader->isDataMigrationDelayed()) {
-                    qInfo().noquote() << "Migrate " << connector->getName()
-                                      << " data to version "
+                    qInfo().noquote() << "Migrate" << connector->getName()
+                                      << "data to version"
                                       << upgraderVersion;
                     upgrader->executeDelayed(*this);
                 }
             });
     } else {
         if (this->verbose) {
-            qDebug().noquote() << "No upgrade expected for database "
+            qDebug().noquote() << "No upgrade expected for database"
                                << connector->getName();
         }
     }

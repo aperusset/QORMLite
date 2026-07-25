@@ -8,10 +8,17 @@
 #include <vector>
 #include "./observer.h"
 
+namespace QORM::Repositories {
+template<typename Entity> class CRUDRepository;
+}  // namespace QORM::Repositories
+
 namespace QORM::Entities {
 
 template<typename Derived, typename Key = int>
 class BaseEntity {
+    template<typename>
+    friend class QORM::Repositories::CRUDRepository;
+
     Key key;
     mutable std::set<Observer<Derived>*> observers;
 
@@ -19,12 +26,17 @@ class BaseEntity {
     explicit BaseEntity(const Key &key) : key(key) {}
     BaseEntity(const BaseEntity&) noexcept = delete;
     BaseEntity(BaseEntity&&) noexcept = delete;
-    BaseEntity& operator=(const BaseEntity&) = delete;
-    BaseEntity& operator=(BaseEntity&&) = delete;
     ~BaseEntity() = default;
 
+    auto operator=(const BaseEntity&) noexcept -> BaseEntity& {
+        return *this;
+    }
+
+    auto operator=(BaseEntity&&) noexcept -> BaseEntity& {
+        return *this;
+    }
+
     auto getKey() const noexcept -> const Key { return this->key; }
-    void setKey(const Key &key) { this->key = key; }
 
     auto getObservers() const -> const std::set<Observer<Derived>*>& {
         return this->observers;

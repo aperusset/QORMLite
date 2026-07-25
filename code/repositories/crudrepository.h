@@ -13,25 +13,22 @@
 
 namespace QORM::Repositories {
 
-template<class Entity>
+template<typename Entity>
 class CRUDRepository : public ReadOnlyRepository<Entity> {
     using Key = typename Entity::KeyType;
 
  public:
-    explicit CRUDRepository(const Database &database,
-                            Cache<Key, Entity>* const cache = nullptr) :
-        ReadOnlyRepository<Entity>(database, cache) {}
+    using ReadOnlyRepository<Entity>::ReadOnlyRepository;
 
-    virtual auto create(std::unique_ptr<Entity> entity) const -> Entity& {
-        const auto key = this->getDatabase().insertAndRetrieveKey(
+    virtual auto create(typename Entity::UPtr entity) const -> Entity& {
+        entity->key = this->getDatabase().insertAndRetrieveKey(
                 Insert(this->tableName(), this->assignments(*entity)));
-        entity->setKey(key);
-        auto &cachedEntity = this->getCache().insert(key, std::move(entity));
-        cachedEntity.notifyChange();
-        return cachedEntity;
+        auto &cached = this->getCache().upsert(entity->key, std::move(entity));
+        cached.notifyChange();
+        return cached;
     }
 
-    template<class... EntityArgs>
+    template<typename... EntityArgs>
     auto create(EntityArgs&&... args) const -> Entity& {
         return this->create(
             std::make_unique<Entity>(std::forward<EntityArgs>(args)...));
@@ -51,6 +48,7 @@ class CRUDRepository : public ReadOnlyRepository<Entity> {
             const auto &entity = this->get(key);
             this->getDatabase().execute(Delete(this->tableName(),
                                         this->keyCondition(key)));
+            this->getCache().invalidate(key);
             entity.notifyDelete();
             this->getCache().remove(key);
         }
@@ -59,6 +57,7 @@ class CRUDRepository : public ReadOnlyRepository<Entity> {
     virtual void eraseAll() const {
         if (const auto &allEntities = this->getAll(); !allEntities.empty()) {
             this->getDatabase().execute(Delete(this->tableName()));
+            this->getCache().invalidateAll();
             for (const auto &entity : allEntities) {
                 entity.get().notifyDelete();
             }

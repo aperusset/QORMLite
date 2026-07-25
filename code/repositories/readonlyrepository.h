@@ -20,66 +20,64 @@
 
 namespace QORM::Repositories {
 
-template<class Entity>
+template<typename Entity>
 class ReadOnlyRepository {
     using Key = typename Entity::KeyType;
     static_assert(
         std::is_base_of_v<Entities::BaseEntity<Entity, Key>, Entity>,
         "Entity must extend QORM::Entities::BaseEntity");
-    using EntityCreator = std::function<Entity&(const QSqlRecord&)>;
-    using EntityCache = Cache<Key, Entity>;
-    inline static const QString DEFAULT_KEY_NAME = "id";
+    using EntitiyMapper = std::function<Entity&(const QSqlRecord&)>;
+    using EntityCache = Cache<Entity>;
+    inline static constexpr auto DEFAULT_KEY_NAME = "id";
 
     const Database &database;
-    const std::unique_ptr<EntityCache> cache;
+    std::unique_ptr<EntityCache> cache;
 
-    const EntityCreator entityCreator =
+    const EntitiyMapper entityMapper =
         [this](const auto &record) -> Entity& {
-            return this->cache.get()->insert(
+            return this->cache->upsert(
                 this->buildKey(record), this->build(record));
         };
 
  public:
     explicit ReadOnlyRepository(const Database &database,
-                                Cache<Key, Entity>* const cache = nullptr) :
-        database(database),
-        cache(cache == nullptr ? std::make_unique<EntityCache>()
-                               : std::unique_ptr<EntityCache>(cache)) {}
+        std::unique_ptr<EntityCache> cache = std::make_unique<EntityCache>()) :
+            database(database), cache(std::move(cache)) {}
     ReadOnlyRepository(const ReadOnlyRepository&) noexcept = delete;
     ReadOnlyRepository(ReadOnlyRepository&&) noexcept = delete;
     ReadOnlyRepository& operator=(const ReadOnlyRepository&) = delete;
     ReadOnlyRepository& operator=(ReadOnlyRepository&&) = delete;
-    virtual ~ReadOnlyRepository() {}
+    virtual ~ReadOnlyRepository() = default;
 
     auto getDatabase() const -> const Database& {
         return this->database;
     }
 
     auto getCache() const -> EntityCache& {
-        return *this->cache.get();
+        return *this->cache;
     }
 
-    auto getEntityCreator() const -> const EntityCreator& {
-        return this->entityCreator;
+    auto getEntityMapper() const -> const EntitiyMapper& {
+        return this->entityMapper;
     }
 
     auto qualifiedFields(
         const std::optional<QString> tableName = std::nullopt) const {
         const auto tableFields = this->fields();
+        const auto table = tableName.value_or(this->tableName());
         std::list<QString> qualifiedFields;
         std::transform(tableFields.begin(), tableFields.end(),
             std::back_inserter(qualifiedFields),
             [&](const QString &field) {
-                return Utils::qualifyFieldName(
-                    tableName.value_or(this->tableName()), field);
+                return Utils::qualifyFieldName(table, field);
             });
         return qualifiedFields;
     }
 
     auto get(const Key &key) const -> Entity& {
-        return this->cache.get()->getOrCreate(key, [=]() -> Entity& {
+        return this->cache->getOrCreate(key, [=]() -> Entity& {
             return database.entity(Select(this->tableName(), this->fields())
-                    .where({this->keyCondition(key)}), entityCreator);
+                    .where({this->keyCondition(key)}), entityMapper);
         });
     }
 
@@ -114,19 +112,21 @@ class ReadOnlyRepository {
     }
 
     auto select(const Select &select) const {
-        return database.entities(select, entityCreator);
+        return database.entities(select, entityMapper);
     }
 
     auto select(const CTE<Select> &cte) const {
-        return database.entities(cte, entityCreator);
+        return database.entities(cte, entityMapper);
     }
 
+    [[nodiscard]]
     auto count() const -> size_t {
         return this->count({});
     }
 
+    [[nodiscard]]
     virtual auto count(const std::list<Condition> &conditions) const -> size_t {
-        const auto total = "total";
+        constexpr auto total = "total";
         return database.result<size_t>(
             Select(this->tableName(), {Count(Selection::ALL, total)})
                     .where(conditions), 0,
@@ -135,11 +135,13 @@ class ReadOnlyRepository {
             });
     }
 
+    [[nodiscard]]
     virtual auto exists(const Key &key) const -> bool {
-        return this->cache.get()->contains(key) ||
+        return this->cache->isValid(key) ||
                this->exists({this->keyCondition(key)});
     }
 
+    [[nodiscard]]
     virtual auto exists(const std::list<Condition> &conditions) const -> bool {
         return this->count(conditions) > 0U;
     }
@@ -158,24 +160,24 @@ class ReadOnlyRepository {
     }
 
     virtual auto keyCondition(const Key &key) const -> Condition {
-        if constexpr (std::is_integral<Key>::value) {
+        if constexpr (std::is_integral_v<Key>) {
             return Equals::field(this->keyName(), key);
         }
-        throw std::runtime_error("keyCondition must be overriden");
+        throw std::runtime_error("keyCondition must be overridden");
     }
 
     virtual auto buildKey(const QSqlRecord &record) const -> Key {
-        if constexpr (std::is_integral<Key>::value) {
+        if constexpr (std::is_integral_v<Key>) {
             return Utils::getIntOrThrow(record, this->keyName());
         }
-        throw std::runtime_error("buildKey must be overriden");
+        throw std::runtime_error("buildKey must be overridden");
     }
 
     virtual auto tableName() const -> QString = 0;
 
     virtual auto fields() const -> std::list<QString> = 0;
 
-    virtual auto build(const QSqlRecord&) const -> std::unique_ptr<Entity> = 0;
+    virtual auto build(const QSqlRecord&) const -> typename Entity::UPtr = 0;
 };
 
 }  // namespace QORM::Repositories
