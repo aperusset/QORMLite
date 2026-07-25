@@ -21,12 +21,11 @@ class CRUDRepository : public ReadOnlyRepository<Entity> {
     using ReadOnlyRepository<Entity>::ReadOnlyRepository;
 
     virtual auto create(typename Entity::UPtr entity) const -> Entity& {
-        const auto key = this->getDatabase().insertAndRetrieveKey(
+        entity->key = this->getDatabase().insertAndRetrieveKey(
                 Insert(this->tableName(), this->assignments(*entity)));
-        entity->setKey(key);
-        auto &cachedEntity = this->getCache().upsert(key, std::move(entity));
-        cachedEntity.notifyChange();
-        return cachedEntity;
+        auto &cached = this->getCache().upsert(entity->key, std::move(entity));
+        cached.notifyChange();
+        return cached;
     }
 
     template<typename... EntityArgs>

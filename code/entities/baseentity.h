@@ -22,10 +22,6 @@ class BaseEntity {
     Key key;
     mutable std::set<Observer<Derived>*> observers;
 
-    void setKey(const Key &key) {
-        this->key = key;
-    }
-
  public:
     explicit BaseEntity(const Key &key) : key(key) {}
     BaseEntity(const BaseEntity&) noexcept = delete;
