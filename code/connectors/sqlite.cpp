@@ -13,9 +13,10 @@ void deleteIfTestMode(const QString &fileName, bool test) {
 }  // namespace
 
 QORM::SQLite::SQLite(const QString &name, bool foreignKeysActivated,
-                     bool test) :
-    Connector((test ? TEST_PREFIX : "") + name),
-    foreignKeysActivated(foreignKeysActivated), test(test) {
+                     bool walActivated, bool test) :
+        Connector((test ? TEST_PREFIX : "") + name),
+        foreignKeysActivated(foreignKeysActivated), walActivated(walActivated),
+        test(test) {
     if (name.trimmed().isEmpty()) {
         throw std::invalid_argument("Database connector must have a name");
     }
@@ -43,6 +44,10 @@ void QORM::SQLite::postConnect() const {
     if (this->foreignKeysActivated) {
         QSqlQuery("pragma foreign_keys = on;", this->getDatabase());
     }
+    if (this->walActivated) {
+        QSqlQuery("pragma journal_mode = wal;", this->getDatabase());
+        QSqlQuery("pragma synchronous = normal;", this->getDatabase());
+    }
 }
 
 void QORM::SQLite::optimize() const {
@@ -50,9 +55,9 @@ void QORM::SQLite::optimize() const {
     QSqlQuery("reindex;", this->getDatabase());
 }
 
-auto QORM::SQLite::tables() const -> std::list<QString> {
+auto QORM::SQLite::tables() const -> std::set<QString> {
     auto tables = Connector::tables();
-    tables.remove(SEQUENCE_TABLE);
+    tables.erase(SEQUENCE_TABLE);
     return tables;
 }
 

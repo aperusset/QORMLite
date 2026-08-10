@@ -22,6 +22,7 @@ SOURCES +=  \
   operations/model/altertest.cpp \
   operations/model/constraint/checktest.cpp \
   operations/model/droptest.cpp \
+  operations/model/indextest.cpp \
   operations/query/ctetest.cpp \
   repositories/schemaversionrepositorytest.cpp \
   schema/creatortest.cpp \
@@ -63,6 +64,7 @@ HEADERS += \
   operations/model/altertest.h \
   operations/model/constraint/checktest.h \
   operations/model/droptest.h \
+  operations/model/indextest.h \
   operations/query/ctetest.h \
   repositories/schemaversionrepositorytest.h \
   schema/creatortest.h \

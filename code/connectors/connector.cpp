@@ -12,7 +12,7 @@ auto contains(const QString &connectionName) {
 auto tablesByType(const QSqlDatabase &database,
                   const QSql::TableType &tableType) {
     auto tables = database.tables(tableType);
-    return std::list<QString>(tables.begin(), tables.end());
+    return std::set<QString>(tables.begin(), tables.end());
 }
 
 }  // namespace
@@ -71,10 +71,10 @@ void QORM::Connector::preConnect() const {
     database.setDatabaseName(this->connectionName());
 }
 
-auto QORM::Connector::tables() const -> std::list<QString> {
+auto QORM::Connector::tables() const -> std::set<QString> {
     return tablesByType(getDatabase(), QSql::TableType::Tables);
 }
 
-auto QORM::Connector::views() const -> std::list<QString> {
+auto QORM::Connector::views() const -> std::set<QString> {
     return tablesByType(getDatabase(), QSql::TableType::Views);
 }

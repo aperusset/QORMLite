@@ -28,6 +28,8 @@ SOURCES += \
   operations/model/constraint/primarykey.cpp \
   operations/model/drop/drop.cpp \
   operations/model/field.cpp \
+  operations/model/index/createindex.cpp \
+  operations/model/index/dropindex.cpp \
   operations/model/table.cpp \
   operations/model/type/blob.cpp \
   operations/model/type/date.cpp \
@@ -80,6 +82,8 @@ HEADERS += \
   operations/model/constraint/reference.h \
   operations/model/drop/drop.h \
   operations/model/field.h \
+  operations/model/index/createindex.h \
+  operations/model/index/dropindex.h \
   operations/model/table.h \
   operations/model/type/blob.h \
   operations/model/type/date.h \

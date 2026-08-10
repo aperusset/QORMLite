@@ -53,16 +53,18 @@ void SelectTest::selectOneField() {
 
 void SelectTest::selectMultipleFields() {
     // Given
-    const auto selection = QORM::Selection(DEFAULT_FIELD_NAME);
-    const QORM::Select select(DEFAULT_TABLE_NAME, {selection, selection});
+    const auto firstSelection = QORM::Selection(DEFAULT_FIELD_NAME);
+    const auto secondSelection = QORM::Selection(OTHER_FIELD_NAME);
+    const QORM::Select select(DEFAULT_TABLE_NAME,
+                              {firstSelection, secondSelection});
 
     // When
     const auto generated = select.generate();
 
     // Then
     QCOMPARE(select.getTableName(), DEFAULT_TABLE_NAME);
-    QCOMPARE(generated, "select distinct " + selection.generate() + ", " +
-                                             selection.generate() +
+    QCOMPARE(generated, "select distinct " + firstSelection.generate() + ", " +
+                                             secondSelection.generate() +
                         " from " + DEFAULT_TABLE_NAME);
 }
 
@@ -111,7 +113,7 @@ void SelectTest::selectAllWithConditions() {
 void SelectTest::selectAllWithGroupBy() {
     // Given
     const auto select = QORM::Select(DEFAULT_TABLE_NAME)
-                            .groupBy({DEFAULT_FIELD_NAME, DEFAULT_FIELD_NAME});
+                            .groupBy({DEFAULT_FIELD_NAME, OTHER_FIELD_NAME});
 
     // When
     const auto generated = select.generate();
@@ -120,7 +122,7 @@ void SelectTest::selectAllWithGroupBy() {
     QCOMPARE(select.getTableName(), DEFAULT_TABLE_NAME);
     QCOMPARE(generated, "select distinct * from " + DEFAULT_TABLE_NAME +
                         " group by " + DEFAULT_FIELD_NAME + ", " +
-                                       DEFAULT_FIELD_NAME);
+                                       OTHER_FIELD_NAME);
 }
 
 void SelectTest::selectAllWithoutGroupByWithHavingShouldFail() {
@@ -138,7 +140,7 @@ void SelectTest::selectAllWithGroupByAndHaving() {
                                                      DEFAULT_FIELD_NAME);
     const auto bindedCondition = QORM::Equals::field(DEFAULT_FIELD_NAME, 0);
     const auto select = QORM::Select(DEFAULT_TABLE_NAME)
-            .groupBy({DEFAULT_FIELD_NAME, DEFAULT_FIELD_NAME})
+            .groupBy({DEFAULT_FIELD_NAME, OTHER_FIELD_NAME})
             .having({fieldCondition, bindedCondition});
 
     // When
@@ -148,7 +150,7 @@ void SelectTest::selectAllWithGroupByAndHaving() {
     QCOMPARE(select.getTableName(), DEFAULT_TABLE_NAME);
     QCOMPARE(generated, "select distinct * from " + DEFAULT_TABLE_NAME +
                         " group by " + DEFAULT_FIELD_NAME + ", " +
-                                       DEFAULT_FIELD_NAME +
+                                       OTHER_FIELD_NAME +
                         " having (" +
                              fieldCondition.generate() + " and " +
                              bindedCondition.generate() + ")");
@@ -157,7 +159,7 @@ void SelectTest::selectAllWithGroupByAndHaving() {
 void SelectTest::selectAllWithOrders() {
     // Given
     const auto order1 = QORM::Asc(DEFAULT_FIELD_NAME);
-    const auto order2 = QORM::Desc(DEFAULT_FIELD_NAME);
+    const auto order2 = QORM::Desc(OTHER_FIELD_NAME);
     const auto select = QORM::Select(DEFAULT_TABLE_NAME)
                             .orderBy({order1, order2});
     // When
@@ -173,11 +175,10 @@ void SelectTest::selectAllWithOrders() {
 
 void SelectTest::selectFieldWithOrdersSelected() {
     // Given
-    const auto otherField = QString("otherField");
     const auto order1 = QORM::Asc(DEFAULT_FIELD_NAME);
-    const auto order2 = QORM::Desc(DEFAULT_FIELD_NAME);
+    const auto order2 = QORM::Desc(OTHER_FIELD_NAME);
     const auto select = QORM::Select(DEFAULT_TABLE_NAME,
-                                     {otherField, order1.getFieldName(),
+                                     {order1.getFieldName(),
                                       order2.getFieldName()})
                             .orderBy({order1, order2});
     // When
@@ -186,7 +187,6 @@ void SelectTest::selectFieldWithOrdersSelected() {
     // Then
     QCOMPARE(select.getTableName(), DEFAULT_TABLE_NAME);
     QCOMPARE(generated, "select distinct " +
-                            otherField + ", " +
                             order1.getFieldName() + ", " +
                             order2.getFieldName() +
                         " from " + DEFAULT_TABLE_NAME +
@@ -199,7 +199,7 @@ void SelectTest::selectFieldWithOrdersNotSelected() {
     // Given
     const auto otherField = QString("otherField");
     const auto order1 = QORM::Asc(DEFAULT_FIELD_NAME);
-    const auto order2 = QORM::Desc(DEFAULT_FIELD_NAME);
+    const auto order2 = QORM::Desc(OTHER_FIELD_NAME);
     const auto select = QORM::Select(DEFAULT_TABLE_NAME,
                                      {otherField}).orderBy({order1, order2});
     // When
@@ -262,7 +262,7 @@ void SelectTest::selectWithIncompatibleUnionsShouldFail() {
     // Given
     auto select1 = QORM::Select(DEFAULT_TABLE_NAME);
     const auto select2 = QORM::Select(DEFAULT_TABLE_NAME,
-                                      {DEFAULT_FIELD_NAME, DEFAULT_FIELD_NAME});
+                                      {DEFAULT_FIELD_NAME, OTHER_FIELD_NAME});
     // When / Then
     QVERIFY_THROWS_EXCEPTION(std::logic_error, select1.unite(select2));
 }

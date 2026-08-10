@@ -18,7 +18,7 @@ auto TestCRUDRepository::keyCondition(const int &key) const -> QORM::Condition {
     return QORM::Equals::field(TestCreator::TEST_FIELD, key);
 }
 
-auto TestCRUDRepository::fields() const -> std::list<QString> {
+auto TestCRUDRepository::fields() const -> std::set<QString> {
     return {TestCreator::TEST_FIELD};
 }
 
@@ -27,6 +27,6 @@ auto TestCRUDRepository::buildKey(const QSqlRecord &record) const -> int {
 }
 
 auto TestCRUDRepository::build(const QSqlRecord &record)
-const -> std::unique_ptr<TestEntity> {
+const -> TestEntity::UPtr {
     return std::make_unique<TestEntity>(this->buildKey(record));
 }

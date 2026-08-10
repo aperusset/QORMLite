@@ -2,6 +2,7 @@
 #define REPOSITORIES_SCHEMAVERSIONREPOSITORY_H_
 
 #include <list>
+#include <set>
 #include "repositories/crudrepository.h"
 #include "entities/schemaversion.h"
 
@@ -12,9 +13,9 @@ class SchemaVersionRepository : public CRUDRepository<Entities::SchemaVersion> {
     using CRUDRepository<Entities::SchemaVersion>::CRUDRepository;
     auto tableName() const -> QString override;
     auto keyName() const -> QString override;
-    auto fields() const -> std::list<QString> override;
+    auto fields() const -> std::set<QString> override;
     auto build(const QSqlRecord&)
-        const -> std::unique_ptr<Entities::SchemaVersion> override;
+        const -> Entities::SchemaVersion::UPtr override;
     auto assignments(const Entities::SchemaVersion&)
         const -> std::list<Assignment> override;
 

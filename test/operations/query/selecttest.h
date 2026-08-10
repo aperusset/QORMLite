@@ -8,6 +8,7 @@ class SelectTest : public QObject {
 
     inline static const QString DEFAULT_TABLE_NAME = "table_name";
     inline static const QString DEFAULT_FIELD_NAME = "field";
+    inline static const QString OTHER_FIELD_NAME = "other_field";
 
  private slots:
     void selectEmptyOrBlankTableNameShouldFail();

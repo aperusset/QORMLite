@@ -2,6 +2,7 @@
 #define OPERATIONS_QUERY_SELECT_H_
 
 #include <list>
+#include <set>
 #include "operations/query/tabledataquery.h"
 #include "operations/query/selection/selection.h"
 #include "operations/query/join/join.h"
@@ -14,7 +15,7 @@ class Select : public TableDataQuery {
     std::list<Selection> selections;
     std::list<Join> joins;
     std::list<Condition> conditions;
-    std::list<QString> groupedBy;
+    std::set<QString> groupedBy;
     std::list<Condition> havings;
     std::list<Order> orders;
     std::optional<unsigned int> maxResults;
@@ -23,7 +24,7 @@ class Select : public TableDataQuery {
 
  public:
     explicit Select(const QString &tableName);
-    Select(const QString &tableName, const std::list<QString>&);
+    Select(const QString &tableName, const std::set<QString>&);
     auto getSelections() const -> const std::list<Selection>&;
     auto getJoins() const -> const std::list<Join>&;
     auto getConditions() const -> const std::list<Condition>&;
@@ -38,7 +39,7 @@ class Select : public TableDataQuery {
 
     auto join(const std::list<Join>&) -> Select&;
     auto where(const std::list<Condition>&) -> Select&;
-    auto groupBy(const std::list<QString>&) -> Select&;
+    auto groupBy(const std::set<QString>&) -> Select&;
     auto having(const std::list<Condition>&) -> Select&;
     auto orderBy(const std::list<Order>&) -> Select&;
     auto limit(const unsigned int limit) -> Select&;

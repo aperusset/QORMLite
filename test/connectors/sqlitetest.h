@@ -22,8 +22,8 @@ class SQLiteTest : public MainDatabaseTest {
     void connectShouldDeleteExistingDatabaseFile();
     void driverNameShouldBeCompliant();
     void connectShouldFailWithInvalidDatabaseName();
-    void connectShouldEnableRegexpButNotForeignKeys();
-    void connectShouldEnableRegexpAndForeignKeys();
+    void connectShouldEnableRegexpButNotOtherOptions();
+    void connectShouldEnableRegexpAndOtherOptions();
     void disconnectShouldNotDeleteDatabaseFile();
     void disconnectShouldDeleteDatabaseFile();
     void tablesShouldReturnWithoutSequence();
