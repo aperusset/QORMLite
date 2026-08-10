@@ -26,8 +26,24 @@ inline auto Reference::getTo() const -> const Field& {
 }
 
 enum class OnAction {
-    Restrict, Cascade, SetNull, SetDefault
+    NoAction, Restrict, Cascade, SetNull, SetDefault
 };
+
+inline auto parseOnAction(const QString &value) {
+    if (value == "RESTRICT") {
+        return OnAction::Restrict;
+    }
+    if (value == "CASCADE") {
+        return OnAction::Cascade;
+    }
+    if (value == "SET NULL") {
+        return OnAction::SetNull;
+    }
+    if (value == "SET DEFAULT") {
+        return OnAction::SetDefault;
+    }
+    return OnAction::NoAction;
+}
 
 }  // namespace QORM
 
