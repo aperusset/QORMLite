@@ -1,6 +1,5 @@
 #include "indextest.h"
 #include <list>
-#include <set>
 #include "operations/model/index/createindex.h"
 #include "operations/model/index/dropindex.h"
 
@@ -8,7 +7,7 @@ void IndexTest::createEmptyNameShouldFail() {
     // Given
     const auto fields = std::list{
         QORM::Field::notNull(DEFAULT_NAME, DEFAULT_TYPE)};
-    const auto stringFields = std::set{DEFAULT_NAME};
+    const auto stringFields = std::list{DEFAULT_NAME};
 
     // When / Then
     QVERIFY_THROWS_EXCEPTION(
@@ -24,13 +23,25 @@ void IndexTest::createEmptyNameShouldFail() {
 void IndexTest::createEmptyFieldsShouldFail() {
     // Given
     const auto fields = std::list<QORM::Field>{};
-    const auto stringFields = std::set<QString>{};
+    const auto stringFields = std::list<QString>{};
 
     // When / Then
     QVERIFY_THROWS_EXCEPTION(
         std::invalid_argument, QORM::CreateIndex(DEFAULT_NAME, fields));
     QVERIFY_THROWS_EXCEPTION(
         std::invalid_argument, QORM::CreateIndex(DEFAULT_NAME, stringFields));
+}
+
+void IndexTest::createBlankFieldsShouldFail() {
+    // Given
+    const auto stringEmptyFields = std::list<QString>{""};
+    const auto stringBlankFields = std::list<QString>{"  "};
+
+    // When / Then
+    QVERIFY_THROWS_EXCEPTION(std::invalid_argument,
+        QORM::CreateIndex(DEFAULT_NAME, stringEmptyFields));
+    QVERIFY_THROWS_EXCEPTION(std::invalid_argument,
+        QORM::CreateIndex(DEFAULT_NAME, stringBlankFields));
 }
 
 void IndexTest::createGenerateOnSingleField() {

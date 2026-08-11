@@ -3,29 +3,28 @@
 
 #include <QString>
 #include <list>
-#include <set>
 #include "operations/query/tablequery.h"
 #include "operations/model/field.h"
 
 namespace QORM {
 
 class CreateIndex : public TableQuery {
-    const std::set<QString> fields;
+    const std::list<QString> fields;
     const bool unique;
 
  public:
-    CreateIndex(const QString &tableName, std::set<QString> fields,
+    CreateIndex(const QString &tableName, std::list<QString> fields,
                 bool unique = false);
     CreateIndex(const QString &tableName, const std::list<Field> &fields,
                 bool unique = false);
 
-    auto getFields() const -> std::set<QString>;
+    auto getFields() const -> std::list<QString>;
     auto isUnique() const -> bool;
     auto getName() const -> QString;
     auto generate() const -> QString override;
 };
 
-inline auto CreateIndex::getFields() const -> std::set<QString> {
+inline auto CreateIndex::getFields() const -> std::list<QString> {
     return this->fields;
 }
 

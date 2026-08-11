@@ -16,6 +16,7 @@ class IndexTest : public QObject {
  private slots:
     void createEmptyNameShouldFail();
     void createEmptyFieldsShouldFail();
+    void createBlankFieldsShouldFail();
     void createGenerateOnSingleField();
     void createGenerateUniqueOnSingleField();
     void createGenerateOnMultipleField();

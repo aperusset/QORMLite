@@ -1,6 +1,10 @@
 #include "sqlite.h"
 #include <QFile>
 #include <QSqlQuery>
+#include <list>
+#include "database.h"
+#include "operations/query/selection/groupconcat.h"
+#include "operations/query/order/asc.h"
 
 namespace {
 
@@ -35,30 +39,65 @@ void QORM::SQLite::disconnect() const {
 
 void QORM::SQLite::preConnect() const {
     Connector::preConnect();
-    auto database = this->getDatabase();
-    database.setConnectOptions("QSQLITE_ENABLE_REGEXP");
+    this->getDatabase().setConnectOptions("QSQLITE_ENABLE_REGEXP");
 }
 
 void QORM::SQLite::postConnect() const {
     Connector::postConnect();
+    const auto &database = this->getDatabase();
     if (this->foreignKeysActivated) {
-        QSqlQuery("pragma foreign_keys = on;", this->getDatabase());
+        QSqlQuery("pragma foreign_keys = on;", database);
     }
     if (this->walActivated) {
-        QSqlQuery("pragma journal_mode = wal;", this->getDatabase());
-        QSqlQuery("pragma synchronous = normal;", this->getDatabase());
+        QSqlQuery("pragma journal_mode = wal;", database);
+        QSqlQuery("pragma synchronous = normal;", database);
     }
 }
 
 void QORM::SQLite::optimize() const {
-    QSqlQuery("vacuum;", this->getDatabase());
-    QSqlQuery("reindex;", this->getDatabase());
+    const auto &database = this->getDatabase();
+    QSqlQuery("vacuum;", database);
+    QSqlQuery("reindex;", database);
 }
 
 auto QORM::SQLite::tables() const -> std::set<QString> {
     auto tables = Connector::tables();
     tables.erase(SEQUENCE_TABLE);
     return tables;
+}
+
+auto QORM::SQLite::foreignKeys(const Database &database, const QString &table)
+const -> std::list<Entities::ForeignKey> {
+    static auto constexpr separator = ",";
+    static const QString foreignKeysCteName = "foreignkeys";
+    static const QString idField = "id";
+    static const QString seqField = "seq";
+    static const QString tableField = "\"table\"";
+    static const QString fromField = "\"from\"";
+    static const QString toField = "\"to\"";
+    static const QString sourceField = "source";
+    static const QString destinationField = "destination";
+    static const QString onUpdateField = "on_update";
+    static const QString onDeleteField = "on_delete";
+    return database.results<Entities::ForeignKey>(
+        CTE({{foreignKeysCteName,
+            Select("pragma_foreign_key_list('" + table + "')", {
+                idField, seqField, tableField, fromField, toField,
+                onUpdateField, onDeleteField,
+            })
+        }}, Select(foreignKeysCteName, {
+            tableField,
+            GroupConcat(fromField, separator, sourceField, Asc(seqField)),
+            GroupConcat(toField, separator, destinationField, Asc(seqField)),
+            onUpdateField, onDeleteField,
+        }).groupBy({idField})), [](const auto &record) {
+                return Entities::ForeignKey {
+                    record.value(tableField).toString(),
+                    {},
+                    parseOnAction(record.value(onUpdateField).toString()),
+                    parseOnAction(record.value(onDeleteField).toString()),
+                };
+        });
 }
 
 auto QORM::SQLite::backup(const QString &fileName) const -> bool {

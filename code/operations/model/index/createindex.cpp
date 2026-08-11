@@ -1,9 +1,9 @@
 #include "createindex.h"
-#include "utils.h"
 #include <utility>
+#include "./utils.h"
 
 QORM::CreateIndex::CreateIndex(const QString &tableName,
-            std::set<QString> fields, bool unique) :
+            std::list<QString> fields, bool unique) :
         TableQuery(tableName), fields(std::move(fields)), unique(unique) {
     if (this->fields.empty()) {
         throw std::invalid_argument("Index name must have at least one field");
@@ -20,17 +20,17 @@ QORM::CreateIndex::CreateIndex(const QString &tableName,
 QORM::CreateIndex::CreateIndex(const QString &tableName,
         const std::list<Field> &fields, bool unique) :
     CreateIndex(tableName, [&] {
-        std::set<QString> generatedFields;
+        std::list<QString> generatedFields;
         for (const auto& field : fields) {
-            generatedFields.insert(field.getName());
+            generatedFields.emplace_back(field.getName());
         }
         return generatedFields;
     }(), unique) {
 }
 
 auto QORM::CreateIndex::getName() const -> QString {
-    return this->getTableName() + "_" + Utils::joinToString(this->fields, "-") +
-           "_index";
+    return this->getTableName() + "_" +
+           Utils::joinToString(this->fields, "-") + "_index";
 }
 
 auto QORM::CreateIndex::generate() const -> QString {

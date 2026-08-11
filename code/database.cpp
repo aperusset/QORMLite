@@ -200,6 +200,11 @@ void QORM::Database::optimize() const {
     this->connector->optimize();
 }
 
+auto QORM::Database::getForeignKeys(const QString &table)
+const -> std::list<Entities::ForeignKey> {
+    return this->connector->foreignKeys(*this, table);
+}
+
 auto QORM::Database::backup(const QString &fileName) -> bool {
     const QMutexLocker lock(&databaseMutex);
     return connector->backup(fileName);

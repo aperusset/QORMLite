@@ -62,10 +62,14 @@ class Database {
     auto isConnected() const -> bool;
     auto getSchemaState() const -> Schema::State;
 
+
     void connect() const;
     void migrate();
     void disconnect() const;
     void optimize() const;
+    auto getForeignKeys(const QString &table)
+        const -> std::list<Entities::ForeignKey>;
+
     auto backup(const QString &fileName) -> bool;
     auto execute(const QString&) const -> QSqlQuery;
     auto execute(const Query&) const -> QSqlQuery;

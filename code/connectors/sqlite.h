@@ -1,6 +1,7 @@
 #ifndef CONNECTORS_SQLITE_H_
 #define CONNECTORS_SQLITE_H_
 
+#include <list>
 #include <set>
 #include "./connector.h"
 
@@ -27,6 +28,8 @@ class SQLite : public Connector {
     void postConnect() const override;
     void optimize() const override;
     auto tables() const -> std::set<QString> override;
+    auto foreignKeys(const Database&, const QString &table)
+        const -> std::list<Entities::ForeignKey> override;
     auto connectionName() const -> QString override;
     auto driverName() const -> QString override;
     auto backup(const QString &fileName) const -> bool override;

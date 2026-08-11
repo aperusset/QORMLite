@@ -126,6 +126,7 @@ HEADERS += \
   operations/query/selection/avg.h \
   operations/query/selection/count.h \
   operations/query/selection/dateformatter.h \
+  operations/query/selection/groupconcat.h \
   operations/query/selection/lower.h \
   operations/query/selection/max.h \
   operations/query/selection/min.h \
