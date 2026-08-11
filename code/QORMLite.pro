@@ -144,3 +144,10 @@ HEADERS += \
   qormlite.h \
   utils.h
 
+for(header, HEADERS) {
+    relpath = $$relative_path($$dirname(header), $$PWD)
+    install_var = header_$${replace(relpath, /, _)}_$${basename(header)}
+    eval($${install_var}.files = $$header)
+    eval($${install_var}.path  = $$DESTDIR/include/$$relpath)
+    INSTALLS += $$install_var
+}

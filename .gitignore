@@ -18,3 +18,4 @@ test/QORMLiteTest
 test/target_wrapper.sh
 .qtc_clangd
 test/database
+.idea/
