@@ -2,6 +2,7 @@
 #include <QFile>
 #include <QSqlQuery>
 #include <list>
+#include <vector>
 #include "./database.h"
 #include "operations/query/selection/groupconcat.h"
 #include "operations/query/order/asc.h"
@@ -13,6 +14,22 @@ void deleteIfTestMode(const QString &fileName, bool test) {
     if (test && QFile::exists(fileName)) {
         QFile::remove(fileName);
     }
+}
+
+auto buildForeignKeyFields(const QString &sources,
+    const QString &destinations, const QString &separator) ->
+std::vector<QORM::Entities::ForeignKeyFields> {
+    const auto sourceFields = sources.split(separator);
+    const auto destinationFields = destinations.split(separator);
+    if (sourceFields.size() != destinationFields.size()) {
+        throw std::logic_error("Source and destination sizes must be equals");
+    }
+    std::vector<QORM::Entities::ForeignKeyFields> fields;
+    fields.reserve(sourceFields.size());
+    for (qsizetype i = 0; i < sourceFields.size(); ++i) {
+        fields.push_back({sourceFields[i], destinationFields[i]});
+    }
+    return fields;
 }
 
 }  // namespace
@@ -91,18 +108,20 @@ const -> std::list<Entities::ForeignKey> {
     return database.results<Entities::ForeignKey>(
         CTE({
             {foreignKeysCteName, foreignKeysCteQuery}
-        }, Select(foreignKeysCteName, {
-            tableField,
+        }, Select(foreignKeysCteName, {tableField,
             GroupConcat(fromField, separator, sourceField, Asc(seqField)),
             GroupConcat(toField, separator, destinationField, Asc(seqField)),
             onUpdateField, onDeleteField,
         }).groupBy({idField})), [](const auto &record) {
-                return Entities::ForeignKey {
-                    record.value(tableField).toString(),
-                    {},
-                    parseOnAction(record.value(onUpdateField).toString()),
-                    parseOnAction(record.value(onDeleteField).toString()),
-                };
+            return Entities::ForeignKey {
+                record.value(tableField).toString(),
+                buildForeignKeyFields(
+                    record.value(sourceField).toString(),
+                    record.value(destinationField).toString(),
+                    separator),
+                parseOnAction(record.value(onUpdateField).toString()),
+                parseOnAction(record.value(onDeleteField).toString()),
+            };
         });
 }
 
