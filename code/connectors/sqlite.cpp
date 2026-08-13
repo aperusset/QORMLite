@@ -2,9 +2,10 @@
 #include <QFile>
 #include <QSqlQuery>
 #include <list>
-#include "database.h"
+#include "./database.h"
 #include "operations/query/selection/groupconcat.h"
 #include "operations/query/order/asc.h"
+#include "operations/query/bindable.h"
 
 namespace {
 
@@ -79,13 +80,18 @@ const -> std::list<Entities::ForeignKey> {
     static const QString destinationField = "destination";
     static const QString onUpdateField = "on_update";
     static const QString onDeleteField = "on_delete";
+    const QString foreignKeysFunction = "pragma_foreign_key_list";
+    const auto tableValue = Value(foreignKeysFunction, table);
+    auto foreignKeysCteQuery = Select(
+        foreignKeysFunction + "(" + tableValue.getParameter() + ")", {
+            idField, seqField, tableField, fromField, toField,
+            onUpdateField, onDeleteField,
+        });
+    foreignKeysCteQuery.addBindable(tableValue);
     return database.results<Entities::ForeignKey>(
-        CTE({{foreignKeysCteName,
-            Select("pragma_foreign_key_list('" + table + "')", {
-                idField, seqField, tableField, fromField, toField,
-                onUpdateField, onDeleteField,
-            })
-        }}, Select(foreignKeysCteName, {
+        CTE({
+            {foreignKeysCteName, foreignKeysCteQuery}
+        }, Select(foreignKeysCteName, {
             tableField,
             GroupConcat(fromField, separator, sourceField, Asc(seqField)),
             GroupConcat(toField, separator, destinationField, Asc(seqField)),
