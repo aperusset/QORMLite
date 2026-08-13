@@ -9,6 +9,9 @@
 #include "operations/query/selection/dateformatter.h"
 #include "operations/query/selection/lower.h"
 #include "operations/query/selection/upper.h"
+#include "operations/query/selection/groupconcat.h"
+#include "operations/query/order/asc.h"
+#include "operations/query/order/desc.h"
 
 void SelectionTest::emptyOrBlankFieldNameShouldFail() {
     // Given / When / Then
@@ -118,7 +121,8 @@ void SelectionTest::countDistinctShouldFail() {
     QVERIFY_THROWS_EXCEPTION(std::invalid_argument,
         QORM::Count(QORM::Selection::ALL, DEFAULT_RENAMED_TO, true));
     QVERIFY_THROWS_EXCEPTION(std::invalid_argument,
-        QORM::Count(" " + QORM::Selection::ALL + " ", DEFAULT_RENAMED_TO, true));
+        QORM::Count(" " + QORM::Selection::ALL + " ", DEFAULT_RENAMED_TO,
+                    true));
 }
 
 void SelectionTest::min() {
@@ -178,4 +182,42 @@ void SelectionTest::upper() {
 
     // Then
     QCOMPARE(generated, "upper(" + DEFAULT_FIELD_NAME + ")");
+}
+
+void SelectionTest::groupConcatWithOrder() {
+    // Given
+    const auto separator = "-";
+    const auto orderAsc = QORM::Asc(DEFAULT_FIELD_NAME);
+    const auto orderDesc = QORM::Desc(DEFAULT_FIELD_NAME);
+    const auto groupConcat = QORM::GroupConcat(DEFAULT_FIELD_NAME, separator,
+        std::nullopt, orderAsc);
+    const auto groupConcatWithSeparator = QORM::GroupConcat(DEFAULT_FIELD_NAME,
+        separator, std::nullopt, orderDesc);
+
+    // When
+    const auto generated = groupConcat.generate();
+    const auto generatedSeparator = groupConcatWithSeparator.generate();
+
+    // Then
+    QCOMPARE(generated, "group_concat(" + DEFAULT_FIELD_NAME +
+        ", '" + separator + "' order by " + orderAsc.generate() + ")");
+    QCOMPARE(generatedSeparator, "group_concat(" + DEFAULT_FIELD_NAME + ", '" +
+        separator + "' order by " + orderDesc.generate() + ")");
+}
+
+void SelectionTest::groupConcatWithoutOrder() {
+    // Given
+    const auto separator = "-";
+    const auto groupConcat = QORM::GroupConcat(DEFAULT_FIELD_NAME);
+    const auto groupConcatWithSeparator = QORM::GroupConcat(DEFAULT_FIELD_NAME,
+                                                            separator);
+
+    // When
+    const auto generated = groupConcat.generate();
+    const auto generatedSeparator = groupConcatWithSeparator.generate();
+
+    // Then
+    QCOMPARE(generated, "group_concat(" + DEFAULT_FIELD_NAME + ", ',')");
+    QCOMPARE(generatedSeparator,
+             "group_concat(" + DEFAULT_FIELD_NAME + ", '" + separator + "')");
 }

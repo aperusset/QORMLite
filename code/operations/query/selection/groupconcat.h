@@ -9,11 +9,11 @@ namespace QORM {
 
 class GroupConcat : public Selection {
  public:
-    GroupConcat(const QString &fieldName, const QString &separator,
+    GroupConcat(const QString &fieldName, const QString &separator = ",",
                 std::optional<QString> renamedTo = std::nullopt,
                 std::optional<Order> order = std::nullopt) :
-        Selection("group_concat('" + fieldName + "', '" + separator + "'" + (
-            order.has_value() ? order.value() : QString("")) + ")",
+        Selection("group_concat(" + fieldName + ", '" + separator + "'" + (
+            order.has_value() ? " order by " + order.value() : "") + ")",
             renamedTo) {}
 };
 
