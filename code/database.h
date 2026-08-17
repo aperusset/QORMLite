@@ -67,6 +67,8 @@ class Database {
     void migrate();
     void disconnect() const;
     void optimize() const;
+    auto tables() const -> std::set<QString>;
+    auto views() const -> std::set<QString>;
     auto foreignKeys(const QString &table)
         const -> std::list<Entities::ForeignKey>;
 
