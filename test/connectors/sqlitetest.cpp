@@ -1,8 +1,10 @@
 #include "sqlitetest.h"
 #include <QSqlQuery>
 #include <QSqlRecord>
+#include <memory>
 #include "connectors/sqlite.h"
 #include "operations/model/table.h"
+#include "operations/model/constraint/foreignkey.h"
 
 void SQLiteTest::initShouldFailIfNameIsEmpty() {
     // Given / When / Then
@@ -156,4 +158,72 @@ void SQLiteTest::backupShouldSuccessAndCreateFile() {
     // Then
     QVERIFY(sqlite.backup(this->databaseBackupName()));
     QVERIFY(QFile::exists(this->databaseBackupName()));
+}
+
+void SQLiteTest::foreignKeysShouldReturnExpected() {
+    // Given
+    const auto intType = QORM::Type("integer");
+
+    const auto table1Field1 = QORM::Field::notNull("t1field1", intType);
+    const auto table1Field2 = QORM::Field::notNull("t1field2", intType);
+    const auto table1Field3 = QORM::Field::notNull("t1field3", intType);
+    const auto table1 = QORM::Table("test_table1",
+        QORM::PrimaryKey(table1Field1, false), {table1Field2, table1Field3});
+
+    const auto table2Field1 = QORM::Field::notNull("t2field1", intType);
+    const auto table2Field2 = QORM::Field::notNull("t2field2", intType);
+    const auto table2Field3 = QORM::Field::notNull("t2field3", intType);
+    const auto table2 = QORM::Table("test_table2",
+        QORM::PrimaryKey(table2Field1, false), {table2Field2, table2Field3}, {
+            QORM::ForeignKey({
+                QORM::Reference(table2Field1, table1Field1)
+            }, table1.getTableName(), QORM::OnAction::Cascade),
+            QORM::ForeignKey({
+                QORM::Reference(table2Field2, table1Field2),
+                QORM::Reference(table2Field3, table1Field3),
+            }, table1.getTableName(), QORM::OnAction::Restrict),
+        });
+
+    const auto &database = QORM::Database(
+        std::make_unique<QORM::SQLite>(this->databaseName(), true, true, true),
+        false);
+    database.connect();
+
+    // When
+    database.execute(table1);
+    database.execute(table2);
+    const auto t1ForeignKeys = database.foreignKeys(table1.getTableName());
+    const auto t2ForeignKeys = database.foreignKeys(table2.getTableName());
+
+    // Then
+    QVERIFY2(t1ForeignKeys.empty(), "Table 1 fkeys should be empty");
+    QCOMPARE(t2ForeignKeys.size(), 2U);
+    const auto first = std::find_if(t2ForeignKeys.begin(), t2ForeignKeys.end(),
+        [](const auto &key) {
+            return key.fields.size() == 1U;
+        });
+    QCOMPARE(table1.getTableName(), first->destinationTable);
+    const auto field = first->fields.front();
+    QCOMPARE(table2Field1.getName(), field.source);
+    QCOMPARE(table1Field1.getName(), field.destination);
+    QCOMPARE(QORM::OnAction::NoAction, first->onUpdate);
+    QCOMPARE(QORM::OnAction::Cascade, first->onDelete);
+
+    const auto second = std::find_if(t2ForeignKeys.begin(), t2ForeignKeys.end(),
+        [](const auto &key) {
+            return key.fields.size() == 2U;
+        });
+    QCOMPARE(table1.getTableName(), second->destinationTable);
+    const auto firstField = std::find_if(second->fields.begin(),
+        second->fields.begin(), [&table2Field2](const auto &field) {
+            return field.source == table2Field2.getName();
+        });
+    QCOMPARE(table1Field2.getName(), firstField->destination);
+    const auto secondField = std::find_if(second->fields.begin(),
+        second->fields.end(), [&table2Field3](const auto &field) {
+            return field.source == table2Field3.getName();
+        });
+    QCOMPARE(table1Field3.getName(), secondField->destination);
+    QCOMPARE(QORM::OnAction::NoAction, second->onUpdate);
+    QCOMPARE(QORM::OnAction::Restrict, second->onDelete);
 }

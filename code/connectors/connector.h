@@ -10,6 +10,11 @@
 
 namespace QORM {
 
+auto buildForeignKey(QString destinationTable,
+    const QStringList &sources, const QStringList &destinations,
+    const QString& onUpdate, const QString &onDelete)
+-> QORM::Entities::ForeignKey;
+
 class Database;
 
 class Connector {

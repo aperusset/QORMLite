@@ -67,8 +67,8 @@ HEADERS += \
   connectors/odbc.h \
   connectors/sqlite.h \
   entities/baseentity.h \
-  entities/foreignkey.h \
   entities/schemaversion.h \
+  entities/foreignkey.h \
   operations/model/alter/addcolumn.h \
   operations/model/alter/altertable.h \
   operations/model/alter/clause.h \

@@ -2,7 +2,6 @@
 #include <QFile>
 #include <QSqlQuery>
 #include <list>
-#include <vector>
 #include "./database.h"
 #include "operations/query/selection/groupconcat.h"
 #include "operations/query/order/asc.h"
@@ -14,22 +13,6 @@ void deleteIfTestMode(const QString &fileName, bool test) {
     if (test && QFile::exists(fileName)) {
         QFile::remove(fileName);
     }
-}
-
-auto buildForeignKeyFields(const QString &sources,
-    const QString &destinations, const QString &separator) ->
-std::vector<QORM::Entities::ForeignKeyFields> {
-    const auto sourceFields = sources.split(separator);
-    const auto destinationFields = destinations.split(separator);
-    if (sourceFields.size() != destinationFields.size()) {
-        throw std::logic_error("Source and destination sizes must be equals");
-    }
-    std::vector<QORM::Entities::ForeignKeyFields> fields;
-    fields.reserve(sourceFields.size());
-    for (qsizetype i = 0; i < sourceFields.size(); ++i) {
-        fields.push_back({sourceFields[i], destinationFields[i]});
-    }
-    return fields;
 }
 
 }  // namespace
@@ -64,11 +47,33 @@ void QORM::SQLite::postConnect() const {
     Connector::postConnect();
     const auto &database = this->getDatabase();
     if (this->foreignKeysActivated) {
-        QSqlQuery("pragma foreign_keys = on;", database);
+        QSqlQuery foreignKeyQuery(database);
+        if (!foreignKeyQuery.exec("pragma foreign_keys = on;")) {
+            throw std::runtime_error(
+                "Could not activate foreign keys: " +
+                foreignKeyQuery.lastError().text().toStdString());
+        }
     }
     if (this->walActivated) {
-        QSqlQuery("pragma journal_mode = wal;", database);
-        QSqlQuery("pragma synchronous = normal;", database);
+        QSqlQuery journalModeQuery(database);
+        if (!journalModeQuery.exec("pragma journal_mode = wal;")) {
+            throw std::runtime_error(
+                "Could not enable WAL: " +
+                journalModeQuery.lastError().text().toStdString());
+        }
+
+        if (!journalModeQuery.next()
+            || journalModeQuery.value(0).toString().compare(
+                   "wal", Qt::CaseInsensitive) != 0) {
+            throw std::runtime_error("SQLite did not enable WAL");
+        }
+
+        QSqlQuery synchronousQuery(database);
+        if (!synchronousQuery.exec("pragma synchronous = normal;")) {
+            throw std::runtime_error(
+                "Could not set synchronous mode: " +
+                synchronousQuery.lastError().text().toStdString());
+        }
     }
 }
 
@@ -108,21 +113,19 @@ const -> std::list<Entities::ForeignKey> {
     return database.results<Entities::ForeignKey>(
         CTE({
             {foreignKeysCteName, foreignKeysCteQuery}
-        }, Select(foreignKeysCteName, {tableField,
+        }, Select(foreignKeysCteName, {idField, tableField,
             GroupConcat(fromField, separator, sourceField, Asc(seqField)),
             GroupConcat(toField, separator, destinationField, Asc(seqField)),
             onUpdateField, onDeleteField,
-        }).groupBy({idField})), [](const auto &record) {
-            return Entities::ForeignKey {
-                record.value(tableField).toString(),
-                buildForeignKeyFields(
-                    record.value(sourceField).toString(),
-                    record.value(destinationField).toString(),
-                    separator),
-                parseOnAction(record.value(onUpdateField).toString()),
-                parseOnAction(record.value(onDeleteField).toString()),
-            };
-        });
+        }).groupBy({idField}).orderBy({QORM::Asc(idField)})),
+            [](const auto &record) {
+                return buildForeignKey(
+                    record.value(QString{tableField}.remove('"')).toString(),
+                    record.value(sourceField).toString().split(separator),
+                    record.value(destinationField).toString().split(separator),
+                    record.value(onUpdateField).toString(),
+                    record.value(onDeleteField).toString());
+            });
 }
 
 auto QORM::SQLite::backup(const QString &fileName) const -> bool {

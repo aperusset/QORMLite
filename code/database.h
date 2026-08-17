@@ -67,7 +67,7 @@ class Database {
     void migrate();
     void disconnect() const;
     void optimize() const;
-    auto getForeignKeys(const QString &table)
+    auto foreignKeys(const QString &table)
         const -> std::list<Entities::ForeignKey>;
 
     auto backup(const QString &fileName) -> bool;

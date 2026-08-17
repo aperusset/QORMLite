@@ -28,6 +28,7 @@ class SQLiteTest : public MainDatabaseTest {
     void disconnectShouldDeleteDatabaseFile();
     void tablesShouldReturnWithoutSequence();
     void backupShouldSuccessAndCreateFile();
+    void foreignKeysShouldReturnExpected();
 
     void init() {
         this->deleteAllDatabases();

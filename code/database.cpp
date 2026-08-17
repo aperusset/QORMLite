@@ -200,7 +200,7 @@ void QORM::Database::optimize() const {
     this->connector->optimize();
 }
 
-auto QORM::Database::getForeignKeys(const QString &table)
+auto QORM::Database::foreignKeys(const QString &table)
 const -> std::list<Entities::ForeignKey> {
     return this->connector->foreignKeys(*this, table);
 }

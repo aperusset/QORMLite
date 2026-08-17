@@ -2,6 +2,7 @@
 #include <QSqlError>
 #include <QStringList>
 #include <utility>
+#include <vector>
 
 namespace {
 
@@ -15,7 +16,33 @@ auto tablesByType(const QSqlDatabase &database,
     return std::set<QString>(tables.begin(), tables.end());
 }
 
+auto buildForeignKeyFields(const QStringList &sources,
+                           const QStringList &destinations)
+-> std::vector<QORM::Entities::ForeignKeyFields> {
+    if (sources.size() != destinations.size()) {
+        throw std::logic_error("Source and destination sizes must be equal");
+    }
+    std::vector<QORM::Entities::ForeignKeyFields> fields;
+    fields.reserve(sources.size());
+    for (qsizetype i = 0; i < sources.size(); ++i) {
+        fields.push_back({sources[i], destinations[i]});
+    }
+    return fields;
+}
+
 }  // namespace
+
+auto QORM::buildForeignKey(QString destinationTable,
+    const QStringList &sources, const QStringList &destinations,
+    const QString& onUpdate, const QString &onDelete)
+-> QORM::Entities::ForeignKey {
+    return {
+        std::move(destinationTable),
+        buildForeignKeyFields(sources, destinations),
+        QORM::parseOnAction(onUpdate),
+        QORM::parseOnAction(onDelete),
+    };
+}
 
 QORM::Connector::Connector(QString name) : name(std::move(name).trimmed()) {
     if (this->name.isEmpty()) {
