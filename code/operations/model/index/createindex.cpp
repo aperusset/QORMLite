@@ -29,7 +29,7 @@ QORM::CreateIndex::CreateIndex(const QString &tableName,
 }
 
 auto QORM::CreateIndex::getName() const -> QString {
-    return this->getTableName() + "_" +
+    return this->getTableName() + "__" +
            Utils::joinToString(this->fields, "-") + "_index";
 }
 

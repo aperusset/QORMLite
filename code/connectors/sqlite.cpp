@@ -47,11 +47,11 @@ void QORM::SQLite::postConnect() const {
     Connector::postConnect();
     const auto &database = this->getDatabase();
     if (this->foreignKeysActivated) {
-        QSqlQuery foreignKeyQuery(database);
-        if (!foreignKeyQuery.exec("pragma foreign_keys = on;")) {
+        QSqlQuery foreignKeysQuery(database);
+        if (!foreignKeysQuery.exec("pragma foreign_keys = on;")) {
             throw std::runtime_error(
                 "Could not activate foreign keys: " +
-                foreignKeyQuery.lastError().text().toStdString());
+                foreignKeysQuery.lastError().text().toStdString());
         }
     }
     if (this->walActivated) {
@@ -117,7 +117,7 @@ const -> std::list<Entities::ForeignKey> {
             GroupConcat(fromField, separator, sourceField, Asc(seqField)),
             GroupConcat(toField, separator, destinationField, Asc(seqField)),
             onUpdateField, onDeleteField,
-        }).groupBy({idField}).orderBy({QORM::Asc(idField)})),
+        }).groupBy({idField}).orderBy({Asc(idField)})),
             [](const auto &record) {
                 return buildForeignKey(
                     record.value(QString{tableField}.remove('"')).toString(),

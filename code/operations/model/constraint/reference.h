@@ -30,16 +30,16 @@ enum class OnAction {
 };
 
 inline auto parseOnAction(const QString &value) {
-    if (value == "RESTRICT") {
+    if (value.toLower() == "restrict") {
         return OnAction::Restrict;
     }
-    if (value == "CASCADE") {
+    if (value.toLower() == "cascade") {
         return OnAction::Cascade;
     }
-    if (value == "SET NULL") {
+    if (value.toLower() == "set null") {
         return OnAction::SetNull;
     }
-    if (value == "SET DEFAULT") {
+    if (value.toLower() == "set default") {
         return OnAction::SetDefault;
     }
     return OnAction::NoAction;

@@ -215,7 +215,7 @@ void SQLiteTest::foreignKeysShouldReturnExpected() {
         });
     QCOMPARE(table1.getTableName(), second->destinationTable);
     const auto firstField = std::find_if(second->fields.begin(),
-        second->fields.begin(), [&table2Field2](const auto &field) {
+        second->fields.end(), [&table2Field2](const auto &field) {
             return field.source == table2Field2.getName();
         });
     QCOMPARE(table1Field2.getName(), firstField->destination);

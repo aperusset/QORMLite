@@ -10,8 +10,14 @@ class DropIndex : public Query {
 
  public:
     explicit DropIndex(QString name);
+
+    auto getName() const -> QString;
     auto generate() const -> QString override;
 };
+
+inline auto DropIndex::getName() const -> QString {
+    return this->name;
+}
 
 }  // namespace QORM
 

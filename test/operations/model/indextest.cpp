@@ -49,7 +49,7 @@ void IndexTest::createGenerateOnSingleField() {
     const auto field = QORM::Field::notNull(DEFAULT_NAME, DEFAULT_TYPE);
     const auto fields = std::list{field};
     const auto createIndex = QORM::CreateIndex(DEFAULT_TABLE_NAME, fields);
-    const auto expectedIndexName = DEFAULT_TABLE_NAME + "_" + field.getName() +
+    const auto expectedIndexName = DEFAULT_TABLE_NAME + "__" + field.getName() +
                                    "_index";
 
     // When
@@ -66,7 +66,7 @@ void IndexTest::createGenerateUniqueOnSingleField() {
     const auto fields = std::list{field};
     const auto createIndex = QORM::CreateIndex(DEFAULT_TABLE_NAME, fields,
                                                true);
-    const auto expectedIndexName = DEFAULT_TABLE_NAME + "_" + field.getName() +
+    const auto expectedIndexName = DEFAULT_TABLE_NAME + "__" + field.getName() +
                                    "_index";
 
     // When
@@ -84,7 +84,7 @@ void IndexTest::createGenerateOnMultipleField() {
     const auto secondField = QORM::Field::notNull(OTHER_NAME, DEFAULT_TYPE);
     const auto fields = std::list{firstField, secondField};
     const auto createIndex = QORM::CreateIndex(DEFAULT_TABLE_NAME, fields);
-    const auto expectedIndexName = DEFAULT_TABLE_NAME + "_" +
+    const auto expectedIndexName = DEFAULT_TABLE_NAME + "__" +
         firstField.getName() + "-" + secondField.getName() + "_index";
 
     // When
@@ -103,7 +103,7 @@ void IndexTest::createGenerateUniqueOnMultipleField() {
     const auto fields = std::list{firstField, secondField};
     const auto createIndex = QORM::CreateIndex(DEFAULT_TABLE_NAME, fields,
                                                true);
-    const auto expectedIndexName = DEFAULT_TABLE_NAME + "_" +
+    const auto expectedIndexName = DEFAULT_TABLE_NAME + "__" +
         firstField.getName() + "-" + secondField.getName() + "_index";
 
     // When
