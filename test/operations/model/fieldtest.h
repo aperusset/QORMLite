@@ -13,12 +13,13 @@ class FieldTest : public QObject {
     inline static const QString DEFAULT_VALUE = "'defaultValue'";
 
  private slots:
-    static void generateNotNullWithoutDefaultValue();
-    static void generateNotNullWithDefaultValue();
-    static void generateNullableWithoutDefaultValue();
-    static void generateNullableWithDefaultValue();
-    static void equals();
-    static void notEquals();
+    void emptyNameShouldFail();
+    void generateNotNullWithoutDefaultValue();
+    void generateNotNullWithDefaultValue();
+    void generateNullableWithoutDefaultValue();
+    void generateNullableWithDefaultValue();
+    void equals();
+    void notEquals();
 };
 
 #endif  // TEST_OPERATIONS_MODEL_FIELDTEST_H_

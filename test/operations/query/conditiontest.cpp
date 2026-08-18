@@ -3,6 +3,7 @@
 #include <list>
 #include <optional>
 #include <stdexcept>
+#include <set>
 #include "operations/query/condition/condition.h"
 #include "operations/query/condition/isnull.h"
 #include "operations/query/condition/isnotnull.h"
@@ -512,7 +513,7 @@ void ConditionTest::inWithEmptyIntegersShouldFail() {
 void ConditionTest::inWithEmptyStringsShouldFail() {
     // Given / When / Then
     QVERIFY_THROWS_EXCEPTION(std::invalid_argument,
-        QORM::In(DEFAULT_FIELD_NAME, std::list<QString>{}));
+        QORM::In(DEFAULT_FIELD_NAME, std::set<QString>{}));
 }
 
 void ConditionTest::inWithIntegers() {
@@ -546,7 +547,7 @@ void ConditionTest::notInWithIntegers() {
 
 void ConditionTest::inWithStrings() {
     // Given
-    const auto stringList = std::list<QString>{"test1", "test2"};
+    const auto stringList = std::set<QString>{"test1", "test2"};
     const auto inStringList = QORM::In(DEFAULT_FIELD_NAME, stringList);
     const auto inSingle = QORM::In(DEFAULT_FIELD_NAME, {"test"});
     const auto inMultiple = QORM::In(DEFAULT_FIELD_NAME, {"test1", "test2"});

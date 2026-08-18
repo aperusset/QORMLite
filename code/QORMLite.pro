@@ -28,6 +28,8 @@ SOURCES += \
   operations/model/constraint/primarykey.cpp \
   operations/model/drop/drop.cpp \
   operations/model/field.cpp \
+  operations/model/index/createindex.cpp \
+  operations/model/index/dropindex.cpp \
   operations/model/table.cpp \
   operations/model/type/blob.cpp \
   operations/model/type/date.cpp \
@@ -66,6 +68,7 @@ HEADERS += \
   connectors/sqlite.h \
   entities/baseentity.h \
   entities/schemaversion.h \
+  entities/foreignkey.h \
   operations/model/alter/addcolumn.h \
   operations/model/alter/altertable.h \
   operations/model/alter/clause.h \
@@ -80,6 +83,8 @@ HEADERS += \
   operations/model/constraint/reference.h \
   operations/model/drop/drop.h \
   operations/model/field.h \
+  operations/model/index/createindex.h \
+  operations/model/index/dropindex.h \
   operations/model/table.h \
   operations/model/type/blob.h \
   operations/model/type/date.h \
@@ -121,6 +126,7 @@ HEADERS += \
   operations/query/selection/avg.h \
   operations/query/selection/count.h \
   operations/query/selection/dateformatter.h \
+  operations/query/selection/groupconcat.h \
   operations/query/selection/lower.h \
   operations/query/selection/max.h \
   operations/query/selection/min.h \

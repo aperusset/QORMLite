@@ -6,6 +6,7 @@
 #include <list>
 #include <map>
 #include <string>
+#include <set>
 #include "./utils.h"
 #include "operations/query/selection/selection.h"
 #include "fixture/testentity.h"
@@ -126,8 +127,8 @@ void UtilsTest::containsShouldReturnFalse() {
 
 void UtilsTest::joinToStringShouldJoinListWithSeparator() {
     // Given
-    const std::list<int> values{0, 1, 2};
-    const std::list<QString> stringValues{"0", "1", "2"};
+    const std::set<int> values{0, 1, 2};
+    const std::set<QString> stringValues{"0", "1", "2"};
 
     // When
     const auto joined = QORM::Utils::joinToString(values, "-",

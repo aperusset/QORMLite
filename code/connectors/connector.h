@@ -3,9 +3,17 @@
 
 #include <QString>
 #include <QSqlDatabase>
+#include <memory>
 #include <list>
+#include <set>
+#include "entities/foreignkey.h"
 
 namespace QORM {
+
+auto buildForeignKey(QString destinationTable,
+    const QStringList &sources, const QStringList &destinations,
+    const QString& onUpdate, const QString &onDelete)
+-> QORM::Entities::ForeignKey;
 
 class Database;
 
@@ -28,8 +36,10 @@ class Connector {
     virtual void preConnect() const;
     virtual void postConnect() const {}
     virtual void optimize() const {}
-    virtual auto tables() const -> std::list<QString>;
-    virtual auto views() const -> std::list<QString>;
+    virtual auto tables() const -> std::set<QString>;
+    virtual auto views() const -> std::set<QString>;
+    virtual auto foreignKeys(const Database&, const QString &table)
+        const -> std::list<Entities::ForeignKey>;
     virtual auto connectionName() const -> QString = 0;
     virtual auto driverName() const -> QString = 0;
     virtual auto backup(const QString &fileName) const -> bool = 0;

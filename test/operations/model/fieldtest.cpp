@@ -1,6 +1,14 @@
 #include "fieldtest.h"
 #include "operations/model/field.h"
 
+void FieldTest::emptyNameShouldFail() {
+    // Given / When / Then
+    QVERIFY_THROWS_EXCEPTION(std::invalid_argument,
+        QORM::Field::notNull("", DEFAULT_TYPE));
+    QVERIFY_THROWS_EXCEPTION(std::invalid_argument,
+        QORM::Field::notNull("  ", DEFAULT_TYPE));
+}
+
 void FieldTest::generateNotNullWithoutDefaultValue() {
     // Given
     const auto field = QORM::Field::notNull(DEFAULT_NAME, DEFAULT_TYPE);

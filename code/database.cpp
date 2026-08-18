@@ -200,6 +200,19 @@ void QORM::Database::optimize() const {
     this->connector->optimize();
 }
 
+auto QORM::Database::tables() const -> std::set<QString> {
+    return this->connector->tables();
+}
+
+auto QORM::Database::views() const -> std::set<QString> {
+    return this->connector->views();
+}
+
+auto QORM::Database::foreignKeys(const QString &table)
+const -> std::list<Entities::ForeignKey> {
+    return this->connector->foreignKeys(*this, table);
+}
+
 auto QORM::Database::backup(const QString &fileName) -> bool {
     const QMutexLocker lock(&databaseMutex);
     return connector->backup(fileName);

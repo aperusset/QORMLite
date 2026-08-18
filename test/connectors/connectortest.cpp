@@ -89,7 +89,7 @@ void ConnectorTest::shouldReturnListOfAvailableTables() {
 
     // Then
     QCOMPARE(tables.size(), 1U);
-    QCOMPARE(tables.front(), table.getTableName());
+    QCOMPARE(tables.count(table.getTableName()), 1U);
 }
 
 void ConnectorTest::shouldReturnListOfAvailableViews() {
@@ -110,5 +110,5 @@ void ConnectorTest::shouldReturnListOfAvailableViews() {
 
     // Then
     QCOMPARE(views.size(), 1U);
-    QCOMPARE(views.front(), view.getViewName());
+    QCOMPARE(views.count(view.getViewName()), 1U);
 }

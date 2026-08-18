@@ -6,8 +6,10 @@
 #include <algorithm>
 #include <functional>
 #include <list>
+#include <set>
 #include <memory>
 #include <optional>
+#include <utility>
 #include "./cache.h"
 #include "./database.h"
 #include "./utils.h"
@@ -65,9 +67,9 @@ class ReadOnlyRepository {
         const std::optional<QString> tableName = std::nullopt) const {
         const auto tableFields = this->fields();
         const auto table = tableName.value_or(this->tableName());
-        std::list<QString> qualifiedFields;
+        std::set<QString> qualifiedFields;
         std::transform(tableFields.begin(), tableFields.end(),
-            std::back_inserter(qualifiedFields),
+            std::inserter(qualifiedFields, qualifiedFields.end()),
             [&](const QString &field) {
                 return Utils::qualifyFieldName(table, field);
             });
@@ -175,7 +177,7 @@ class ReadOnlyRepository {
 
     virtual auto tableName() const -> QString = 0;
 
-    virtual auto fields() const -> std::list<QString> = 0;
+    virtual auto fields() const -> std::set<QString> = 0;
 
     virtual auto build(const QSqlRecord&) const -> typename Entity::UPtr = 0;
 };

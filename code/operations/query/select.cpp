@@ -21,7 +21,7 @@ auto bindConditions(QORM::Select *select,
 QORM::Select::Select(const QString &tableName) : Select(tableName, {" * "}) {}
 
 QORM::Select::Select(const QString &tableName,
-                     const std::list<QString> &fields) :
+                     const std::set<QString> &fields) :
     TableDataQuery(tableName) {
     for (const auto &field : fields) {
         this->selections.emplace_back(Selection(field));
@@ -56,9 +56,9 @@ auto QORM::Select::where(const std::list<Condition> &conditions) -> Select& {
     return bindConditions(this, conditions);
 }
 
-auto QORM::Select::groupBy(const std::list<QString> &groupBy) -> Select& {
+auto QORM::Select::groupBy(const std::set<QString> &groupBy) -> Select& {
     std::copy(groupBy.begin(), groupBy.end(),
-              std::back_inserter(this->groupedBy));
+              std::inserter(this->groupedBy, this->groupedBy.end()));
     return *this;
 }
 

@@ -1,4 +1,5 @@
 #include "schemaversionrepository.h"
+#include <memory>
 #include "operations/query/order/desc.h"
 
 auto QORM::Repositories::SchemaVersionRepository::tableName() const -> QString {
@@ -10,7 +11,7 @@ auto QORM::Repositories::SchemaVersionRepository::keyName() const -> QString {
 }
 
 auto QORM::Repositories::SchemaVersionRepository::fields()
-const -> std::list<QString> {
+const -> std::set<QString> {
     return {
         Entities::SchemaVersion::VERSION,
         Entities::SchemaVersion::DESCRIPTION,
@@ -20,7 +21,7 @@ const -> std::list<QString> {
 
 auto QORM::Repositories::SchemaVersionRepository::build(
     const QSqlRecord &record)
-const -> std::unique_ptr<Entities::SchemaVersion> {
+const -> Entities::SchemaVersion::UPtr {
     return std::make_unique<Entities::SchemaVersion>(this->buildKey(record),
         Utils::getStringOrThrow(record, Entities::SchemaVersion::DESCRIPTION),
         Utils::getDateTimeOrThrow(record, Entities::SchemaVersion::EXECUTION));

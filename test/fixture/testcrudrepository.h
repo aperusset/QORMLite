@@ -1,8 +1,7 @@
 #ifndef TEST_FIXTURE_TESTCRUDREPOSITORY_H_
 #define TEST_FIXTURE_TESTCRUDREPOSITORY_H_
 
-#include <list>
-#include <memory>
+#include <set>
 #include "./testentity.h"
 #include "operations/query/condition/condition.h"
 #include "repositories/crudrepository.h"
@@ -15,10 +14,10 @@ class TestCRUDRepository :
     auto tableName() const -> QString override;
     auto keyName() const -> QString override;
     auto keyCondition(const int&) const -> QORM::Condition override;
-    auto fields() const -> std::list<QString> override;
+    auto fields() const -> std::set<QString> override;
     auto buildKey(const QSqlRecord &record) const -> int override;
     auto build(const QSqlRecord &record)
-        const -> std::unique_ptr<TestEntity> override;
+        const -> TestEntity::UPtr override;
 };
 
 #endif  // TEST_FIXTURE_TESTCRUDREPOSITORY_H_

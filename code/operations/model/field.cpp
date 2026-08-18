@@ -3,8 +3,11 @@
 
 QORM::Field::Field(QString name, Type type, bool nullable,
                    std::optional<QString> defaultValue) :
-    name(std::move(name)), type(std::move(type)), nullable(nullable),
-    defaultValue(std::move(defaultValue)) {
+    name(std::move(name)), type(std::move(type)),
+    nullable(nullable), defaultValue(std::move(defaultValue)) {
+    if (this->name.trimmed().isEmpty()) {
+        throw std::invalid_argument("Field name must not be blank");
+    }
     if (this->defaultValue.has_value() &&
         this->defaultValue.value().simplified().isEmpty()) {
         throw std::invalid_argument("Default value must be null or not blank.");

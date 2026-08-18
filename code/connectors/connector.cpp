@@ -2,6 +2,7 @@
 #include <QSqlError>
 #include <QStringList>
 #include <utility>
+#include <vector>
 
 namespace {
 
@@ -12,10 +13,36 @@ auto contains(const QString &connectionName) {
 auto tablesByType(const QSqlDatabase &database,
                   const QSql::TableType &tableType) {
     auto tables = database.tables(tableType);
-    return std::list<QString>(tables.begin(), tables.end());
+    return std::set<QString>(tables.begin(), tables.end());
+}
+
+auto buildForeignKeyFields(const QStringList &sources,
+                           const QStringList &destinations)
+-> std::vector<QORM::Entities::ForeignKeyFields> {
+    if (sources.size() != destinations.size()) {
+        throw std::logic_error("Source and destination sizes must be equal");
+    }
+    std::vector<QORM::Entities::ForeignKeyFields> fields;
+    fields.reserve(sources.size());
+    for (qsizetype i = 0; i < sources.size(); ++i) {
+        fields.push_back({sources[i], destinations[i]});
+    }
+    return fields;
 }
 
 }  // namespace
+
+auto QORM::buildForeignKey(QString destinationTable,
+    const QStringList &sources, const QStringList &destinations,
+    const QString& onUpdate, const QString &onDelete)
+-> QORM::Entities::ForeignKey {
+    return {
+        std::move(destinationTable),
+        buildForeignKeyFields(sources, destinations),
+        QORM::parseOnAction(onUpdate),
+        QORM::parseOnAction(onDelete),
+    };
+}
 
 QORM::Connector::Connector(QString name) : name(std::move(name).trimmed()) {
     if (this->name.isEmpty()) {
@@ -32,7 +59,7 @@ auto QORM::Connector::getDatabase() const -> QSqlDatabase {
 }
 
 auto QORM::Connector::isConnected() const -> bool {
-    return contains(this->connectionName()) && getDatabase().isOpen();
+    return contains(this->connectionName()) && this->getDatabase().isOpen();
 }
 
 void QORM::Connector::connect() const {
@@ -61,20 +88,24 @@ void QORM::Connector::connect() const {
 void QORM::Connector::disconnect() const {
     if (this->isConnected()) {
         qDebug().noquote() << "Disconnect from database" << this->name;
-        getDatabase().close();
+        this->getDatabase().close();
         QSqlDatabase::removeDatabase(this->connectionName());
     }
 }
 
 void QORM::Connector::preConnect() const {
-    auto database = getDatabase();
-    database.setDatabaseName(this->connectionName());
+    this->getDatabase().setDatabaseName(this->connectionName());
 }
 
-auto QORM::Connector::tables() const -> std::list<QString> {
-    return tablesByType(getDatabase(), QSql::TableType::Tables);
+auto QORM::Connector::tables() const -> std::set<QString> {
+    return tablesByType(this->getDatabase(), QSql::TableType::Tables);
 }
 
-auto QORM::Connector::views() const -> std::list<QString> {
-    return tablesByType(getDatabase(), QSql::TableType::Views);
+auto QORM::Connector::views() const -> std::set<QString> {
+    return tablesByType(this->getDatabase(), QSql::TableType::Views);
+}
+
+auto QORM::Connector::foreignKeys(const Database&, const QString&)
+const -> std::list<Entities::ForeignKey> {
+    return {};
 }

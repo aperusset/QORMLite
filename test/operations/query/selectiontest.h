@@ -26,6 +26,8 @@ class SelectionTest : public QObject {
     void dateFormatter();
     void lower();
     void upper();
+    void groupConcatWithOrder();
+    void groupConcatWithoutOrder();
 };
 
 #endif  // TEST_OPERATIONS_QUERY_SELECTIONTEST_H_

@@ -28,6 +28,9 @@ auto QORM::ForeignKey::generateConstraint() const -> QString {
                   "references [" + targetTable + "](" +
                   toFieldNames.join(", ") + ") " + "on delete ";
     switch (this->onAction) {
+    case OnAction::NoAction:
+        foreignKey += "no action";
+        break;
     case OnAction::Cascade:
         foreignKey += "cascade";
         break;
